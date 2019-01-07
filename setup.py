@@ -39,6 +39,7 @@ development_requires = [
     'm2r>=0.2.0',
     'Sphinx>=1.7.1',
     'sphinx_rtd_theme>=0.2.4',
+    'recommonmark>=0.4.0',
 
     # style check
     'flake8>=3.5.0',
@@ -62,8 +63,6 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
     description="Orion",
@@ -79,7 +78,7 @@ setup(
     long_description_content_type='text/markdown',
     name='orion',
     packages=find_packages(include=['orion', 'orion.*']),
-    python_requires='>=3.4',
+    python_requires='>=3.6',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,
