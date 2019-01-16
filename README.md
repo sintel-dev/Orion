@@ -1,4 +1,3 @@
-
 <p align="center"> 
 <img width=30% src="https://dai.lids.mit.edu/wp-content/uploads/2018/08/orion.png" alt=“Orion” />
 </p>
@@ -10,9 +9,6 @@
 <p align="center"> 
 <i>An open source project from Data to AI Lab at MIT.</I>
 </p>
-
-
-[![][pypi-img]][pypi-url] [![][travis-img]][travis-url]
 
 # Orion
 Orion is a machine learning library built for sensor data collected from Satellites. The library makes use of a number of automated machine learning tools developed under ["The human data interaction project"](https://github.com/HDI-Project)  within the [Data to AI Lab at MIT](https://dai.lids.mit.edu/). The focus, with the ready availability of automated machine leanring is on:
@@ -28,8 +24,3 @@ Orion is a machine learning library built for sensor data collected from Satelli
 
 ## Documentation 
 - Documentation: https://D3-AI.github.io/Orion
-
-[travis-img]: https://travis-ci.org/D3-AI/Orion.svg?branch=master
-[travis-url]: https://travis-ci.org/D3-AI/Orion
-[pypi-img]: https://img.shields.io/pypi/v/orion.svg
-[pypi-url]: https://pypi.python.org/pypi/orion
