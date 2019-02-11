@@ -1,0 +1,42 @@
+{
+    "name": "orion.intervals.build_anomaly_intervals",
+    "contributors": ["Carles Sala <csala@csail.mit.edu>"],
+    "documentation": "",
+    "description": "Build anomaly intervals, optionally including the average severity.",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "anomaly_intervals"
+    },
+    "modalities": [],
+    "primitive": "orion.intervals.build_anomaly_intervals",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "time_column": {
+                "type": "str",
+                "default": "time"
+            },
+            "severity": {
+                "type": "bool",
+                "default": true
+            }
+        }
+    }
+}

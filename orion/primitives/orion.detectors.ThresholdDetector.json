@@ -1,0 +1,63 @@
+{
+    "name": "orion.detectors.ThresholdDetector",
+    "contributors": ["Carles Sala <csala@csail.mit.edu>"],
+    "documentation": "",
+    "description": "Simple anomaly detector that categorizes as an anomaly anything that is too further away than the prediction than a previously learned threshold, which is a proportion of the maximum distance seen during fit.",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "anomaly_detector"
+    },
+    "modalities": [],
+    "primitive": "orion.detectors.ThresholdDetector",
+    "fit": {
+        "method": "fit",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "produce": {
+        "method": "detect",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "value_column": {
+                "type": "str",
+                "default": "value"
+            },
+            "severity": {
+                "type": "bool",
+                "default": true
+            }
+        },
+        "tunable": {
+            "ratio": {
+                "type": "float",
+                "default": 0.9,
+                "range": [0, 1]
+            }
+        }
+    }
+}

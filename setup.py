@@ -10,13 +10,13 @@ with open('HISTORY.md') as history_file:
     history = history_file.read()
 
 install_requires = [
-    'baytune==0.2.3',
-    'mlblocks==0.2.3',
-    'mlprimitives==0.1.3',
-    'scikit-learn==0.20.1',
-    'numpy==1.15.4',
-    'pandas==0.23.4',
-    'pymongo==3.7.2'
+    'baytune>=0.2.3',
+    'mlblocks>=0.3.0',
+    'mlprimitives>=0.1.3',
+    'scikit-learn>=0.20.1',
+    'numpy>=1.15.4',
+    'pandas>=0.23.4',
+    'pymongo>=3.7.2'
 ]
 
 setup_requires = [

@@ -1,0 +1,44 @@
+{
+    "name": "orion.estimators.MeanEstimator",
+    "contributors": ["Carles Sala <csala@csail.mit.edu>"],
+    "documentation": "",
+    "description": "Simple Estimator that always returns the mean of the values seen during fit.",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "classifier"
+    },
+    "modalities": [],
+    "primitive": "orion.estimators.MeanEstimator",
+    "fit": {
+        "method": "fit",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "value_column": {
+                "type": "str",
+                "default": "value"
+            }
+        }
+    }
+}
