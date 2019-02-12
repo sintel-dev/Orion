@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `estimators` module."""
-from datetime import datetime
+"""Tests for `pipeline` module."""
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
@@ -10,84 +9,27 @@ import pandas as pd
 from sklearn.metrics import f1_score
 from sklearn.model_selection import StratifiedKFold
 
-from orion.estimators import TimeSeriesAnomalyDetector
+from orion.pipeline import OrionPipeline
 
 
-class TestTimeSeriesAnomalyDetector(TestCase):
-    """Tests for `TimeSeriesAnomalyDetector`."""
+class TestOrionPipeline(TestCase):
+    """Tests for `OrionPipeline`."""
 
     def setUp(self):
-        time_index = 'timeseries_id'
-        index = 'demand_id'
-        dataset_name = 'test_dataset'
-        target_column = 'label'
-
-        timeseries = pd.DataFrame({
-            'timeseries_id': [0, 1, 2, 3, 4],
-        })
-
-        demand = pd.DataFrame(
-            {
-                'label': [1, 1, 2, 2, 1],
-                'demand_id': [0, 1, 2, 3, 4],
-                'timeseries_id': [0, 1, 2, 3, 4],
-                'cutoff_time': [
-                    datetime(2010, 1, 25),
-                    datetime(2010, 1, 25),
-                    datetime(2010, 1, 25),
-                    datetime(2010, 1, 25),
-                    datetime(2010, 1, 25)
-                ]
-            }
-        )
-        self.y = demand.pop(target_column)
-        self.X = demand
-
-        data = pd.DataFrame(
-            {
-                'data_id': [0, 1, 2, 3, 4],
-                'timeseries_id': [0, 0, 1, 1, 2],
-                'timestamp': [
-                    datetime(2010, 1, 1),
-                    datetime(2010, 1, 2),
-                    datetime(2010, 1, 3),
-                    datetime(2010, 1, 4),
-                    datetime(2010, 1, 5)
-                ],
-                'value': [
-                    -0.7105199999999999,
-                    -1.1833,
-                    -1.3724,
-                    -1.5931,
-                    -1.4669999999999999
-                ]
-            }
-        )
-
-        relationships = [
-            ('timeseries', time_index, 'demand', index),
-            ('timeseries', time_index, 'data', 'data_id')
-        ]
-
-        entities = {
-            'timeseries': (timeseries, time_index, ),
-            'demand': (demand, index, 'cutoff_time'),
-            'data': (data, 'data_id', 'timestamp')
-        }
-
-        self.data = {
-            'entities': entities,
-            'relationships': relationships,
-            'target_entity': 'demand',
-            'dataset_name': dataset_name,
-            'target_column': target_column
-        }
+        self.X = pd.DataFrame([
+            {'timestamp': 1, 'value': 0.1},
+            {'timestamp': 2, 'value': 0.2},
+            {'timestamp': 3, 'value': 0.3},
+            {'timestamp': 4, 'value': 0.4},
+            {'timestamp': 5, 'value': 0.5},
+        ])
+        self.y = pd.Series([0, 0, 0, 0, 0])
 
     def test___init___cv_splits(self):
         """If cv_splits is passed a new cv object is created with the specified param."""
 
         # Run
-        instance = TimeSeriesAnomalyDetector(cv_splits=5)
+        instance = OrionPipeline(template={'primitives': []}, cv_splits=5)
 
         # Check
         assert instance._cv.n_splits == 5
@@ -103,7 +45,7 @@ class TestTimeSeriesAnomalyDetector(TestCase):
         cv = StratifiedKFold(n_splits=5, shuffle=True)
 
         # Run
-        instance = TimeSeriesAnomalyDetector(cv=cv, scorer=scorer)
+        instance = OrionPipeline(template={'primitives': []}, cv=cv, scorer=scorer)
 
         # Check
         assert instance._cv == cv
@@ -117,10 +59,10 @@ class TestTimeSeriesAnomalyDetector(TestCase):
         """__init__ use defaults if no args are passed."""
 
         # Run
-        instance = TimeSeriesAnomalyDetector()
+        instance = OrionPipeline(template={'primitives': []}, )
 
         # Check
-        assert instance._cv.__class__ == TimeSeriesAnomalyDetector._cv_class
+        assert instance._cv.__class__ == OrionPipeline._cv_class
         assert instance._cv.n_splits == 5
         assert instance._cv.shuffle is True
         assert instance._cv.random_state == 0
@@ -134,7 +76,7 @@ class TestTimeSeriesAnomalyDetector(TestCase):
         # Setup
         scorer = f1_score
         cv = StratifiedKFold(n_splits=5, shuffle=True)
-        instance = TimeSeriesAnomalyDetector(cv=cv, scorer=scorer)
+        instance = OrionPipeline(template={'primitives': []}, cv=cv, scorer=scorer)
         instance._best_score = 1
 
         # Run / Check
@@ -142,14 +84,14 @@ class TestTimeSeriesAnomalyDetector(TestCase):
         assert not instance._is_better(1)
         assert instance._is_better(2)
 
-    @patch('orion.estimators.TimeSeriesAnomalyDetector._score_pipeline')
-    @patch('orion.estimators.GP')
+    @patch('orion.pipeline.OrionPipeline._score_pipeline')
+    @patch('orion.pipeline.GP')
     def test_tune(self, gp_mock, score_mock):
         """tune select the best hyperparameters for the given data."""
 
         # Setup - Classifier
         iterations = 2
-        instance = TimeSeriesAnomalyDetector()
+        instance = OrionPipeline(template={'primitives': []}, )
         tunables, tunable_keys = instance._get_tunables()
 
         # Setup - Mock
@@ -167,7 +109,7 @@ class TestTimeSeriesAnomalyDetector(TestCase):
         ]
 
         # Run
-        instance.tune(self.X, self.y, self.data, iterations)
+        instance.tune(self.X, self.y, iterations)
 
         # Check
         gp_mock.assert_called_once_with(tunables)
@@ -181,7 +123,7 @@ class TestTimeSeriesAnomalyDetector(TestCase):
 
         assert instance.fitted is False
 
-    @patch('orion.estimators.MLPipeline')
+    @patch('orion.pipeline.MLPipeline')
     def test_fit(self, pipeline_mock):
         """fit prepare the pipeline to make predictions based on the given data."""
 
@@ -190,19 +132,19 @@ class TestTimeSeriesAnomalyDetector(TestCase):
         pipeline_mock.from_dict.return_value = pipeline_mock_instance
 
         # Setup - Classifier
-        instance = TimeSeriesAnomalyDetector()
+        instance = OrionPipeline(template={'primitives': []}, )
 
         # Run
-        instance.fit(self.X, self.y, self.data)
+        instance.fit(self.X, self.y)
 
         # Check
-        pipeline_mock.from_dict.assert_called_once_with(instance.template)
+        pipeline_mock.from_dict.assert_called_once_with({'primitives': []})
         assert instance._pipeline == pipeline_mock_instance
 
-        pipeline_mock_instance.fit.assert_called_once_with(self.X, self.y, **self.data)
+        pipeline_mock_instance.fit.assert_called_once_with(self.X, self.y)
         assert instance.fitted
 
-    @patch('orion.estimators.MLPipeline')
+    @patch('orion.pipeline.MLPipeline')
     def test_predict(self, pipeline_mock):
         """predict produces results using the pipeline."""
         # Setup - Mock
@@ -212,17 +154,17 @@ class TestTimeSeriesAnomalyDetector(TestCase):
         # Setup - Classifier
         scorer = f1_score
         cv = StratifiedKFold(n_splits=2, shuffle=True)
-        instance = TimeSeriesAnomalyDetector(cv=cv, scorer=scorer)
-        instance.fit(self.X, self.y, self.data)
+        instance = OrionPipeline(template={'primitives': []}, cv=cv, scorer=scorer)
+        instance.fit(self.X, self.y)
 
         # Run
-        instance.predict(self.X, self.data)
+        instance.predict(self.X)
 
         # Check
-        pipeline_mock.from_dict.assert_called_once_with(instance.template)
+        pipeline_mock.from_dict.assert_called_once_with({'primitives': []})
         assert instance._pipeline == pipeline_mock_instance
 
-        pipeline_mock_instance.fit.assert_called_once_with(self.X, self.y, **self.data)
+        pipeline_mock_instance.fit.assert_called_once_with(self.X, self.y)
         assert instance.fitted
 
-        pipeline_mock_instance.predict.assert_called_once_with(self.X, **self.data)
+        pipeline_mock_instance.predict.assert_called_once_with(self.X)

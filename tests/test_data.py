@@ -30,8 +30,6 @@ def test_load_nasa_signal_cached(exists_mock, read_csv_mock):
     assert returned == read_csv_mock.return_value
 
     expected_filename = os.path.join(DATA_PATH, 'a_signal_name.csv')
-    exists_mock.assert_called_once_with(expected_filename)
-
     read_csv_mock.assert_called_once_with(expected_filename)
 
 
@@ -47,12 +45,10 @@ def test_load_nasa_signal_new(exists_mock, read_csv_mock):
     # assert
     assert returned == read_csv_mock.return_value
 
-    expected_filename = os.path.join(DATA_PATH, 'a_signal_name.csv')
-    exists_mock.assert_called_once_with(expected_filename)
-
     expected_url = 'https://d3-ai-orion.s3.amazonaws.com/a_signal_name.csv'
     read_csv_mock.assert_called_once_with(expected_url)
 
+    expected_filename = os.path.join(DATA_PATH, 'a_signal_name.csv')
     returned.to_csv.assert_called_once_with(expected_filename, index=False)
 
 
