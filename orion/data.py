@@ -63,6 +63,15 @@ def load_nasa_signal(signal_name, test_size=None):
         data = pd.read_csv(url)
         data.to_csv(filename, index=False)
 
+    return data
+
+
+def load_signal(signal, test_size=None):
+    if os.path.isfile(signal):
+        data = pd.read_csv(signal)
+    else:
+        data = load_nasa_signal(signal)
+
     if test_size is None:
         return data
 
