@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def build_anomaly_intervals(X, y, time_column, severity=True):
+def build_anomaly_intervals(X, y, time_column, severity=True, indices=False):
     """Group together consecutive anomalous samples in anomaly intervals.
 
     This is a dummy boundary detection function that groups together
@@ -18,29 +18,38 @@ def build_anomaly_intervals(X, y, time_column, severity=True):
     timestamps = X[time_column]
 
     start = None
+    start_ts = None
     intervals = list()
     values = list()
-    for value, timestamp in zip(y, timestamps):
+    for index, (value, timestamp) in enumerate(zip(y, timestamps)):
         if value != 0:
-            if start is None:
-                start = timestamp
+            if start_ts is None:
+                start = index
+                start_ts = timestamp
             if severity:
                 values.append(value)
 
-        elif start is not None:
+        elif start_ts is not None:
+            interval = [start_ts, timestamp]
+            if indices:
+                interval.extend([start, index])
             if severity:
-                intervals.append((start, timestamp, np.mean(values)))
+                interval.append(np.mean(values))
                 values = list()
-            else:
-                intervals.append((start, timestamp))
+
+            intervals.append(tuple(interval))
 
             start = None
+            start_ts = None
 
     # We might have an open interval at the end
-    if start is not None:
+    if start_ts is not None:
+        interval = [start_ts, timestamp]
+        if indices:
+            interval.extend([start, index])
         if severity:
-            intervals.append((start, timestamp, np.mean(values)))
-        else:
-            intervals.append((start, timestamp))
+            interval.append(np.mean(values))
+
+        intervals.append(tuple(interval))
 
     return np.array(intervals)
