@@ -16,7 +16,7 @@ LOGGER = logging.getLogger(__name__)
 
 def process_signal(signal, output, args):
     LOGGER.info("Loading signal %s", signal)
-    data = load_signal(signal, args.timestamp_column, args.value_column)
+    data = load_signal(signal, None, args.timestamp_column, args.value_column)
     LOGGER.info("Signal shape: %s", data.shape)
 
     LOGGER.info("Loading pipeline %s", args.pipeline)
