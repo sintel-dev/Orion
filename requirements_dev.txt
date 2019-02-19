@@ -1,0 +1,1 @@
+-e git+https://github.com/HDI-Project/MLPrimitives.git@2711516945e7fbe932a60ef18dc28ff651b03abf#egg=mlprimitives

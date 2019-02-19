@@ -37,22 +37,14 @@ install: clean-build clean-pyc ## install the package to the active Python's sit
 install-test: clean-build clean-pyc ## install the package and test dependencies
 	pip install .[test]
 
-.PHONY: test
-test: ## run tests quickly with the default Python
-	python -m pytest
+.PHONY: install-develop
+install-develop: clean-build clean-pyc ## install the package in editable mode and dependencies for development
+	pip install -e .[dev] -r requirements_dev.txt
 
 .PHONY: lint
 lint: ## check style with flake8 and isort
 	flake8 orion tests
 	isort -c --recursive orion tests
-
-.PHONY: install-develop
-install-develop: clean-build clean-pyc ## install the package in editable mode and dependencies for development
-	pip install -e .[dev]
-
-.PHONY: test-all
-test-all: ## run tests on every Python version with tox
-	tox
 
 .PHONY: fix-lint
 fix-lint: ## fix lint issues using autoflake, autopep8, and isort
@@ -63,6 +55,14 @@ fix-lint: ## fix lint issues using autoflake, autopep8, and isort
 	find tests -name '*.py' | xargs autoflake --in-place --remove-all-unused-imports --remove-unused-variables
 	autopep8 --in-place --recursive --aggressive tests
 	isort --apply --atomic --recursive tests
+
+.PHONY: test
+test: ## run tests quickly with the default Python
+	python -m pytest
+
+.PHONY: test-all
+test-all: ## run tests on every Python version with tox
+	tox
 
 .PHONY: coverage
 coverage: ## check code coverage quickly with the default Python

@@ -9,7 +9,7 @@ from unittest.mock import patch
 import pandas as pd
 
 import orion
-from orion.data import load_nasa_signal
+from orion.data import load_nasa_signal, load_signal
 
 DATA_PATH = os.path.join(
     os.path.dirname(os.path.abspath(orion.__file__)),
@@ -17,6 +17,9 @@ DATA_PATH = os.path.join(
 )
 
 
+# ################ #
+# load_nasa_signal #
+# ################ #
 @patch('orion.data.pd.read_csv')
 @patch('orion.data.os.path.exists')
 def test_load_nasa_signal_cached(exists_mock, read_csv_mock):
@@ -52,20 +55,55 @@ def test_load_nasa_signal_new(exists_mock, read_csv_mock):
     returned.to_csv.assert_called_once_with(expected_filename, index=False)
 
 
-@patch('orion.data.pd.read_csv')
-@patch('orion.data.os.path.exists')
-def test_load_nasa_signal_test_size(exists_mock, read_csv_mock):
+# ########### #
+# load_signal #
+# ########### #
+@patch('orion.data.load_csv')
+@patch('orion.data.os.path.isfile')
+def test_load_signal_filename(isfile_mock, load_csv_mock):
     # setup
-    exists_mock.return_value = True
+    isfile_mock.return_value = True
+
+    # run
+    returned = load_signal('a/path/to/a.csv')
+
+    # assert
+    assert returned == load_csv_mock.return_value
+
+    load_csv_mock.assert_called_once_with('a/path/to/a.csv', None, None)
+
+
+@patch('orion.data.load_nasa_signal')
+@patch('orion.data.load_csv')
+@patch('orion.data.os.path.isfile')
+def test_load_signal_nasa_signal_name(isfile_mock, load_csv_mock, lns_mock):
+    # setup
+    isfile_mock.return_value = False
+
+    # run
+    returned = load_signal('S-1')
+
+    # assert
+    assert returned == lns_mock.return_value
+
+    load_csv_mock.assert_not_called()
+    lns_mock.assert_called_once_with('S-1')
+
+
+@patch('orion.data.load_csv')
+@patch('orion.data.os.path.isfile')
+def test_load_signal_test_size(isfile_mock, load_csv_mock):
+    # setup
+    isfile_mock.return_value = True
 
     data = pd.DataFrame({
         'timestamp': list(range(10)),
         'value': list(range(10, 20))
     })
-    read_csv_mock.return_value = data
+    load_csv_mock.return_value = data
 
     # run
-    returned = load_nasa_signal('a_signal_name', test_size=0.33)
+    returned = load_signal('a/path/to/a.csv', test_size=0.33)
 
     # assert
     assert isinstance(returned, tuple)

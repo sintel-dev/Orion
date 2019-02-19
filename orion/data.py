@@ -63,6 +63,40 @@ def load_nasa_signal(signal_name, test_size=None):
         data = pd.read_csv(url)
         data.to_csv(filename, index=False)
 
+    return data
+
+
+def load_csv(path, timestamp_column=None, value_column=None):
+    header = None if timestamp_column else 'infer'
+    data = pd.read_csv(path, header=header)
+
+    if timestamp_column is None:
+        if value_column is not None:
+            raise ValueError("If value_column is provided, timestamp_column must be as well")
+
+        return data
+
+    elif value_column is None:
+        raise ValueError("If timestamp_column is provided, value_column must be as well")
+    elif timestamp_column == value_column:
+        raise ValueError("timestamp_column cannot be the same as value_column")
+
+    timestamp_column_name = data.columns[timestamp_column]
+    value_column_name = data.columns[value_column]
+    columns = {
+        'timestamp': data[timestamp_column_name].values,
+        'value': data[value_column_name].values,
+    }
+
+    return pd.DataFrame(columns)[['timestamp', 'value']]
+
+
+def load_signal(signal, test_size=None, timestamp_column=None, value_column=None):
+    if os.path.isfile(signal):
+        data = load_csv(signal, timestamp_column, value_column)
+    else:
+        data = load_nasa_signal(signal)
+
     if test_size is None:
         return data
 
