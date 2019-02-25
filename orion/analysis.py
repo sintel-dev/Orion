@@ -24,21 +24,4 @@ def analyze(explorer, dataset_name, pipeline_name):
     LOGGER.info("%s events found in %s", len(events), end_time - start_time)
 
     LOGGER.info("Storing results")
-
-    datarun = Datarun.insert(
-        dataset=dataset,
-        pipeline=pipeline,
-        start_time=start_time,
-        end_time=end_time,
-        events=len(events)
-    )
-
-    for start, stop, score in events:
-        Event.insert(
-            datarun=datarun,
-            start_time=int(start),
-            stop_time=int(stop),
-            score=score
-        )
-
-    return datarun
+    return explorer.add_datarun(dataset, pipeline, start_time, end_time, events)

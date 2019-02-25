@@ -123,4 +123,3 @@ class Event(Document, MongoUtils):
 class Comment(Document, MongoUtils):
     event = fields.ReferenceField(Event)
     text = fields.StringField(required=True)
-    user = fields.StringField(required=True)
