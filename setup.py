@@ -13,10 +13,11 @@ install_requires = [
     'baytune>=0.2.3',
     'mlblocks>=0.3.0',
     'mlprimitives>=0.1.5.dev0',
-    'scikit-learn>=0.20.1',
+    'mongoengine>=0.16.3',
     'numpy>=1.15.4',
     'pandas>=0.23.4,<0.24',
-    'pymongo>=3.7.2'
+    'pymongo>=3.7.2',
+    'scikit-learn>=0.20.1',
 ]
 
 setup_requires = [
