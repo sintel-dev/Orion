@@ -143,7 +143,7 @@ class OrionExplorer:
         if event is None:
             query = {'datarun': datarun}
         else:
-            query = {'event': event}
+            query = {'id': event}
 
         events = self._list(
             model.Event,

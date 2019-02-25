@@ -61,9 +61,10 @@ def _list(explorer, args):
 
     if documents.empty:
         print('No {} found'.format(name))
-    else:
-        for delete_ in args.delete:
-            del documents[delete_]
+        return
+
+    for delete_ in args.delete:
+        del documents[delete_]
 
     if args.limit:
         documents = documents.head(args.limit)
@@ -99,7 +100,7 @@ def get_parser():
     action.required = True
 
     reset = action.add_parser('reset', help='Reset (drop) the database', parents=[common])
-    reset.set_defaults(action=_reset)
+    reset.set_defaults(function=_reset)
 
     # add
     add = action.add_parser('add', help='Add an object to the database', parents=[common])
