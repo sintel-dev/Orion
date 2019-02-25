@@ -96,8 +96,10 @@ class PipelineField(fields.DictField):
 class Dataset(Document, MongoUtils):
     name = fields.StringField(required=True)
     signal = fields.StringField(required=True)
-    satellite = fields.StringField(required=True)
+    satellite = fields.StringField()
     location = fields.StringField()
+    timestamp_column = fields.IntField(default=0)
+    value_column = fields.IntField(default=1)
 
 
 class Pipeline(Document, MongoUtils):

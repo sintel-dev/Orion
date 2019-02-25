@@ -1,8 +1,6 @@
 import logging
 from datetime import datetime
 
-from orion.model import Datarun, Event
-
 LOGGER = logging.getLogger(__name__)
 
 

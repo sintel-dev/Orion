@@ -2,6 +2,8 @@ import json
 import logging
 
 import pandas as pd
+from bson import ObjectId
+from bson.errors import InvalidId
 from mlblocks import MLPipeline
 from mongoengine import connect
 
@@ -14,7 +16,11 @@ LOGGER = logging.getLogger(__name__)
 class OrionExplorer:
 
     def __init__(self, database, **kwargs):
-        connect(database, **kwargs)
+        self.database = database
+        self._db = connect(database, **kwargs)
+
+    def drop_database(self):
+        self._db.drop_database(self.database)
 
     def _list(self, model, exclude_=None, **kwargs):
         query = {
@@ -27,14 +33,17 @@ class OrionExplorer:
         return pd.DataFrame([
             document.to_mongo()
             for document in documents
-        ]).rename(columns={'_id': model.__name__.lower()})
+        ]).rename(columns={'_id': model.__name__.lower() + '_id'})
 
-    def add_dataset(self, name, signal, satellite, location=''):
+    def add_dataset(self, name, signal, satellite, location=None,
+                    timestamp_column=0, value_column=1):
         return model.Dataset.find_or_insert(
             name=name,
             signal=signal,
             satellite=satellite,
-            location=location
+            location=location,
+            timestamp_column=0,
+            value_column=1
         )
 
     def get_datasets(self, name=None, signal=None, satellite=None):
@@ -45,8 +54,12 @@ class OrionExplorer:
             satellite=satellite
         )
 
-    def get_dataset(self, name):
-        return model.Dataset.last(name=name)
+    def get_dataset(self, dataset):
+        try:
+            _id = ObjectId(dataset)
+            return model.Dataset.find(_id=_id)
+        except InvalidId:
+            return model.Dataset.last(name=dataset)
 
     def load_dataset(self, dataset):
         path_or_name = dataset.location or dataset.name
@@ -68,17 +81,22 @@ class OrionExplorer:
             dataset__name=name,
         )
 
-    def get_pipeline(self, name):
-        return model.Pipeline.last(name=name)
+    def get_pipeline(self, pipeline):
+        try:
+            _id = ObjectId(pipeline)
+            return model.Pipeline.last(_id=_id)
+        except InvalidId:
+            return model.Pipeline.last(name=pipeline)
 
     def load_pipeline(self, pipeline):
         LOGGER.info("Loading pipeline %s", pipeline.name)
         return MLPipeline.from_dict(pipeline.mlpipeline)
 
-    def get_dataruns(self, dataset=None):
+    def get_dataruns(self, dataset=None, pipeline=None):
         return self._list(
             model.Datarun,
-            dataset=dataset
+            dataset=dataset,
+            pipeline=pipeline
         )
 
     def add_datarun(self, dataset, pipeline, start_time, end_time, events):
@@ -113,7 +131,7 @@ class OrionExplorer:
         )
 
         comments = list()
-        for event in events.event:
+        for event in events.event_id:
             events_count = model.Comment.objects(event=event).count()
             comments.append(events_count)
 
@@ -133,7 +151,8 @@ class OrionExplorer:
         )
         comments = self._list(
             model.Comment,
-            event__in=list(events.event)
+            event__in=list(events.event_id)
         )[['event', 'text']]
+        comments = comments.rename(columns={'event': 'event_id'})
 
-        return events.merge(comments, how='inner', on='event')
+        return events.merge(comments, how='inner', on='event_id')
