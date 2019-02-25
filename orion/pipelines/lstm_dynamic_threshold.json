@@ -24,7 +24,7 @@
             "window_size": 250
         },
         "keras.Sequential.LSTMTimeSeriesRegressor": {
-            "epochs": 35
+            "epochs": 1
         }
     },
     "output_names": {
