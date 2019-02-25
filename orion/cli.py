@@ -3,58 +3,12 @@
 
 import argparse
 import logging
-import os
-
-import pandas as pd
-from mlblocks import MLPipeline
 
 from orion.analysis import analyze
-from orion.data import load_signal
 from orion.explorer import OrionExplorer
 from orion.utils import logging_setup
 
 LOGGER = logging.getLogger(__name__)
-
-
-def process_signal(signal, output, args):
-    LOGGER.info("Loading signal %s", signal)
-    data = load_signal(signal, None, args.timestamp_column, args.value_column)
-    LOGGER.info("Signal shape: %s", data.shape)
-
-    LOGGER.info("Loading pipeline %s", args.pipeline)
-    pipeline = MLPipeline.load(args.pipeline)
-
-    LOGGER.info("Fitting the pipeline")
-    pipeline.fit(data)
-
-    LOGGER.info("Finding anomalies")
-    anomalies = pipeline.predict(data)
-
-    LOGGER.info("%s Anomalies found", len(anomalies))
-
-    adf = pd.DataFrame(anomalies, columns=['start', 'end', 'score'])
-    adf['start'] = adf['start'].astype(int)
-    adf['end'] = adf['end'].astype(int)
-
-    LOGGER.info("Storing Anomalies as %s", output)
-    adf.to_csv(output, index=False)
-
-
-def process_signals(args):
-    for signal in args.signals:
-        if signal.endswith('.csv'):
-            signal_name = os.path.basename(signal)[:-4]
-        else:
-            signal_name = signal
-
-        output = os.path.join(args.output, signal_name + '.anomalies.csv')
-
-        try:
-            LOGGER.info("Processing signal %s", signal)
-            process_signal(signal, output, args)
-            LOGGER.info("Signal %s processed succcessfully", signal)
-        except Exception:
-            LOGGER.exception("Exception processing signal %s", signal)
 
 
 def _reset(explorer, args):
