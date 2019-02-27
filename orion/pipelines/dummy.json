@@ -1,14 +1,14 @@
 {
     "primitives": [
-        "orion.estimators.MeanEstimator",
-        "orion.detectors.ThresholdDetector",
-        "orion.intervals.build_anomaly_intervals"
+        "orion.primitives.estimators.MeanEstimator",
+        "orion.primitives.detectors.ThresholdDetector",
+        "orion.primitives.intervals.build_anomaly_intervals"
     ],
     "init_params": {
-        "orion.detectors.ThresholdDetector#1": {
+        "orion.primitives.detectors.ThresholdDetector#1": {
             "ratio": 0.5
         },
-        "orion.intervals.build_anomaly_intervals#1": {
+        "orion.primitives.intervals.build_anomaly_intervals#1": {
             "time_column": "timestamp"
         }
     }

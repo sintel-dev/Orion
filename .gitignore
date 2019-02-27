@@ -105,4 +105,6 @@ ENV/
 # vim
 .*.swp
 
-data
+data/
+output/
+notebooks/ses

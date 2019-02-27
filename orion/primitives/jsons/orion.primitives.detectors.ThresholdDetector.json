@@ -1,5 +1,5 @@
 {
-    "name": "orion.detectors.ThresholdDetector",
+    "name": "orion.primitives.detectors.ThresholdDetector",
     "contributors": ["Carles Sala <csala@csail.mit.edu>"],
     "documentation": "",
     "description": "Simple anomaly detector that categorizes as an anomaly anything that is too further away than the prediction than a previously learned threshold, which is a proportion of the maximum distance seen during fit.",
@@ -8,7 +8,7 @@
         "subtype": "anomaly_detector"
     },
     "modalities": [],
-    "primitive": "orion.detectors.ThresholdDetector",
+    "primitive": "orion.primitives.detectors.ThresholdDetector",
     "fit": {
         "method": "fit",
         "args": [
