@@ -28,6 +28,13 @@ Orion is a machine learning library built for sensor data collected from Satelli
 To install the project, after cloning the repository and creating a virtualenv, execute
 
 ```
+make install
+```
+
+For development, use the following command instead, which will install some additional
+dependencies for code linting and testing
+
+```
 make install-develop
 ```
 
