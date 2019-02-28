@@ -111,14 +111,15 @@ class Datarun(Document, MongoUtils):
     dataset = fields.ReferenceField(Dataset)
     pipeline = fields.ReferenceField(Pipeline)
     start_time = fields.DateTimeField(required=True)
-    end_time = fields.DateTimeField(required=True)
-    events = fields.IntField(required=True)
+    end_time = fields.DateTimeField()
+    events = fields.IntField()
+    status = fields.StringField()
 
 
 class Event(Document, MongoUtils):
     datarun = fields.ReferenceField(Datarun)
-    start_time = fields.IntField(required=True)
-    stop_time = fields.IntField(required=True)
+    start = fields.IntField(required=True)
+    stop = fields.IntField(required=True)
     score = fields.FloatField()
 
 

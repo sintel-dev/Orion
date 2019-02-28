@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 
 LOGGER = logging.getLogger(__name__)
 
@@ -11,15 +10,22 @@ def analyze(explorer, dataset_name, pipeline_name):
     pipeline = explorer.get_pipeline(pipeline_name)
     mlpipeline = explorer.load_pipeline(pipeline)
 
-    start_time = datetime.utcnow()
-    LOGGER.info("Fitting the pipeline")
-    mlpipeline.fit(data)
+    datarun = explorer.start_datarun(dataset, pipeline)
 
-    LOGGER.info("Finding events")
-    events = mlpipeline.predict(data)
-    end_time = datetime.utcnow()
+    try:
+        LOGGER.info("Fitting the pipeline")
+        mlpipeline.fit(data)
 
-    LOGGER.info("%s events found in %s", len(events), end_time - start_time)
+        LOGGER.info("Finding events")
+        events = mlpipeline.predict(data)
 
-    LOGGER.info("Storing results")
-    return explorer.add_datarun(dataset, pipeline, start_time, end_time, events)
+        status = 'done'
+    except Exception:
+        LOGGER.exception('Error running datarun %s', datarun.id)
+        status = 'error'
+
+    explorer.end_datarun(datarun, events, status)
+
+    LOGGER.info("%s events found in %s", len(events), datarun.end_time - datarun.start_time)
+
+    return datarun

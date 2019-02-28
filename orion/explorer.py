@@ -1,5 +1,6 @@
 import json
 import logging
+from datetime import datetime
 
 import pandas as pd
 from bson import ObjectId
@@ -99,24 +100,31 @@ class OrionExplorer:
             pipeline=pipeline
         )
 
-    def add_datarun(self, dataset, pipeline, start_time, end_time, events):
-        datarun = model.Datarun.insert(
+    def start_datarun(self, dataset, pipeline):
+        return model.Datarun.insert(
             dataset=dataset,
             pipeline=pipeline,
-            start_time=start_time,
-            end_time=end_time,
-            events=len(events)
+            start_time=datetime.utcnow(),
+            status='running'
         )
 
-        for start, stop, score in events:
-            model.Event.insert(
-                datarun=datarun,
-                start_time=int(start),
-                stop_time=int(stop),
-                score=score
-            )
+    def end_datarun(self, datarun, events, status='done'):
+        try:
+            for start, stop, score in events:
+                model.Event.insert(
+                    datarun=datarun,
+                    start=int(start),
+                    stop=int(stop),
+                    score=score
+                )
+        except Exception:
+            LOGGER.exception('Error storing datarun %s events', datarun.id)
+            status = 'error'
 
-        return datarun
+        datarun.end_time = datetime.utcnow()
+        datarun.status = status
+        datarun.events = len(events)
+        datarun.save()
 
     def add_comment(self, event, text):
         model.Comment.insert(
