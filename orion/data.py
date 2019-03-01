@@ -67,7 +67,7 @@ def load_nasa_signal(signal_name, test_size=None):
 
 
 def load_csv(path, timestamp_column=None, value_column=None):
-    header = None if timestamp_column else 'infer'
+    header = None if timestamp_column is not None else 'infer'
     data = pd.read_csv(path, header=header)
 
     if timestamp_column is None:

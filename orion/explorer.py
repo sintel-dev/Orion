@@ -43,8 +43,8 @@ class OrionExplorer:
             signal=signal,
             satellite=satellite,
             location=location,
-            timestamp_column=0,
-            value_column=1
+            timestamp_column=timestamp_column,
+            value_column=value_column
         )
 
     def get_datasets(self, name=None, signal=None, satellite=None):
@@ -65,7 +65,7 @@ class OrionExplorer:
     def load_dataset(self, dataset):
         path_or_name = dataset.location or dataset.name
         LOGGER.info("Loading dataset %s", path_or_name)
-        return load_signal(path_or_name)
+        return load_signal(path_or_name, None, dataset.timestamp_column, dataset.value_column)
 
     def add_pipeline(self, name, path):
         with open(path, 'r') as pipeline_file:
