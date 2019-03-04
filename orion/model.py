@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from mongoengine import Document, EmbeddedDocument, fields
+from mongoengine import Document, fields
 
 from orion.utils import remove_dots, restore_dots
 
