@@ -33,7 +33,7 @@ tests_require = [
 development_requires = [
     # general
     'bumpversion>=0.5.3',
-    'pip>=9.0.1',
+    'pip>=10.0.0',
     'watchdog>=0.8.3',
 
     # docs

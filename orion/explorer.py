@@ -7,6 +7,7 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from mlblocks import MLPipeline
 from mongoengine import connect
+from pip._internal.operations import freeze
 
 from orion import model
 from orion.data import load_signal
@@ -16,9 +17,11 @@ LOGGER = logging.getLogger(__name__)
 
 class OrionExplorer:
 
-    def __init__(self, database, **kwargs):
+    def __init__(self, user, database, **kwargs):
+        self._user = user
         self.database = database
         self._db = connect(database, **kwargs)
+        self._software_versions = list(freeze.freeze())
 
     def drop_database(self):
         self._db.drop_database(self.database)
@@ -31,20 +34,28 @@ class OrionExplorer:
         }
         documents = model.find(exclude_=exclude_, **query)
 
-        return pd.DataFrame([
+        data = pd.DataFrame([
             document.to_mongo()
             for document in documents
         ]).rename(columns={'_id': model.__name__.lower() + '_id'})
 
-    def add_dataset(self, name, signal, satellite, location=None,
-                    timestamp_column=0, value_column=1):
+        for column in exclude_ or []:
+            del data[column]
+
+        return data
+
+    def add_dataset(self, name, signal_set, satellite_id, start_time, stop_time,
+                    location=None, timestamp_column=0, value_column=1):
         return model.Dataset.find_or_insert(
             name=name,
-            signal=signal,
-            satellite=satellite,
-            location=location,
+            signal_set=signal_set,
+            satellite_id=satellite_id,
+            start_time=start_time,
+            stop_time=stop_time,
+            data_location=location,
             timestamp_column=timestamp_column,
-            value_column=value_column
+            value_column=value_column,
+            created_by=self._user
         )
 
     def get_datasets(self, name=None, signal=None, satellite=None):
@@ -63,9 +74,16 @@ class OrionExplorer:
             return model.Dataset.last(name=dataset)
 
     def load_dataset(self, dataset):
-        path_or_name = dataset.location or dataset.name
+        path_or_name = dataset.data_location or dataset.name
         LOGGER.info("Loading dataset %s", path_or_name)
-        return load_signal(path_or_name, None, dataset.timestamp_column, dataset.value_column)
+        data = load_signal(path_or_name, None, dataset.timestamp_column, dataset.value_column)
+        if dataset.start_time:
+            data = data[data['timestamp'] >= dataset.start_time].copy()
+
+        if dataset.stop_time:
+            data = data[data['timestamp'] <= dataset.stop_time].copy()
+
+        return data
 
     def add_pipeline(self, name, path):
         with open(path, 'r') as pipeline_file:
@@ -74,6 +92,7 @@ class OrionExplorer:
         return model.Pipeline.find_or_insert(
             name=name,
             mlpipeline=pipeline_json,
+            created_by=self._user
         )
 
     def get_pipelines(self, name=None):
@@ -96,8 +115,9 @@ class OrionExplorer:
     def get_dataruns(self, dataset=None, pipeline=None):
         return self._list(
             model.Datarun,
+            exclude_=['software_versions'],
             dataset=dataset,
-            pipeline=pipeline
+            pipeline=pipeline,
         )
 
     def start_datarun(self, dataset, pipeline):
@@ -105,7 +125,9 @@ class OrionExplorer:
             dataset=dataset,
             pipeline=pipeline,
             start_time=datetime.utcnow(),
-            status='running'
+            software_versions=self._software_versions,
+            status='running',
+            created_by=self._user
         )
 
     def end_datarun(self, datarun, events, status='done'):
@@ -113,8 +135,8 @@ class OrionExplorer:
             for start, stop, score in events:
                 model.Event.insert(
                     datarun=datarun,
-                    start=int(start),
-                    stop=int(stop),
+                    start_time=int(start),
+                    stop_time=int(stop),
                     score=score
                 )
         except Exception:
@@ -130,6 +152,7 @@ class OrionExplorer:
         model.Comment.insert(
             event=event,
             text=text,
+            created_by=self._user,
         )
 
     def get_events(self, datarun=None):
@@ -155,12 +178,13 @@ class OrionExplorer:
 
         events = self._list(
             model.Event,
+            exclude_=['insert_time'],
             **query
         )
         comments = self._list(
             model.Comment,
             event__in=list(events.event_id)
-        )[['event', 'text']]
+        )
         comments = comments.rename(columns={'event': 'event_id'})
 
         return events.merge(comments, how='inner', on='event_id')

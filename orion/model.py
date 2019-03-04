@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from mongoengine import Document, fields
+from mongoengine import Document, EmbeddedDocument, fields
 
 from orion.utils import remove_dots, restore_dots
 
@@ -95,16 +95,20 @@ class PipelineField(fields.DictField):
 
 class Dataset(Document, MongoUtils):
     name = fields.StringField(required=True)
-    signal = fields.StringField(required=True)
-    satellite = fields.StringField()
-    location = fields.StringField()
+    signal_set = fields.StringField(required=True)
+    satellite_id = fields.StringField()
+    start_time = fields.IntField()
+    stop_time = fields.IntField()
+    data_location = fields.StringField()
     timestamp_column = fields.IntField(default=0)
     value_column = fields.IntField(default=1)
+    created_by = fields.StringField()
 
 
 class Pipeline(Document, MongoUtils):
     name = fields.StringField(required=True)
     mlpipeline = PipelineField(required=True)
+    created_by = fields.StringField()
 
 
 class Datarun(Document, MongoUtils):
@@ -112,17 +116,25 @@ class Datarun(Document, MongoUtils):
     pipeline = fields.ReferenceField(Pipeline)
     start_time = fields.DateTimeField(required=True)
     end_time = fields.DateTimeField()
+    software_versions = fields.ListField(fields.StringField())
+    budget_type = fields.StringField()
+    budget_amount = fields.IntField()
+    model_location = fields.StringField()
+    metrics_location = fields.StringField()
     events = fields.IntField()
     status = fields.StringField()
+    created_by = fields.StringField()
 
 
 class Event(Document, MongoUtils):
     datarun = fields.ReferenceField(Datarun)
-    start = fields.IntField(required=True)
-    stop = fields.IntField(required=True)
+    start_time = fields.IntField(required=True)
+    stop_time = fields.IntField(required=True)
     score = fields.FloatField()
+    tag = fields.StringField()
 
 
 class Comment(Document, MongoUtils):
     event = fields.ReferenceField(Event)
     text = fields.StringField(required=True)
+    created_by = fields.StringField()

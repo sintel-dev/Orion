@@ -22,6 +22,7 @@ def analyze(explorer, dataset_name, pipeline_name):
         status = 'done'
     except Exception:
         LOGGER.exception('Error running datarun %s', datarun.id)
+        events = None
         status = 'error'
 
     explorer.end_datarun(datarun, events, status)
