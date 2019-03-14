@@ -7,11 +7,11 @@
 </p>
 
 <p align="center">
-<i>An open source project from Data to AI Lab at MIT.</I>
+<i>A project from Data to AI Lab at MIT.</I>
 </p>
 
 # Orion
-Orion is a machine learning library built for sensor data collected from Satellites. The library makes use of a number of automated machine learning tools developed under ["The human data interaction project"](https://github.com/HDI-Project)  within the [Data to AI Lab at MIT](https://dai.lids.mit.edu/). The focus, with the ready availability of automated machine leanring is on:
+Orion is a machine learning library built for sensor data collected from Satellites. The library makes use of a number of automated machine learning tools developed under ["The human data interaction project"](https://github.com/HDI-Project)  within the [Data to AI Lab at MIT](https://dai.lids.mit.edu/). The focus, with the ready availability of automated machine learning is on:
 
 * domain expert interaction with the machine learning system
 * learning from minimal labels
@@ -22,6 +22,11 @@ Orion is a machine learning library built for sensor data collected from Satelli
 ## License
 - MIT license
 
+## Requirements
+
+- Python v3.6
+- virtualenv
+- MongoDB
 
 # Install
 
@@ -58,7 +63,7 @@ Dropping database orion
 ```
 
 2. Afterwards we have no datasets and no pipelines registered, so we proceed to register
-   one of the NASA signals and a couple of pipelines
+   one of the NASA signals and one pipeline
 
 ```
 $ orion list datasets
@@ -90,8 +95,6 @@ Epoch 1/1
 2019-03-04 16:28:18.257428: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
 9899/9899 [==============================] - 55s 6ms/step - loss: 0.0561 - mean_squared_error: 0.0561
 2019-03-04 16:29:23,237 - 25115 - INFO - analysis - Finding events
-/home/xals/.virtualenvs/Orion/lib/python3.6/site-packages/scipy/optimize/optimize.py:570: RuntimeWarning: invalid value encountered in subtract
-  numpy.max(numpy.abs(fsim[0] - fsim[1:])) <= fatol):
 2019-03-04 16:29:37,693 - 25115 - INFO - analysis - 1 events found in 0:01:23.728467
 Datarun id: 5c7d440d6c1cea621b80e879
 ```
