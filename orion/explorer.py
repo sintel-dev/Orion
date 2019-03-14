@@ -185,6 +185,10 @@ class OrionExplorer:
             exclude_=['insert_time'],
             **query
         )
+
+        if events.empty:
+            return pd.DataFrame()
+
         comments = self._list(
             model.Comment,
             event__in=list(events.event_id)
