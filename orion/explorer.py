@@ -40,7 +40,8 @@ class OrionExplorer:
         ]).rename(columns={'_id': model.__name__.lower() + '_id'})
 
         for column in exclude_ or []:
-            del data[column]
+            if column in data:
+                del data[column]
 
         return data
 
@@ -161,6 +162,9 @@ class OrionExplorer:
             datarun=datarun
         )
 
+        if events.empty:
+            return events
+
         comments = list()
         for event in events.event_id:
             events_count = model.Comment.objects(event=event).count()
@@ -181,6 +185,10 @@ class OrionExplorer:
             exclude_=['insert_time'],
             **query
         )
+
+        if events.empty:
+            return pd.DataFrame()
+
         comments = self._list(
             model.Comment,
             event__in=list(events.event_id)
