@@ -40,7 +40,8 @@ class OrionExplorer:
         ]).rename(columns={'_id': model.__name__.lower() + '_id'})
 
         for column in exclude_ or []:
-            del data[column]
+            if column in data:
+                del data[column]
 
         return data
 
