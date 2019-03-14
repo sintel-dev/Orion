@@ -162,6 +162,9 @@ class OrionExplorer:
             datarun=datarun
         )
 
+        if events.empty:
+            return events
+
         comments = list()
         for event in events.event_id:
             events_count = model.Comment.objects(event=event).count()
