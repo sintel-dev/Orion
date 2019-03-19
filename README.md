@@ -308,3 +308,32 @@ Out[7]:
         start         end     score
 0  1398060000  1399442400  0.168381
 ```
+
+#### 3. Evaluate performance
+
+In this next step we will load some already known anomalous intervals and evalulate how
+good our anomaly detection was by comparing those with our detected intervals.
+
+For this, we will first load the known anomalies for the signal that we are using:
+
+```
+In [8]: from orion.data import load_anomalies
+
+In [9]: truth = load_anomalies('S-1')
+
+In [10]: truth
+Out[10]:
+        start         end
+0  1392768000  1402423200
+```
+
+Afterwards, pass both the ground truth and the detected anomalies to the
+`orion.metrics.accuracy_score` in order to compute a score that indicates
+how good our anomaly detection was:
+
+```
+In [11]: from orion.metrics import accuracy_score
+
+In [11]: accuracy_score(truth, anomalies)
+Out[11]: 1
+```
