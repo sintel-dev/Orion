@@ -11,9 +11,11 @@ The demo data is a modified version of the NASA data found here:
 https://s3-us-west-2.amazonaws.com/telemanom/data.zip
 """
 
+import json
 import logging
 import os
 
+import numpy as np
 import pandas as pd
 
 LOGGER = logging.getLogger(__name__)
@@ -25,10 +27,10 @@ DATA_PATH = os.path.join(
 NASA_DATA_URL = 'https://d3-ai-orion.s3.amazonaws.com/{}.csv'
 
 
-def load_nasa_signal(signal_name, test_size=None):
-    """Load the nasa signal with the given name.
+def download(name, test_size=None):
+    """Load the CSV with the given name from S3.
 
-    If the signal has never been loaded before, it will be downloaded
+    If the CSV has never been loaded before, it will be downloaded
     from the [d3-ai-orion bucket](https://d3-ai-orion.s3.amazonaws.com)
     and then cached inside the `data` folder, within the `orion` package
     directory, and then returned.
@@ -41,7 +43,7 @@ def load_nasa_signal(signal_name, test_size=None):
     big as the given value.
 
     Args:
-        signal_name (str): Name of the signal name to load.
+        name (str): Name of the CSV to load.
         test_size (float): Value between 0 and 1 indicating the proportional
             size of the test split. If 0 or None (default), the data is not split.
 
@@ -51,14 +53,14 @@ def load_nasa_signal(signal_name, test_size=None):
         the train split and another one for the test split is returned.
     """
 
-    filename = os.path.join(DATA_PATH, signal_name + '.csv')
+    filename = os.path.join(DATA_PATH, name + '.csv')
     if os.path.exists(filename):
         data = pd.read_csv(filename)
 
     else:
-        url = NASA_DATA_URL.format(signal_name)
+        url = NASA_DATA_URL.format(name)
 
-        LOGGER.debug('Downloading signal %s from %s', signal_name, url)
+        LOGGER.debug('Downloading CSV %s from %s', name, url)
         os.makedirs(DATA_PATH, exist_ok=True)
         data = pd.read_csv(url)
         data.to_csv(filename, index=False)
@@ -95,7 +97,7 @@ def load_signal(signal, test_size=None, timestamp_column=None, value_column=None
     if os.path.isfile(signal):
         data = load_csv(signal, timestamp_column, value_column)
     else:
-        data = load_nasa_signal(signal)
+        data = download(signal)
 
     if test_size is None:
         return data
@@ -105,3 +107,25 @@ def load_signal(signal, test_size=None, timestamp_column=None, value_column=None
     test = data.iloc[-test_length:]
 
     return train, test
+
+
+def load_anomalies(signal, edges=False):
+    anomalies = download('anomalies')
+
+    anomalies = anomalies.set_index('signal').loc[signal].values[0]
+    anomalies = pd.DataFrame(json.loads(anomalies), columns=['start', 'end'])
+
+    if edges:
+        data = download(signal)
+        start = data.timestamp.min()
+        end = data.timestamp.max()
+
+        anomalies['score'] = 1
+        parts = np.concatenate([
+            [[start, anomalies.start.min(), 0]],
+            anomalies.values,
+            [[anomalies.end.max(), end, 0]]
+        ], axis=0)
+        anomalies = pd.DataFrame(parts, columns=['start', 'end', 'score'])
+
+    return anomalies
