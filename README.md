@@ -42,13 +42,13 @@ with two columns:
 
 This is an example of such table:
 
-|    timestamp |                value |
-|--------------|----------------------|
-| 1222819200.0 | -0.3663589458809165  |
-| 1222840800.0 | -0.3941077801118832  |
-| 1222862400.0 |  0.4036246025342055  |
-| 1222884000.0 | -0.36275905932000696 |
-| 1222905600.0 | -0.3707464936807424  |
+|  timestamp |                value |
+|------------|----------------------|
+| 1222819200 | -0.3663589458809165  |
+| 1222840800 | -0.3941077801118832  |
+| 1222862400 |  0.4036246025342055  |
+| 1222884000 | -0.36275905932000696 |
+| 1222905600 | -0.3707464936807424  |
 
 ### Output
 
@@ -63,10 +63,10 @@ severity of the detected anomaly.
 
 An example of such a table is:
 
-|        start |          end |              score |
-|--------------|--------------|--------------------|
-| 1222970400.0 | 1222992000.0 | 0.5726435987608016 |
-| 1223013600.0 | 1223035200.0 | 0.5726435987608016 |
+|      start |        end |              score |
+|------------|------------|--------------------|
+| 1222970400 | 1222992000 | 0.5726435987608016 |
+| 1223013600 | 1223035200 | 0.5726435987608016 |
 
 ## Demo Dataset
 
@@ -238,6 +238,73 @@ In [12]: adf['end'] = adf['end'].astype(int)
 
 In [13]: adf
 Out[13]:
+        start         end     score
+0  1398060000  1399442400  0.168381
+```
+
+### Tutorial (Version 2 - Simplified): Run a Pipeline on the Demo Dataset
+
+In the following steps we will show a short guide about how to run one of the **Orion Pipelines**
+on one of the signals from the **Demo Dataset**.
+
+**NOTE**: All the examples of this tutorial are run in an [IPython Shell](https://ipython.org/),
+which you can install by running the following commands inside your *virtualenv*:
+
+```
+pip install ipython
+ipython
+```
+
+#### 1. Load the data
+
+In the first step we will load the **S-1** signal from the **Demo Dataset**,
+
+To do so, we need to import the `orion.data.load_signal` function and call it passing
+the `'S-1'` name.
+
+```
+In [1]: from orion.data import load_signal
+
+In [2]: data = load_signal('S-1')
+
+In [3]: data.head()
+Out[3]:
+    timestamp     value
+0  1222819200 -0.366359
+1  1222840800 -0.394108
+2  1222862400  0.403625
+3  1222884000 -0.362759
+4  1222905600 -0.370746
+```
+
+#### 2. Detect anomalies using a pipeline
+
+Once we have the data, use the LSTM pipeline to analyze it and search for anomalies.
+
+In order to do so, we will have import the `orion.analysis.analyze` function and pass it
+the loaded data and the path to the pipeline JSON that we want to use:
+
+```
+In [4]: from orion.analysis import analyze
+
+In [5]: pipeline_path = 'orion/pipelines/lstm_dynamic_threshold.json'
+
+In [6]: anomalies = analyze(pipeline_path, data)
+Using TensorFlow backend.
+Epoch 1/1
+9899/9899 [==============================] - 55s 6ms/step - loss: 0.0559 - mean_squared_error: 0.0559
+```
+
+**NOTE:** Depending on your system and the exact versions that you might have installed
+some *WARNINGS* may be printed. These can be safely ignored as they do not interfere
+with the proper behavior of the pipeline.
+
+The output of the previous command will be a ``pandas.DataFrame`` containing a table in the
+Output format described above:
+
+```
+In [7]: anomalies
+Out[7]:
         start         end     score
 0  1398060000  1399442400  0.168381
 ```
