@@ -196,3 +196,31 @@ class OrionExplorer:
         comments = comments.rename(columns={'event': 'event_id'})
 
         return events.merge(comments, how='inner', on='event_id')
+
+    def analyze(self, dataset_name, pipeline_name):
+        dataset = self.get_dataset(dataset_name)
+        data = self.load_dataset(dataset)
+
+        pipeline = self.get_pipeline(pipeline_name)
+        mlpipeline = self.load_pipeline(pipeline)
+
+        datarun = self.start_datarun(dataset, pipeline)
+
+        try:
+            LOGGER.info("Fitting the pipeline")
+            mlpipeline.fit(data)
+
+            LOGGER.info("Finding events")
+            events = mlpipeline.predict(data)
+
+            status = 'done'
+        except Exception:
+            LOGGER.exception('Error running datarun %s', datarun.id)
+            events = list()
+            status = 'error'
+
+        self.end_datarun(datarun, events, status)
+
+        LOGGER.info("%s events found in %s", len(events), datarun.end_time - datarun.start_time)
+
+        return datarun
