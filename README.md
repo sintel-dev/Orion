@@ -267,7 +267,7 @@ how good our anomaly detection was:
 ```
 In [11]: from orion.metrics import accuracy_score
 
-In [11]: accuracy_score(truth, anomalies)
+In [11]: accuracy_score(truth, anomalies, data)
 Out[11]: 0.956346078044935
 ```
 
@@ -364,7 +364,7 @@ how good our anomaly detection was:
 ```
 In [11]: from orion.metrics import accuracy_score
 
-In [11]: accuracy_score(truth, anomalies)
+In [11]: accuracy_score(truth, anomalies, data)
 Out[11]: 0.956346078044935
 ```
 
@@ -484,3 +484,12 @@ finished and they analyze the results.
 * text (String): Comment contents
 * created_by (String): Identifier of the user that created this Event Object
 * insert_time (DateTime): Time when this Event Object was inserted
+
+
+### Database Usage
+
+In order to make **Orion** interact with the database we will need to use the `OrionExplorer`,
+which provides all the required functionality to register and explore all the database objects,
+as well as load pipelines and datasets from it in order to start new dataruns and detect events.
+
+NOTE: Work in Progress
