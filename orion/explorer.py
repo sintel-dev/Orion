@@ -88,7 +88,7 @@ class OrionExplorer:
         return data
 
     def add_pipeline(self, name, path):
-        if not os.path.exists(path):
+        if not os.path.isfile(path):
             LOGGER.error('File not found: %s', path)
             return
 
