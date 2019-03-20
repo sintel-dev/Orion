@@ -13,6 +13,11 @@ def analyze(explorer, dataset_name, pipeline_name):
     data = explorer.load_dataset(dataset)
 
     pipeline = explorer.get_pipeline(pipeline_name)
+
+    if pipeline is None:
+        LOGGER.error('Error finding pipeline: %s', pipeline_name)
+        return
+
     mlpipeline = explorer.load_pipeline(pipeline)
 
     datarun = explorer.start_datarun(dataset, pipeline)
