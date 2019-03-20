@@ -5,6 +5,11 @@ LOGGER = logging.getLogger(__name__)
 
 def analyze(explorer, dataset_name, pipeline_name):
     dataset = explorer.get_dataset(dataset_name)
+
+    if dataset is None:
+        LOGGER.error('Error finding dataset: %s', dataset_name)
+        return
+
     data = explorer.load_dataset(dataset)
 
     pipeline = explorer.get_pipeline(pipeline_name)

@@ -91,7 +91,9 @@ def _list(explorer, args):
 
 def _run(explorer, args):
     datarun = analyze(explorer, args.dataset, args.pipeline)
-    print('Datarun id: {}'.format(datarun.id))
+
+    if datarun:
+        print('Datarun id: {}'.format(datarun.id))
 
 
 def get_parser():
