@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from datetime import datetime
 
 import pandas as pd
@@ -87,6 +88,10 @@ class OrionExplorer:
         return data
 
     def add_pipeline(self, name, path):
+        if not os.path.exists(path):
+            LOGGER.error('File not found: %s', path)
+            return
+
         with open(path, 'r') as pipeline_file:
             pipeline_json = json.load(pipeline_file)
 
