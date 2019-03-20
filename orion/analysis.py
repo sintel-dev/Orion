@@ -7,7 +7,7 @@ def analyze(explorer, dataset_name, pipeline_name):
     dataset = explorer.get_dataset(dataset_name)
 
     if dataset is None:
-        LOGGER.error('Error finding dataset: %s', dataset_name)
+        LOGGER.error('Invalid dataset: %s', dataset_name)
         return
 
     data = explorer.load_dataset(dataset)
@@ -15,7 +15,7 @@ def analyze(explorer, dataset_name, pipeline_name):
     pipeline = explorer.get_pipeline(pipeline_name)
 
     if pipeline is None:
-        LOGGER.error('Error finding pipeline: %s', pipeline_name)
+        LOGGER.error('Invalid pipeline: %s', pipeline_name)
         return
 
     mlpipeline = explorer.load_pipeline(pipeline)
