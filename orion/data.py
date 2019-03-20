@@ -13,6 +13,7 @@ https://s3-us-west-2.amazonaws.com/telemanom/data.zip
 
 import logging
 import os
+from urllib.error import HTTPError
 
 import pandas as pd
 
@@ -60,7 +61,13 @@ def load_nasa_signal(signal_name, test_size=None):
 
         LOGGER.debug('Downloading signal %s from %s', signal_name, url)
         os.makedirs(DATA_PATH, exist_ok=True)
-        data = pd.read_csv(url)
+
+        try:
+            data = pd.read_csv(url)
+        except HTTPError as e:
+            LOGGER.error('Downloading: %s (%s)', url, e.reason)
+            return
+
         data.to_csv(filename, index=False)
 
     return data

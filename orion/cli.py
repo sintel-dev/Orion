@@ -29,6 +29,10 @@ def _add_dataset(explorer, args):
     if not args.start or not args.stop:
         path_or_name = args.location or args.name
         data = load_signal(path_or_name, None, args.timestamp_column, args.value_column)
+
+        if data is None:
+            return
+
         timestamps = data['timestamp']
         if not args.start:
             args.start = timestamps.min()
