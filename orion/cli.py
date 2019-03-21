@@ -4,7 +4,6 @@
 import argparse
 import logging
 
-from orion.analysis import analyze
 from orion.data import load_signal
 from orion.explorer import OrionExplorer
 from orion.utils import logging_setup
@@ -90,7 +89,7 @@ def _list(explorer, args):
 
 
 def _run(explorer, args):
-    datarun = analyze(explorer, args.dataset, args.pipeline)
+    datarun = explorer.analyze(args.dataset, args.pipeline)
     print('Datarun id: {}'.format(datarun.id))
 
 

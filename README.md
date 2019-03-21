@@ -488,8 +488,225 @@ finished and they analyze the results.
 
 ### Database Usage
 
-In order to make **Orion** interact with the database we will need to use the `OrionExplorer`,
+In order to make **Orion** interact with the database you will need to use the `OrionExplorer`,
 which provides all the required functionality to register and explore all the database objects,
 as well as load pipelines and datasets from it in order to start new dataruns and detect events.
 
-NOTE: Work in Progress
+In the following steps we will go over a typical session using the `OrionExplorer` to:
+* register a new dataset
+* register a new pipeline
+* create a datarun using the pipeline to detect events on the dataset
+* explore the detected events
+* add some comments to the detected events
+
+Note that, because of the dynamic schema-less nature of MongoDB, no database initialization
+or table creation is needed. All you need to do start using a new database is create the
+`OrionExplorer` instance with the right connection details and start using it!
+
+#### 1. Connecting to the Database
+
+In order to connect to the database, all you need to do is import and create an instance of the
+`OrionExplorer`.
+
+```
+In [1]: from orion.explorer import OrionExplorer
+
+In [2]: orex = OrionExplorer()
+```
+
+This will directly create a connection to the database named `'orion'` at the default
+MongoDB host, `localhost`, and port, `27017`.
+
+In case you want to connect to a different database, host or port, or in case user authentication
+is enabled in your MongoDB instance, you can pass any required additional arguments:
+
+* `database`
+* `host`
+* `port`
+* `username`
+* `password`
+* `authentication_source`
+
+```
+In [5]: orex = OrionExplorer(
+   ...:     database='orion_database',
+   ...:     host='1.2.3.4',
+   ...:     port=1234,
+   ...:     username='orion',
+   ...:     password='secret_password',
+   ...:     authentication_source='admin'
+   ...: )
+```
+
+#### 2. Registering a new Dataset
+
+The first thing that you will need to do to start using **Orion** with a Database will be
+**registering a new dataset**.
+
+For this you will need to call the `OrionExplorer.add_dataset` method passing:
+
+* `name - str`: Name that you want to give to this dataset. It must be unique.
+* `signal_set - str`: Identifier of the signal(s).
+* `satellite_id - str`: (Optional) Identifier of the satellite.
+* `start_time - int`: (Optional) minimum timestamp to be used for this dataset. If not given, it
+  defaults to the minimum timestamp found in the data.
+* `stop_time - int`: (Optional) maximum timestamp to be used for this dataset. If not given, it
+  defaults to the maximum timestamp found in the data.
+* `location - int`: (Optional) path to the CSV. Skip if using a demo signal hosted on S3.
+* `timestamp_column - int`: (Optional) index of the timestamp column. Defaults to 0.
+* `value_column - int`: (Optional) index of the value column. Defaults to 1.
+* `user - str`: (Optional) Identifier of the user that is creating this Dataset.
+
+In the simplest scenario, you can register a dataset that uses one of the demo signals with the
+default start and stop times.
+
+For example, to register a dataset for the singal **S-1** used previously you will execute:
+
+```
+In [6]: orex.add_dataset('S-1', 'S-1')
+```
+
+In a more complex scenario, we might be loading a CSV file that has the time index in the
+third column and the value in the fifth one, and we might want to restrict the timestamps
+to a certain range and provide the ID of the user that is registering it.
+
+In this case we will execute:
+
+```
+In [7]: orex.add_dataset(
+   ...:     name='a_dataset',
+   ...:     signal_set='a_signal_name',
+   ...:     satellite_id='a_satellite_id',
+   ...:     start_time=1483228800,
+   ...:     stop_time=1514764800,
+   ...:     location='/path/to/the.csv',
+   ...:     timestamp_column=2,
+   ...:     value_column=4,
+   ...:     user_id='1234',
+   ...: )
+```
+
+**NOTE**: The dataset name must be unique, which means that `add_dataset` method will fail
+if a second dataset is added using the same name.
+
+#### 3. Exploring the registered datasets
+
+In order to obtain the list of already registered datasets, you can use the
+`OrionExplorer.get_datasets` method.
+
+This method returns a `pandas.DataFrame` containing all the details about the registered
+datasets:
+
+```
+In [3]: datasets = orex.get_datasets()
+
+In [4]: datasets[['name', 'signal_set', 'start_time', 'stop_time']]
+Out[4]:
+        name     signal_set  start_time   stop_time
+0        S-1            S-1  1222819200  1442016000
+1  a_dataset  a_signal_name  1483228800  1514764800
+```
+
+Optionally, you can restrict the results to a particular signal or satellite by passing them
+as arguments to the `get_datasets` method:
+
+```
+In [11]: datasets = orex.get_datasets(signal='S-1')
+
+In [12]: datasets[['name', 'signal_set', 'start_time', 'stop_time']]
+Out[12]:
+  name signal_set  start_time   stop_time
+0  S-1        S-1  1222819200  1442016000
+```
+
+#### 4. Registering a new Pipeline
+
+Another thing that you will need to do before being able to process the created dataset will be
+**registering a new pipeline**.
+
+For this you will need to call the `OrionExplorer.add_pipeline` method passing:
+
+* `name - str`: Name that you want to give to this pipeline.
+* `path - str`: Path to the JSON file that contains the pipeline specification.
+* `user - str`: (Optional) Identifier of the user that is creating this Pipeline.
+
+For example, to register the LSTM pipeline that we used previously under the `'LSTM'` name
+you will execute:
+
+```
+In [8]: orex.add_pipeline('LSTM', 'orion/pipelines/lstm_dynamic_threshold.json')
+```
+
+**NOTE**: In this case the name of the pipeline does not need to be unique. If a pipeline is
+added more than once using the same name, they will be stored independently and considered
+different versions of the same pipeline.
+
+
+#### 5. Exploring the registered pipelines
+
+Just like datasets, you can obtain the list of registered pipelines using the
+`OrionExplorer.get_pipelines` method.
+
+This method returns a `pandas.DataFrame` containing all the details about the registered
+pipelines:
+
+```
+In [19]: pipelines = orex.get_pipelines()
+
+In [20]: pipelines[['pipeline_id', 'name', 'insert_time']]
+Out[20]:
+                pipeline_id  name             insert_time
+0  5c92797a6c1cea7674cf5b48  LSTM 2019-03-20 17:33:46.452
+```
+
+#### 6. Running a pipeline on a dataset
+
+Once we have at least one dataset and one pipeline registered, you can start analyzing the data
+in search for anomalies.
+
+In order to do so, all you need to do is call the `OrionExplorer.analyze` method passing
+the name of pipeline and the name of the dataset:
+
+```
+In [22]: datarun = orex.analyze('S-1', 'LSTM')
+Using TensorFlow backend.
+Epoch 1/1
+9899/9899 [==============================] - 55s 6ms/step - loss: 0.0561 - mean_squared_error: 0.0561
+```
+
+Once the process has finished, a new Datarun object will have been created in the Database
+and returned.
+
+```
+In [27]: datarun.id
+Out[27]: ObjectId('5c927a846c1cea7674cf5b49')
+
+In [28]: dataruns = orex.get_dataruns()
+
+In [29]: dataruns[['_id', 'start_time', 'end_time', 'events']]
+Out[29]:
+                 datarun_id               start_time                end_time  events
+0  5c927a846c1cea7674cf5b49  2019-03-20 17:38:12.133 2019-03-20 17:39:36.279       2
+```
+
+#### 7. Explore the found Events
+
+A part from visualizing the number of Events found during the pipeline execution, we will want
+to see the exact details of each event.
+
+As you might already be guessing, this can be obtained by calling the `OrionExplorer.get_events`
+method and passing it the Datarun object returned by the `analyze` method or its ID:
+
+```
+In [40]: events = orex.get_events(datarun)
+
+In [41]: events[['event_id', 'score', 'start_time', 'end_time', 'comments']]
+Out[41]:
+                   event_id     score  start_time   stop_time  comments
+0  5c927ad86c1cea7674cf5b4a  0.047956  1398340800  1398621600         0
+1  5c927ad86c1cea7674cf5b4b  0.120997  1398686400  1399420800         0
+```
+
+#### 8. Add comments to the Events
+
+WORK IN PROGRESS

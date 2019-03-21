@@ -24,7 +24,8 @@ DATA_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'data'
 )
-NASA_DATA_URL = 'https://d3-ai-orion.s3.amazonaws.com/{}.csv'
+BUCKET = 'd3-ai-orion'
+S3_URL = 'https://{}.s3.amazonaws.com/{}.csv'
 
 
 def download(name, test_size=None):
@@ -58,7 +59,7 @@ def download(name, test_size=None):
         data = pd.read_csv(filename)
 
     else:
-        url = NASA_DATA_URL.format(name)
+        url = S3_URL.format(BUCKET, name)
 
         LOGGER.debug('Downloading CSV %s from %s', name, url)
         os.makedirs(DATA_PATH, exist_ok=True)

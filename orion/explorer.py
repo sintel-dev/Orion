@@ -17,8 +17,7 @@ LOGGER = logging.getLogger(__name__)
 
 class OrionExplorer:
 
-    def __init__(self, user, database, **kwargs):
-        self._user = user
+    def __init__(self, database='orion', **kwargs):
         self.database = database
         self._db = connect(database, **kwargs)
         self._software_versions = list(freeze.freeze())
@@ -45,8 +44,18 @@ class OrionExplorer:
 
         return data
 
-    def add_dataset(self, name, signal_set, satellite_id, start_time, stop_time,
-                    location=None, timestamp_column=0, value_column=1):
+    def add_dataset(self, name, signal_set, satellite_id=None, start_time=None, stop_time=None,
+                    location=None, timestamp_column=0, value_column=1, user_id=None):
+
+        location = location or name
+        data = load_signal(location, None, timestamp_column, value_column)
+        timestamps = data['timestamp']
+        if not start_time:
+            start_time = timestamps.min()
+
+        if not stop_time:
+            stop_time = timestamps.max()
+
         return model.Dataset.find_or_insert(
             name=name,
             signal_set=signal_set,
@@ -56,15 +65,15 @@ class OrionExplorer:
             data_location=location,
             timestamp_column=timestamp_column,
             value_column=value_column,
-            created_by=self._user
+            created_by=user_id
         )
 
     def get_datasets(self, name=None, signal=None, satellite=None):
         return self._list(
             model.Dataset,
             name=name,
-            signal=signal,
-            satellite=satellite
+            signal_set=signal,
+            satellite_id=satellite
         )
 
     def get_dataset(self, dataset):
@@ -86,14 +95,14 @@ class OrionExplorer:
 
         return data
 
-    def add_pipeline(self, name, path):
+    def add_pipeline(self, name, path, user_id=None):
         with open(path, 'r') as pipeline_file:
             pipeline_json = json.load(pipeline_file)
 
         return model.Pipeline.find_or_insert(
             name=name,
             mlpipeline=pipeline_json,
-            created_by=self._user
+            created_by=user_id
         )
 
     def get_pipelines(self, name=None):
@@ -121,14 +130,14 @@ class OrionExplorer:
             pipeline=pipeline,
         )
 
-    def start_datarun(self, dataset, pipeline):
+    def start_datarun(self, dataset, pipeline, user_id=None):
         return model.Datarun.insert(
             dataset=dataset,
             pipeline=pipeline,
             start_time=datetime.utcnow(),
             software_versions=self._software_versions,
             status='running',
-            created_by=self._user
+            created_by=user_id
         )
 
     def end_datarun(self, datarun, events, status='done'):
@@ -149,11 +158,11 @@ class OrionExplorer:
         datarun.events = len(events)
         datarun.save()
 
-    def add_comment(self, event, text):
+    def add_comment(self, event, text, user_id):
         model.Comment.insert(
             event=event,
             text=text,
-            created_by=self._user,
+            created_by=user_id,
         )
 
     def get_events(self, datarun=None):
