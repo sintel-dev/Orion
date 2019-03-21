@@ -9,7 +9,7 @@ from unittest.mock import patch
 import pandas as pd
 
 import orion
-from orion.data import load_nasa_signal, load_signal
+from orion.data import download, load_signal
 
 DATA_PATH = os.path.join(
     os.path.dirname(os.path.abspath(orion.__file__)),
@@ -17,17 +17,17 @@ DATA_PATH = os.path.join(
 )
 
 
-# ################ #
-# load_nasa_signal #
-# ################ #
+# ######## #
+# download #
+# ######## #
 @patch('orion.data.pd.read_csv')
 @patch('orion.data.os.path.exists')
-def test_load_nasa_signal_cached(exists_mock, read_csv_mock):
+def test_download_cached(exists_mock, read_csv_mock):
     # setup
     exists_mock.return_value = True
 
     # run
-    returned = load_nasa_signal('a_signal_name')
+    returned = download('a_signal_name')
 
     # assert
     assert returned == read_csv_mock.return_value
@@ -38,12 +38,12 @@ def test_load_nasa_signal_cached(exists_mock, read_csv_mock):
 
 @patch('orion.data.pd.read_csv')
 @patch('orion.data.os.path.exists')
-def test_load_nasa_signal_new(exists_mock, read_csv_mock):
+def test_download_new(exists_mock, read_csv_mock):
     # setup
     exists_mock.return_value = False
 
     # run
-    returned = load_nasa_signal('a_signal_name')
+    returned = download('a_signal_name')
 
     # assert
     assert returned == read_csv_mock.return_value
@@ -73,7 +73,7 @@ def test_load_signal_filename(isfile_mock, load_csv_mock):
     load_csv_mock.assert_called_once_with('a/path/to/a.csv', None, None)
 
 
-@patch('orion.data.load_nasa_signal')
+@patch('orion.data.download')
 @patch('orion.data.load_csv')
 @patch('orion.data.os.path.isfile')
 def test_load_signal_nasa_signal_name(isfile_mock, load_csv_mock, lns_mock):
