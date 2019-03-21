@@ -258,18 +258,18 @@ Out[13]:
 
 #### 5. Evaluate performance
 
-In this next step we will load some already known anomalous intervals and evalulate how
+In this next step we will load some already known anomalous intervals and evaluate how
 good our anomaly detection was by comparing those with our detected intervals.
 
 For this, we will first load the known anomalies for the signal that we are using:
 
 ```
-In [8]: from orion.data import load_anomalies
+In [14]: from orion.data import load_anomalies
 
-In [9]: truth = load_anomalies('S-1')
+In [15]: truth = load_anomalies('S-1')
 
-In [10]: truth
-Out[10]:
+In [16]: truth
+Out[16]:
         start         end
 0  1392768000  1402423200
 ```
@@ -279,10 +279,10 @@ to the `orion.metrics.accuracy_score` in order to compute a score that indicates
 how good our anomaly detection was:
 
 ```
-In [11]: from orion.metrics import accuracy_score
+In [17]: from orion.metrics import accuracy_score
 
-In [11]: accuracy_score(truth, anomalies, data)
-Out[11]: 0.956346078044935
+In [18]: accuracy_score(truth, anomalies, data)
+Out[19]: 0.956346078044935
 ```
 
 
@@ -355,7 +355,7 @@ Out[7]:
 
 #### 3. Evaluate performance
 
-In this next step we will load some already known anomalous intervals and evalulate how
+In this next step we will load some already known anomalous intervals and evaluate how
 good our anomaly detection was by comparing those with our detected intervals.
 
 For this, we will first load the known anomalies for the signal that we are using:
@@ -542,7 +542,7 @@ is enabled in your MongoDB instance, you can pass any required additional argume
 * `authentication_source`
 
 ```
-In [5]: orex = OrionExplorer(
+In [3]: orex = OrionExplorer(
    ...:     database='orion_database',
    ...:     host='1.2.3.4',
    ...:     port=1234,
@@ -574,10 +574,10 @@ For this you will need to call the `OrionExplorer.add_dataset` method passing:
 In the simplest scenario, you can register a dataset that uses one of the demo signals with the
 default start and stop times.
 
-For example, to register a dataset for the singal **S-1** used previously you will execute:
+For example, to register a dataset for the signal **S-1** used previously you will execute:
 
 ```
-In [6]: orex.add_dataset('S-1', 'S-1')
+In [4]: orex.add_dataset('S-1', 'S-1')
 ```
 
 In a more complex scenario, we might be loading a CSV file that has the time index in the
@@ -587,7 +587,7 @@ to a certain range and provide the ID of the user that is registering it.
 In this case we will execute:
 
 ```
-In [7]: orex.add_dataset(
+In [5]: orex.add_dataset(
    ...:     name='a_dataset',
    ...:     signal_set='a_signal_name',
    ...:     satellite_id='a_satellite_id',
@@ -612,10 +612,10 @@ This method returns a `pandas.DataFrame` containing all the details about the re
 datasets:
 
 ```
-In [3]: datasets = orex.get_datasets()
+In [6]: datasets = orex.get_datasets()
 
-In [4]: datasets[['name', 'signal_set', 'start_time', 'stop_time']]
-Out[4]:
+In [7]: datasets[['name', 'signal_set', 'start_time', 'stop_time']]
+Out[7]:
         name     signal_set  start_time   stop_time
 0        S-1            S-1  1222819200  1442016000
 1  a_dataset  a_signal_name  1483228800  1514764800
@@ -625,10 +625,10 @@ Optionally, you can restrict the results to a particular signal or satellite by 
 as arguments to the `get_datasets` method:
 
 ```
-In [11]: datasets = orex.get_datasets(signal='S-1')
+In [8]: datasets = orex.get_datasets(signal='S-1')
 
-In [12]: datasets[['name', 'signal_set', 'start_time', 'stop_time']]
-Out[12]:
+In [9]: datasets[['name', 'signal_set', 'start_time', 'stop_time']]
+Out[9]:
   name signal_set  start_time   stop_time
 0  S-1        S-1  1222819200  1442016000
 ```
@@ -648,7 +648,7 @@ For example, to register the LSTM pipeline that we used previously under the `'L
 you will execute:
 
 ```
-In [8]: orex.add_pipeline('LSTM', 'orion/pipelines/lstm_dynamic_threshold.json')
+In [10]: orex.add_pipeline('LSTM', 'orion/pipelines/lstm_dynamic_threshold.json')
 ```
 
 **NOTE**: In this case the name of the pipeline does not need to be unique. If a pipeline is
@@ -665,10 +665,10 @@ This method returns a `pandas.DataFrame` containing all the details about the re
 pipelines:
 
 ```
-In [19]: pipelines = orex.get_pipelines()
+In [11]: pipelines = orex.get_pipelines()
 
-In [20]: pipelines[['pipeline_id', 'name', 'insert_time']]
-Out[20]:
+In [12]: pipelines[['pipeline_id', 'name', 'insert_time']]
+Out[12]:
                 pipeline_id  name             insert_time
 0  5c92797a6c1cea7674cf5b48  LSTM 2019-03-20 17:33:46.452
 ```
@@ -682,7 +682,7 @@ In order to do so, all you need to do is call the `OrionExplorer.analyze` method
 the name of pipeline and the name of the dataset:
 
 ```
-In [22]: datarun = orex.analyze('S-1', 'LSTM')
+In [13]: datarun = orex.analyze('S-1', 'LSTM')
 Using TensorFlow backend.
 Epoch 1/1
 9899/9899 [==============================] - 55s 6ms/step - loss: 0.0561 - mean_squared_error: 0.0561
@@ -692,13 +692,13 @@ Once the process has finished, a new Datarun object will have been created in th
 and returned.
 
 ```
-In [27]: datarun.id
-Out[27]: ObjectId('5c927a846c1cea7674cf5b49')
+In [14]: datarun.id
+Out[14]: ObjectId('5c927a846c1cea7674cf5b49')
 
-In [28]: dataruns = orex.get_dataruns()
+In [15]: dataruns = orex.get_dataruns()
 
-In [29]: dataruns[['_id', 'start_time', 'end_time', 'events']]
-Out[29]:
+In [16]: dataruns[['_id', 'start_time', 'end_time', 'events']]
+Out[16]:
                  datarun_id               start_time                end_time  events
 0  5c927a846c1cea7674cf5b49  2019-03-20 17:38:12.133 2019-03-20 17:39:36.279       2
 ```
@@ -709,13 +709,25 @@ A part from visualizing the number of Events found during the pipeline execution
 to see the exact details of each event.
 
 As you might already be guessing, this can be obtained by calling the `OrionExplorer.get_events`
-method and passing it the Datarun object returned by the `analyze` method or its ID:
+method and passing it the Datarun object returned by the `analyze` method:
 
 ```
-In [40]: events = orex.get_events(datarun)
+In [17]: events = orex.get_events(datarun)
 
-In [41]: events[['event_id', 'score', 'start_time', 'end_time', 'comments']]
-Out[41]:
+In [18]: events[['event_id', 'score', 'start_time', 'stop_time', 'comments']]
+Out[18]:
+                   event_id     score  start_time   stop_time  comments
+0  5c927ad86c1cea7674cf5b4a  0.047956  1398340800  1398621600         0
+1  5c927ad86c1cea7674cf5b4b  0.120997  1398686400  1399420800         0
+```
+
+Alternatively, the Datarun ID can be passed directly:
+
+```
+In [19]: events = orex.get_events('5c927a846c1cea7674cf5b49')
+
+In [20]: events[['event_id', 'score', 'start_time', 'stop_time', 'comments']]
+Out[20]:
                    event_id     score  start_time   stop_time  comments
 0  5c927ad86c1cea7674cf5b4a  0.047956  1398340800  1398621600         0
 1  5c927ad86c1cea7674cf5b4b  0.120997  1398686400  1399420800         0
@@ -723,4 +735,32 @@ Out[41]:
 
 #### 8. Add comments to the Events
 
-WORK IN PROGRESS
+While visualizing the detected Events, you might want to add some comments about them.
+
+This is done using the `OrionExplorer.add_comment` method, which will expect:
+* The Event object or its ID
+* The comment text
+* The user ID
+
+```
+In [21]: orex.add_comment('5c927ad86c1cea7674cf5b4a', 'This needs to be further investigated', '1234')
+
+In [22]: orex.add_comment('5c927ad86c1cea7674cf5b4b', 'This is probably a false positive', '1234')
+```
+
+#### 9. Retrieving the Event comments
+
+After adding some comments, these can be recovered using the `OrionExplorer.get_comments`.
+
+This method accepts as optional arguments the Datarun or the Event ID in order to filter
+the results:
+
+```
+In [23]: comments = orex.get_comments('5c927a846c1cea7674cf5b49')
+
+In [24]: comments[['event_id', 'created_by', 'insert_time', 'text']]
+Out[24]:
+                   event_id created_by             insert_time                                   text
+0  5c927ad86c1cea7674cf5b4a       1234 2019-03-21 13:06:33.591  This needs to be further investigated
+1  5c927ad86c1cea7674cf5b4b       1234 2019-03-21 13:07:08.935      This is probably a false positive
+```
