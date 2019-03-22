@@ -107,13 +107,14 @@ This is the list of pipelines available so far, which will grow over time:
 
 | name | location | description |
 |------|----------|-------------|
-| Dummy | [orion/pipelines/dummy.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/dummy.json) | Dummy Pipeline to showcase the input and output format and the usage of sample primitives |
-| LSTM Dynamic Thresholding | [orion/pipelines/lstm_dynamic_threshold.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/lstm_dynamic_threshold.json) | LSTM Based pipeline inspired by the [Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper](https://arxiv.org/abs/1802.04431) |
-| Mean 24h LSTM | [orion/pipelines/mean_24h_lstm.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/mean_24_lstm.json) | LSTM Based pipeline with 24h mean aggregation preprocessing |
-| Median 24h LSTM | [orion/pipelines/median_24h_lstm.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/median_24_lstm.json) | LSTM Based pipeline with 24h median aggregation preprocessing |
-| Sum 24h LSTM | [orion/pipelines/sum_24h_lstm.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/sum_24_lstm.json) | LSTM Based pipeline with 24h sum aggregation preprocessing |
-| Skew 24h LSTM | [orion/pipelines/skew_24h_lstm.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/skew_24_lstm.json) | LSTM Based pipeline with 24h skew aggregation preprocessing |
+| Dummy | [orion/pipelines/dummy.json](https://github.com/D3-AI/Orion/blob/master/orion/pipelines/dummy.json) | Dummy Pipeline to showcase the input and output format and the usage of sample primitives |
+| LSTM Dynamic Thresholding | [orion/pipelines/lstm_dynamic_threshold.json](https://github.com/D3-AI/Orion/blob/master/orion/pipelines/lstm_dynamic_threshold.json) | LSTM Based pipeline inspired by the [Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper](https://arxiv.org/abs/1802.04431) |
+| Mean 24h LSTM | [orion/pipelines/mean_24h_lstm.json](https://github.com/D3-AI/Orion/blob/master/orion/pipelines/mean_24h_lstm.json) | LSTM Based pipeline with 24h mean aggregation preprocessing |
+| Median 24h LSTM | [orion/pipelines/median_24h_lstm.json](https://github.com/D3-AI/Orion/blob/master/orion/pipelines/median_24_lstm.json) | LSTM Based pipeline with 24h median aggregation preprocessing |
+| Sum 24h LSTM | [orion/pipelines/sum_24h_lstm.json](https://github.com/D3-AI/Orion/blob/master/orion/pipelines/sum_24_lstm.json) | LSTM Based pipeline with 24h sum aggregation preprocessing |
+| Skew 24h LSTM | [orion/pipelines/skew_24h_lstm.json](https://github.com/D3-AI/Orion/blob/master/orion/pipelines/skew_24_lstm.json) | LSTM Based pipeline with 24h skew aggregation preprocessing |
 
+https://github.com/D3-AI/Orion/blob/master/orion/pipelines/mean_24h_lstm.json
 
 ### Leaderboard
 
