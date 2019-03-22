@@ -31,15 +31,15 @@ help:
 
 .PHONY: install
 install: clean-build clean-pyc ## install the package to the active Python's site-packages
-	pip install . -r requirements_dev.txt
+	pip install .
 
 .PHONY: install-test
 install-test: clean-build clean-pyc ## install the package and test dependencies
-	pip install .[test] -r requirements_dev.txt
+	pip install .[test]
 
 .PHONY: install-develop
 install-develop: clean-build clean-pyc ## install the package in editable mode and dependencies for development
-	pip install -e .[dev] -r requirements_dev.txt
+	pip install -e .[dev]
 
 .PHONY: lint
 lint: ## check style with flake8 and isort

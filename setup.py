@@ -12,7 +12,7 @@ with open('HISTORY.md') as history_file:
 install_requires = [
     'baytune>=0.2.3,<0.3',
     'mlblocks>=0.3.0,<0.4',
-    'mlprimitives>=0.1.6,<0.2',
+    'mlprimitives>=0.1.8,<0.2',
     'mongoengine>=0.16.3,<0.17',
     'numpy>=1.15.4,<1.17',
     'pandas>=0.23.4,<0.25',
