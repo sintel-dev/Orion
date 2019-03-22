@@ -109,16 +109,24 @@ This is the list of pipelines available so far, which will grow over time:
 |------|----------|-------------|
 | Dummy | [orion/pipelines/dummy.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/dummy.json) | Dummy Pipeline to showcase the input and output format and the usage of sample primitives |
 | LSTM Dynamic Thresholding | [orion/pipelines/lstm_dynamic_threshold.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/lstm_dynamic_threshold.json) | LSTM Based pipeline inspired by the [Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper](https://arxiv.org/abs/1802.04431) |
+| Mean 24h LSTM | [orion/pipelines/mean_24h_lstm.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/mean_24_lstm.json) | LSTM Based pipeline with 24h mean aggregation preprocessing |
+| Median 24h LSTM | [orion/pipelines/median_24h_lstm.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/median_24_lstm.json) | LSTM Based pipeline with 24h median aggregation preprocessing |
+| Sum 24h LSTM | [orion/pipelines/sum_24h_lstm.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/sum_24_lstm.json) | LSTM Based pipeline with 24h sum aggregation preprocessing |
+| Skew 24h LSTM | [orion/pipelines/skew_24h_lstm.json](https://github.com/D3-AI/Orion/tree/master/orion/pipelines/skew_24_lstm.json) | LSTM Based pipeline with 24h skew aggregation preprocessing |
 
 
 ### Leaderboard
 
-In this repository we maintain the current scoring of the pipelines. We will keep this leaderboard
-up-to-date. Read more about our scoring [here](link to a docs page)
+In this repository we maintain the current scoring of the pipelines.
+We will keep this leaderboard up-to-date.
 
 | name | score | rank |
 |------|-------|------|
-| LSTM Dynamic Thresholding | 0.956346078044935 | 1 |
+| LSTM Dynamic Thresholding | 0.9623571147024044 | 1 |
+| Sum 24h LSTM | 0.9540221390093286 | 2 |
+| Mean 24h LSTM | 0.9536361844698463 | 3 |
+| Median 24h LSTM | 0.9536361844698463 | 4 |
+| Skew 24h LSTM | 0.9513204572329523 | 5 |
 
 
 ## Getting Started
@@ -572,7 +580,7 @@ Out[14]: ObjectId('5c927a846c1cea7674cf5b49')
 
 In [15]: dataruns = orex.get_dataruns()
 
-In [16]: dataruns[['_id', 'start_time', 'end_time', 'events']]
+In [16]: dataruns[['datarun_id', 'start_time', 'end_time', 'events']]
 Out[16]:
                  datarun_id               start_time                end_time  events
 0  5c927a846c1cea7674cf5b49  2019-03-20 17:38:12.133 2019-03-20 17:39:36.279       2

@@ -45,12 +45,13 @@ def partition(expected, observed, start=None, end=None):
     return expected_parts, observed_parts, weights
 
 
-def accuracy_score(expected, observed, data=None, start=None, end=None):
-    """Compute an accuracy score between the ground truth and the detected anomalies.
+def _score(scorer, expected, observed, data=None, start=None, end=None):
+    """Compute a score between the ground truth and the detected anomalies.
 
     Args:
-        * expected (pd.DataFrame): Ground truth
-        * observed (pd.DataFramne): Detected anomalies
+        * scorer (callable): scikit-learn style scorer function.
+        * expected (pd.DataFrame): Ground truth.
+        * observed (pd.DataFramne): Detected anomalies.
         * data (pd.DataFramne): Original data. Used to extract start and end.
         * start (int): Minimum timestamp of the original data.
         * end (int): Maximum timestamp of the original data.
@@ -64,4 +65,30 @@ def accuracy_score(expected, observed, data=None, start=None, end=None):
 
     expected, observed, weights = partition(expected, observed, start, end)
 
-    return metrics.accuracy_score(expected, observed, sample_weight=weights)
+    return scorer(expected, observed, sample_weight=weights)
+
+
+def accuracy_score(expected, observed, data=None, start=None, end=None):
+    """Compute an accuracy score between the ground truth and the detected anomalies.
+
+    Args:
+        * expected (pd.DataFrame): Ground truth
+        * observed (pd.DataFramne): Detected anomalies
+        * data (pd.DataFramne): Original data. Used to extract start and end.
+        * start (int): Minimum timestamp of the original data.
+        * end (int): Maximum timestamp of the original data.
+    """
+    return _score(metrics.accuracy_score, expected, observed, data, start, end)
+
+
+def f1_score(expected, observed, data=None, start=None, end=None):
+    """Compute an f1 score between the ground truth and the detected anomalies.
+
+    Args:
+        * expected (pd.DataFrame): Ground truth
+        * observed (pd.DataFramne): Detected anomalies
+        * data (pd.DataFramne): Original data. Used to extract start and end.
+        * start (int): Minimum timestamp of the original data.
+        * end (int): Maximum timestamp of the original data.
+    """
+    return _score(metrics.f1_score, expected, observed, data, start, end)
