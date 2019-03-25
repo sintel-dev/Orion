@@ -53,7 +53,10 @@ development_requires = [
     # distribute on PyPI
     'twine>=1.10.0',
     'wheel>=0.30.0',
-    'jupyter>=1.0.0'
+
+    # Jupyter and dockerization
+    'jupyter>=1.0.0',
+    'jupyter-repo2docker>=0.8.0,<1',
 ]
 
 setup(

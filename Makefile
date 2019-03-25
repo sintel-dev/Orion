@@ -120,7 +120,7 @@ bumpversion-minor: ## Bump the version the next minor skipping the release
 bumpversion-major: ## Bump the version the next major skipping the release
 	bumpversion --no-tag major
 
-CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null)
 CHANGELOG_LINES := $(shell git diff HEAD..stable HISTORY.md 2>/dev/null | wc -l)
 
 .PHONY: check-release
@@ -174,3 +174,30 @@ clean-test: ## remove test artifacts
 clean-docs: ## remove previously built docs
 	rm -f docs/api/*.rst
 	-$(MAKE) -C docs clean 2>/dev/null  # this fails if sphinx is not yet installed
+
+
+.PHONY: docker-build
+docker-build: ## Build the orion-jupyter docker image using repo2docker
+	jupyter-repo2docker --editable --no-run --image-name orion-jupyter . "jupyter notebook --ip 0.0.0.0"
+
+.PHONY: docker-save
+docker-save: docker-build  ## Build the orion-jupyter image and save it as orion-jupyter.tar
+	docker save --output orion-jupyter.tar orion-jupyter
+
+.PHONY: docker-load
+docker-load: ## Load the orion-jupyter image from orion-jupyter.tar
+	docker load --input orion-jupyter.tar
+
+.PHONY: docker-run
+docker-run:  ## Run the orion-jupyter to start a notebook at localhost
+	docker run --rm --name orion-jupyter -p8888:8888 orion-jupyter:latest \
+		jupyter notebook --ip 0.0.0.0 --NotebookApp.token=''
+
+.PHONY: docker-start
+docker-start:  ## Run the orion-jupyter to start a notebook at localhost
+	docker run --rm -d --name orion-jupyter -p8888:8888 orion-jupyter:latest \
+		jupyter notebook --ip 0.0.0.0 --NotebookApp.token=''
+
+.PHONY: docker-stop
+docker-stop:  ## Run the orion-jupyter to start a notebook at localhost
+	docker stop orion-jupyter
