@@ -120,7 +120,7 @@ bumpversion-minor: ## Bump the version the next minor skipping the release
 bumpversion-major: ## Bump the version the next major skipping the release
 	bumpversion --no-tag major
 
-CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null)
 CHANGELOG_LINES := $(shell git diff HEAD..stable HISTORY.md 2>/dev/null | wc -l)
 
 .PHONY: check-release
@@ -174,3 +174,33 @@ clean-test: ## remove test artifacts
 clean-docs: ## remove previously built docs
 	rm -f docs/api/*.rst
 	-$(MAKE) -C docs clean 2>/dev/null  # this fails if sphinx is not yet installed
+
+
+
+.PHONY: docker-jupyter-clean
+docker-jupyter-clean: ## Remove the orion-jupyter docker image
+	docker rmi -f orion-jupyter
+
+.PHONY: docker-jupyter-build
+docker-jupyter-build: docker-jupyter-clean ## Build the orion-jupyter docker image using repo2docker
+	docker build -f docker/orion-jupyter.Dockerfile -t orion-jupyter .
+
+.PHONY: docker-jupyter-save
+docker-jupyter-save: docker-jupyter-build  ## Build the orion-jupyter image and save it as orion-jupyter.tar
+	docker save --output orion-jupyter.tar orion-jupyter
+
+.PHONY: docker-jupyter-load
+docker-jupyter-load: ## Load the orion-jupyter image from orion-jupyter.tar
+	docker load --input orion-jupyter.tar
+
+.PHONY: docker-jupyter-run
+docker-jupyter-run: ## Run the orion-jupyter image in editable mode
+	docker run --rm -v $(shell pwd):/app -ti -p8888:8888 --name orion-jupyter orion-jupyter
+
+.PHONY: docker-jupyter-start
+docker-jupyter-start: ## Start the orion-jupyter image as a daemon
+	docker run --rm -d -v $(shell pwd):/app -ti -p8888:8888 --name orion-jupyter orion-jupyter
+
+.PHONY: docker-jupyter-stop
+docker-jupyter-stop: ## Stop the orion-jupyter daemon
+	docker stop orion-jupyter
