@@ -176,28 +176,31 @@ clean-docs: ## remove previously built docs
 	-$(MAKE) -C docs clean 2>/dev/null  # this fails if sphinx is not yet installed
 
 
-.PHONY: docker-build
-docker-build: ## Build the orion-jupyter docker image using repo2docker
-	jupyter-repo2docker --editable --no-run --image-name orion-jupyter . "jupyter notebook --ip 0.0.0.0"
 
-.PHONY: docker-save
-docker-save: docker-build  ## Build the orion-jupyter image and save it as orion-jupyter.tar
+.PHONY: docker-jupyter-clean
+docker-jupyter-clean: ## Remove the orion-jupyter docker image
+	docker rmi -f orion-jupyter
+
+.PHONY: docker-jupyter-build
+docker-jupyter-build: docker-jupyter-clean ## Build the orion-jupyter docker image using repo2docker
+	docker build -f docker/orion-jupyter.Dockerfile -t orion-jupyter .
+
+.PHONY: docker-jupyter-save
+docker-jupyter-save: docker-jupyter-build  ## Build the orion-jupyter image and save it as orion-jupyter.tar
 	docker save --output orion-jupyter.tar orion-jupyter
 
-.PHONY: docker-load
-docker-load: ## Load the orion-jupyter image from orion-jupyter.tar
+.PHONY: docker-jupyter-load
+docker-jupyter-load: ## Load the orion-jupyter image from orion-jupyter.tar
 	docker load --input orion-jupyter.tar
 
-.PHONY: docker-run
-docker-run:  ## Run the orion-jupyter to start a notebook at localhost
-	docker run --rm --name orion-jupyter -p8888:8888 orion-jupyter:latest \
-		jupyter notebook --ip 0.0.0.0 --NotebookApp.token=''
+.PHONY: docker-jupyter-run
+docker-jupyter-run: ## Run the orion-jupyter image in editable mode
+	docker run --rm -v $(shell pwd):/app -ti -p8888:8888 --name orion-jupyter orion-jupyter
 
-.PHONY: docker-start
-docker-start:  ## Run the orion-jupyter to start a notebook at localhost
-	docker run --rm -d --name orion-jupyter -p8888:8888 orion-jupyter:latest \
-		jupyter notebook --ip 0.0.0.0 --NotebookApp.token=''
+.PHONY: docker-jupyter-start
+docker-jupyter-start: ## Start the orion-jupyter image as a daemon
+	docker run --rm -d -v $(shell pwd):/app -ti -p8888:8888 --name orion-jupyter orion-jupyter
 
-.PHONY: docker-stop
-docker-stop:  ## Run the orion-jupyter to start a notebook at localhost
+.PHONY: docker-jupyter-stop
+docker-jupyter-stop: ## Stop the orion-jupyter daemon
 	docker stop orion-jupyter
