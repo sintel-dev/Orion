@@ -45,7 +45,7 @@ class OrionExplorer:
         return data
 
     def add_dataset(self, name, signal_set, satellite_id=None, start_time=None, stop_time=None,
-                    location=None, timestamp_column=0, value_column=1, user_id=None):
+                    location=None, timestamp_column=None, value_column=None, user_id=None):
 
         location = location or name
         data = load_signal(location, None, timestamp_column, value_column)
@@ -206,14 +206,14 @@ class OrionExplorer:
 
         return events.merge(comments, how='inner', on='event_id')
 
-    def analyze(self, dataset_name, pipeline_name):
+    def analyze(self, dataset_name, pipeline_name, user_id=None):
         dataset = self.get_dataset(dataset_name)
         data = self.load_dataset(dataset)
 
         pipeline = self.get_pipeline(pipeline_name)
         mlpipeline = self.load_pipeline(pipeline)
 
-        datarun = self.start_datarun(dataset, pipeline)
+        datarun = self.start_datarun(dataset, pipeline, user_id)
 
         try:
             LOGGER.info("Fitting the pipeline")

@@ -100,6 +100,9 @@ def load_signal(signal, test_size=None, timestamp_column=None, value_column=None
     else:
         data = download(signal)
 
+    data['timestamp'] = data['timestamp'].astype(int)
+    data['value'] = data['value'].astype(float)
+
     if test_size is None:
         return data
 

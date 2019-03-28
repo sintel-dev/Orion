@@ -100,8 +100,8 @@ class Dataset(Document, MongoUtils):
     start_time = fields.IntField()
     stop_time = fields.IntField()
     data_location = fields.StringField()
-    timestamp_column = fields.IntField(default=0)
-    value_column = fields.IntField(default=1)
+    timestamp_column = fields.IntField()
+    value_column = fields.IntField()
     created_by = fields.StringField()
 
 
