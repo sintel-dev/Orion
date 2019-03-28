@@ -2,13 +2,12 @@
 # coding: utf-8
 
 import argparse
-import logging
+import getpass
+import os
 
 from orion.data import load_signal
 from orion.explorer import OrionExplorer
 from orion.utils import logging_setup
-
-LOGGER = logging.getLogger(__name__)
 
 
 def _reset(explorer, args):
@@ -44,6 +43,7 @@ def _add_dataset(explorer, args):
         args.location,
         args.timestamp_column,
         args.value_column,
+        args.user,
     )
 
 
@@ -51,6 +51,7 @@ def _add_pipeline(explorer, args):
     explorer.add_pipeline(
         args.name,
         args.path,
+        args.user,
     )
 
 
@@ -58,6 +59,7 @@ def _add_comment(explorer, args):
     explorer.add_comment(
         args.event,
         args.text,
+        args.user,
     )
 
 
@@ -89,8 +91,38 @@ def _list(explorer, args):
 
 
 def _run(explorer, args):
-    datarun = explorer.analyze(args.dataset, args.pipeline)
+    datarun = explorer.analyze(args.dataset, args.pipeline, args.user)
     print('Datarun id: {}'.format(datarun.id))
+
+
+def _process(explorer, args):
+    pipeline_name = os.path.basename(args.pipeline)[:-5]
+    print('Adding pipeline {}'.format(pipeline_name))
+    explorer.add_pipeline(pipeline_name, args.pipeline, args.user)
+
+    for path in args.paths:
+        try:
+            name = os.path.basename(path)
+            if not name.endswith('.csv'):
+                raise ValueError('Invalid CSV name: {}'.format('.csv'))
+
+            name = name[:-4]
+
+            print('Adding dataset {}'.format(name))
+            explorer.add_dataset(
+                name,
+                name,
+                location=path,
+                timestamp_column=args.timestamp_column,
+                value_column=args.value_column,
+                user_id=args.user,
+            )
+
+            print('Processing CSV {}'.format(path))
+            explorer.analyze(name, pipeline_name, args.user)
+
+        except Exception as ex:
+            print("Error processing CSV {}: {}".format(path, ex))
 
 
 def get_parser():
@@ -105,7 +137,7 @@ def get_parser():
                         help='Be verbose. Use -vv for increased verbosity.')
 
     common_user = argparse.ArgumentParser(add_help=False, parents=[common])
-    common_user.add_argument('-u', '--user', required=True, help='User identifier')
+    common_user.add_argument('-u', '--user', default=getpass.getuser(), help='User identifier')
 
     parser = argparse.ArgumentParser(description='Orion Command Line Interface.')
     parser.set_defaults(function=None)
@@ -126,9 +158,9 @@ def get_parser():
     add_dataset = add_model.add_parser('dataset', parents=[common_user], help='Add a new dataset')
     add_dataset.set_defaults(function=_add_dataset)
 
-    add_dataset.add_argument('-T', '--timestamp-column', default=0, type=int,
+    add_dataset.add_argument('-T', '--timestamp-column', type=int,
                              help='Position of the timestamp column in the CSV,')
-    add_dataset.add_argument('-V', '--value-column', default=0, type=int,
+    add_dataset.add_argument('-V', '--value-column', type=int,
                              help='Position of the value column in the CSV,')
     add_dataset.add_argument('-s', '--signal',
                              help='Name or ID of the signal. Defaults to the given `name`')
@@ -207,6 +239,17 @@ def get_parser():
     run.add_argument('dataset', help='ID of name of the dataset')
     run.set_defaults(function=_run)
 
+    # Process
+    process = action.add_parser('process', parents=[common_user],
+                                help='Process one or more signal CSV files using a pipeline')
+    process.add_argument('-T', '--timestamp-column', type=int,
+                         help='Position of the timestamp column in the CSV,')
+    process.add_argument('-V', '--value-column', type=int,
+                         help='Position of the value column in the CSV,')
+    process.add_argument('pipeline', help='Path to the pipeline JSON')
+    process.add_argument('paths', nargs='+', help='Paths to the CSV files')
+    process.set_defaults(function=_process)
+
     return parser
 
 
@@ -216,6 +259,6 @@ def main():
 
     logging_setup(args.verbose, args.logfile)
 
-    explorer = OrionExplorer(args.user, args.database)
+    explorer = OrionExplorer(args.database)
 
     args.function(explorer, args)
