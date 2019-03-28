@@ -32,6 +32,29 @@ The focus, with the ready availability of automated machine learning is on:
 
 - MIT license
 
+
+## Table of Contents
+
+* [Data Format](#data-format)
+   * [Input](#input)
+   * [Output](#output)
+* [Dataset we use in this library](#dataset-we-use-in-this-library)
+* [Orion Pipelines](#orion-pipelines)
+   * [Current Available Pipelines](#current-available-pipelines)
+   * [Leaderboard](#leaderboard)
+* [Getting Started](#getting-started)
+   * [Requirements](#requirements)
+   * [Install](#install)
+   * [Quickstart: Run a Pipeline on the Demo Dataset](#quickstart-run-a-pipeline-on-the-demo-dataset)
+* [Database](#database)
+   * [Database Schema](#database-schema)
+   * [Database Usage](#database-usage)
+* [Docker Usage](#docker-usage)
+   * [Requirements](#requirements-1)
+   * [Building the Orion Docker Image](#building-the-orion-docker-image)
+   * [Distributing the Orion Docker Image](#distributing-the-orion-docker-image)
+   * [Running the orion-jupyter image](#running-the-orion-jupyter-image)
+
 ## Data Format
 
 ### Input
