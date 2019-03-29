@@ -123,9 +123,14 @@ class OrionExplorer:
     def get_pipeline(self, pipeline):
         try:
             _id = ObjectId(pipeline)
-            return model.Pipeline.last(_id=_id)
+            db_pipeline = model.Pipeline.last(_id=_id)
         except InvalidId:
-            return model.Pipeline.last(name=pipeline)
+            db_pipeline = model.Pipeline.last(name=pipeline)
+
+        if db_pipeline is None:
+            LOGGER.error('Pipeline not found: %s', pipeline)
+
+        return db_pipeline
 
     def load_pipeline(self, pipeline):
         LOGGER.info("Loading pipeline %s", pipeline.name)
