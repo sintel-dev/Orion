@@ -63,8 +63,14 @@ def download(name, test_size=None):
 
         LOGGER.debug('Downloading CSV %s from %s', name, url)
         os.makedirs(DATA_PATH, exist_ok=True)
-        data = pd.read_csv(url)
-        data.to_csv(filename, index=False)
+
+        try:
+            data = pd.read_csv(url)
+        except Exception:
+            LOGGER.exception('File not found: %s', url)
+            data = None
+        else:
+            data.to_csv(filename, index=False)
 
     return data
 
