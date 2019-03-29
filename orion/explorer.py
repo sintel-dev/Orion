@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from datetime import datetime
 
 import pandas as pd
@@ -80,14 +79,9 @@ class OrionExplorer:
     def get_dataset(self, dataset):
         try:
             _id = ObjectId(dataset)
-            db_dataset = model.Dataset.find(_id=_id)
+            return model.Dataset.find(_id=_id)
         except InvalidId:
-            db_dataset = model.Dataset.last(name=dataset)
-
-        if db_dataset is None:
-            LOGGER.error('Dataset not found: %s', dataset)
-
-        return db_dataset
+            return model.Dataset.last(name=dataset)
 
     def load_dataset(self, dataset):
         path_or_name = dataset.data_location or dataset.name
@@ -102,9 +96,6 @@ class OrionExplorer:
         return data
 
     def add_pipeline(self, name, path, user_id=None):
-        if not os.path.isfile(path):
-            LOGGER.error('File not found: %s', path)
-
         with open(path, 'r') as pipeline_file:
             pipeline_json = json.load(pipeline_file)
 
@@ -123,14 +114,9 @@ class OrionExplorer:
     def get_pipeline(self, pipeline):
         try:
             _id = ObjectId(pipeline)
-            db_pipeline = model.Pipeline.last(_id=_id)
+            return model.Pipeline.last(_id=_id)
         except InvalidId:
-            db_pipeline = model.Pipeline.last(name=pipeline)
-
-        if db_pipeline is None:
-            LOGGER.error('Pipeline not found: %s', pipeline)
-
-        return db_pipeline
+            return model.Pipeline.last(name=pipeline)
 
     def load_pipeline(self, pipeline):
         LOGGER.info("Loading pipeline %s", pipeline.name)
@@ -222,9 +208,17 @@ class OrionExplorer:
 
     def analyze(self, dataset_name, pipeline_name, user_id=None):
         dataset = self.get_dataset(dataset_name)
+
+        if dataset is None:
+            raise ValueError('Dataset not found: ' + dataset_name)
+
         data = self.load_dataset(dataset)
 
         pipeline = self.get_pipeline(pipeline_name)
+
+        if pipeline is None:
+            raise ValueError('Pipeline not found: ' + pipeline_name)
+
         mlpipeline = self.load_pipeline(pipeline)
 
         datarun = self.start_datarun(dataset, pipeline, user_id)
