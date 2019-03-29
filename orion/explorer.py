@@ -79,9 +79,14 @@ class OrionExplorer:
     def get_dataset(self, dataset):
         try:
             _id = ObjectId(dataset)
-            return model.Dataset.find(_id=_id)
+            db_dataset = model.Dataset.find(_id=_id)
         except InvalidId:
-            return model.Dataset.last(name=dataset)
+            db_dataset = model.Dataset.last(name=dataset)
+
+        if db_dataset is None:
+            LOGGER.error('Dataset not found: %s', dataset)
+
+        return db_dataset
 
     def load_dataset(self, dataset):
         path_or_name = dataset.data_location or dataset.name
