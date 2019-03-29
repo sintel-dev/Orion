@@ -6,6 +6,7 @@
 import os
 from unittest.mock import patch
 
+import numpy as np
 import pandas as pd
 
 import orion
@@ -113,13 +114,14 @@ def test_load_signal_test_size(isfile_mock, load_csv_mock):
 
     expected_train = pd.DataFrame({
         'timestamp': list(range(7)),
-        'value': list(range(10, 17))
+        'value': list(np.arange(10, 17).astype(float))
     })
+
     pd.testing.assert_frame_equal(train, expected_train)
 
     expected_test = pd.DataFrame({
         'timestamp': list(range(7, 10)),
-        'value': list(range(17, 20))
+        'value': list(np.arange(17, 20).astype(float))
     })
     expected_test.index = range(7, 10)
     pd.testing.assert_frame_equal(test, expected_test)
