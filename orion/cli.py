@@ -4,6 +4,8 @@
 import argparse
 import getpass
 import os
+import sys
+from urllib.error import HTTPError
 
 from orion.data import load_signal
 from orion.explorer import OrionExplorer
@@ -26,13 +28,19 @@ def _add_dataset(explorer, args):
 
     if not args.start or not args.stop:
         path_or_name = args.location or args.name
-        data = load_signal(path_or_name, None, args.timestamp_column, args.value_column)
-        timestamps = data['timestamp']
-        if not args.start:
-            args.start = timestamps.min()
 
-        if not args.stop:
-            args.stop = timestamps.max()
+        try:
+            data = load_signal(path_or_name, None, args.timestamp_column, args.value_column)
+        except HTTPError:
+            print('Unknown signal: {}'.format(path_or_name))
+            sys.exit(1)
+        else:
+            timestamps = data['timestamp']
+            if not args.start:
+                args.start = timestamps.min()
+
+            if not args.stop:
+                args.stop = timestamps.max()
 
     explorer.add_dataset(
         args.name,
@@ -48,11 +56,16 @@ def _add_dataset(explorer, args):
 
 
 def _add_pipeline(explorer, args):
-    explorer.add_pipeline(
-        args.name,
-        args.path,
-        args.user,
-    )
+    try:
+        explorer.add_pipeline(
+            args.name,
+            args.path,
+            args.user,
+        )
+    except FileNotFoundError:
+        print('File not found: {}'.format(args.path))
+    except IsADirectoryError:
+        print('File is a directory: {}'.format(args.path))
 
 
 def _add_comment(explorer, args):
@@ -91,8 +104,12 @@ def _list(explorer, args):
 
 
 def _run(explorer, args):
-    datarun = explorer.analyze(args.dataset, args.pipeline, args.user)
-    print('Datarun id: {}'.format(datarun.id))
+    try:
+        datarun = explorer.analyze(args.dataset, args.pipeline, args.user)
+        print('Datarun id: {}'.format(datarun.id))
+    except Exception as ex:
+        print("There was an error processing the dataset {}: {}".format(args.dataset, ex))
+        sys.exit(1)
 
 
 def _process(explorer, args):
