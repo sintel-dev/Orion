@@ -4,6 +4,7 @@
 import argparse
 import getpass
 import os
+import sys
 from urllib.error import HTTPError
 
 from orion.data import load_signal
