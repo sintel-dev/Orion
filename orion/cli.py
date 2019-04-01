@@ -106,10 +106,10 @@ def _list(explorer, args):
 def _run(explorer, args):
     try:
         datarun = explorer.analyze(args.dataset, args.pipeline, args.user)
-    except ValueError as ex:
-        print(ex)
-    else:
         print('Datarun id: {}'.format(datarun.id))
+    except Exception as ex:
+        print("There was an error processing the dataset {}: {}".format(args.dataset, ex))
+        sys.exit(1)
 
 
 def _process(explorer, args):
