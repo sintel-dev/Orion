@@ -6,7 +6,7 @@ import getpass
 import os
 from urllib.error import HTTPError
 
-from orion.data import BUCKET, load_signal
+from orion.data import load_signal
 from orion.explorer import OrionExplorer
 from orion.utils import logging_setup
 
@@ -31,8 +31,8 @@ def _add_dataset(explorer, args):
         try:
             data = load_signal(path_or_name, None, args.timestamp_column, args.value_column)
         except HTTPError:
-            print('File not found in S3 bucket {}: {}'.format(BUCKET, path_or_name))
-            data = None
+            print('Unknown signal: {}'.format(path_or_name))
+            sys.exit(1)
         else:
             timestamps = data['timestamp']
             if not args.start:
@@ -41,18 +41,17 @@ def _add_dataset(explorer, args):
             if not args.stop:
                 args.stop = timestamps.max()
 
-    if data is not None:
-        explorer.add_dataset(
-            args.name,
-            args.signal,
-            args.satellite,
-            args.start,
-            args.stop,
-            args.location,
-            args.timestamp_column,
-            args.value_column,
-            args.user,
-        )
+    explorer.add_dataset(
+        args.name,
+        args.signal,
+        args.satellite,
+        args.start,
+        args.stop,
+        args.location,
+        args.timestamp_column,
+        args.value_column,
+        args.user,
+    )
 
 
 def _add_pipeline(explorer, args):
