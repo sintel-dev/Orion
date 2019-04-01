@@ -210,14 +210,14 @@ class OrionExplorer:
         dataset = self.get_dataset(dataset_name)
 
         if dataset is None:
-            raise ValueError('Dataset not found: ' + dataset_name)
+            raise ValueError('Dataset not found: {}'.format(dataset_name))
 
         data = self.load_dataset(dataset)
 
         pipeline = self.get_pipeline(pipeline_name)
 
         if pipeline is None:
-            raise ValueError('Pipeline not found: ' + pipeline_name)
+            raise ValueError('Pipeline not found: {}'.format(pipeline_name))
 
         mlpipeline = self.load_pipeline(pipeline)
 
