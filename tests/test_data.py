@@ -66,7 +66,7 @@ def test_load_signal_filename(isfile_mock, load_csv_mock):
     isfile_mock.return_value = True
 
     # run
-    returned = load_signal('a/path/to/a.csv')
+    returned = load_signal('a', location='a/path/to/a.csv')
 
     # assert
     assert returned == load_csv_mock.return_value
@@ -88,7 +88,7 @@ def test_load_signal_nasa_signal_name(isfile_mock, load_csv_mock, lns_mock):
     assert returned == lns_mock.return_value
 
     load_csv_mock.assert_not_called()
-    lns_mock.assert_called_once_with('S-1')
+    lns_mock.assert_called_once_with('S-1', url=None)
 
 
 @patch('orion.data.load_csv')
@@ -104,7 +104,7 @@ def test_load_signal_test_size(isfile_mock, load_csv_mock):
     load_csv_mock.return_value = data
 
     # run
-    returned = load_signal('a/path/to/a.csv', test_size=0.33)
+    returned = load_signal('a', location='a/path/to/a.csv', test_size=0.33)
 
     # assert
     assert isinstance(returned, tuple)
