@@ -25,15 +25,15 @@ DATA_PATH = os.path.join(
     'data'
 )
 BUCKET = 'd3-ai-orion'
-S3_URL = 'https://{}.s3.amazonaws.com/{}.csv'
+S3_URL = 'https://{}.s3.amazonaws.com/{}'
 
 
-def download(name, test_size=None):
+def download(name, test_size=None, url=None):
     """Load the CSV with the given name from S3.
 
     If the CSV has never been loaded before, it will be downloaded
-    from the [d3-ai-orion bucket](https://d3-ai-orion.s3.amazonaws.com)
-    and then cached inside the `data` folder, within the `orion` package
+    from the `url` if given or the [d3-ai-orion bucket](https://d3-ai-orion.s3.amazonaws.com)
+    in other case, and then it will be cached inside the `data` folder, within the `orion` package
     directory, and then returned.
 
     Otherwise, if it has been downloaded and cached before, it will be directly
@@ -57,9 +57,8 @@ def download(name, test_size=None):
     filename = os.path.join(DATA_PATH, name + '.csv')
     if os.path.exists(filename):
         data = pd.read_csv(filename)
-
     else:
-        url = S3_URL.format(BUCKET, name)
+        url = url or S3_URL.format(BUCKET, '{}.csv'.format(name))
 
         LOGGER.debug('Downloading CSV %s from %s', name, url)
         os.makedirs(DATA_PATH, exist_ok=True)
@@ -94,11 +93,15 @@ def load_csv(path, timestamp_column=None, value_column=None):
     return pd.DataFrame(columns)[['timestamp', 'value']]
 
 
-def load_signal(signal, test_size=None, timestamp_column=None, value_column=None):
-    if os.path.isfile(signal):
-        data = load_csv(signal, timestamp_column, value_column)
+def load_signal(signal, test_size=None, timestamp_column=None, value_column=None, location=None):
+    if location and os.path.isfile(location):
+        data = load_csv(location, timestamp_column, value_column)
     else:
-        data = download(signal)
+        url = None
+        if location and location.startswith('https://'):
+            url = location
+
+        data = download(signal, url=url)
 
     data['timestamp'] = data['timestamp'].astype(int)
     data['value'] = data['value'].astype(float)
