@@ -7,7 +7,7 @@ import os
 import sys
 from urllib.error import HTTPError
 
-from orion.data import load_signal
+from orion.data import BUCKET, S3_URL, load_signal
 from orion.explorer import OrionExplorer
 from orion.utils import logging_setup
 
@@ -23,16 +23,24 @@ def _reset(explorer, args):
 
 
 def _add_dataset(explorer, args):
+    location = args.location
+
+    if location and location.startswith('s3://'):
+        parts = location[5:].split('/', 1)
+        bucket = parts[0]
+        path = parts[1]
+
+        location = S3_URL.format(bucket, path)
+
     if args.signal is None:
         args.signal = args.name
 
     if not args.start or not args.stop:
-        path_or_name = args.location or args.name
-
         try:
-            data = load_signal(path_or_name, None, args.timestamp_column, args.value_column)
+            data = load_signal(args.name, None, args.timestamp_column,
+                               args.value_column, args.location)
         except HTTPError:
-            print('Unknown signal: {}'.format(path_or_name))
+            print('Unknown signal: {}'.format(args.location or args.name))
             sys.exit(1)
         else:
             timestamps = data['timestamp']
@@ -48,7 +56,7 @@ def _add_dataset(explorer, args):
         args.satellite,
         args.start,
         args.stop,
-        args.location,
+        location,
         args.timestamp_column,
         args.value_column,
         args.user,
@@ -185,8 +193,11 @@ def get_parser():
                              help='Name or ID of the satellite. Defaults to `None`')
     add_dataset.add_argument('--start', type=int, help='Start time, as an integer unix timestamp')
     add_dataset.add_argument('--stop', type=int, help='Stop time, as an integer unix timestamp')
+    add_dataset.add_argument('--demo', action='store_true',
+                             help='location assumed to be s3://{}/<name>.csv'.format(BUCKET))
     add_dataset.add_argument('name', help='Name of this dataset')
-    add_dataset.add_argument('location', nargs='?', help='path to the CSV file')
+    add_dataset.add_argument('location', nargs='?',
+                             help='path to the CSV file. Required at least --demo is given')
 
     # Add pipeline
     add_pipeline = add_model.add_parser('pipeline', parents=[common_user],
@@ -273,6 +284,11 @@ def get_parser():
 def main():
     parser = get_parser()
     args = parser.parse_args()
+
+    if args.action == 'add' and args.model == 'dataset' and \
+       args.demo is False and args.location is None:
+        print('orion add dataset: error: location is required when --demo is not given')
+        sys.exit(0)
 
     logging_setup(args.verbose, args.logfile)
 
