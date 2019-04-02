@@ -38,9 +38,9 @@ def _add_dataset(explorer, args):
     if not args.start or not args.stop:
         try:
             data = load_signal(args.name, None, args.timestamp_column,
-                               args.value_column, args.location)
+                               args.value_column, location)
         except HTTPError:
-            print('Unknown signal: {}'.format(args.location or args.name))
+            print('Unknown signal: {}'.format(location or args.name))
             sys.exit(1)
         else:
             timestamps = data['timestamp']
