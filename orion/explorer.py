@@ -47,8 +47,7 @@ class OrionExplorer:
     def add_dataset(self, name, signal_set, satellite_id=None, start_time=None, stop_time=None,
                     location=None, timestamp_column=None, value_column=None, user_id=None):
 
-        location = location or name
-        data = load_signal(location, None, timestamp_column, value_column)
+        data = load_signal(name, None, timestamp_column, value_column, location)
         timestamps = data['timestamp']
         if not start_time:
             start_time = timestamps.min()
@@ -84,9 +83,9 @@ class OrionExplorer:
             return model.Dataset.last(name=dataset)
 
     def load_dataset(self, dataset):
-        path_or_name = dataset.data_location or dataset.name
-        LOGGER.info("Loading dataset %s", path_or_name)
-        data = load_signal(path_or_name, None, dataset.timestamp_column, dataset.value_column)
+        LOGGER.info("Loading dataset %s", dataset.data_location or dataset.name)
+        data = load_signal(dataset.name, None, dataset.timestamp_column,
+                           dataset.value_column, dataset.data_location)
         if dataset.start_time:
             data = data[data['timestamp'] >= dataset.start_time].copy()
 
