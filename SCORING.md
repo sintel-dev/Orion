@@ -135,21 +135,19 @@ This is an example of how to call this function:
 In [1]: from orion.evaluation import evaluate_pipelines
 
 In [2]: pipelines = [
-   ...:     'orion/pipelines/dummy.json',
+   ...:     'orion/pipelines/skew_24h_lstm.json',
    ...:     'orion/pipelines/lstm_dynamic_threshold.json'
    ...: ]
 
-In [3]: metrics = ['f1', 'accuracy']
+In [3]: metrics = ['f1', 'accuracy', 'recall', 'precision']
 
 In [4]: signals = ['S-1', 'P-1']
 
 In [5]: scores = evaluate_pipelines(pipelines, signals, metrics, rank='f1')
 
-... some logging has been ommitted here ...
-
 In [6]: scores
 Out[6]:
-                                      pipeline  rank  accuracy        f1
-0                   orion/pipelines/dummy.json     1  0.871098  0.142471
-1  orion/pipelines/lstm_dynamic_threshold.json     2  0.948313  0.130350
+                                      pipeline  rank  accuracy        f1  precision    recall
+0  orion/pipelines/lstm_dynamic_threshold.json     1  0.946529  0.060924     0.5000  0.032438
+1           orion/pipelines/skew_24h_lstm.json     2  0.939685  0.015370     0.0625  0.008762
 ```

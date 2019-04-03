@@ -92,3 +92,29 @@ def f1_score(expected, observed, data=None, start=None, end=None):
         * end (int): Maximum timestamp of the original data.
     """
     return _score(metrics.f1_score, expected, observed, data, start, end)
+
+
+def recall_score(expected, observed, data=None, start=None, end=None):
+    """Compute a recall score between the ground truth and the detected anomalies.
+
+    Args:
+        * expected (pd.DataFrame): Ground truth
+        * observed (pd.DataFramne): Detected anomalies
+        * data (pd.DataFramne): Original data. Used to extract start and end.
+        * start (int): Minimum timestamp of the original data.
+        * end (int): Maximum timestamp of the original data.
+    """
+    return _score(metrics.recall_score, expected, observed, data, start, end)
+
+
+def precision_score(expected, observed, data=None, start=None, end=None):
+    """Compute an precision score between the ground truth and the detected anomalies.
+
+    Args:
+        * expected (pd.DataFrame): Ground truth
+        * observed (pd.DataFramne): Detected anomalies
+        * data (pd.DataFramne): Original data. Used to extract start and end.
+        * start (int): Minimum timestamp of the original data.
+        * end (int): Maximum timestamp of the original data.
+    """
+    return _score(metrics.precision_score, expected, observed, data, start, end)

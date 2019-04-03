@@ -5,9 +5,9 @@ import warnings
 import numpy as np
 import pandas as pd
 
+from orion import metrics
 from orion.analysis import analyze
 from orion.data import download, load_anomalies, load_signal
-from orion.metrics import accuracy_score, f1_score
 
 warnings.filterwarnings("ignore")
 
@@ -15,8 +15,10 @@ LOGGER = logging.getLogger(__name__)
 
 
 METRICS = {
-    'accuracy': accuracy_score,
-    'f1': f1_score,
+    'accuracy': metrics.accuracy_score,
+    'precision': metrics.precision_score,
+    'recall': metrics.recall_score,
+    'f1': metrics.f1_score,
 }
 NASA_SIGNALS = (
     'P-1', 'S-1', 'E-1', 'E-2', 'E-3', 'E-4', 'E-5', 'E-6', 'E-7',
