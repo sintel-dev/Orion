@@ -128,3 +128,28 @@ This function expects the following inputs:
 
 And returns a `pandas.DataFrame` which contains the average of the scores obtained with
 each scoring function accross all the signals for each pipeline, ranked by the indicated metric.
+
+This is an example of how to call this function:
+
+```
+In [1]: from orion.evaluation import evaluate_pipelines
+
+In [2]: pipelines = [
+   ...:     'orion/pipelines/dummy.json',
+   ...:     'orion/pipelines/lstm_dynamic_threshold.json'
+   ...: ]
+
+In [3]: metrics = ['f1', 'accuracy']
+
+In [4]: signals = ['S-1', 'P-1']
+
+In [5]: scores = evaluate_pipelines(pipelines, signals, metrics, rank='f1')
+
+... some logging has been ommitted here ...
+
+In [6]: scores
+Out[6]:
+                                      pipeline  rank  accuracy        f1
+0                   orion/pipelines/dummy.json     1  0.871098  0.142471
+1  orion/pipelines/lstm_dynamic_threshold.json     2  0.948313  0.130350
+```
