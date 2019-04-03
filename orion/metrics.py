@@ -15,7 +15,7 @@ def _any_overlap(part, intervals):
     return 0
 
 
-def partition(expected, observed, start=None, end=None):
+def _partition(expected, observed, start=None, end=None):
     edges = set()
 
     if start is not None:
@@ -63,7 +63,7 @@ def _score(scorer, expected, observed, data=None, start=None, end=None):
     expected = list(expected[['start', 'end']].itertuples(index=False))
     observed = list(observed[['start', 'end']].itertuples(index=False))
 
-    expected, observed, weights = partition(expected, observed, start, end)
+    expected, observed, weights = _partition(expected, observed, start, end)
 
     return scorer(expected, observed, sample_weight=weights)
 

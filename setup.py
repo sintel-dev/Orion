@@ -25,6 +25,7 @@ install_requires = [
     'pandas>=0.23.4,<0.25',
     'pymongo>=3.7.2,<4',
     'scikit-learn>=0.20.1,<0.21',
+    'tabulate>=0.8.3,<0.9',
 ]
 
 setup_requires = [
