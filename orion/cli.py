@@ -152,6 +152,11 @@ def _evaluate(args):
         pipelines = args.pipeline
 
     scores = evaluate_pipelines(pipelines, args.signal, args.metric, args.rank)
+
+    if args.output:
+        print('Writing results in {}'.format(args.output))
+        scores.to_csv(args.output, index=False)
+
     print(tabulate.tabulate(
         scores,
         showindex=False,
@@ -294,6 +299,7 @@ def get_parser():
     evaluate.add_argument('-m', '--metric', action='append',
                           help='Metric to use. Use multiple times for more metrics.')
     evaluate.add_argument('-r', '--rank', help='Rank scores based on this metric.')
+    evaluate.add_argument('-o', '--output', help='Write the results in the specified CSV file.')
     group = evaluate.add_mutually_exclusive_group(required=True)
     group.add_argument('-a', '--all', action='store_true', help='Evaluate all known pipelines.')
     group.add_argument('pipeline', default=[], nargs='*',
