@@ -146,14 +146,14 @@ This is the list of pipelines available so far, which will grow over time:
 In this repository we maintain this up-to-date leaderboard with the current scoring of the
 pipelines according to the scoring procedure explained in the [SCORING.md](SCORING.md) document.
 
-|                      name |    score | rank |
-|---------------------------|----------|------|
-| LSTM Dynamic Thresholding | 0.962357 |    1 |
-| Sum 24h LSTM              | 0.954022 |    2 |
-| Mean 24h LSTM             | 0.953636 |    3 |
-| Median 24h LSTM           | 0.953636 |    4 |
-| Skew 24h LSTM             | 0.951320 |    5 |
-| Dummy                     | 0.874935 |    6 |
+| pipeline                  |   rank |   accuracy |       f1 |   precision |   recall |
+|---------------------------|--------|------------|----------|-------------|----------|
+| LSTM Dynamic Thresholding |      1 |   0.963781 | 0.216231 |   0.666667  | 0.130074 |
+| Median 24h LSTM           |      2 |   0.960239 | 0        |   0         | 0        |
+| Mean 24h LSTM             |      3 |   0.959948 | 0        |   0         | 0        |
+| Sum 24h LSTM              |      4 |   0.959275 | 0        |   0         | 0        |
+| Skew 24h LSTM             |      5 |   0.956565 | 0        |   0         | 0        |
+| Dummy                     |      6 |   0.911606 | 0.094981 |   0.0708985 | 0.156801 |
 
 
 ## Getting Started
