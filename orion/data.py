@@ -32,7 +32,8 @@ def download(name, test_size=None):
     """Load the CSV with the given name from S3.
 
     If the CSV has never been loaded before, it will be downloaded
-    from the [d3-ai-orion bucket](https://d3-ai-orion.s3.amazonaws.com)
+    from the [d3-ai-orion bucket](https://d3-ai-orion.s3.amazonaws.com) or
+    the S3 bucket specified following the `s3://{bucket}/path/to/the.csv` format,
     and then cached inside the `data` folder, within the `orion` package
     directory, and then returned.
 
@@ -54,19 +55,21 @@ def download(name, test_size=None):
         the train split and another one for the test split is returned.
     """
 
-    filename = os.path.join(DATA_PATH, name + '.csv')
+    url = None
+    if name.startswith('s3://'):
+        parts = name[5:].split('/', 1)
+        bucket = parts[0]
+        path = parts[1]
+        url = S3_URL.format(bucket, path)
+
+        filename = os.path.join(DATA_PATH, path.split('/')[-1])
+    else:
+        filename = os.path.join(DATA_PATH, name + '.csv')
+
     if os.path.exists(filename):
         data = pd.read_csv(filename)
     else:
-        if name.startswith('s3://'):
-            parts = name[5:].split('/', 1)
-            bucket = parts[0]
-            path = parts[1]
-            filename = os.path.join(DATA_PATH, path.split('/')[-1])
-
-            url = S3_URL.format(bucket, path)
-        else:
-            url = S3_URL.format(BUCKET, '{}.csv'.format(name))
+        url = url or S3_URL.format(BUCKET, '{}.csv'.format(name))
 
         LOGGER.debug('Downloading CSV %s from %s', name, url)
         os.makedirs(DATA_PATH, exist_ok=True)
