@@ -67,17 +67,17 @@ observations with two columns:
 
 * `timestamp`: an INTEGER or FLOAT column with the time of the observation in
   [Unix Time Format](https://en.wikipedia.org/wiki/Unix_time)
-* `telemetry_value`: an INTEGER or FLOAT column with the observed value at the indicated timestamp
+* `value`: an INTEGER or FLOAT column with the observed value at the indicated timestamp
 
 This is an example of such table:
 
-|  timestamp | telemetry\_value |
-|------------|------------------|
-| 1222819200 |         -0.36635 |
-| 1222840800 |         -0.39410 |
-| 1222862400 |          0.40362 |
-| 1222884000 |         -0.36275 |
-| 1222905600 |         -0.37074 |
+|  timestamp |     value |
+|------------|-----------|
+| 1222819200 | -0.366358 |
+| 1222840800 | -0.394107 |
+| 1222862400 |  0.403624 |
+| 1222884000 | -0.362759 |
+| 1222905600 | -0.370746 |
 
 ### Output
 
@@ -92,10 +92,10 @@ severity of the detected anomaly.
 
 An example of such a table is:
 
-|      start |        end |              score |
-|------------|------------|--------------------|
-| 1222970400 | 1222992000 | 0.5726435987608016 |
-| 1223013600 | 1223035200 | 0.5726435987608016 |
+|      start |        end |    score |
+|------------|------------|----------|
+| 1222970400 | 1222992000 | 0.572643 |
+| 1223013600 | 1223035200 | 0.572643 |
 
 ## Dataset we use in this library
 
@@ -146,14 +146,14 @@ This is the list of pipelines available so far, which will grow over time:
 In this repository we maintain this up-to-date leaderboard with the current scoring of the
 pipelines according to the scoring procedure explained in the [SCORING.md](SCORING.md) document.
 
-| name | score | rank |
-|------|-------|------|
-| LSTM Dynamic Thresholding | 0.96235 | 1 |
-| Sum 24h LSTM | 0.95402 | 2 |
-| Mean 24h LSTM | 0.95363 | 3 |
-| Median 24h LSTM | 0.95363 | 4 |
-| Skew 24h LSTM | 0.95132 | 5 |
-| Dummy | 0.87493 | 6 |
+|                      name |    score | rank |
+|---------------------------|----------|------|
+| LSTM Dynamic Thresholding | 0.962357 |    1 |
+| Sum 24h LSTM              | 0.954022 |    2 |
+| Mean 24h LSTM             | 0.953636 |    3 |
+| Median 24h LSTM           | 0.953636 |    4 |
+| Skew 24h LSTM             | 0.951320 |    5 |
+| Dummy                     | 0.874935 |    6 |
 
 
 ## Getting Started
