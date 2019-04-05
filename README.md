@@ -222,12 +222,14 @@ To do so, we need to import the `orion.data.load_signal` function and call it pa
 the `'S-1'` name.
 
 ```
-In [1]: from orion.data import load_signal
+from orion.data import load_signal
 
-In [2]: data = load_signal('S-1')
+data = load_signal('S-1')
+```
 
-In [3]: data.head()
-Out[3]:
+The output will be a table in the format described above:
+
+```
     timestamp     value
 0  1222819200 -0.366359
 1  1222840800 -0.394108
@@ -244,14 +246,11 @@ In order to do so, we will have import the `orion.analysis.analyze` function and
 the loaded data and the path to the pipeline JSON that we want to use:
 
 ```
-In [4]: from orion.analysis import analyze
+from orion.analysis import analyze
 
-In [5]: pipeline_path = 'orion/pipelines/lstm_dynamic_threshold.json'
+pipeline_path = 'orion/pipelines/lstm_dynamic_threshold.json'
 
-In [6]: anomalies = analyze(pipeline_path, data)
-Using TensorFlow backend.
-Epoch 1/1
-9899/9899 [==============================] - 55s 6ms/step - loss: 0.0559 - mean_squared_error: 0.0559
+anomalies = analyze(pipeline_path, data)
 ```
 
 **NOTE:** Depending on your system and the exact versions that you might have installed
@@ -262,8 +261,6 @@ The output of the previous command will be a ``pandas.DataFrame`` containing a t
 Output format described above:
 
 ```
-In [7]: anomalies
-Out[7]:
         start         end     score
 0  1398060000  1399442400  0.168381
 ```
@@ -276,12 +273,14 @@ good our anomaly detection was by comparing those with our detected intervals.
 For this, we will first load the known anomalies for the signal that we are using:
 
 ```
-In [8]: from orion.data import load_anomalies
+from orion.data import load_anomalies
 
-In [9]: truth = load_anomalies('S-1')
+known_anomalies = load_anomalies('S-1')
+```
 
-In [10]: truth
-Out[10]:
+The output will be a table in the same format as the `anomalies` one.
+
+```
         start         end
 0  1392768000  1402423200
 ```
@@ -291,13 +290,11 @@ to the `orion.metrics.accuracy_score` and `orion.metrics.f1_score` functions in 
 to compute a score that indicates how good our anomaly detection was:
 
 ```
-In [11]: from orion.metrics import accuracy_score, f1_score
+from orion.metrics import accuracy_score, f1_score
 
-In [11]: accuracy_score(truth, anomalies, data)
-Out[11]: 0.956346078044935
+accuracy_score(known_anomalies, anomalies, data)  # -> 0.956346078044935
 
-In [12]: f1_score(truth, anomalies, data)
-Out[12]: 0.173492893794023
+f1_score(known_anomalies, anomalies, data)  # -> 0.173492893794023
 ```
 
 
