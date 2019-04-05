@@ -72,6 +72,7 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS):
         except Exception as ex:
             LOGGER.exception("Exception scoring signal %s", signal)
             score = (0, 0)
+            score = {name: 0 for name in metrics.keys()}
 
         scores.append(score)
 
