@@ -182,7 +182,7 @@ docker-jupyter-clean: ## Remove the orion-jupyter docker image
 	docker rmi -f orion-jupyter
 
 .PHONY: docker-jupyter-build
-docker-jupyter-build: docker-jupyter-clean ## Build the orion-jupyter docker image using repo2docker
+docker-jupyter-build: ## Build the orion-jupyter docker image using repo2docker
 	docker build -f docker/orion-jupyter.Dockerfile -t orion-jupyter .
 
 .PHONY: docker-jupyter-save

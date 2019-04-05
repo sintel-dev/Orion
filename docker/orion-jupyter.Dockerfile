@@ -9,7 +9,7 @@ RUN pip install -e /app && pip install jupyter
 COPY orion /app/orion
 COPY notebooks /app/notebooks
 
-RUN adduser jupyter --uid 1000 --disabled-password --system
+RUN adduser jupyter --uid 1000 --disabled-password --system && chown -R jupyter /app
 
 WORKDIR /app
 USER jupyter
