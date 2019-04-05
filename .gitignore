@@ -108,3 +108,4 @@ ENV/
 data/
 output/
 notebooks/ses
+notebooks-private/
