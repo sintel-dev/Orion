@@ -7,7 +7,10 @@ import os
 import sys
 from urllib.error import HTTPError
 
+import tabulate
+from orion import PIPELINES
 from orion.data import load_signal
+from orion.evaluation import evaluate_pipelines
 from orion.explorer import OrionExplorer
 from orion.utils import logging_setup
 
@@ -142,16 +145,37 @@ def _process(explorer, args):
             print("Error processing CSV {}: {}".format(path, ex))
 
 
+def _evaluate(args):
+    if args.all:
+        pipelines = PIPELINES
+    else:
+        pipelines = args.pipeline
+
+    scores = evaluate_pipelines(pipelines, args.signal, args.metric, args.rank)
+
+    if args.output:
+        print('Writing results in {}'.format(args.output))
+        scores.to_csv(args.output, index=False)
+
+    print(tabulate.tabulate(
+        scores,
+        showindex=False,
+        tablefmt='github',
+        headers=scores.columns
+    ))
+
 def get_parser():
 
     # Common Parent - Shared options
-    common = argparse.ArgumentParser(add_help=False)
+    base = argparse.ArgumentParser(add_help=False)
+    base.add_argument('-l', '--logfile',
+                      help='Name of the logfile. If not given, log to stdout.')
+    base.add_argument('-v', '--verbose', action='count', default=0,
+                      help='Be verbose. Use -vv for increased verbosity.')
+
+    common = argparse.ArgumentParser(add_help=False, parents=[base])
     common.add_argument('-D', '--database', default='orion',
                         help='Name of the database to connect to. Defaults to "orion"')
-    common.add_argument('-l', '--logfile',
-                        help='Name of the logfile. If not given, log to stdout.')
-    common.add_argument('-v', '--verbose', action='count', default=0,
-                        help='Be verbose. Use -vv for increased verbosity.')
 
     common_user = argparse.ArgumentParser(add_help=False, parents=[common])
     common_user.add_argument('-u', '--user', default=getpass.getuser(), help='User identifier')
@@ -267,6 +291,20 @@ def get_parser():
     process.add_argument('paths', nargs='+', help='Paths to the CSV files')
     process.set_defaults(function=_process)
 
+    # Evaluate
+    evaluate = action.add_parser('evaluate', parents=[base],
+                                 help='Evaluate one or more pipelines on NASA signals')
+    evaluate.add_argument('-s', '--signal', action='append',
+                          help='Signal to use. Use multiple times for more signals.')
+    evaluate.add_argument('-m', '--metric', action='append',
+                          help='Metric to use. Use multiple times for more metrics.')
+    evaluate.add_argument('-r', '--rank', help='Rank scores based on this metric.')
+    evaluate.add_argument('-o', '--output', help='Write the results in the specified CSV file.')
+    group = evaluate.add_mutually_exclusive_group(required=True)
+    group.add_argument('-a', '--all', action='store_true', help='Evaluate all known pipelines.')
+    group.add_argument('pipeline', default=[], nargs='*',
+                       help='Paths to the pipeline JSONs to evaluate')
+
     return parser
 
 
@@ -276,6 +314,9 @@ def main():
 
     logging_setup(args.verbose, args.logfile)
 
-    explorer = OrionExplorer(args.database)
+    if args.action == 'evaluate':
+        _evaluate(args)
+    else:
+        explorer = OrionExplorer(args.database)
 
-    args.function(explorer, args)
+        args.function(explorer, args)
