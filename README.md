@@ -176,21 +176,21 @@ In order to be fully operational, **Orion** requires having access to a
 Since **Orion** is a private project, the only way to install it is by cloning or downloading
 its sources from its [GitHub repository](https://github.com/D3-AI/Orion):
 
-```
+```bash
 git clone git@github.com:D3-AI/Orion.git
 ```
 
 After cloning the repository and creating and activating a virtualenv, you can install
 the project with this command:
 
-```
+```bash
 make install
 ```
 
 For development, use the following command instead, which will install some additional
 dependencies for code linting and testing
 
-```
+```bash
 make install-develop
 ```
 
@@ -206,14 +206,6 @@ For more details please head to the [Docker Usage](#docker-usage) section below.
 In the following steps we will show a short guide about how to run one of the **Orion Pipelines**
 on one of the signals from the **Demo Dataset**.
 
-**NOTE**: All the examples of this tutorial are run in an [IPython Shell](https://ipython.org/),
-which you can install by running the following commands inside your *virtualenv*:
-
-```
-pip install ipython
-ipython
-```
-
 #### 1. Load the data
 
 In the first step we will load the **S-1** signal from the **Demo Dataset**,
@@ -221,7 +213,7 @@ In the first step we will load the **S-1** signal from the **Demo Dataset**,
 To do so, we need to import the `orion.data.load_signal` function and call it passing
 the `'S-1'` name.
 
-```
+```python
 from orion.data import load_signal
 
 data = load_signal('S-1')
@@ -245,7 +237,7 @@ Once we have the data, let us try to use the LSTM pipeline to analyze it and sea
 In order to do so, we will have import the `orion.analysis.analyze` function and pass it
 the loaded data and the path to the pipeline JSON that we want to use:
 
-```
+```python
 from orion.analysis import analyze
 
 pipeline_path = 'orion/pipelines/lstm_dynamic_threshold.json'
@@ -272,7 +264,7 @@ good our anomaly detection was by comparing those with our detected intervals.
 
 For this, we will first load the known anomalies for the signal that we are using:
 
-```
+```python
 from orion.data import load_anomalies
 
 known_anomalies = load_anomalies('S-1')
@@ -289,7 +281,7 @@ Afterwards, we pass the ground truth, the detected anomalies and the original da
 to the `orion.metrics.accuracy_score` and `orion.metrics.f1_score` functions in order
 to compute a score that indicates how good our anomaly detection was:
 
-```
+```python
 from orion.metrics import accuracy_score, f1_score
 
 accuracy_score(known_anomalies, anomalies, data)  # -> 0.956346078044935
@@ -344,7 +336,7 @@ internet connection that allows downloading the base image and the additional py
 After having cloned the **Orion** repository, all you have to do in order to build the Orion Docker
 Image is running this command:
 
-```
+```bash
 make docker-jupyter-build
 ```
 
@@ -362,14 +354,14 @@ The simplest way to distribute the recently created image is [using a registry](
 In order to do so, we will need to have write access to a public or private registry (remember to
 [login](https://docs.docker.com/engine/reference/commandline/login/)!) and execute these commands:
 
-```
+```bash
 docker tag orion-jupyter:latest your-registry-name:some-tag
 docker push your-registry-name:some-tag
 ```
 
 Afterwards, in the receiving machine:
 
-```
+```bash
 docker pull your-registry-name:some-tag
 docker tag your-registry-name:some-tag orion-jupyter:latest
 ```
@@ -381,13 +373,13 @@ using the following command.
 
 In the system that already has the image:
 
-```
+```bash
 docker save --output orion-jupyter.tar orion-jupyter
 ```
 
 Then copy over the file `orion-jupyter.tar` to the new system and there, run:
 
-```
+```bash
 docker load --input orion-jupyter.tar
 ```
 
@@ -406,7 +398,7 @@ This can be done in two ways:
 If the Orion source code is available in the system, running the image is as simple as running
 this command from within the root of the project:
 
-```
+```bash
 make docker-jupyter-run
 ```
 
@@ -423,7 +415,7 @@ up in your `notebooks` folder!
 If the Orion source code is not available in the system and only the Docker Image is, you can
 still run the image by using this command:
 
-```
+```bash
 docker run -ti -p8888:8888 orion-jupyter
 ```
 
