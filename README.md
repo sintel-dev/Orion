@@ -149,10 +149,10 @@ pipelines according to the scoring procedure explained in the [SCORING.md](SCORI
 | pipeline                  |   rank |   accuracy |       f1 |   precision |   recall |
 |---------------------------|--------|------------|----------|-------------|----------|
 | LSTM Dynamic Thresholding |      1 |   0.963781 | 0.216231 |   0.666667  | 0.130074 |
-| Median 24h LSTM           |      2 |   0.960239 | 0        |   0         | 0        |
-| Mean 24h LSTM             |      3 |   0.959948 | 0        |   0         | 0        |
-| Sum 24h LSTM              |      4 |   0.959275 | 0        |   0         | 0        |
-| Skew 24h LSTM             |      5 |   0.956565 | 0        |   0         | 0        |
+| Median 24h LSTM           |      2 |   0.960239 | - Na -   |   - Na -    | - Na -   |
+| Mean 24h LSTM             |      3 |   0.959948 | - Na -   |   - Na -    | - Na -   |
+| Sum 24h LSTM              |      4 |   0.959275 | - Na -   |   - Na -    | - Na -   |
+| Skew 24h LSTM             |      5 |   0.956565 | - Na -   |   - Na -    | - Na -   |
 | Dummy                     |      6 |   0.911606 | 0.094981 |   0.0708985 | 0.156801 |
 
 
