@@ -151,7 +151,6 @@ pipelines according to the scoring procedure explained in the [SCORING.md](SCORI
 | Median 24h LSTM           |      3 |   0.90824  | 0.00423816 |   0.0438055 | 0.00497061  |
 | Skew 24h LSTM             |      4 |   0.900272 | 0.00060083 |   0.0220449 | 0.000311794 |
 | Mean 24h LSTM             |      5 |   0.871457 | 0.00610279 |   0.103166  | 0.00593213  |
-| Dummy                     |      6 |   0.818975 | 0.108436   |   0.13994   | 0.133865    |
 
 
 ## Getting Started
