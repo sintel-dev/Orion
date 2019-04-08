@@ -144,14 +144,14 @@ This is the list of pipelines available so far, which will grow over time:
 In this repository we maintain this up-to-date leaderboard with the current scoring of the
 pipelines according to the scoring procedure explained in the [SCORING.md](SCORING.md) document.
 
-| pipeline                  |   rank |   accuracy |       f1 |   precision |   recall |
-|---------------------------|--------|------------|----------|-------------|----------|
-| LSTM Dynamic Thresholding |      1 |   0.963781 | 0.216231 |   0.666667  | 0.130074 |
-| Median 24h LSTM           |      2 |   0.960239 | - Na -   |   - Na -    | - Na -   |
-| Mean 24h LSTM             |      3 |   0.959948 | - Na -   |   - Na -    | - Na -   |
-| Sum 24h LSTM              |      4 |   0.959275 | - Na -   |   - Na -    | - Na -   |
-| Skew 24h LSTM             |      5 |   0.956565 | - Na -   |   - Na -    | - Na -   |
-| Dummy                     |      6 |   0.911606 | 0.094981 |   0.0708985 | 0.156801 |
+| pipeline                  |   rank |   accuracy |         f1 |   precision |      recall |
+|---------------------------|--------|------------|------------|-------------|-------------|
+| LSTM Dynamic Thresholding |      1 |   0.914346 | 0.0959928  |   0.519355  | 0.0632723   |
+| Sum 24h LSTM              |      2 |   0.909754 | 0.0051408  |   0.12791   | 0.0033509   |
+| Median 24h LSTM           |      3 |   0.90824  | 0.00423816 |   0.0438055 | 0.00497061  |
+| Skew 24h LSTM             |      4 |   0.900272 | 0.00060083 |   0.0220449 | 0.000311794 |
+| Mean 24h LSTM             |      5 |   0.871457 | 0.00610279 |   0.103166  | 0.00593213  |
+| Dummy                     |      6 |   0.818975 | 0.108436   |   0.13994   | 0.133865    |
 
 
 ## Getting Started
