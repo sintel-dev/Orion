@@ -1,13 +1,11 @@
 import logging
-import sys
 import warnings
 
-import numpy as np
 import pandas as pd
 
 from orion import metrics
 from orion.analysis import analyze
-from orion.data import download, load_anomalies, load_signal
+from orion.data import load_anomalies, load_signal
 
 warnings.filterwarnings("ignore")
 
@@ -69,7 +67,7 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS):
         try:
             LOGGER.info("Scoring signal %s", signal)
             score = _evaluate_on_signal(pipeline, signal, metrics)
-        except Exception as ex:
+        except Exception:
             LOGGER.exception("Exception scoring signal %s", signal)
             score = (0, 0)
             score = {name: 0 for name in metrics.keys()}
