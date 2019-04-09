@@ -8,6 +8,7 @@ import sys
 from urllib.error import HTTPError
 
 import tabulate
+
 from orion import PIPELINES
 from orion.data import load_signal
 from orion.evaluation import evaluate_pipelines
