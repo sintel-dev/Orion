@@ -1,13 +1,21 @@
-Welcome to Orion's documentation!
-======================================
+.. mdinclude:: ../README.md
 
 .. toctree::
+   :hidden:
    :maxdepth: 2
-   :caption: Contents:
 
-   installation
-   usage
-   modules
+   Overview <readme>
+
+.. toctree::
+   :caption: Advanced Usage
+   :hidden:
+
+   API Reference <api/orion>
+
+.. toctree::
+   :caption: Resources
+   :hidden:
+
    contributing
    authors
    history
