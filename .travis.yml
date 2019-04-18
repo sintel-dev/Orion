@@ -12,11 +12,6 @@ script: tox
 
 deploy:
 
-  # Automatically build and deploy documentation to GitHub Pages after every
-  # commit
-  # Follow the instructions at https://docs.travis-ci.com/user/deployment/pages/
-  # to setup a personal deployment token and then provide it as a secure
-  # environment variable at https://travis-ci.org/HDI-Project/btb/settings
   - provider: pages
     skip-cleanup: true
     github-token: "$GITHUB_TOKEN"
