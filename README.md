@@ -41,7 +41,7 @@ With the ready availability of *automated machine learning* tools, the focus is 
 * [Data Format](#data-format)
    * [Input](#input)
    * [Output](#output)
-* [Dataset we use in this library](#dataset-we-use-in-this-library)
+   * [Dataset we use in this library](#dataset-we-use-in-this-library)
 * [Orion Pipelines](#orion-pipelines)
    * [Current Available Pipelines](#current-available-pipelines)
    * [Leaderboard](#leaderboard)
@@ -51,14 +51,14 @@ With the ready availability of *automated machine learning* tools, the focus is 
    * [Quickstart: Run a Pipeline on the Demo Dataset](#quickstart-run-a-pipeline-on-the-demo-dataset)
 * [Database](#database)
 * [Docker Usage](#docker-usage)
-   * [Requirements](#requirements-1)
+   * [Docker Requirements](#docker-requirements)
    * [Building the Orion Docker Image](#building-the-orion-docker-image)
    * [Distributing the Orion Docker Image](#distributing-the-orion-docker-image)
    * [Running the orion-jupyter image](#running-the-orion-jupyter-image)
 
-## Data Format
+# Data Format
 
-### Input
+## Input
 
 **Orion Pipelines** work on time Series that are provided as a single table of telemetry
 observations with two columns:
@@ -77,7 +77,7 @@ This is an example of such table:
 | 1222884000 | -0.362759 |
 | 1222905600 | -0.370746 |
 
-### Output
+## Output
 
 The output of the **Orion Pipelines** is another table that contains the detected anomalous
 intervals and that has at least two columns:
@@ -108,7 +108,7 @@ This dataset is adapted from the one used for the experiments in the
 [Original source data is available for download here](https://s3-us-west-2.amazonaws.com/telemanom/data.zip).
 We thank NASA for making this data available for public use.
 
-## Orion Pipelines
+# Orion Pipelines
 
 The main component in the Orion project are the **Orion Pipelines**, which consist of
 [MLBlocks Pipelines](https://hdi-project.github.io/MLBlocks/advanced_usage/pipelines.html)
@@ -123,7 +123,7 @@ As ``MLPipeline`` instances, **Orion Pipelines**:
 * can be stored as a JSON file that includes all the primitives that compose them, as well as
   other required configuration options.
 
-### Current Available Pipelines
+## Current Available Pipelines
 
 In the **Orion Project**, the pipelines are included as **JSON** files, which can be found
 inside the [orion/pipelines](orion/pipelines) folder.
@@ -139,7 +139,7 @@ This is the list of pipelines available so far, which will grow over time:
 | Sum 24h LSTM | [orion/pipelines/sum_24h_lstm.json](orion/pipelines/sum_24h_lstm.json) | LSTM Based pipeline with 24h sum aggregation preprocessing |
 | Skew 24h LSTM | [orion/pipelines/skew_24h_lstm.json](orion/pipelines/skew_24h_lstm.json) | LSTM Based pipeline with 24h skew aggregation preprocessing |
 
-### Leaderboard
+## Leaderboard
 
 In this repository we maintain this up-to-date leaderboard with the current scoring of the
 pipelines according to the scoring procedure explained in the [SCORING.md](SCORING.md) document.
@@ -153,11 +153,11 @@ pipelines according to the scoring procedure explained in the [SCORING.md](SCORI
 | Mean 24h LSTM             |      5 |   0.871457 | 0.00610279 |   0.103166  | 0.00593213  |
 
 
-## Getting Started
+# Getting Started
 
-### Requirements
+## Requirements
 
-#### Python
+### Python
 
 **Orion** has been developed and runs on [Python 3.6](https://www.python.org/downloads/release/python-360/).
 
@@ -165,12 +165,12 @@ Also, although it is not strictly required, the usage of a [virtualenv](https://
 is highly recommended in order to avoid interfering with other software installed in the system
 where you are trying to run **Orion**.
 
-#### MongoDB
+### MongoDB
 
 In order to be fully operational, **Orion** requires having access to a
 [MongoDB](https://www.mongodb.com/) database running version **3.6** or higher.
 
-### Install
+## Install
 
 Since **Orion** is a private project, the only way to install it is by cloning or downloading
 its sources from its [GitHub repository](https://github.com/D3-AI/Orion):
@@ -193,19 +193,19 @@ dependencies for code linting and testing
 make install-develop
 ```
 
-#### Docker
+### Docker
 
 Even thought it's not mandatory to use it, **Orion** comes with the possibility to be
 distributed and run as a docker image, making its usage in offline systems easier.
 
 For more details please head to the [Docker Usage](#docker-usage) section below.
 
-### Quickstart: Run a Pipeline on the Demo Dataset
+## Quickstart: Run a Pipeline on the Demo Dataset
 
 In the following steps we will show a short guide about how to run one of the **Orion Pipelines**
 on one of the signals from the **Demo Dataset**.
 
-#### 1. Load the data
+### 1. Load the data
 
 In the first step we will load the **S-1** signal from the **Demo Dataset**,
 
@@ -229,7 +229,7 @@ The output will be a table in the format described above:
 4  1222905600 -0.370746
 ```
 
-#### 2. Detect anomalies using a pipeline
+### 2. Detect anomalies using a pipeline
 
 Once we have the data, let us try to use the LSTM pipeline to analyze it and search for anomalies.
 
@@ -256,7 +256,7 @@ Output format described above:
 0  1398060000  1399442400  0.168381
 ```
 
-#### 3. Evaluate performance
+### 3. Evaluate performance
 
 In this next step we will load some already known anomalous intervals and evaluate how
 good our anomaly detection was by comparing those with our detected intervals.
@@ -288,7 +288,6 @@ accuracy_score(known_anomalies, anomalies, data)  # -> 0.956346078044935
 f1_score(known_anomalies, anomalies, data)  # -> 0.173492893794023
 ```
 
-
 ## Database
 
 **Orion** comes ready to use a MongoDB Database to easily register and explore:
@@ -314,13 +313,13 @@ The complete **Database schema and usage instructions** can be found in the
 [DATABASE.md](DATABASE.md) file
 
 
-## Docker Usage
+# Docker Usage
 
 **Orion** comes configured and ready to be distributed and run as a docker image which starts
 a jupyter notebook already configured to use orion, with all the required dependencies already
 installed.
 
-### Requirements
+## Docker Requirements
 
 The only requirement in order to run the Orion Docker image is to have Docker installed and
 that the user has enough permissions to run it.
@@ -330,7 +329,7 @@ Installation instructions for any possible system compatible can be found [here]
 Additionally, the system that builds the Orion Docker image will also need to have a working
 internet connection that allows downloading the base image and the additional python depenedencies.
 
-### Building the Orion Docker Image
+## Building the Orion Docker Image
 
 After having cloned the **Orion** repository, all you have to do in order to build the Orion Docker
 Image is running this command:
@@ -342,11 +341,11 @@ make docker-jupyter-build
 After a few minutes, the new image, called `orion-jupyter`, will have been built into the system
 and will be ready to be used or distributed.
 
-### Distributing the Orion Docker Image
+## Distributing the Orion Docker Image
 
 Once the `orion-jupyter` image is built, it can be distributed in several ways.
 
-#### Distributing using a Docker registry
+### Distributing using a Docker registry
 
 The simplest way to distribute the recently created image is [using a registry](https://docs.docker.com/registry/).
 
@@ -365,7 +364,7 @@ docker pull your-registry-name:some-tag
 docker tag your-registry-name:some-tag orion-jupyter:latest
 ```
 
-#### Distributing as a file
+### Distributing as a file
 
 If the distribution of the image has to be done offline for any reason, it can be achieved
 using the following command.
@@ -386,13 +385,13 @@ After these commands, the `orion-jupyter` image should be available and ready to
 new system.
 
 
-### Running the orion-jupyter image
+## Running the orion-jupyter image
 
 Once the `orion-jupyter` image has been built, pulled or loaded, it is ready to be run.
 
 This can be done in two ways:
 
-#### Running orion-jupyter with the code
+### Running orion-jupyter with the code
 
 If the Orion source code is available in the system, running the image is as simple as running
 this command from within the root of the project:
@@ -409,7 +408,7 @@ which means that any changes that you do in your local code will immediately be 
 within your notebooks, and that any notebook that you create within jupyter will also show
 up in your `notebooks` folder!
 
-#### Running orion-jupyter without the orion code
+### Running orion-jupyter without the orion code
 
 If the Orion source code is not available in the system and only the Docker Image is, you can
 still run the image by using this command:
