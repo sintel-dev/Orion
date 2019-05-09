@@ -204,3 +204,8 @@ docker-jupyter-start: ## Start the orion-jupyter image as a daemon
 .PHONY: docker-jupyter-stop
 docker-jupyter-stop: ## Stop the orion-jupyter daemon
 	docker stop orion-jupyter
+
+.PHONY: docker-distribute
+docker-jupyter-package: docker-jupyter-save ## Build the docker-jupyter image and package it for distribution
+	docker/package.sh
+
