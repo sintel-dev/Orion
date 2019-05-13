@@ -207,15 +207,19 @@ on one of the signals from the **Demo Dataset**.
 
 ### 1. Load the data
 
-In the first step we will load the **S-1** signal from the **Demo Dataset**,
+In the first step we will load the **S-1** signal from the **Demo Dataset**.
 
-To do so, we need to import the `orion.data.load_signal` function and call it passing
-the `'S-1'` name.
+We will do so in two parts, train and test, as we will use the first part to fit the
+pipeline and the second one to evaluate its performance.
+
+To do so, we need to import the `orion.data.load_signal` function and call it twice passing
+the `'S-1-train'` and `'S-1-train'` names.
 
 ```python
 from orion.data import load_signal
 
-data = load_signal('S-1')
+train = load_signal('S-1-train')
+test = load_signal('S-1-test')
 ```
 
 The output will be a table in the format described above:
@@ -234,14 +238,14 @@ The output will be a table in the format described above:
 Once we have the data, let us try to use the LSTM pipeline to analyze it and search for anomalies.
 
 In order to do so, we will have import the `orion.analysis.analyze` function and pass it
-the loaded data and the path to the pipeline JSON that we want to use:
+the train and test dataframes and the path to the pipeline JSON that we want to use:
 
 ```python
 from orion.analysis import analyze
 
 pipeline_path = 'orion/pipelines/lstm_dynamic_threshold.json'
 
-anomalies = analyze(pipeline_path, data)
+anomalies = analyze(pipeline_path, train, test)
 ```
 
 **NOTE:** Depending on your system and the exact versions that you might have installed
@@ -253,7 +257,7 @@ Output format described above:
 
 ```
         start         end     score
-0  1398060000  1399442400  0.168381
+0  1394323200  1399701600  0.673494
 ```
 
 ### 3. Evaluate performance
@@ -276,16 +280,16 @@ The output will be a table in the same format as the `anomalies` one.
 0  1392768000  1402423200
 ```
 
-Afterwards, we pass the ground truth, the detected anomalies and the original data
+Afterwards, we pass the ground truth, the detected anomalies and the original test data
 to the `orion.metrics.accuracy_score` and `orion.metrics.f1_score` functions in order
 to compute a score that indicates how good our anomaly detection was:
 
 ```python
 from orion.metrics import accuracy_score, f1_score
 
-accuracy_score(known_anomalies, anomalies, data)  # -> 0.956346078044935
+accuracy_score(known_anomalies, anomalies, test)  # -> 0.972987721691678
 
-f1_score(known_anomalies, anomalies, data)  # -> 0.173492893794023
+f1_score(known_anomalies, anomalies, test)  # -> 0.7155172413793103
 ```
 
 ## Database
