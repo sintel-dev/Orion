@@ -1,0 +1,7 @@
+orion.metrics module
+====================
+
+.. automodule:: orion.metrics
+    :members:
+    :undoc-members:
+    :show-inheritance:

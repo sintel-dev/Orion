@@ -1,0 +1,22 @@
+orion package
+=============
+
+.. automodule:: orion
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+
+   orion.analysis
+   orion.cli
+   orion.data
+   orion.evaluation
+   orion.explorer
+   orion.metrics
+   orion.model
+   orion.utils
+

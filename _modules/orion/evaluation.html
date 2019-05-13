@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>orion.evaluation &mdash; Orion 0.1.0-dev documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Orion
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Orion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#id1">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id2">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id3">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id4">Dataset we use in this library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#id5">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id6">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id9">Leaderboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#id10">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id11">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id13">Install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#docker">Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id15">Quickstart: Run a Pipeline on the Demo Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#evaluate-performance">3. Evaluate performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id16">Database</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#id17">Docker Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id18">Docker Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id19">Building the Orion Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id20">Distributing the Orion Docker Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#distributing-as-a-file">Distributing as a file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id21">Running the orion-jupyter image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/orion.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/orion.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.data.html">orion.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.explorer.html">orion.explorer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.model.html">orion.model module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../history.html#id1">0.1.0</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Orion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>orion.evaluation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for orion.evaluation</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">orion</span> <span class="k">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">orion.analysis</span> <span class="k">import</span> <span class="n">analyze</span>
+<span class="kn">from</span> <span class="nn">orion.data</span> <span class="k">import</span> <span class="n">load_anomalies</span><span class="p">,</span> <span class="n">load_signal</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="n">METRICS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">,</span>
+    <span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">,</span>
+    <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">,</span>
+    <span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">NASA_SIGNALS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;P-1&#39;</span><span class="p">,</span> <span class="s1">&#39;S-1&#39;</span><span class="p">,</span> <span class="s1">&#39;E-1&#39;</span><span class="p">,</span> <span class="s1">&#39;E-2&#39;</span><span class="p">,</span> <span class="s1">&#39;E-3&#39;</span><span class="p">,</span> <span class="s1">&#39;E-4&#39;</span><span class="p">,</span> <span class="s1">&#39;E-5&#39;</span><span class="p">,</span> <span class="s1">&#39;E-6&#39;</span><span class="p">,</span> <span class="s1">&#39;E-7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;E-8&#39;</span><span class="p">,</span> <span class="s1">&#39;E-9&#39;</span><span class="p">,</span> <span class="s1">&#39;E-10&#39;</span><span class="p">,</span> <span class="s1">&#39;E-11&#39;</span><span class="p">,</span> <span class="s1">&#39;E-12&#39;</span><span class="p">,</span> <span class="s1">&#39;E-13&#39;</span><span class="p">,</span> <span class="s1">&#39;A-1&#39;</span><span class="p">,</span> <span class="s1">&#39;D-1&#39;</span><span class="p">,</span> <span class="s1">&#39;P-3&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;D-2&#39;</span><span class="p">,</span> <span class="s1">&#39;D-3&#39;</span><span class="p">,</span> <span class="s1">&#39;D-4&#39;</span><span class="p">,</span> <span class="s1">&#39;A-2&#39;</span><span class="p">,</span> <span class="s1">&#39;A-3&#39;</span><span class="p">,</span> <span class="s1">&#39;A-4&#39;</span><span class="p">,</span> <span class="s1">&#39;G-1&#39;</span><span class="p">,</span> <span class="s1">&#39;G-2&#39;</span><span class="p">,</span> <span class="s1">&#39;D-5&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;D-6&#39;</span><span class="p">,</span> <span class="s1">&#39;D-7&#39;</span><span class="p">,</span> <span class="s1">&#39;F-1&#39;</span><span class="p">,</span> <span class="s1">&#39;P-4&#39;</span><span class="p">,</span> <span class="s1">&#39;G-3&#39;</span><span class="p">,</span> <span class="s1">&#39;T-1&#39;</span><span class="p">,</span> <span class="s1">&#39;T-2&#39;</span><span class="p">,</span> <span class="s1">&#39;D-8&#39;</span><span class="p">,</span> <span class="s1">&#39;D-9&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;F-2&#39;</span><span class="p">,</span> <span class="s1">&#39;G-4&#39;</span><span class="p">,</span> <span class="s1">&#39;T-3&#39;</span><span class="p">,</span> <span class="s1">&#39;D-11&#39;</span><span class="p">,</span> <span class="s1">&#39;D-12&#39;</span><span class="p">,</span> <span class="s1">&#39;B-1&#39;</span><span class="p">,</span> <span class="s1">&#39;G-6&#39;</span><span class="p">,</span> <span class="s1">&#39;G-7&#39;</span><span class="p">,</span> <span class="s1">&#39;P-7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;R-1&#39;</span><span class="p">,</span> <span class="s1">&#39;A-5&#39;</span><span class="p">,</span> <span class="s1">&#39;A-6&#39;</span><span class="p">,</span> <span class="s1">&#39;A-7&#39;</span><span class="p">,</span> <span class="s1">&#39;D-13&#39;</span><span class="p">,</span> <span class="s1">&#39;A-8&#39;</span><span class="p">,</span> <span class="s1">&#39;A-9&#39;</span><span class="p">,</span> <span class="s1">&#39;F-3&#39;</span><span class="p">,</span> <span class="s1">&#39;M-6&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;M-1&#39;</span><span class="p">,</span> <span class="s1">&#39;M-2&#39;</span><span class="p">,</span> <span class="s1">&#39;S-2&#39;</span><span class="p">,</span> <span class="s1">&#39;P-10&#39;</span><span class="p">,</span> <span class="s1">&#39;T-4&#39;</span><span class="p">,</span> <span class="s1">&#39;T-5&#39;</span><span class="p">,</span> <span class="s1">&#39;F-7&#39;</span><span class="p">,</span> <span class="s1">&#39;M-3&#39;</span><span class="p">,</span> <span class="s1">&#39;M-4&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;M-5&#39;</span><span class="p">,</span> <span class="s1">&#39;P-15&#39;</span><span class="p">,</span> <span class="s1">&#39;C-1&#39;</span><span class="p">,</span> <span class="s1">&#39;C-2&#39;</span><span class="p">,</span> <span class="s1">&#39;T-12&#39;</span><span class="p">,</span> <span class="s1">&#39;T-13&#39;</span><span class="p">,</span> <span class="s1">&#39;F-4&#39;</span><span class="p">,</span> <span class="s1">&#39;F-5&#39;</span><span class="p">,</span> <span class="s1">&#39;D-14&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;T-9&#39;</span><span class="p">,</span> <span class="s1">&#39;P-14&#39;</span><span class="p">,</span> <span class="s1">&#39;T-8&#39;</span><span class="p">,</span> <span class="s1">&#39;P-11&#39;</span><span class="p">,</span> <span class="s1">&#39;D-15&#39;</span><span class="p">,</span> <span class="s1">&#39;D-16&#39;</span><span class="p">,</span> <span class="s1">&#39;M-7&#39;</span><span class="p">,</span> <span class="s1">&#39;F-8&#39;</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_evaluate_on_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="n">anomalies</span> <span class="o">=</span> <span class="n">analyze</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="n">truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">scorer</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">scorer</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="evaluate_pipeline"><a class="viewcode-back" href="../../api/orion.evaluation.html#orion.evaluation.evaluate_pipeline">[docs]</a><span class="k">def</span> <span class="nf">evaluate_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="n">NASA_SIGNALS</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">METRICS</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Evaluate a pipeline on multiple signals with multiple metrics.</span>
+
+<span class="sd">    The pipeline is used to analyze the given signals and later on the</span>
+<span class="sd">    detected anomalies are scored against the known anomalies using the</span>
+<span class="sd">    indicated metrics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pipeline (str): Path to the pipeline JSON.</span>
+<span class="sd">        signals (list, optional): list of signals. If not given, all the NASA signals</span>
+<span class="sd">            are used.</span>
+<span class="sd">        metrics (dict, optional): dictionary with metric names as keys and</span>
+<span class="sd">            scoring functions as values. If not given, all the available metrics will</span>
+<span class="sd">            be used.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.Series: Series object containing the average of the scores obtained with</span>
+<span class="sd">            each scoring function accross all the signals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scoring signal </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">signal</span><span class="p">)</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">_evaluate_on_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception scoring signal </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">signal</span><span class="p">)</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="evaluate_pipelines"><a class="viewcode-back" href="../../api/orion.evaluation.html#orion.evaluation.evaluate_pipelines">[docs]</a><span class="k">def</span> <span class="nf">evaluate_pipelines</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Evaluate a list of pipelines on multiple signals with multiple metrics.</span>
+
+<span class="sd">    The pipelines are used to analyze the given signals and later on the</span>
+<span class="sd">    detected anomalies are scored against the known anomalies using the</span>
+<span class="sd">    indicated metrics.</span>
+
+<span class="sd">    Finally, the scores obtained with each metric are averaged accross all the signals,</span>
+<span class="sd">    ranked by the indicated metric and returned on a pandas.DataFrame.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pipelines (dict or list): dictionary with pipeline names as keys and their</span>
+<span class="sd">            JSON paths as values. If a list is given, it should be of JSON paths,</span>
+<span class="sd">            and the paths themselves will be used as names.</span>
+<span class="sd">        signals (list, optional): list of signals. If not given, all the NASA signals</span>
+<span class="sd">            are used.</span>
+<span class="sd">        metrics (dict or list, optional): dictionary with metric names as keys and</span>
+<span class="sd">            scoring functions as values. If a list is given, it should be of scoring</span>
+<span class="sd">            functions, and they `__name__` value will be used as the metric name.</span>
+<span class="sd">            If not given, all the available metrics will be used.</span>
+<span class="sd">        rank (str, optional): Sort and rank the pipelines based on the given metric.</span>
+<span class="sd">            If not given, rank using the first metric.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.DataFrame: Table containing the average of the scores obtained with</span>
+<span class="sd">            each scoring function accross all the signals for each pipeline, ranked</span>
+<span class="sd">            by the indicated metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">signals</span> <span class="o">=</span> <span class="n">signals</span> <span class="ow">or</span> <span class="n">NASA_SIGNALS</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="ow">or</span> <span class="n">METRICS</span>
+
+    <span class="n">scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">pipelines</span> <span class="o">=</span> <span class="p">{</span><span class="n">pipeline</span><span class="p">:</span> <span class="n">pipeline</span> <span class="k">for</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">pipelines</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">metrics_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">metric</span><span class="p">):</span>
+                <span class="n">metrics_</span><span class="p">[</span><span class="n">metric</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric</span>
+            <span class="k">elif</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">METRICS</span><span class="p">:</span>
+                <span class="n">metrics_</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="n">METRICS</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown metric: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
+
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics_</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">pipelines</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Evaluating pipeline: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">evaluate_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
+        <span class="n">score</span><span class="p">[</span><span class="s1">&#39;pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">scores</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">scores</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">scores</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rank&#39;</span>
+    <span class="n">scores</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">scores</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, MIT Data To AI Lab
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

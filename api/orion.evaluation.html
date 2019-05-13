@@ -1,0 +1,365 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>orion.evaluation module &mdash; Orion 0.1.0-dev documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="orion.explorer module" href="orion.explorer.html" />
+    <link rel="prev" title="orion.data module" href="orion.data.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Orion
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Orion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#id1">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id2">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id3">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id4">Dataset we use in this library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#id5">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id6">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id9">Leaderboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#id10">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id11">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id13">Install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#docker">Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id15">Quickstart: Run a Pipeline on the Demo Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#evaluate-performance">3. Evaluate performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id16">Database</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#id17">Docker Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id18">Docker Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id19">Building the Orion Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id20">Distributing the Orion Docker Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#distributing-as-a-file">Distributing as a file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#id21">Running the orion-jupyter image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Usage</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="orion.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.explorer.html">orion.explorer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.model.html">orion.model module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../history.html#id1">0.1.0</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Orion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="orion.html">orion package</a> &raquo;</li>
+        
+      <li>orion.evaluation module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.evaluation.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-orion.evaluation">
+<span id="orion-evaluation-module"></span><h1>orion.evaluation module<a class="headerlink" href="#module-orion.evaluation" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="orion.evaluation.evaluate_pipeline">
+<code class="descclassname">orion.evaluation.</code><code class="descname">evaluate_pipeline</code><span class="sig-paren">(</span><em>pipeline</em>, <em>signals=('P-1'</em>, <em>'S-1'</em>, <em>'E-1'</em>, <em>'E-2'</em>, <em>'E-3'</em>, <em>'E-4'</em>, <em>'E-5'</em>, <em>'E-6'</em>, <em>'E-7'</em>, <em>'E-8'</em>, <em>'E-9'</em>, <em>'E-10'</em>, <em>'E-11'</em>, <em>'E-12'</em>, <em>'E-13'</em>, <em>'A-1'</em>, <em>'D-1'</em>, <em>'P-3'</em>, <em>'D-2'</em>, <em>'D-3'</em>, <em>'D-4'</em>, <em>'A-2'</em>, <em>'A-3'</em>, <em>'A-4'</em>, <em>'G-1'</em>, <em>'G-2'</em>, <em>'D-5'</em>, <em>'D-6'</em>, <em>'D-7'</em>, <em>'F-1'</em>, <em>'P-4'</em>, <em>'G-3'</em>, <em>'T-1'</em>, <em>'T-2'</em>, <em>'D-8'</em>, <em>'D-9'</em>, <em>'F-2'</em>, <em>'G-4'</em>, <em>'T-3'</em>, <em>'D-11'</em>, <em>'D-12'</em>, <em>'B-1'</em>, <em>'G-6'</em>, <em>'G-7'</em>, <em>'P-7'</em>, <em>'R-1'</em>, <em>'A-5'</em>, <em>'A-6'</em>, <em>'A-7'</em>, <em>'D-13'</em>, <em>'A-8'</em>, <em>'A-9'</em>, <em>'F-3'</em>, <em>'M-6'</em>, <em>'M-1'</em>, <em>'M-2'</em>, <em>'S-2'</em>, <em>'P-10'</em>, <em>'T-4'</em>, <em>'T-5'</em>, <em>'F-7'</em>, <em>'M-3'</em>, <em>'M-4'</em>, <em>'M-5'</em>, <em>'P-15'</em>, <em>'C-1'</em>, <em>'C-2'</em>, <em>'T-12'</em>, <em>'T-13'</em>, <em>'F-4'</em>, <em>'F-5'</em>, <em>'D-14'</em>, <em>'T-9'</em>, <em>'P-14'</em>, <em>'T-8'</em>, <em>'P-11'</em>, <em>'D-15'</em>, <em>'D-16'</em>, <em>'M-7'</em>, <em>'F-8')</em>, <em>metrics={'accuracy': &lt;function accuracy_score&gt;</em>, <em>'f1': &lt;function f1_score&gt;</em>, <em>'precision': &lt;function precision_score&gt;</em>, <em>'recall': &lt;function recall_score&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation.html#evaluate_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.evaluate_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a pipeline on multiple signals with multiple metrics.</p>
+<p>The pipeline is used to analyze the given signals and later on the
+detected anomalies are scored against the known anomalies using the
+indicated metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pipeline</strong> (<em>str</em>) – Path to the pipeline JSON.</p></li>
+<li><p><strong>signals</strong> (<em>list</em><em>, </em><em>optional</em>) – list of signals. If not given, all the NASA signals
+are used.</p></li>
+<li><p><strong>metrics</strong> (<em>dict</em><em>, </em><em>optional</em>) – dictionary with metric names as keys and
+scoring functions as values. If not given, all the available metrics will
+be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Series object containing the average of the scores obtained with</dt><dd><p>each scoring function accross all the signals.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.evaluate_pipelines">
+<code class="descclassname">orion.evaluation.</code><code class="descname">evaluate_pipelines</code><span class="sig-paren">(</span><em>pipelines</em>, <em>signals=None</em>, <em>metrics=None</em>, <em>rank=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation.html#evaluate_pipelines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.evaluate_pipelines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a list of pipelines on multiple signals with multiple metrics.</p>
+<p>The pipelines are used to analyze the given signals and later on the
+detected anomalies are scored against the known anomalies using the
+indicated metrics.</p>
+<p>Finally, the scores obtained with each metric are averaged accross all the signals,
+ranked by the indicated metric and returned on a pandas.DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pipelines</strong> (<em>dict</em><em> or </em><em>list</em>) – dictionary with pipeline names as keys and their
+JSON paths as values. If a list is given, it should be of JSON paths,
+and the paths themselves will be used as names.</p></li>
+<li><p><strong>signals</strong> (<em>list</em><em>, </em><em>optional</em>) – list of signals. If not given, all the NASA signals
+are used.</p></li>
+<li><p><strong>metrics</strong> (<em>dict</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – dictionary with metric names as keys and
+scoring functions as values. If a list is given, it should be of scoring
+functions, and they <cite>__name__</cite> value will be used as the metric name.
+If not given, all the available metrics will be used.</p></li>
+<li><p><strong>rank</strong> (<em>str</em><em>, </em><em>optional</em>) – Sort and rank the pipelines based on the given metric.
+If not given, rank using the first metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Table containing the average of the scores obtained with</dt><dd><p>each scoring function accross all the signals for each pipeline, ranked
+by the indicated metric.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="orion.explorer.html" class="btn btn-neutral float-right" title="orion.explorer module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="orion.data.html" class="btn btn-neutral float-left" title="orion.data module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, MIT Data To AI Lab
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
