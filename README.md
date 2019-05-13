@@ -213,7 +213,7 @@ We will do so in two parts, train and test, as we will use the first part to fit
 pipeline and the second one to evaluate its performance.
 
 To do so, we need to import the `orion.data.load_signal` function and call it twice passing
-the `'S-1-train'` and `'S-1-train'` names.
+the `'S-1-train'` and `'S-1-test'` names.
 
 ```python
 from orion.data import load_signal
