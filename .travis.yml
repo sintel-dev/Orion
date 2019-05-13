@@ -1,6 +1,6 @@
 # Config file for automatic testing at travis-ci.org
 language: python
-dist: xenial
+# dist: xenial
 python:
   - 3.6
 
