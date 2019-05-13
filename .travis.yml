@@ -19,5 +19,5 @@ deploy:
     local-dir: docs/_build/html
     target-branch: gh-pages
     on:
-      branch: stable
+      branch: master
       python: 3.6
