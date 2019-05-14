@@ -27,6 +27,11 @@
             "epochs": 35
         }
     },
+    "input_names": {
+        "mlprimitives.custom.timeseries_anomalies.find_anomalies#1": {
+            "index": "target_index"
+        }
+    },
     "output_names": {
         "keras.Sequential.LSTMTimeSeriesRegressor#1": {
             "y": "y_hat"
