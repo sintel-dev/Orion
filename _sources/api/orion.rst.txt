@@ -2,9 +2,9 @@ orion package
 =============
 
 .. automodule:: orion
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------
@@ -19,4 +19,3 @@ Submodules
    orion.metrics
    orion.model
    orion.utils
-

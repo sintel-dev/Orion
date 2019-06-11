@@ -2,6 +2,6 @@ orion.model module
 ==================
 
 .. automodule:: orion.model
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

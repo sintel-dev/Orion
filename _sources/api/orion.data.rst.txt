@@ -2,6 +2,6 @@ orion.data module
 =================
 
 .. automodule:: orion.data
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -2,6 +2,6 @@ orion.cli module
 ================
 
 .. automodule:: orion.cli
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

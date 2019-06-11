@@ -2,6 +2,6 @@ orion.evaluation module
 =======================
 
 .. automodule:: orion.evaluation
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
