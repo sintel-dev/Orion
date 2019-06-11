@@ -13,7 +13,7 @@
             "time_column": "timestamp",
             "interval": 21600
         },
-        "sklear.preprocessing.MinMaxScaler#1": {
+        "sklearn.preprocessing.MinMaxScaler#1": {
             "feature_range": [
                 -1,
                 1
