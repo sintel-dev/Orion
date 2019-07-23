@@ -100,8 +100,8 @@ class Dataset(Document, MongoUtils):
     start_time = fields.IntField()
     stop_time = fields.IntField()
     data_location = fields.StringField()
-    timestamp_column = fields.IntField()
-    value_column = fields.IntField()
+    timestamp_column = fields.IntField(default=0)
+    value_column = fields.IntField(default=1)
     created_by = fields.StringField()
 
 
@@ -124,6 +124,7 @@ class Datarun(Document, MongoUtils):
     events = fields.IntField()
     status = fields.StringField()
     created_by = fields.StringField()
+    experiment = fields.StringField()
 
 
 class Event(Document, MongoUtils):
@@ -138,3 +139,41 @@ class Comment(Document, MongoUtils):
     event = fields.ReferenceField(Event)
     text = fields.StringField(required=True)
     created_by = fields.StringField()
+
+
+class Experiment(Document, MongoUtils):
+    name = fields.StringField(required=True, unique=True)
+    model_num = fields.IntField(required=True)
+    event_num = fields.IntField(required=True)
+    pipeline = fields.ReferenceField(Pipeline)
+    project = fields.StringField()
+    dataruns = fields.ListField(fields.ReferenceField(Datarun))
+    start_time = fields.DateTimeField(required=True)
+    end_time = fields.DateTimeField()
+    status = fields.StringField()
+    created_by = fields.StringField()
+
+class Raw(Document, MongoUtils):
+    dataset = fields.StringField()
+    timestamp = fields.FloatField()
+    year = fields.IntField()
+    data = fields.ListField(fields.ListField())
+    # meta = {
+    #     'indexes': [
+    #         '$dataset', # text index
+    #         ('dataset', '+year')
+    #     ]
+    # }
+
+
+class Prediction(Document, MongoUtils):
+    dataset = fields.StringField()
+    datarun = fields.ReferenceField(Datarun)
+    offset = fields.IntField()
+    names = fields.ListField(fields.ListField(fields.DictField()))
+    data = fields.ListField(fields.ListField(fields.FloatField()))
+    meta = {
+        'indexes': [
+            '$dataset'  # text index
+        ]
+    }
