@@ -1,6 +1,7 @@
 import logging
 
 import pandas as pd
+
 from mlblocks import MLPipeline
 
 LOGGER = logging.getLogger(__name__)

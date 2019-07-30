@@ -95,8 +95,12 @@ class PipelineField(fields.DictField):
 
 class Dataset(Document, MongoUtils):
     name = fields.StringField(required=True)
-    signal_set = fields.StringField(required=True)
-    satellite_id = fields.StringField()
+    entity_id = fields.StringField()
+
+
+class Signal(Document, MongoUtils):
+    name = fields.StringField(required=True)
+    dataset = fields.ReferenceField(Dataset)
     start_time = fields.IntField()
     stop_time = fields.IntField()
     data_location = fields.StringField()
@@ -111,9 +115,17 @@ class Pipeline(Document, MongoUtils):
     created_by = fields.StringField()
 
 
-class Datarun(Document, MongoUtils):
-    dataset = fields.ReferenceField(Dataset)
+class Experiment(Document, MongoUtils):
+    name = fields.StringField(required=True)
+    project = fields.StringField()
     pipeline = fields.ReferenceField(Pipeline)
+    dataset = fields.ReferenceField(Dataset)
+    created_by = fields.StringField()
+
+
+class Datarun(Document, MongoUtils):
+    experiment = fields.ReferenceField(Experiment)
+    signal = fields.ReferenceField(Signal)
     start_time = fields.DateTimeField(required=True)
     end_time = fields.DateTimeField()
     software_versions = fields.ListField(fields.StringField())
@@ -123,7 +135,6 @@ class Datarun(Document, MongoUtils):
     metrics_location = fields.StringField()
     events = fields.IntField()
     status = fields.StringField()
-    created_by = fields.StringField()
 
 
 class Event(Document, MongoUtils):
