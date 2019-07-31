@@ -5,10 +5,10 @@ from datetime import datetime
 import pandas as pd
 from bson import ObjectId
 from bson.errors import InvalidId
+from mlblocks import MLPipeline
 from mongoengine import connect
 from pip._internal.operations import freeze
 
-from mlblocks import MLPipeline
 from orion import model
 from orion.data import load_signal
 
@@ -143,51 +143,9 @@ class OrionExplorer:
         LOGGER.info("Loading pipeline %s", pipeline.name)
         return MLPipeline.from_dict(pipeline.mlpipeline)
 
-    def run_experiment(self, name, project, pipeline, dataset, user_id=None):
-        project = project
-        pipeline = self.get_pipeline(pipeline)
-        dataset = self.get_dataset(dataset)
-
-        experiment = model.Experiment.find_or_insert(
-            name=name,
-            project=project,
-            pipeline=pipeline,
-            dataset=dataset,
-            created_by=user_id
-        )
-
-        mlpipeline = self.load_pipeline(pipeline)
-        signals = model.Signal.find(dataset=dataset.id)
-
-        for signal in signals:
-
-            data = self.load_signal(signal)
-            datarun = self.start_datarun(experiment, signal)
-
-            try:
-                LOGGER.info("Fitting the pipeline")
-                mlpipeline.fit(data)
-
-                LOGGER.info("Finding events")
-                events = mlpipeline.predict(data)
-
-                status = 'done'
-            except Exception:
-                LOGGER.exception('Error running datarun %s', datarun.id)
-                events = list()
-                status = 'error'
-
-            self.end_datarun(datarun, events, status)
-
-            LOGGER.info("%s events found in %s", len(events),
-                        datarun.end_time - datarun.start_time)
-
-        return experiment
-
-    def get_experiments(self, name=None):
+    def get_experiments(self):
         return self._list(
-            model.Experiment,
-            name=name
+            model.Experiment
         )
 
     def get_dataruns(self, experiment=None):
@@ -271,3 +229,43 @@ class OrionExplorer:
         comments = comments.rename(columns={'event': 'event_id'})
 
         return events.merge(comments, how='inner', on='event_id')
+
+    def run_experiment(self, project, pipeline, dataset, user_id=None):
+        project = project
+        pipeline = self.get_pipeline(pipeline)
+        dataset = self.get_dataset(dataset)
+
+        experiment = model.Experiment.find_or_insert(
+            project=project,
+            pipeline=pipeline,
+            dataset=dataset,
+            created_by=user_id
+        )
+
+        mlpipeline = self.load_pipeline(pipeline)
+        signals = model.Signal.find(dataset=dataset.id)
+
+        for signal in signals:
+
+            data = self.load_signal(signal)
+            datarun = self.start_datarun(experiment, signal)
+
+            try:
+                LOGGER.info("Fitting the pipeline")
+                mlpipeline.fit(data)
+
+                LOGGER.info("Finding events")
+                events = mlpipeline.predict(data)
+
+                status = 'done'
+            except Exception:
+                LOGGER.exception('Error running datarun %s', datarun.id)
+                events = list()
+                status = 'error'
+
+            self.end_datarun(datarun, events, status)
+
+            LOGGER.info("%s events found in %s", len(events),
+                        datarun.end_time - datarun.start_time)
+
+        return experiment

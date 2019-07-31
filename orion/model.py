@@ -116,7 +116,6 @@ class Pipeline(Document, MongoUtils):
 
 
 class Experiment(Document, MongoUtils):
-    name = fields.StringField(required=True)
     project = fields.StringField()
     pipeline = fields.ReferenceField(Pipeline)
     dataset = fields.ReferenceField(Dataset)
