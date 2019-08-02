@@ -26,6 +26,8 @@ install_requires = [
     'pymongo>=3.7.2,<4',
     'scikit-learn>=0.20.1,<0.21',
     'tabulate>=0.8.3,<0.9',
+    'setuptools>=41.0.0',  # required by tensorboard
+    'scikit-image<0.14.3',  # 0.14.3 has problems installing on Mac
 ]
 
 setup_requires = [
@@ -48,6 +50,7 @@ development_requires = [
     'm2r>=0.2.0',
     'Sphinx>=1.7.1',
     'sphinx_rtd_theme>=0.2.4',
+    'docutils<0.15,>=0.10',  # required by botocore
 
     # style check
     'flake8>=3.5.0',
