@@ -44,8 +44,32 @@ class OrionExplorer:
 
         return data
 
-    def add_dataset(self, name, signal_set, satellite_id=None, start_time=None, stop_time=None,
-                    location=None, timestamp_column=None, value_column=None, user_id=None):
+    def add_dataset(self, name, entity_id=None):
+        return model.Dataset.find_or_insert(
+            name=name,
+            entity_id=entity_id
+        )
+
+    def get_datasets(self, name=None, entity_id=None):
+        return self._list(
+            model.Dataset,
+            name=name,
+            entity_id=entity_id
+        )
+
+    def get_dataset(self, dataset):
+        try:
+            _id = ObjectId(dataset)
+            return model.Dataset.last(id=_id)
+        except InvalidId:
+            found_dataset = model.Dataset.last(name=dataset)
+            if found_dataset is None:
+                raise ValueError('Dataset not found: {}'.format(dataset))
+            else:
+                return found_dataset
+
+    def add_signal(self, name, dataset, start_time=None, stop_time=None, location=None,
+                   timestamp_column=None, value_column=None, user_id=None):
 
         location = location or name
         data = load_signal(location, None, timestamp_column, value_column)
@@ -56,10 +80,11 @@ class OrionExplorer:
         if not stop_time:
             stop_time = timestamps.max()
 
-        return model.Dataset.find_or_insert(
+        dataset = self.get_dataset(dataset)
+
+        return model.Signal.find_or_insert(
             name=name,
-            signal_set=signal_set,
-            satellite_id=satellite_id,
+            dataset=dataset,
             start_time=start_time,
             stop_time=stop_time,
             data_location=location,
@@ -68,30 +93,22 @@ class OrionExplorer:
             created_by=user_id
         )
 
-    def get_datasets(self, name=None, signal=None, satellite=None):
+    def get_signals(self, name=None, dataset=None):
         return self._list(
-            model.Dataset,
+            model.Signal,
             name=name,
-            signal_set=signal,
-            satellite_id=satellite
+            dataset=dataset
         )
 
-    def get_dataset(self, dataset):
-        try:
-            _id = ObjectId(dataset)
-            return model.Dataset.find(_id=_id)
-        except InvalidId:
-            return model.Dataset.last(name=dataset)
-
-    def load_dataset(self, dataset):
-        path_or_name = dataset.data_location or dataset.name
+    def load_signal(self, signal):
+        path_or_name = signal.data_location or signal.name
         LOGGER.info("Loading dataset %s", path_or_name)
-        data = load_signal(path_or_name, None, dataset.timestamp_column, dataset.value_column)
-        if dataset.start_time:
-            data = data[data['timestamp'] >= dataset.start_time].copy()
+        data = load_signal(path_or_name, None, signal.timestamp_column, signal.value_column)
+        if signal.start_time:
+            data = data[data['timestamp'] >= signal.start_time].copy()
 
-        if dataset.stop_time:
-            data = data[data['timestamp'] <= dataset.stop_time].copy()
+        if signal.stop_time:
+            data = data[data['timestamp'] <= signal.stop_time].copy()
 
         return data
 
@@ -114,30 +131,37 @@ class OrionExplorer:
     def get_pipeline(self, pipeline):
         try:
             _id = ObjectId(pipeline)
-            return model.Pipeline.last(_id=_id)
+            return model.Pipeline.last(id=_id)
         except InvalidId:
-            return model.Pipeline.last(name=pipeline)
+            found_pipeline = model.Pipeline.last(name=pipeline)
+            if found_pipeline is None:
+                raise ValueError('Pipeline not found: {}'.format(pipeline))
+            else:
+                return found_pipeline
 
     def load_pipeline(self, pipeline):
         LOGGER.info("Loading pipeline %s", pipeline.name)
         return MLPipeline.from_dict(pipeline.mlpipeline)
 
-    def get_dataruns(self, dataset=None, pipeline=None):
+    def get_experiments(self):
+        return self._list(
+            model.Experiment
+        )
+
+    def get_dataruns(self, experiment=None):
         return self._list(
             model.Datarun,
             exclude_=['software_versions'],
-            dataset=dataset,
-            pipeline=pipeline,
+            experiment=experiment
         )
 
-    def start_datarun(self, dataset, pipeline, user_id=None):
+    def start_datarun(self, experiment, signal):
         return model.Datarun.insert(
-            dataset=dataset,
-            pipeline=pipeline,
+            experiment=experiment,
+            signal=signal,
             start_time=datetime.utcnow(),
             software_versions=self._software_versions,
-            status='running',
-            created_by=user_id
+            status='running'
         )
 
     def end_datarun(self, datarun, events, status='done'):
@@ -206,38 +230,42 @@ class OrionExplorer:
 
         return events.merge(comments, how='inner', on='event_id')
 
-    def analyze(self, dataset_name, pipeline_name, user_id=None):
-        dataset = self.get_dataset(dataset_name)
+    def run_experiment(self, project, pipeline, dataset, user_id=None):
+        project = project
+        pipeline = self.get_pipeline(pipeline)
+        dataset = self.get_dataset(dataset)
 
-        if dataset is None:
-            raise ValueError('Dataset not found: {}'.format(dataset_name))
-
-        data = self.load_dataset(dataset)
-
-        pipeline = self.get_pipeline(pipeline_name)
-
-        if pipeline is None:
-            raise ValueError('Pipeline not found: {}'.format(pipeline_name))
+        experiment = model.Experiment.find_or_insert(
+            project=project,
+            pipeline=pipeline,
+            dataset=dataset,
+            created_by=user_id
+        )
 
         mlpipeline = self.load_pipeline(pipeline)
+        signals = model.Signal.find(dataset=dataset.id)
 
-        datarun = self.start_datarun(dataset, pipeline, user_id)
+        for signal in signals:
 
-        try:
-            LOGGER.info("Fitting the pipeline")
-            mlpipeline.fit(data)
+            data = self.load_signal(signal)
+            datarun = self.start_datarun(experiment, signal)
 
-            LOGGER.info("Finding events")
-            events = mlpipeline.predict(data)
+            try:
+                LOGGER.info("Fitting the pipeline")
+                mlpipeline.fit(data)
 
-            status = 'done'
-        except Exception:
-            LOGGER.exception('Error running datarun %s', datarun.id)
-            events = list()
-            status = 'error'
+                LOGGER.info("Finding events")
+                events = mlpipeline.predict(data)
 
-        self.end_datarun(datarun, events, status)
+                status = 'done'
+            except Exception:
+                LOGGER.exception('Error running datarun %s', datarun.id)
+                events = list()
+                status = 'error'
 
-        LOGGER.info("%s events found in %s", len(events), datarun.end_time - datarun.start_time)
+            self.end_datarun(datarun, events, status)
 
-        return datarun
+            LOGGER.info("%s events found in %s", len(events),
+                        datarun.end_time - datarun.start_time)
+
+        return experiment
