@@ -1,13 +1,16 @@
 import json
 import logging
+import pickle
 from datetime import datetime
 
 import pandas as pd
 from bson import ObjectId
 from bson.errors import InvalidId
+from gridfs import GridFS
 from mlblocks import MLPipeline
 from mongoengine import connect
 from pip._internal.operations import freeze
+from pymongo.database import Database
 
 from orion import model
 from orion.data import load_signal
@@ -21,6 +24,7 @@ class OrionExplorer:
         self.database = database
         self._db = connect(database, **kwargs)
         self._software_versions = list(freeze.freeze())
+        self._fs = GridFS(Database(self._db, self.database))
 
     def drop_database(self):
         self._db.drop_database(self.database)
@@ -254,10 +258,39 @@ class OrionExplorer:
                 LOGGER.info("Fitting the pipeline")
                 mlpipeline.fit(data)
 
+                outputs = ["default"]
+
+                try:
+                    output_names = mlpipeline.get_output_names('visualization')
+                    outputs.append('visualization')
+                except ValueError:
+                    output_names = []
+
                 LOGGER.info("Finding events")
-                events = mlpipeline.predict(data)
+                pipeline_output = mlpipeline.predict(data, output_=outputs)
+
+                if not isinstance(pipeline_output, tuple):
+                    events = pipeline_output
+                else:
+                    events = pipeline_output[0]
+                    if output_names:
+                        # There might be multiple `default` outputs before the `visualization`
+                        # outputs in the pipeline_output tuple, thus we get the last entries
+                        # corresponding to visualization
+                        visualization = pipeline_output[-len(output_names):]
+
+                        visualization_dict = dict(zip(output_names, visualization))
+                        for name, value in visualization_dict.items():
+                            kwargs = {
+                                "filename": '{}-{}.pkl'.format(datarun.id, name),
+                                "datarun_id": datarun.id,
+                                "variable": name
+                            }
+                            with self._fs.new_file(**kwargs) as f:
+                                pickle.dump(value, f)
 
                 status = 'done'
+
             except Exception:
                 LOGGER.exception('Error running datarun %s', datarun.id)
                 events = list()
