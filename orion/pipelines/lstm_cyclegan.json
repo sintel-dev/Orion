@@ -1,0 +1,44 @@
+{
+    "primitives": [
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate",
+        "sklearn.impute.SimpleImputer",
+        "sklearn.preprocessing.MinMaxScaler",
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
+        "keras.Sequential.LSTM_CycleGAN",
+        "mlprimitives.candidates.errors_cyclegan.errors_cyclegan",
+        "mlprimitives.custom.timeseries_anomalies.find_anomalies"
+    ],
+    "init_params": {
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "time_column": "timestamp",
+            "interval": 21600,
+            "method": "mean"
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [
+                -1,
+                1
+            ]
+        },
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 100
+        },
+        "keras.Sequential.LSTM_CycleGAN#1": {
+            "epochs": 2000
+        }
+    },
+    "input_names": {
+        "mlprimitives.custom.timeseries_anomalies.find_anomalies#1": {
+            "index": "target_index"
+        },
+        "mlprimitives.candidates.errors_cyclegan.errors_cyclegan#1": {
+            "y": "X"
+        }
+    },
+    "output_names": {
+        "keras.Sequential.LSTM_CycleGAN#1": {
+            "y": "y_hat"
+        }
+    }
+}
