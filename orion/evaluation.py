@@ -1,5 +1,6 @@
 import logging
 import warnings
+from datetime import datetime
 
 import pandas as pd
 
@@ -33,14 +34,20 @@ NASA_SIGNALS = (
 
 def _evaluate_on_signal(pipeline, signal, metrics):
     data = load_signal(signal)
+
+    start = datetime.utcnow()
     anomalies = analyze(pipeline, data)
+    elapsed = datetime.utcnow() - start
 
     truth = load_anomalies(signal)
 
-    return {
+    scores = {
         name: scorer(truth, anomalies, data)
         for name, scorer in metrics.items()
     }
+    scores['elapsed'] = elapsed.total_seconds()
+
+    return scores
 
 
 def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS):
@@ -74,7 +81,12 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS):
 
         scores.append(score)
 
-    return pd.DataFrame(scores).mean()
+    scores = pd.DataFrame(scores).mean()
+
+    # Move elapsed column to the last position
+    scores['elapsed'] = scores.pop('elapsed')
+
+    return scores
 
 
 def evaluate_pipelines(pipelines, signals=None, metrics=None, rank=None):
