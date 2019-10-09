@@ -124,6 +124,9 @@ def evaluate_pipelines(pipelines, signals=None, metrics=None, rank=None):
 
         metrics = metrics_
 
+    if isinstance(pipelines, list):
+        pipelines = dict(zip(pipelines, pipelines))
+
     for name, pipeline in pipelines.items():
         LOGGER.info("Evaluating pipeline: %s", name)
         score = evaluate_pipeline(pipeline, signals, metrics)

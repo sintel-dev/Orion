@@ -84,9 +84,10 @@ setup(
         'console_scripts': [
             'orion=orion.cli:main'
         ],
-        'mlprimitives': [
-            'jsons_path=orion:MLPRIMITIVES_JSONS_PATH'
-        ]
+        'mlblocks': [
+            'primitives=orion:MLBLOCKS_PRIMITIVES',
+            'pipelines=orion:MLBLOCKS_PIPELINES'
+        ],
     },
     extras_require={
         'test': tests_require,
