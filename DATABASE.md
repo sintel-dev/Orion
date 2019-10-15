@@ -6,7 +6,8 @@ The **Orion Database** contains the following collections and fields:
 
 ### Dataset
 
-The **Dataset** collection is used to group Signals.
+The **Dataset** collection is used to group Signals, which is usually 
+defined by an external entity.
 
 #### Fields
 
@@ -44,7 +45,7 @@ their details, such as the list of primitives and all the configured hyperparame
 
 * \_id (ObjectID): Unique Identifier of this Pipeline object
 * name (String): Name given to this pipeline
-* mlpipeline (SubDocument): JSON representation of this pipeline
+* template (SubDocument): JSON representation of this pipeline
 * created_by (String): Identifier of the user that created this Pipeline Object
 * insert_time (DateTime): Time when this Pipeline Object was inserted
 
@@ -58,25 +59,26 @@ in the dataset.
 
 * \_id (ObjectID): Unique Identifier of this Experiment object
 * project (String): Name given to describe the project to which the experiment belongs
-* mlpipeline (SubDocument): JSON representation of this pipeline
+* pipeline_id (ObjectID - Foreign Key): Unique Identifier of the Pipeline Used
 * dataset_id (ObjectID - Foreign Key) Unique Identifier of the Dataset used
+* signal_set (List of Foreign Keys): A list of Signal IDs from the Dataset to run this experiment 
 * created_by (String): Identifier of the user that created this Experiment Object
 * insert_time (DateTime): Time when this Experiment Object was inserted
 
 ### Datarun
 
-The **Datarun** objects represent single executions of a **Pipeline** on a **Signal**,
+The **Datarun** objects represent single executions of an **Experiment**,
 and contain all the information about the environment and context where this execution
 took place, which potentially allows to later on reproduce the results in a new environment.
 
 It also contains information about whether the execution was successful or not, when it started
-and ended, and the number of events that were found by the pipeline.
+and ended, and the number of events that were found in this experiment.
 
 #### Fields
 
 * \_id (ObjectID): Unique Identifier of this Datarun object
 * experiment_id (ObjectID - Foreign Key): Unique Identifier of the Experiment
-* signal_id (ObjectID - Foreign Key): Unique Identifier of the Signal used
+* mlpipeline (SubDocument): JSON representation of the pipeline
 * start_time (DateTime): When the execution started
 * end_time (DateTime): When the execution ended
 * software_versions (List of Strings): version of each python dependency installed in the
@@ -99,28 +101,43 @@ contains the details about the start time, the stop time and the severity score.
 * \_id (ObjectID): Unique Identifier of this Event object
 * datarun_id (ObjectID - Foreign Key): Unique Identifier of the Datarun during which this
   Event was detected.
-* start_time (Integer): Timestamp where the anomalous interval starts.
-* stop_time (Integer): Timestamp where the anomalous interval ends.
+* signal_id (ObjectID - Foreign Key): Unique Identifier of the Signal to which this Event relates
+* start_time (Integer): Timestamp where the anomalous interval starts
+* stop_time (Integer): Timestamp where the anomalous interval ends
 * score (Float): Severity score given by the pipeline to this Event
-* tag (String): User given tag for this Event
+* source (String): "orion", "shape matching", or "manually created" 
+* latest_interaction_id (ObjectID - Foreign Key): Unique Identifier of the last Event Interaction relating to this Event
 * insert_time (DateTime): Time when this Event Object was inserted
 
-### Comment
+### Event Interaction (only for MTV)
 
-Each Event can have multiple **Comments**, from one or more users.
-**Comments** are expected to be inserted by the domain experts after the Datarun has
+The **Event Interaction** collection records all the interaction history related to events.
+
+#### Fields
+
+- \_id (ObjectID): Unique Identifier of this Interaction object
+- event_id: Unique Identifier of the Event to which this event relates 
+- action (String): Action type performed on this event, such as delete, split, and adjust
+- start_time (Integer): Timestamp where the anomalous interval starts
+- stop_time (Integer): Timestamp where the anomalous interval ends
+- created_by (String): Identifier of the user who interacted with the target Object
+
+### Annotation
+
+Each Event can have multiple **Annotations**, from one or more users.
+**Annotations** are expected to be inserted by the domain experts after the Datarun has
 finished and they analyze the results.
 
 #### Fields
 
 * \_id (ObjectID): Unique Identifier of this Comment object
 * event_id (ObjectID - Foreign Key): Unique Identifier of the Event to which this Comment relates
-* text (String): Comment contents
+* tag (String): User given tag for this event
+* comment (String): Comment contents
 * created_by (String): Identifier of the user that created this Event Object
 * insert_time (DateTime): Time when this Event Object was inserted
 
-
-## Database Usage
+## Database Usage (TODO)
 
 In order to make **Orion** interact with the database you will need to use the `OrionExplorer`,
 which provides all the required functionality to register and explore all the database objects,
@@ -129,7 +146,7 @@ as well as load pipelines and datasets from it in order to start new dataruns an
 In the following steps we will go over a typical session using the `OrionExplorer` to:
 * register a new dataset
 * register a new pipeline
-* create a datarun using the pipeline to detect events on the dataset
+* create a datarun by running 
 * explore the detected events
 * add some comments to the detected events
 
