@@ -80,8 +80,8 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../readme.html">Orion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#license">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#overview">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../readme.html#table-of-contents">Table of Contents</a></li>
 </ul>
 </li>
@@ -128,6 +128,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../readme.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#what-s-next">What’s next?</a></li>
 </ul>
 </li>
 </ul>
@@ -361,14 +362,31 @@ add extra queryset functionality.  Any custom manager methods must accept a
 </dd></dl>
 
 <dl class="attribute">
-<dt id="orion.model.Datarun.created_by">
-<code class="sig-name descname">created_by</code><a class="headerlink" href="#orion.model.Datarun.created_by" title="Permalink to this definition">¶</a></dt>
-<dd><p>A unicode string field.</p>
+<dt id="orion.model.Datarun.end_time">
+<code class="sig-name descname">end_time</code><a class="headerlink" href="#orion.model.Datarun.end_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Datetime field.</p>
+<p>Uses the python-dateutil library if available alternatively use time.strptime
+to parse the dates.  Note: python-dateutil’s parser is fully featured and when
+installed you can utilise it to convert varying types of date formats into valid
+python datetime objects.</p>
+<p>Note: To default the field to the current datetime, use: DateTimeField(default=datetime.utcnow)</p>
+<dl class="simple">
+<dt>Note: Microseconds are rounded to the nearest millisecond.</dt><dd><p>Pre UTC microsecond support is effectively broken.
+Use <code class="xref py py-class docutils literal notranslate"><span class="pre">ComplexDateTimeField</span></code> if you
+need accurate microsecond support.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="orion.model.Datarun.dataset">
-<code class="sig-name descname">dataset</code><a class="headerlink" href="#orion.model.Datarun.dataset" title="Permalink to this definition">¶</a></dt>
+<dt id="orion.model.Datarun.events">
+<code class="sig-name descname">events</code><a class="headerlink" href="#orion.model.Datarun.events" title="Permalink to this definition">¶</a></dt>
+<dd><p>32-bit integer field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Datarun.experiment">
+<code class="sig-name descname">experiment</code><a class="headerlink" href="#orion.model.Datarun.experiment" title="Permalink to this definition">¶</a></dt>
 <dd><p>A reference to a document that will be automatically dereferenced on
 access (lazily).</p>
 <p>Note this means you will get a database I/O access everytime you access
@@ -410,29 +428,6 @@ bi-directional delete rules)</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="orion.model.Datarun.end_time">
-<code class="sig-name descname">end_time</code><a class="headerlink" href="#orion.model.Datarun.end_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Datetime field.</p>
-<p>Uses the python-dateutil library if available alternatively use time.strptime
-to parse the dates.  Note: python-dateutil’s parser is fully featured and when
-installed you can utilise it to convert varying types of date formats into valid
-python datetime objects.</p>
-<p>Note: To default the field to the current datetime, use: DateTimeField(default=datetime.utcnow)</p>
-<dl class="simple">
-<dt>Note: Microseconds are rounded to the nearest millisecond.</dt><dd><p>Pre UTC microsecond support is effectively broken.
-Use <code class="xref py py-class docutils literal notranslate"><span class="pre">ComplexDateTimeField</span></code> if you
-need accurate microsecond support.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="orion.model.Datarun.events">
-<code class="sig-name descname">events</code><a class="headerlink" href="#orion.model.Datarun.events" title="Permalink to this definition">¶</a></dt>
-<dd><p>32-bit integer field.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="orion.model.Datarun.id">
 <code class="sig-name descname">id</code><a class="headerlink" href="#orion.model.Datarun.id" title="Permalink to this definition">¶</a></dt>
 <dd><p>A field wrapper around MongoDB’s ObjectIds.</p>
@@ -463,8 +458,8 @@ add extra queryset functionality.  Any custom manager methods must accept a
 </dd></dl>
 
 <dl class="attribute">
-<dt id="orion.model.Datarun.pipeline">
-<code class="sig-name descname">pipeline</code><a class="headerlink" href="#orion.model.Datarun.pipeline" title="Permalink to this definition">¶</a></dt>
+<dt id="orion.model.Datarun.signal">
+<code class="sig-name descname">signal</code><a class="headerlink" href="#orion.model.Datarun.signal" title="Permalink to this definition">¶</a></dt>
 <dd><p>A reference to a document that will be automatically dereferenced on
 access (lazily).</p>
 <p>Note this means you will get a database I/O access everytime you access
@@ -559,14 +554,8 @@ need accurate microsecond support.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="orion.model.Dataset.created_by">
-<code class="sig-name descname">created_by</code><a class="headerlink" href="#orion.model.Dataset.created_by" title="Permalink to this definition">¶</a></dt>
-<dd><p>A unicode string field.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="orion.model.Dataset.data_location">
-<code class="sig-name descname">data_location</code><a class="headerlink" href="#orion.model.Dataset.data_location" title="Permalink to this definition">¶</a></dt>
+<dt id="orion.model.Dataset.entity_id">
+<code class="sig-name descname">entity_id</code><a class="headerlink" href="#orion.model.Dataset.entity_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>A unicode string field.</p>
 </dd></dl>
 
@@ -592,42 +581,6 @@ add extra queryset functionality.  Any custom manager methods must accept a
 <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code> as its second argument.</p>
 <p>The method function should return a <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code>
 , probably the same one that was passed in, but modified in some way.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="orion.model.Dataset.satellite_id">
-<code class="sig-name descname">satellite_id</code><a class="headerlink" href="#orion.model.Dataset.satellite_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>A unicode string field.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="orion.model.Dataset.signal_set">
-<code class="sig-name descname">signal_set</code><a class="headerlink" href="#orion.model.Dataset.signal_set" title="Permalink to this definition">¶</a></dt>
-<dd><p>A unicode string field.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="orion.model.Dataset.start_time">
-<code class="sig-name descname">start_time</code><a class="headerlink" href="#orion.model.Dataset.start_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>32-bit integer field.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="orion.model.Dataset.stop_time">
-<code class="sig-name descname">stop_time</code><a class="headerlink" href="#orion.model.Dataset.stop_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>32-bit integer field.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="orion.model.Dataset.timestamp_column">
-<code class="sig-name descname">timestamp_column</code><a class="headerlink" href="#orion.model.Dataset.timestamp_column" title="Permalink to this definition">¶</a></dt>
-<dd><p>32-bit integer field.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="orion.model.Dataset.value_column">
-<code class="sig-name descname">value_column</code><a class="headerlink" href="#orion.model.Dataset.value_column" title="Permalink to this definition">¶</a></dt>
-<dd><p>32-bit integer field.</p>
 </dd></dl>
 
 </dd></dl>
@@ -730,6 +683,140 @@ add extra queryset functionality.  Any custom manager methods must accept a
 <dl class="attribute">
 <dt id="orion.model.Event.tag">
 <code class="sig-name descname">tag</code><a class="headerlink" href="#orion.model.Event.tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>A unicode string field.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="orion.model.Experiment">
+<em class="property">class </em><code class="sig-prename descclassname">orion.model.</code><code class="sig-name descname">Experiment</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/model.html#Experiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.model.Experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mongoengine.document.Document</span></code>, <a class="reference internal" href="#orion.model.MongoUtils" title="orion.model.MongoUtils"><code class="xref py py-class docutils literal notranslate"><span class="pre">orion.model.MongoUtils</span></code></a></p>
+<dl class="exception">
+<dt id="orion.model.Experiment.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#orion.model.Experiment.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mongoengine.errors.DoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="orion.model.Experiment.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#orion.model.Experiment.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mongoengine.errors.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Experiment.created_by">
+<code class="sig-name descname">created_by</code><a class="headerlink" href="#orion.model.Experiment.created_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>A unicode string field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Experiment.dataset">
+<code class="sig-name descname">dataset</code><a class="headerlink" href="#orion.model.Experiment.dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>A reference to a document that will be automatically dereferenced on
+access (lazily).</p>
+<p>Note this means you will get a database I/O access everytime you access
+this field. This is necessary because the field returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code>
+which precise type can depend of the value of the <cite>_cls</cite> field present in the
+document in database.
+In short, using this type of field can lead to poor performances (especially
+if you access this field only to retrieve it <cite>pk</cite> field which is already
+known before dereference). To solve this you should consider using the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">LazyReferenceField</span></code>.</p>
+<p>Use the <cite>reverse_delete_rule</cite> to handle what should happen if the document
+the field is referencing is deleted.  EmbeddedDocuments, DictFields and
+MapFields does not support reverse_delete_rule and an <cite>InvalidDocumentError</cite>
+will be raised if trying to set on one of these Document / Field types.</p>
+<p>The options are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>DO_NOTHING (0)  - don’t do anything (default).</p></li>
+<li><p>NULLIFY    (1)  - Updates the reference to null.</p></li>
+<li><p>CASCADE    (2)  - Deletes the documents associated with the reference.</p></li>
+<li><p>DENY       (3)  - Prevent the deletion of the reference object.</p></li>
+<li><p>PULL       (4)  - Pull the reference from a <code class="xref py py-class docutils literal notranslate"><span class="pre">ListField</span></code> of references</p></li>
+</ul>
+</div></blockquote>
+<p>Alternative syntax for registering delete rules (useful when implementing
+bi-directional delete rules)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Org</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="s1">&#39;User&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">org</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="s1">&#39;Org&#39;</span><span class="p">,</span> <span class="n">reverse_delete_rule</span><span class="o">=</span><span class="n">CASCADE</span><span class="p">)</span>
+
+<span class="n">User</span><span class="o">.</span><span class="n">register_delete_rule</span><span class="p">(</span><span class="n">Org</span><span class="p">,</span> <span class="s1">&#39;owner&#39;</span><span class="p">,</span> <span class="n">DENY</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.5: </span>added <cite>reverse_delete_rule</cite></p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Experiment.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#orion.model.Experiment.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A field wrapper around MongoDB’s ObjectIds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Experiment.objects">
+<code class="sig-name descname">objects</code><a class="headerlink" href="#orion.model.Experiment.objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default QuerySet Manager.</p>
+<p>Custom QuerySet Manager functions can extend this class and users can
+add extra queryset functionality.  Any custom manager methods must accept a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code> class as its first argument, and a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code> as its second argument.</p>
+<p>The method function should return a <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code>
+, probably the same one that was passed in, but modified in some way.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Experiment.pipeline">
+<code class="sig-name descname">pipeline</code><a class="headerlink" href="#orion.model.Experiment.pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>A reference to a document that will be automatically dereferenced on
+access (lazily).</p>
+<p>Note this means you will get a database I/O access everytime you access
+this field. This is necessary because the field returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code>
+which precise type can depend of the value of the <cite>_cls</cite> field present in the
+document in database.
+In short, using this type of field can lead to poor performances (especially
+if you access this field only to retrieve it <cite>pk</cite> field which is already
+known before dereference). To solve this you should consider using the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">LazyReferenceField</span></code>.</p>
+<p>Use the <cite>reverse_delete_rule</cite> to handle what should happen if the document
+the field is referencing is deleted.  EmbeddedDocuments, DictFields and
+MapFields does not support reverse_delete_rule and an <cite>InvalidDocumentError</cite>
+will be raised if trying to set on one of these Document / Field types.</p>
+<p>The options are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>DO_NOTHING (0)  - don’t do anything (default).</p></li>
+<li><p>NULLIFY    (1)  - Updates the reference to null.</p></li>
+<li><p>CASCADE    (2)  - Deletes the documents associated with the reference.</p></li>
+<li><p>DENY       (3)  - Prevent the deletion of the reference object.</p></li>
+<li><p>PULL       (4)  - Pull the reference from a <code class="xref py py-class docutils literal notranslate"><span class="pre">ListField</span></code> of references</p></li>
+</ul>
+</div></blockquote>
+<p>Alternative syntax for registering delete rules (useful when implementing
+bi-directional delete rules)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Org</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="s1">&#39;User&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">org</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="s1">&#39;Org&#39;</span><span class="p">,</span> <span class="n">reverse_delete_rule</span><span class="o">=</span><span class="n">CASCADE</span><span class="p">)</span>
+
+<span class="n">User</span><span class="o">.</span><span class="n">register_delete_rule</span><span class="p">(</span><span class="n">Org</span><span class="p">,</span> <span class="s1">&#39;owner&#39;</span><span class="p">,</span> <span class="n">DENY</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.5: </span>added <cite>reverse_delete_rule</cite></p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Experiment.project">
+<code class="sig-name descname">project</code><a class="headerlink" href="#orion.model.Experiment.project" title="Permalink to this definition">¶</a></dt>
 <dd><p>A unicode string field.</p>
 </dd></dl>
 
@@ -857,6 +944,127 @@ add extra queryset functionality.  Any custom manager methods must accept a
 <dt id="orion.model.PipelineField.validate">
 <code class="sig-name descname">validate</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/model.html#PipelineField.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.model.PipelineField.validate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make sure that a list of valid fields is being used.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="orion.model.Signal">
+<em class="property">class </em><code class="sig-prename descclassname">orion.model.</code><code class="sig-name descname">Signal</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/model.html#Signal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.model.Signal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mongoengine.document.Document</span></code>, <a class="reference internal" href="#orion.model.MongoUtils" title="orion.model.MongoUtils"><code class="xref py py-class docutils literal notranslate"><span class="pre">orion.model.MongoUtils</span></code></a></p>
+<dl class="exception">
+<dt id="orion.model.Signal.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#orion.model.Signal.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mongoengine.errors.DoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="orion.model.Signal.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#orion.model.Signal.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mongoengine.errors.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.created_by">
+<code class="sig-name descname">created_by</code><a class="headerlink" href="#orion.model.Signal.created_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>A unicode string field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.data_location">
+<code class="sig-name descname">data_location</code><a class="headerlink" href="#orion.model.Signal.data_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>A unicode string field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.dataset">
+<code class="sig-name descname">dataset</code><a class="headerlink" href="#orion.model.Signal.dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>A reference to a document that will be automatically dereferenced on
+access (lazily).</p>
+<p>Note this means you will get a database I/O access everytime you access
+this field. This is necessary because the field returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code>
+which precise type can depend of the value of the <cite>_cls</cite> field present in the
+document in database.
+In short, using this type of field can lead to poor performances (especially
+if you access this field only to retrieve it <cite>pk</cite> field which is already
+known before dereference). To solve this you should consider using the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">LazyReferenceField</span></code>.</p>
+<p>Use the <cite>reverse_delete_rule</cite> to handle what should happen if the document
+the field is referencing is deleted.  EmbeddedDocuments, DictFields and
+MapFields does not support reverse_delete_rule and an <cite>InvalidDocumentError</cite>
+will be raised if trying to set on one of these Document / Field types.</p>
+<p>The options are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>DO_NOTHING (0)  - don’t do anything (default).</p></li>
+<li><p>NULLIFY    (1)  - Updates the reference to null.</p></li>
+<li><p>CASCADE    (2)  - Deletes the documents associated with the reference.</p></li>
+<li><p>DENY       (3)  - Prevent the deletion of the reference object.</p></li>
+<li><p>PULL       (4)  - Pull the reference from a <code class="xref py py-class docutils literal notranslate"><span class="pre">ListField</span></code> of references</p></li>
+</ul>
+</div></blockquote>
+<p>Alternative syntax for registering delete rules (useful when implementing
+bi-directional delete rules)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Org</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="s1">&#39;User&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">org</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="s1">&#39;Org&#39;</span><span class="p">,</span> <span class="n">reverse_delete_rule</span><span class="o">=</span><span class="n">CASCADE</span><span class="p">)</span>
+
+<span class="n">User</span><span class="o">.</span><span class="n">register_delete_rule</span><span class="p">(</span><span class="n">Org</span><span class="p">,</span> <span class="s1">&#39;owner&#39;</span><span class="p">,</span> <span class="n">DENY</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.5: </span>added <cite>reverse_delete_rule</cite></p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#orion.model.Signal.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A field wrapper around MongoDB’s ObjectIds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#orion.model.Signal.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A unicode string field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.objects">
+<code class="sig-name descname">objects</code><a class="headerlink" href="#orion.model.Signal.objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default QuerySet Manager.</p>
+<p>Custom QuerySet Manager functions can extend this class and users can
+add extra queryset functionality.  Any custom manager methods must accept a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code> class as its first argument, and a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code> as its second argument.</p>
+<p>The method function should return a <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code>
+, probably the same one that was passed in, but modified in some way.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.start_time">
+<code class="sig-name descname">start_time</code><a class="headerlink" href="#orion.model.Signal.start_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>32-bit integer field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.stop_time">
+<code class="sig-name descname">stop_time</code><a class="headerlink" href="#orion.model.Signal.stop_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>32-bit integer field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.timestamp_column">
+<code class="sig-name descname">timestamp_column</code><a class="headerlink" href="#orion.model.Signal.timestamp_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>32-bit integer field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orion.model.Signal.value_column">
+<code class="sig-name descname">value_column</code><a class="headerlink" href="#orion.model.Signal.value_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>32-bit integer field.</p>
 </dd></dl>
 
 </dd></dl>

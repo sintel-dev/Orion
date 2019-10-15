@@ -78,8 +78,8 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Orion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#license">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#overview">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../readme.html#table-of-contents">Table of Contents</a></li>
 </ul>
 </li>
@@ -126,6 +126,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../readme.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#what-s-next">What’s next?</a></li>
 </ul>
 </li>
 </ul>
@@ -329,8 +330,12 @@
 
 <div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../api/orion.model.html#orion.model.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">MongoUtils</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">signal_set</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">satellite_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span>
+    <span class="n">entity_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Signal"><a class="viewcode-back" href="../../api/orion.model.html#orion.model.Signal">[docs]</a><span class="k">class</span> <span class="nc">Signal</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">MongoUtils</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">ReferenceField</span><span class="p">(</span><span class="n">Dataset</span><span class="p">)</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">IntField</span><span class="p">()</span>
     <span class="n">stop_time</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">IntField</span><span class="p">()</span>
     <span class="n">data_location</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span>
@@ -345,9 +350,16 @@
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="Datarun"><a class="viewcode-back" href="../../api/orion.model.html#orion.model.Datarun">[docs]</a><span class="k">class</span> <span class="nc">Datarun</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">MongoUtils</span><span class="p">):</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">ReferenceField</span><span class="p">(</span><span class="n">Dataset</span><span class="p">)</span>
+<div class="viewcode-block" id="Experiment"><a class="viewcode-back" href="../../api/orion.model.html#orion.model.Experiment">[docs]</a><span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">MongoUtils</span><span class="p">):</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span>
     <span class="n">pipeline</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">ReferenceField</span><span class="p">(</span><span class="n">Pipeline</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">ReferenceField</span><span class="p">(</span><span class="n">Dataset</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Datarun"><a class="viewcode-back" href="../../api/orion.model.html#orion.model.Datarun">[docs]</a><span class="k">class</span> <span class="nc">Datarun</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">MongoUtils</span><span class="p">):</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">ReferenceField</span><span class="p">(</span><span class="n">Experiment</span><span class="p">)</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">ReferenceField</span><span class="p">(</span><span class="n">Signal</span><span class="p">)</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">end_time</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">()</span>
     <span class="n">software_versions</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">ListField</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">())</span>
@@ -356,8 +368,7 @@
     <span class="n">model_location</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span>
     <span class="n">metrics_location</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span>
     <span class="n">events</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">IntField</span><span class="p">()</span>
-    <span class="n">status</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span>
-    <span class="n">created_by</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span></div>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">StringField</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Event"><a class="viewcode-back" href="../../api/orion.model.html#orion.model.Event">[docs]</a><span class="k">class</span> <span class="nc">Event</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">MongoUtils</span><span class="p">):</span>

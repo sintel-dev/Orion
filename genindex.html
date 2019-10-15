@@ -79,8 +79,8 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="readme.html">Orion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#license">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#overview">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="readme.html#table-of-contents">Table of Contents</a></li>
 </ul>
 </li>
@@ -127,6 +127,7 @@
 <li class="toctree-l3"><a class="reference internal" href="readme.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#what-s-next">What’s next?</a></li>
 </ul>
 </li>
 </ul>
@@ -274,12 +275,10 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.add_pipeline">add_pipeline() (orion.explorer.OrionExplorer method)</a>
 </li>
-      <li><a href="api/orion.analysis.html#orion.analysis.analyze">analyze() (in module orion.analysis)</a>
-
-      <ul>
-        <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.analyze">(orion.explorer.OrionExplorer method)</a>
+      <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.add_signal">add_signal() (orion.explorer.OrionExplorer method)</a>
 </li>
-      </ul></li>
+      <li><a href="api/orion.analysis.html#orion.analysis.analyze">analyze() (in module orion.analysis)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -311,11 +310,11 @@
       <li><a href="api/orion.model.html#orion.model.Comment.created_by">created_by (orion.model.Comment attribute)</a>
 
       <ul>
-        <li><a href="api/orion.model.html#orion.model.Datarun.created_by">(orion.model.Datarun attribute)</a>
-</li>
-        <li><a href="api/orion.model.html#orion.model.Dataset.created_by">(orion.model.Dataset attribute)</a>
+        <li><a href="api/orion.model.html#orion.model.Experiment.created_by">(orion.model.Experiment attribute)</a>
 </li>
         <li><a href="api/orion.model.html#orion.model.Pipeline.created_by">(orion.model.Pipeline attribute)</a>
+</li>
+        <li><a href="api/orion.model.html#orion.model.Signal.created_by">(orion.model.Signal attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -324,7 +323,7 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.model.html#orion.model.Dataset.data_location">data_location (orion.model.Dataset attribute)</a>
+      <li><a href="api/orion.model.html#orion.model.Signal.data_location">data_location (orion.model.Signal attribute)</a>
 </li>
       <li><a href="api/orion.model.html#orion.model.Datarun">Datarun (class in orion.model)</a>
 </li>
@@ -334,12 +333,16 @@
 </li>
       <li><a href="api/orion.model.html#orion.model.Datarun.MultipleObjectsReturned">Datarun.MultipleObjectsReturned</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.model.html#orion.model.Dataset">Dataset (class in orion.model)</a>
 </li>
-      <li><a href="api/orion.model.html#orion.model.Datarun.dataset">dataset (orion.model.Datarun attribute)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.model.html#orion.model.Experiment.dataset">dataset (orion.model.Experiment attribute)</a>
+
+      <ul>
+        <li><a href="api/orion.model.html#orion.model.Signal.dataset">(orion.model.Signal attribute)</a>
 </li>
+      </ul></li>
       <li><a href="api/orion.model.html#orion.model.Dataset.DoesNotExist">Dataset.DoesNotExist</a>
 </li>
       <li><a href="api/orion.model.html#orion.model.Dataset.MultipleObjectsReturned">Dataset.MultipleObjectsReturned</a>
@@ -358,21 +361,31 @@
 </li>
       <li><a href="api/orion.model.html#orion.model.Datarun.end_time">end_time (orion.model.Datarun attribute)</a>
 </li>
+      <li><a href="api/orion.model.html#orion.model.Dataset.entity_id">entity_id (orion.model.Dataset attribute)</a>
+</li>
       <li><a href="api/orion.evaluation.html#orion.evaluation.evaluate_pipeline">evaluate_pipeline() (in module orion.evaluation)</a>
 </li>
       <li><a href="api/orion.evaluation.html#orion.evaluation.evaluate_pipelines">evaluate_pipelines() (in module orion.evaluation)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.model.html#orion.model.Event">Event (class in orion.model)</a>
 </li>
       <li><a href="api/orion.model.html#orion.model.Comment.event">event (orion.model.Comment attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.model.html#orion.model.Event.DoesNotExist">Event.DoesNotExist</a>
 </li>
       <li><a href="api/orion.model.html#orion.model.Event.MultipleObjectsReturned">Event.MultipleObjectsReturned</a>
 </li>
       <li><a href="api/orion.model.html#orion.model.Datarun.events">events (orion.model.Datarun attribute)</a>
+</li>
+      <li><a href="api/orion.model.html#orion.model.Experiment">Experiment (class in orion.model)</a>
+</li>
+      <li><a href="api/orion.model.html#orion.model.Datarun.experiment">experiment (orion.model.Datarun attribute)</a>
+</li>
+      <li><a href="api/orion.model.html#orion.model.Experiment.DoesNotExist">Experiment.DoesNotExist</a>
+</li>
+      <li><a href="api/orion.model.html#orion.model.Experiment.MultipleObjectsReturned">Experiment.MultipleObjectsReturned</a>
 </li>
   </ul></td>
 </tr></table>
@@ -404,15 +417,19 @@
 </li>
       <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.get_datasets">get_datasets() (orion.explorer.OrionExplorer method)</a>
 </li>
+      <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.get_events">get_events() (orion.explorer.OrionExplorer method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.get_events">get_events() (orion.explorer.OrionExplorer method)</a>
+      <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.get_experiments">get_experiments() (orion.explorer.OrionExplorer method)</a>
 </li>
       <li><a href="api/orion.cli.html#orion.cli.get_parser">get_parser() (in module orion.cli)</a>
 </li>
       <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.get_pipeline">get_pipeline() (orion.explorer.OrionExplorer method)</a>
 </li>
       <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.get_pipelines">get_pipelines() (orion.explorer.OrionExplorer method)</a>
+</li>
+      <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.get_signals">get_signals() (orion.explorer.OrionExplorer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -429,7 +446,11 @@
 </li>
         <li><a href="api/orion.model.html#orion.model.Event.id">(orion.model.Event attribute)</a>
 </li>
+        <li><a href="api/orion.model.html#orion.model.Experiment.id">(orion.model.Experiment attribute)</a>
+</li>
         <li><a href="api/orion.model.html#orion.model.Pipeline.id">(orion.model.Pipeline attribute)</a>
+</li>
+        <li><a href="api/orion.model.html#orion.model.Signal.id">(orion.model.Signal attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -460,12 +481,14 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.load_dataset">load_dataset() (orion.explorer.OrionExplorer method)</a>
-</li>
       <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.load_pipeline">load_pipeline() (orion.explorer.OrionExplorer method)</a>
 </li>
       <li><a href="api/orion.data.html#orion.data.load_signal">load_signal() (in module orion.data)</a>
+
+      <ul>
+        <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.load_signal">(orion.explorer.OrionExplorer method)</a>
 </li>
+      </ul></li>
       <li><a href="api/orion.utils.html#orion.utils.logging_setup">logging_setup() (in module orion.utils)</a>
 </li>
   </ul></td>
@@ -497,6 +520,8 @@
       <ul>
         <li><a href="api/orion.model.html#orion.model.Pipeline.name">(orion.model.Pipeline attribute)</a>
 </li>
+        <li><a href="api/orion.model.html#orion.model.Signal.name">(orion.model.Signal attribute)</a>
+</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -513,15 +538,19 @@
 </li>
         <li><a href="api/orion.model.html#orion.model.Event.objects">(orion.model.Event attribute)</a>
 </li>
+        <li><a href="api/orion.model.html#orion.model.Experiment.objects">(orion.model.Experiment attribute)</a>
+</li>
         <li><a href="api/orion.model.html#orion.model.Pipeline.objects">(orion.model.Pipeline attribute)</a>
+</li>
+        <li><a href="api/orion.model.html#orion.model.Signal.objects">(orion.model.Signal attribute)</a>
 </li>
       </ul></li>
       <li><a href="api/orion.html#module-orion">orion (module)</a>
 </li>
-      <li><a href="api/orion.analysis.html#module-orion.analysis">orion.analysis (module)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.analysis.html#module-orion.analysis">orion.analysis (module)</a>
+</li>
       <li><a href="api/orion.cli.html#module-orion.cli">orion.cli (module)</a>
 </li>
       <li><a href="api/orion.data.html#module-orion.data">orion.data (module)</a>
@@ -546,7 +575,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.model.html#orion.model.Pipeline">Pipeline (class in orion.model)</a>
 </li>
-      <li><a href="api/orion.model.html#orion.model.Datarun.pipeline">pipeline (orion.model.Datarun attribute)</a>
+      <li><a href="api/orion.model.html#orion.model.Experiment.pipeline">pipeline (orion.model.Experiment attribute)</a>
 </li>
       <li><a href="api/orion.model.html#orion.model.Pipeline.DoesNotExist">Pipeline.DoesNotExist</a>
 </li>
@@ -558,6 +587,8 @@
 </li>
       <li><a href="api/orion.metrics.html#orion.metrics.precision_score">precision_score() (in module orion.metrics)</a>
 </li>
+      <li><a href="api/orion.model.html#orion.model.Experiment.project">project (orion.model.Experiment attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -566,11 +597,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.metrics.html#orion.metrics.recall_score">recall_score() (in module orion.metrics)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.utils.html#orion.utils.remove_dots">remove_dots() (in module orion.utils)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.utils.html#orion.utils.restore_dots">restore_dots() (in module orion.utils)</a>
+</li>
+      <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.run_experiment">run_experiment() (orion.explorer.OrionExplorer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -578,32 +611,36 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.model.html#orion.model.Dataset.satellite_id">satellite_id (orion.model.Dataset attribute)</a>
-</li>
       <li><a href="api/orion.model.html#orion.model.Event.score">score (orion.model.Event attribute)</a>
 </li>
-      <li><a href="api/orion.model.html#orion.model.Dataset.signal_set">signal_set (orion.model.Dataset attribute)</a>
+      <li><a href="api/orion.model.html#orion.model.Signal">Signal (class in orion.model)</a>
+</li>
+      <li><a href="api/orion.model.html#orion.model.Datarun.signal">signal (orion.model.Datarun attribute)</a>
+</li>
+      <li><a href="api/orion.model.html#orion.model.Signal.DoesNotExist">Signal.DoesNotExist</a>
+</li>
+      <li><a href="api/orion.model.html#orion.model.Signal.MultipleObjectsReturned">Signal.MultipleObjectsReturned</a>
 </li>
       <li><a href="api/orion.model.html#orion.model.Datarun.software_versions">software_versions (orion.model.Datarun attribute)</a>
 </li>
-      <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.start_datarun">start_datarun() (orion.explorer.OrionExplorer method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.explorer.html#orion.explorer.OrionExplorer.start_datarun">start_datarun() (orion.explorer.OrionExplorer method)</a>
+</li>
       <li><a href="api/orion.model.html#orion.model.Datarun.start_time">start_time (orion.model.Datarun attribute)</a>
 
       <ul>
-        <li><a href="api/orion.model.html#orion.model.Dataset.start_time">(orion.model.Dataset attribute)</a>
-</li>
         <li><a href="api/orion.model.html#orion.model.Event.start_time">(orion.model.Event attribute)</a>
+</li>
+        <li><a href="api/orion.model.html#orion.model.Signal.start_time">(orion.model.Signal attribute)</a>
 </li>
       </ul></li>
       <li><a href="api/orion.model.html#orion.model.Datarun.status">status (orion.model.Datarun attribute)</a>
 </li>
-      <li><a href="api/orion.model.html#orion.model.Dataset.stop_time">stop_time (orion.model.Dataset attribute)</a>
+      <li><a href="api/orion.model.html#orion.model.Event.stop_time">stop_time (orion.model.Event attribute)</a>
 
       <ul>
-        <li><a href="api/orion.model.html#orion.model.Event.stop_time">(orion.model.Event attribute)</a>
+        <li><a href="api/orion.model.html#orion.model.Signal.stop_time">(orion.model.Signal attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -618,7 +655,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.model.html#orion.model.Dataset.timestamp_column">timestamp_column (orion.model.Dataset attribute)</a>
+      <li><a href="api/orion.model.html#orion.model.Signal.timestamp_column">timestamp_column (orion.model.Signal attribute)</a>
 </li>
       <li><a href="api/orion.model.html#orion.model.PipelineField.to_mongo">to_mongo() (orion.model.PipelineField method)</a>
 </li>
@@ -634,7 +671,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.model.html#orion.model.Dataset.value_column">value_column (orion.model.Dataset attribute)</a>
+      <li><a href="api/orion.model.html#orion.model.Signal.value_column">value_column (orion.model.Signal attribute)</a>
 </li>
   </ul></td>
 </tr></table>

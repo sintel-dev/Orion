@@ -80,8 +80,8 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../readme.html">Orion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#license">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#overview">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../readme.html#table-of-contents">Table of Contents</a></li>
 </ul>
 </li>
@@ -128,6 +128,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../readme.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#what-s-next">What’s next?</a></li>
 </ul>
 </li>
 </ul>
@@ -252,7 +253,7 @@
 
 <dl class="method">
 <dt id="orion.explorer.OrionExplorer.add_dataset">
-<code class="sig-name descname">add_dataset</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">signal_set</em>, <em class="sig-param">satellite_id=None</em>, <em class="sig-param">start_time=None</em>, <em class="sig-param">stop_time=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">timestamp_column=None</em>, <em class="sig-param">value_column=None</em>, <em class="sig-param">user_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.add_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.add_dataset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_dataset</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">entity_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.add_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.add_dataset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -261,8 +262,8 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="orion.explorer.OrionExplorer.analyze">
-<code class="sig-name descname">analyze</code><span class="sig-paren">(</span><em class="sig-param">dataset_name</em>, <em class="sig-param">pipeline_name</em>, <em class="sig-param">user_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.analyze" title="Permalink to this definition">¶</a></dt>
+<dt id="orion.explorer.OrionExplorer.add_signal">
+<code class="sig-name descname">add_signal</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">dataset</em>, <em class="sig-param">start_time=None</em>, <em class="sig-param">stop_time=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">timestamp_column=None</em>, <em class="sig-param">value_column=None</em>, <em class="sig-param">user_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.add_signal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.add_signal" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -282,7 +283,7 @@
 
 <dl class="method">
 <dt id="orion.explorer.OrionExplorer.get_dataruns">
-<code class="sig-name descname">get_dataruns</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">pipeline=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.get_dataruns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.get_dataruns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_dataruns</code><span class="sig-paren">(</span><em class="sig-param">experiment=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.get_dataruns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.get_dataruns" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -292,12 +293,17 @@
 
 <dl class="method">
 <dt id="orion.explorer.OrionExplorer.get_datasets">
-<code class="sig-name descname">get_datasets</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">signal=None</em>, <em class="sig-param">satellite=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.get_datasets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.get_datasets" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_datasets</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">entity_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.get_datasets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.get_datasets" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="orion.explorer.OrionExplorer.get_events">
 <code class="sig-name descname">get_events</code><span class="sig-paren">(</span><em class="sig-param">datarun=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.get_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.get_events" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="orion.explorer.OrionExplorer.get_experiments">
+<code class="sig-name descname">get_experiments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.get_experiments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.get_experiments" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -311,8 +317,8 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="orion.explorer.OrionExplorer.load_dataset">
-<code class="sig-name descname">load_dataset</code><span class="sig-paren">(</span><em class="sig-param">dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.load_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.load_dataset" title="Permalink to this definition">¶</a></dt>
+<dt id="orion.explorer.OrionExplorer.get_signals">
+<code class="sig-name descname">get_signals</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.get_signals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.get_signals" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -321,8 +327,18 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="orion.explorer.OrionExplorer.load_signal">
+<code class="sig-name descname">load_signal</code><span class="sig-paren">(</span><em class="sig-param">signal</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.load_signal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.load_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="orion.explorer.OrionExplorer.run_experiment">
+<code class="sig-name descname">run_experiment</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">pipeline</em>, <em class="sig-param">dataset</em>, <em class="sig-param">user_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.run_experiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.run_experiment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="orion.explorer.OrionExplorer.start_datarun">
-<code class="sig-name descname">start_datarun</code><span class="sig-paren">(</span><em class="sig-param">dataset</em>, <em class="sig-param">pipeline</em>, <em class="sig-param">user_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.start_datarun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.start_datarun" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">start_datarun</code><span class="sig-paren">(</span><em class="sig-param">experiment</em>, <em class="sig-param">signal</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/explorer.html#OrionExplorer.start_datarun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.explorer.OrionExplorer.start_datarun" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

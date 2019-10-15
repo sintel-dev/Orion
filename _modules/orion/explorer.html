@@ -78,8 +78,8 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Orion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#license">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#overview">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../readme.html#table-of-contents">Table of Contents</a></li>
 </ul>
 </li>
@@ -126,6 +126,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../readme.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#what-s-next">What’s next?</a></li>
 </ul>
 </li>
 </ul>
@@ -234,14 +235,17 @@
   <h1>Source code for orion.explorer</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">bson</span> <span class="k">import</span> <span class="n">ObjectId</span>
 <span class="kn">from</span> <span class="nn">bson.errors</span> <span class="k">import</span> <span class="n">InvalidId</span>
+<span class="kn">from</span> <span class="nn">gridfs</span> <span class="k">import</span> <span class="n">GridFS</span>
 <span class="kn">from</span> <span class="nn">mlblocks</span> <span class="k">import</span> <span class="n">MLPipeline</span>
 <span class="kn">from</span> <span class="nn">mongoengine</span> <span class="k">import</span> <span class="n">connect</span>
 <span class="kn">from</span> <span class="nn">pip._internal.operations</span> <span class="k">import</span> <span class="n">freeze</span>
+<span class="kn">from</span> <span class="nn">pymongo.database</span> <span class="k">import</span> <span class="n">Database</span>
 
 <span class="kn">from</span> <span class="nn">orion</span> <span class="k">import</span> <span class="n">model</span>
 <span class="kn">from</span> <span class="nn">orion.data</span> <span class="k">import</span> <span class="n">load_signal</span>
@@ -255,6 +259,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">database</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_software_versions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">freeze</span><span class="o">.</span><span class="n">freeze</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fs</span> <span class="o">=</span> <span class="n">GridFS</span><span class="p">(</span><span class="n">Database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">))</span>
 
 <div class="viewcode-block" id="OrionExplorer.drop_database"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.drop_database">[docs]</a>    <span class="k">def</span> <span class="nf">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">)</span></div>
@@ -278,8 +283,32 @@
 
         <span class="k">return</span> <span class="n">data</span>
 
-<div class="viewcode-block" id="OrionExplorer.add_dataset"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.add_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">add_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">signal_set</span><span class="p">,</span> <span class="n">satellite_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionExplorer.add_dataset"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.add_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">add_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">find_or_insert</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">entity_id</span><span class="o">=</span><span class="n">entity_id</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionExplorer.get_datasets"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.get_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">get_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">entity_id</span><span class="o">=</span><span class="n">entity_id</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionExplorer.get_dataset"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_id</span> <span class="o">=</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">_id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">InvalidId</span><span class="p">:</span>
+            <span class="n">found_dataset</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">found_dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Dataset not found: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">found_dataset</span></div>
+
+<div class="viewcode-block" id="OrionExplorer.add_signal"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.add_signal">[docs]</a>    <span class="k">def</span> <span class="nf">add_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="n">location</span> <span class="o">=</span> <span class="n">location</span> <span class="ow">or</span> <span class="n">name</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="p">,</span> <span class="n">value_column</span><span class="p">)</span>
@@ -290,10 +319,11 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">stop_time</span><span class="p">:</span>
             <span class="n">stop_time</span> <span class="o">=</span> <span class="n">timestamps</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">find_or_insert</span><span class="p">(</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">find_or_insert</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">signal_set</span><span class="o">=</span><span class="n">signal_set</span><span class="p">,</span>
-            <span class="n">satellite_id</span><span class="o">=</span><span class="n">satellite_id</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
             <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
             <span class="n">stop_time</span><span class="o">=</span><span class="n">stop_time</span><span class="p">,</span>
             <span class="n">data_location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
@@ -302,30 +332,22 @@
             <span class="n">created_by</span><span class="o">=</span><span class="n">user_id</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionExplorer.get_datasets"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.get_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">get_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">satellite</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionExplorer.get_signals"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.get_signals">[docs]</a>    <span class="k">def</span> <span class="nf">get_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span>
-            <span class="n">model</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">Signal</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">signal_set</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
-            <span class="n">satellite_id</span><span class="o">=</span><span class="n">satellite</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionExplorer.get_dataset"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">_id</span> <span class="o">=</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">_id</span><span class="o">=</span><span class="n">_id</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">InvalidId</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="OrionExplorer.load_dataset"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.load_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">load_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
-        <span class="n">path_or_name</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data_location</span> <span class="ow">or</span> <span class="n">dataset</span><span class="o">.</span><span class="n">name</span>
+<div class="viewcode-block" id="OrionExplorer.load_signal"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.load_signal">[docs]</a>    <span class="k">def</span> <span class="nf">load_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+        <span class="n">path_or_name</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">data_location</span> <span class="ow">or</span> <span class="n">signal</span><span class="o">.</span><span class="n">name</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading dataset </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">path_or_name</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">path_or_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">timestamp_column</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">value_column</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">start_time</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">path_or_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">timestamp_column</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">value_column</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">signal</span><span class="o">.</span><span class="n">start_time</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">stop_time</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">stop_time</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">stop_time</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">signal</span><span class="o">.</span><span class="n">stop_time</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">data</span></div>
 
@@ -348,30 +370,37 @@
 <div class="viewcode-block" id="OrionExplorer.get_pipeline"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.get_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">get_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">_id</span> <span class="o">=</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Pipeline</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">_id</span><span class="o">=</span><span class="n">_id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Pipeline</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">_id</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">InvalidId</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Pipeline</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">pipeline</span><span class="p">)</span></div>
+            <span class="n">found_pipeline</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Pipeline</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">pipeline</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">found_pipeline</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pipeline not found: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pipeline</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">found_pipeline</span></div>
 
 <div class="viewcode-block" id="OrionExplorer.load_pipeline"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.load_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">load_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">):</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading pipeline </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">MLPipeline</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">pipeline</span><span class="o">.</span><span class="n">mlpipeline</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionExplorer.get_dataruns"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.get_dataruns">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataruns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionExplorer.get_experiments"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.get_experiments">[docs]</a>    <span class="k">def</span> <span class="nf">get_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">Experiment</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionExplorer.get_dataruns"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.get_dataruns">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataruns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span>
             <span class="n">model</span><span class="o">.</span><span class="n">Datarun</span><span class="p">,</span>
             <span class="n">exclude_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;software_versions&#39;</span><span class="p">],</span>
-            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
-            <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionExplorer.start_datarun"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.start_datarun">[docs]</a>    <span class="k">def</span> <span class="nf">start_datarun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionExplorer.start_datarun"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.start_datarun">[docs]</a>    <span class="k">def</span> <span class="nf">start_datarun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Datarun</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
-            <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
             <span class="n">start_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">(),</span>
             <span class="n">software_versions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_software_versions</span><span class="p">,</span>
-            <span class="n">status</span><span class="o">=</span><span class="s1">&#39;running&#39;</span><span class="p">,</span>
-            <span class="n">created_by</span><span class="o">=</span><span class="n">user_id</span>
+            <span class="n">status</span><span class="o">=</span><span class="s1">&#39;running&#39;</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="OrionExplorer.end_datarun"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.end_datarun">[docs]</a>    <span class="k">def</span> <span class="nf">end_datarun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;done&#39;</span><span class="p">):</span>
@@ -440,41 +469,74 @@
 
         <span class="k">return</span> <span class="n">events</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">comments</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;event_id&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionExplorer.analyze"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.analyze">[docs]</a>    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">,</span> <span class="n">pipeline_name</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">)</span>
+<div class="viewcode-block" id="OrionExplorer.run_experiment"><a class="viewcode-back" href="../../api/orion.explorer.html#orion.explorer.OrionExplorer.run_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">run_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Dataset not found: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">))</span>
-
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-
-        <span class="n">pipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pipeline</span><span class="p">(</span><span class="n">pipeline_name</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">pipeline</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pipeline not found: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pipeline_name</span><span class="p">))</span>
+        <span class="n">experiment</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Experiment</span><span class="o">.</span><span class="n">find_or_insert</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">user_id</span>
+        <span class="p">)</span>
 
         <span class="n">mlpipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+        <span class="n">signals</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
-        <span class="n">datarun</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_datarun</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Fitting the pipeline&quot;</span><span class="p">)</span>
-            <span class="n">mlpipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+            <span class="n">datarun</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_datarun</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">signal</span><span class="p">)</span>
 
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finding events&quot;</span><span class="p">)</span>
-            <span class="n">events</span> <span class="o">=</span> <span class="n">mlpipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Fitting the pipeline&quot;</span><span class="p">)</span>
+                <span class="n">mlpipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-            <span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;done&#39;</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Error running datarun </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">datarun</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-            <span class="n">events</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-            <span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">end_datarun</span><span class="p">(</span><span class="n">datarun</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">output_names</span> <span class="o">=</span> <span class="n">mlpipeline</span><span class="o">.</span><span class="n">get_output_names</span><span class="p">(</span><span class="s1">&#39;visualization&#39;</span><span class="p">)</span>
+                    <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;visualization&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="n">output_names</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> events found in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">),</span> <span class="n">datarun</span><span class="o">.</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">datarun</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finding events&quot;</span><span class="p">)</span>
+                <span class="n">pipeline_output</span> <span class="o">=</span> <span class="n">mlpipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output_</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">datarun</span></div></div>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pipeline_output</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="n">events</span> <span class="o">=</span> <span class="n">pipeline_output</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">events</span> <span class="o">=</span> <span class="n">pipeline_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">output_names</span><span class="p">:</span>
+                        <span class="c1"># There might be multiple `default` outputs before the `visualization`</span>
+                        <span class="c1"># outputs in the pipeline_output tuple, thus we get the last entries</span>
+                        <span class="c1"># corresponding to visualization</span>
+                        <span class="n">visualization</span> <span class="o">=</span> <span class="n">pipeline_output</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">):]</span>
+
+                        <span class="n">visualization_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">output_names</span><span class="p">,</span> <span class="n">visualization</span><span class="p">))</span>
+                        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">visualization_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+                                <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datarun</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span>
+                                <span class="s2">&quot;datarun_id&quot;</span><span class="p">:</span> <span class="n">datarun</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                                <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="n">name</span>
+                            <span class="p">}</span>
+                            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fs</span><span class="o">.</span><span class="n">new_file</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+                <span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;done&#39;</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Error running datarun </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">datarun</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="n">events</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">end_datarun</span><span class="p">(</span><span class="n">datarun</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> events found in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">),</span>
+                        <span class="n">datarun</span><span class="o">.</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">datarun</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">experiment</span></div></div>
 </pre></div>
 
            </div>
