@@ -13,9 +13,9 @@ MLBLOCKS_PIPELINES = os.path.join(_BASE_PATH, 'pipelines')
 
 PIPELINES = {
     'Dummy': os.path.join(MLBLOCKS_PIPELINES, 'dummy.json'),
-    'LSTM Dynamic Thresholding': os.path.join(MLBLOCKS_PIPELINES,'lstm_dynamic_threshold.json'),
-    'CycleGAN': os.path.join(MLBLOCKS_PIPELINES,'cyclegan.json'),
-    'ARIMA': os.path.join(MLBLOCKS_PIPELINES,'arima.json'),
+    'LSTM Dynamic Thresholding': os.path.join(MLBLOCKS_PIPELINES, 'lstm_dynamic_threshold.json'),
+    'CycleGAN': os.path.join(MLBLOCKS_PIPELINES, 'cyclegan.json'),
+    'ARIMA': os.path.join(MLBLOCKS_PIPELINES, 'arima.json'),
     'Sum 24h LSTM': os.path.join(MLBLOCKS_PIPELINES, 'mean_24h_lstm.json'),
     'Mean 24h LSTM': os.path.join(MLBLOCKS_PIPELINES, 'median_24h_lstm.json'),
     'Median 24h LSTM': os.path.join(MLBLOCKS_PIPELINES, 'sum_24h_lstm.json'),
