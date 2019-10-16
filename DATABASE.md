@@ -14,7 +14,6 @@ and which are associated with a name and an external entity, such as a Sattelite
 * `entity_id (String)`: Name or Id of the entity which this dataset is associated to
 * `insert_time (DateTime)`: Time when this Dataset Object was inserted
 
-
 ## Signal
 
 A **Signal** object contains all the required details to be able to load the observations
@@ -117,7 +116,7 @@ finished and they analyze the results.
 * `created_by (String)`: Identifier of the user that created this Event Object
 * `insert_time (DateTime)`: Time when this Event Object was inserted
 
-
+<!--
 # Database Usage
 
 In order to make **Orion** interact with the database you will need to use the `OrionExplorer`,
@@ -382,3 +381,4 @@ Out[24]:
 0  5c927ad86c1cea7674cf5b4a       1234 2019-03-21 13:06:33.591  This needs to be further investigated
 1  5c927ad86c1cea7674cf5b4b       1234 2019-03-21 13:07:08.935      This is probably a false positive
 ```
+-->
