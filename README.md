@@ -9,8 +9,6 @@
 
 [![CircleCI](https://circleci.com/gh/D3-AI/Orion.svg?style=shield)](https://circleci.com/gh/D3-AI/Orion)
 [![Travis CI Shield](https://travis-ci.org/D3-AI/Orion.svg?branch=master)](https://travis-ci.org/D3-AI/Orion)
-[![CodeCov](https://codecov.io/gh/D3-AI/Orion/branch/master/graph/badge.svg)](https://codecov.io/gh/D3-AI/Orion)
-[![Downloads](https://pepy.tech/badge/orion)](https://pepy.tech/project/orion)
 
 # Orion
 
