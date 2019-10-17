@@ -1,101 +1,123 @@
-# Orion Database
-
-## Database Schema
+# Database Schema
 
 The **Orion Database** contains the following collections and fields:
 
-### Dataset
+## Dataset
 
-The **Dataset** collection contains all the required details to be able to load
-the observations from a satellite signal, as well as some metadata about it, such as
-the minimum and maximum timestamps that want to be used or the user that registered it.
+A **Dataset** represents a group of Signals that are grouped together under a common name
+and which are associated with a name and an external entity, such as a Sattelite.
 
-#### Fields
+### Fields
 
-* \_id (ObjectID): Unique Identifier of this Dataset object
-* name (String): Name of the dataset
-* signal_set (String): Identifier of the signal
-* satellite_id (String): Identifier of the satellite
-* start_time (Integer): minimum timestamp of this dataset
-* stop_time (Integer): maximum timestamp of this dataset
-* data_location (String): URI of the dataset
-* timestamp_column (Integer): index of the timestamp column
-* value_column (Integer): index of the value column
-* created_by (String): Identifier of the user that created this Dataset Object
-* insert_time (DateTime): Time when this Dataset Object was inserted
+* `_id (ObjectID)`: Unique Identifier of this Dataset object
+* `name (String)`: Name of the dataset
+* `entity_id (String)`: Name or Id of the entity which this dataset is associated to
+* `insert_time (DateTime)`: Time when this Dataset Object was inserted
 
-### Pipeline
+## Signal
 
-The **Pipeline** collection contains all the pipelines registered in the system, including
-their details, such as the list of primitives and all the configured hyperparameter values.
+A **Signal** object contains all the required details to be able to load the observations
+from a timeseries signal, as well as some metadata about it, such as the minimum and maximum
+timestamps that want to be used or the user that registered it.
 
-#### Fields
+### Fields
 
-* \_id (ObjectID): Unique Identifier of this Pipeline object
-* name (String): Name given to this pipeline
-* mlpipeline (SubDocument): JSON representation of this pipeline
-* created_by (String): Identifier of the user that created this Pipeline Object
-* insert_time (DateTime): Time when this Pipeline Object was inserted
+* `_id (ObjectID)`: Unique Identifier of this Signal object
+* `name (String)`: Name of the signal
+* `dataset_id (ObjectID - Foreign Key)`: Unique Identifier of the Dataset which this signals belongs to
+* `start_time (Integer)`: minimum timestamp of this signal
+* `stop_time (Integer)`: maximum timestamp of this signal
+* `data_location (String)`: URI of the dataset
+* `timestamp_column (Integer)`: index of the timestamp column
+* `value_column (Integer)`: index of the value column
+* `created_by (String)`: Identifier of the user that created this Signal Object
+* `insert_time (DateTime)`: Time when this Signal Object was inserted
 
-### Datarun
+## Pipeline
 
-The **Datarun** objects represent single executions of a **Pipeline** on a **Dataset**,
+A **Pipeline** object contains all the details of the MLPipelines registered in the system,
+such as the list of primitives and all the configured hyperparameter values.
+
+### Fields
+
+* `_id (ObjectID)`: Unique Identifier of this Pipeline object
+* `name (String)`: Name given to this pipeline
+* `mlpipeline (SubDocument)`: JSON representation of this pipeline
+* `created_by (String)`: Identifier of the user that created this Pipeline Object
+* `insert_time (DateTime)`: Time when this Pipeline Object was inserted
+
+## Experiment
+
+An **Experiment** represents an execution of a Pipeline over the Signals of a Dataset.
+Within an experiment, one datarun is executed for each signal in the dataset.
+
+### Fields
+
+* `_id (ObjectID)`: Unique Identifier of this Experiment object
+* `project (String)`: Name given to describe the project to which the experiment belongs
+* `pipeline_id (ObjectID - Foreign Key)`: Unique Identifier of the Pipeline used
+* `dataset_id (ObjectID - Foreign Key)`: Unique Identifier of the Dataset used
+* `created_by (String)`: Identifier of the user that created this Experiment Object
+* `insert_time (DateTime)`: Time when this Experiment Object was inserted
+
+## Datarun
+
+The **Datarun** objects represent single executions of a **Pipeline** on a **Signal**,
 and contain all the information about the environment and context where this execution
 took place, which potentially allows to later on reproduce the results in a new environment.
 
 It also contains information about whether the execution was successful or not, when it started
 and ended, and the number of events that were found by the pipeline.
 
-#### Fields
+### Fields
 
-* \_id (ObjectID): Unique Identifier of this Datarun object
-* dataset_id (ObjectID - Foreign Key): Unique Identifier of the Dataset used
-* pipeline_id (ObjectID - Foreign Key): Unique Identifier of the Pipeline used
-* start_time (DateTime): When the execution started
-* end_time (DateTime): When the execution ended
-* software_versions (List of Strings): version of each python dependency installed in the
-  *virtualenv* when the execution took place
-* budget_type (String): Type of budget used (time or number of iterations)
-* budget_amount (Integer): Budget amount
-* model_location (String): URI of the fitted model
-* metrics_location (String): URI of the metrics
-* events (Integer): Number of events detected during this Datarun execution
-* status (String): Whether the Datarun is still running, finished successfully or failed
-* created_by (String): Identifier of the user that created this Datarun Object
-* insert_time (DateTime): Time when this Datarun Object was inserted
+* `_id (ObjectID)`: Unique Identifier of this Datarun object
+* `experiment_id (ObjectID - Foreign Key)`: Unique Identifier of the Experiment
+* `signal_id (ObjectID - Foreign Key)`: Unique Identifier of the Signal
+* `start_time (DateTime)`: When the execution started
+* `end_time (DateTime)`: When the execution ended
+* `software_versions (List of Strings)`: version of each python dependency installed in the
+virtualenv when the execution took place
+* `budget_type (String)`: Type of budget used (time or number of iterations)
+* `budget_amount (Integer)`: Budget amount
+* `model_location (String)`: URI of the fitted model
+* `metrics_location (String)`: URI of the metrics
+* `events (Integer)`: Number of events detected during this Datarun execution
+* `status (String)`: Whether the Datarun is still running, finished successfully or failed
+* `insert_time (DateTime)`: Time when this Datarun Object was inserted
 
-### Event
+## Event
 
 Each one of the anomalies detected by the pipelines is stored as an **Event**, which
 contains the details about the start time, the stop time and the severity score.
 
-#### Fields
+### Fields
 
-* \_id (ObjectID): Unique Identifier of this Event object
-* datarun_id (ObjectID - Foreign Key): Unique Identifier of the Datarun during which this
-  Event was detected.
-* start_time (Integer): Timestamp where the anomalous interval starts.
-* stop_time (Integer): Timestamp where the anomalous interval ends.
-* score (Float): Severity score given by the pipeline to this Event
-* tag (String): User given tag for this Event
-* insert_time (DateTime): Time when this Event Object was inserted
+* `_id (ObjectID)`: Unique Identifier of this Event object
+* `datarun_id (ObjectID - Foreign Key)`: Unique Identifier of the Datarun during which this
+Event was detected.
+* `start_time (Integer)`: Timestamp where the anomalous interval starts.
+* `stop_time (Integer)`: Timestamp where the anomalous interval ends.
+* `score (Float)`: Severity score given by the pipeline to this Event
+* `tag (String)`: User given tag for this Event
+* `insert_time (DateTime)`: Time when this Event Object was inserted
 
-### Comment
+## Comment
 
 Each Event can have multiple **Comments**, from one or more users.
 **Comments** are expected to be inserted by the domain experts after the Datarun has
 finished and they analyze the results.
 
-#### Fields
+### Fields
 
-* \_id (ObjectID): Unique Identifier of this Comment object
-* event_id (ObjectID - Foreign Key): Unique Identifier of the Event to which this Comment relates
-* text (String): Comment contents
-* created_by (String): Identifier of the user that created this Event Object
-* insert_time (DateTime): Time when this Event Object was inserted
+* `_id (ObjectID)`: Unique Identifier of this Comment object
+* `event_id (ObjectID - Foreign Key)`: Unique Identifier of the Event to which this Comment relates
+* `text (String)`: Comment contents
+* `created_by (String)`: Identifier of the user that created this Event Object
+* `insert_time (DateTime)`: Time when this Event Object was inserted
 
-
-## Database Usage
+<!--
+# Database Usage
 
 In order to make **Orion** interact with the database you will need to use the `OrionExplorer`,
 which provides all the required functionality to register and explore all the database objects,
@@ -112,7 +134,7 @@ Note that, because of the dynamic schema-less nature of MongoDB, no database ini
 or table creation is needed. All you need to do start using a new database is create the
 `OrionExplorer` instance with the right connection details and start using it!
 
-### 1. Connecting to the Database
+## 1. Connecting to the Database
 
 In order to connect to the database, all you need to do is import and create an instance of the
 `OrionExplorer`.
@@ -147,7 +169,7 @@ In [3]: orex = OrionExplorer(
    ...: )
 ```
 
-### 2. Registering a new Dataset
+## 2. Registering a new Dataset
 
 The first thing that you will need to do to start using **Orion** with a Database will be
 **registering a new dataset**.
@@ -198,7 +220,7 @@ In [5]: orex.add_dataset(
 **NOTE**: The dataset name must be unique, which means that `add_dataset` method will fail
 if a second dataset is added using the same name.
 
-### 3. Exploring the registered datasets
+## 3. Exploring the registered datasets
 
 In order to obtain the list of already registered datasets, you can use the
 `OrionExplorer.get_datasets` method.
@@ -228,7 +250,7 @@ Out[9]:
 0  S-1        S-1  1222819200  1442016000
 ```
 
-### 4. Registering a new Pipeline
+## 4. Registering a new Pipeline
 
 Another thing that you will need to do before being able to process the created dataset will be
 **registering a new pipeline**.
@@ -251,7 +273,7 @@ added more than once using the same name, they will be stored independently and 
 different versions of the same pipeline.
 
 
-### 5. Exploring the registered pipelines
+## 5. Exploring the registered pipelines
 
 Just like datasets, you can obtain the list of registered pipelines using the
 `OrionExplorer.get_pipelines` method.
@@ -268,7 +290,7 @@ Out[12]:
 0  5c92797a6c1cea7674cf5b48  LSTM 2019-03-20 17:33:46.452
 ```
 
-### 6. Running a pipeline on a dataset
+## 6. Running a pipeline on a dataset
 
 Once we have at least one dataset and one pipeline registered, you can start analyzing the data
 in search for anomalies.
@@ -298,7 +320,7 @@ Out[16]:
 0  5c927a846c1cea7674cf5b49  2019-03-20 17:38:12.133 2019-03-20 17:39:36.279       2
 ```
 
-### 7. Explore the found Events
+## 7. Explore the found Events
 
 A part from visualizing the number of Events found during the pipeline execution, we will want
 to see the exact details of each event.
@@ -328,7 +350,7 @@ Out[20]:
 1  5c927ad86c1cea7674cf5b4b  0.120997  1398686400  1399420800         0
 ```
 
-### 8. Add comments to the Events
+## 8. Add comments to the Events
 
 While visualizing the detected Events, you might want to add some comments about them.
 
@@ -343,7 +365,7 @@ In [21]: orex.add_comment('5c927ad86c1cea7674cf5b4a', 'This needs to be further 
 In [22]: orex.add_comment('5c927ad86c1cea7674cf5b4b', 'This is probably a false positive', '1234')
 ```
 
-### 9. Retrieving the Event comments
+## 9. Retrieving the Event comments
 
 After adding some comments, these can be recovered using the `OrionExplorer.get_comments`.
 
@@ -359,3 +381,4 @@ Out[24]:
 0  5c927ad86c1cea7674cf5b4a       1234 2019-03-21 13:06:33.591  This needs to be further investigated
 1  5c927ad86c1cea7674cf5b4b       1234 2019-03-21 13:07:08.935      This is probably a false positive
 ```
+-->

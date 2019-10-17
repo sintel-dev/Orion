@@ -1,4 +1,5 @@
 import logging
+import os
 
 import pandas as pd
 from mlblocks import MLPipeline
@@ -8,16 +9,10 @@ LOGGER = logging.getLogger(__name__)
 
 def _load_pipeline(pipeline):
 
-    if isinstance(pipeline, MLPipeline):
-        return pipeline
-
-    if isinstance(pipeline, str):
+    if isinstance(pipeline, str) and os.path.isfile(pipeline):
         return MLPipeline.load(pipeline)
 
-    if isinstance(pipeline, dict):
-        return MLPipeline.from_dict(pipeline)
-
-    raise ValueError('Invalid pipeline %s', pipeline)
+    return MLPipeline(pipeline)
 
 
 def analyze(pipeline, train, test=None):
