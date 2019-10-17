@@ -7,7 +7,6 @@
 <img width=20% src="https://dai.lids.mit.edu/wp-content/uploads/2018/08/orion.png" alt=“Orion” />
 </p>
 
-[![PyPi Shield](https://img.shields.io/pypi/v/Orion.svg)](https://pypi.python.org/pypi/Orion)
 [![CircleCI](https://circleci.com/gh/D3-AI/Orion.svg?style=shield)](https://circleci.com/gh/D3-AI/Orion)
 [![Travis CI Shield](https://travis-ci.org/D3-AI/Orion.svg?branch=master)](https://travis-ci.org/D3-AI/Orion)
 [![CodeCov](https://codecov.io/gh/D3-AI/Orion/branch/master/graph/badge.svg)](https://codecov.io/gh/D3-AI/Orion)
