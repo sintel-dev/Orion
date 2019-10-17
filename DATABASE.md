@@ -14,6 +14,7 @@ defined by an external entity.
 * \_id (ObjectID): Unique Identifier of this Dataset object
 * name (String): Name of the dataset
 * insert_time (DateTime): Time when this Dataset Object was inserted
+* Insert_by (String): Identifier of the user who inserted this Dataset Object
 
 
 ### Signal
@@ -36,6 +37,18 @@ It also reference the Dataset it belongs to.
 * created_by (String): Identifier of the user that created this Signal Object
 * insert_time (DateTime): Time when this Signal Object was inserted
 
+### PipelineTemplate
+
+The **PipelineTemplate** collection contains all the pipeline templates that are used to generate a pipeline that is used to run an exmperiment. The template includes all the default hyperparameter values.
+
+#### Fields
+
+- \_id (ObjectID): Unique Identifier of this PipelineTemplate object
+- name (String): Name given to this pipeline template
+- template (SubDocument): JSON representation of this pipeline template
+- created_by (String): Identifier of the user that created this Pipeline Object
+- insert_time (DateTime): Time when this Pipeline Object was inserted
+
 ### Pipeline
 
 The **Pipeline** collection contains all the pipelines registered in the system, including
@@ -45,7 +58,8 @@ their details, such as the list of primitives and all the configured hyperparame
 
 * \_id (ObjectID): Unique Identifier of this Pipeline object
 * name (String): Name given to this pipeline
-* template (SubDocument): JSON representation of this pipeline
+* pipeline_template_id (ObjectID - Foreign Key): Unique Identifier of the PipelineTemplate used to generate this pipeline
+* mlpipeline (SubDocument): JSON representation of this pipeline template
 * created_by (String): Identifier of the user that created this Pipeline Object
 * insert_time (DateTime): Time when this Pipeline Object was inserted
 
@@ -60,7 +74,7 @@ in the dataset.
 * \_id (ObjectID): Unique Identifier of this Experiment object
 * name (String): Name of the experiment
 * project (String): Name given to describe the project to which the experiment belongs
-* pipeline_id (ObjectID - Foreign Key): Unique Identifier of the Pipeline Used
+* pipeline_template_id (ObjectID - Foreign Key): Unique Identifier of the Pipeline Used
 * dataset_id (ObjectID - Foreign Key) Unique Identifier of the Dataset used
 * signal_set (List of Foreign Keys): A list of Signal IDs from the Dataset to run this experiment 
 * created_by (String): Identifier of the user that created this Experiment Object
@@ -79,18 +93,36 @@ and ended, and the number of events that were found in this experiment.
 
 * \_id (ObjectID): Unique Identifier of this Datarun object
 * experiment_id (ObjectID - Foreign Key): Unique Identifier of the Experiment
-* mlpipeline (SubDocument): JSON representation of the pipeline
+* pipeline_id (ObjectID - Foreign Key): Unique Identifier of the Pipeline
 * start_time (DateTime): When the execution started
 * end_time (DateTime): When the execution ended
 * software_versions (List of Strings): version of each python dependency installed in the
   *virtualenv* when the execution took place
 * budget_type (String): Type of budget used (time or number of iterations)
 * budget_amount (Integer): Budget amount
-* model_location (String): URI of the fitted model
-* metrics_location (String): URI of the metrics
 * events (Integer): Number of events detected during this Datarun execution
 * status (String): Whether the Datarun is still running, finished successfully or failed
 * insert_time (DateTime): Time when this Datarun Object was inserted
+
+### Signalrun
+
+The **Signalrun** objects represent single executions of a **Pipeline** on a **Signal**.
+
+It also contains information about whether the execution was successful or not, when it started
+and ended, , the number of events that were found in this running, and where the model and metrics are stored.
+
+#### Fields
+
+- \_id (ObjectID): Unique Identifier of this Datarun object
+- datarun_id (ObjectID - Foreign Key): Unique Identifier of the Datarun
+- signal_id (ObjectID - Foreign Key): Unique Identifier of the Signal
+- start_time (DateTime): When the execution started
+- end_time (DateTime): When the execution ended
+- model_location (String): URI of the fitted model
+- metrics_location (String): URI of the metrics
+- events (Integer): Number of events detected during this Signalrun execution
+- status (String): Whether the Signalrun is still running, finished successfully or failed
+- insert_time (DateTime): Time when this Datarun Object was inserted
 
 ### Event
 
@@ -100,17 +132,17 @@ contains the details about the start time, the stop time and the severity score.
 #### Fields
 
 * \_id (ObjectID): Unique Identifier of this Event object
-* datarun_id (ObjectID - Foreign Key): Unique Identifier of the Datarun during which this
+* signalrun_id (ObjectID - Foreign Key): Unique Identifier of the Signalrun during which this
   Event was detected.
 * signal_id (ObjectID - Foreign Key): Unique Identifier of the Signal to which this Event relates
 * start_time (Integer): Timestamp where the anomalous interval starts
 * stop_time (Integer): Timestamp where the anomalous interval ends
-* score (Float): Severity score given by the pipeline to this Event
+* severity (Float): Severity score given by the pipeline to this Event
 * source (String): "orion", "shape matching", or "manually created" 
 * latest_interaction_id (ObjectID - Foreign Key): Unique Identifier of the last Event Interaction relating to this Event
 * insert_time (DateTime): Time when this Event Object was inserted
 
-### Event Interaction (only for MTV)
+### Event Interaction
 
 The **Event Interaction** collection records all the interaction history related to events.
 
