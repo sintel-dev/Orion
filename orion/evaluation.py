@@ -35,11 +35,10 @@ NASA_SIGNALS = (
 def _evaluate_on_signal(pipeline, signal, metrics, holdout=True):
     if holdout:
         train = load_signal(signal + '-train')
-        test = load_signal(signal + '-test')
     else:
         train = load_signal(signal)
-        test = train
 
+    test = load_signal(signal + '-test')
     start = datetime.utcnow()
     anomalies = analyze(pipeline, train, test)
     elapsed = datetime.utcnow() - start
