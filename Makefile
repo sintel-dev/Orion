@@ -76,6 +76,7 @@ docs: clean-docs ## generate Sphinx HTML documentation, including API docs
 	sphinx-apidoc --module-first --separate -T -o docs/api/ orion
 	$(MAKE) -C docs html
 	grep -Rl 'href="[^"]*.md"' docs/_build/ | xargs -n1 sed -i 's/href="\([^"]*\).md"/href="\L\1.html"/g'
+	grep -Rl 'docs/images' docs/_build/ | xargs -n1 sed -i 's:docs/images/:_static/:g'
 
 .PHONY: view-docs
 view-docs: docs ## view docs in browser
