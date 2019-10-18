@@ -1,5 +1,6 @@
 import logging
 import warnings
+from datetime import datetime
 
 import pandas as pd
 
@@ -31,19 +32,29 @@ NASA_SIGNALS = (
 )
 
 
-def _evaluate_on_signal(pipeline, signal, metrics):
-    data = load_signal(signal)
-    anomalies = analyze(pipeline, data)
+def _evaluate_on_signal(pipeline, signal, metrics, holdout=True):
+    if holdout:
+        train = load_signal(signal + '-train')
+    else:
+        train = load_signal(signal)
+
+    test = load_signal(signal + '-test')
+    start = datetime.utcnow()
+    anomalies = analyze(pipeline, train, test)
+    elapsed = datetime.utcnow() - start
 
     truth = load_anomalies(signal)
 
-    return {
-        name: scorer(truth, anomalies, data)
+    scores = {
+        name: scorer(truth, anomalies, test)
         for name, scorer in metrics.items()
     }
+    scores['elapsed'] = elapsed.total_seconds()
+
+    return scores
 
 
-def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS):
+def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS, holdout=None):
     """Evaluate a pipeline on multiple signals with multiple metrics.
 
     The pipeline is used to analyze the given signals and later on the
@@ -62,22 +73,36 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS):
         pandas.Series: Series object containing the average of the scores obtained with
             each scoring function accross all the signals.
     """
+    if holdout is None:
+        holdout = (True, False)
+    elif not isinstance(holdout, tuple):
+        holdout = (holdout, )
+
     scores = list()
     for signal in signals:
-        try:
-            LOGGER.info("Scoring signal %s", signal)
-            score = _evaluate_on_signal(pipeline, signal, metrics)
-        except Exception:
-            LOGGER.exception("Exception scoring signal %s", signal)
-            score = (0, 0)
-            score = {name: 0 for name in metrics.keys()}
+        for holdout_ in holdout:
+            try:
+                LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
+                            pipeline, signal, holdout_)
+                score = _evaluate_on_signal(pipeline, signal, metrics, holdout_)
+            except Exception:
+                LOGGER.exception("Exception scoring pipeline %s on signal %s (Holdout: %s)",
+                                 pipeline, signal, holdout_)
+                score = (0, 0)
+                score = {name: 0 for name in metrics.keys()}
 
-        scores.append(score)
+            score['holdout'] = holdout_
+            scores.append(score)
 
-    return pd.DataFrame(scores).mean()
+    scores = pd.DataFrame(scores).groupby('holdout').mean().reset_index()
+
+    # Move holdout and elapsed column to the last position
+    scores['elapsed'] = scores.pop('elapsed')
+
+    return scores
 
 
-def evaluate_pipelines(pipelines, signals=None, metrics=None, rank=None):
+def evaluate_pipelines(pipelines, signals=None, metrics=None, rank=None, holdout=(True, False)):
     """Evaluate a list of pipelines on multiple signals with multiple metrics.
 
     The pipelines are used to analyze the given signals and later on the
@@ -124,13 +149,16 @@ def evaluate_pipelines(pipelines, signals=None, metrics=None, rank=None):
 
         metrics = metrics_
 
+    if isinstance(pipelines, list):
+        pipelines = dict(zip(pipelines, pipelines))
+
     for name, pipeline in pipelines.items():
         LOGGER.info("Evaluating pipeline: %s", name)
-        score = evaluate_pipeline(pipeline, signals, metrics)
+        score = evaluate_pipeline(pipeline, signals, metrics, holdout)
         score['pipeline'] = name
         scores.append(score)
 
-    scores = pd.DataFrame(scores)
+    scores = pd.concat(scores)
 
     rank = rank or list(metrics.keys())[0]
     scores.sort_values(rank, ascending=False, inplace=True)

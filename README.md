@@ -1,16 +1,14 @@
 <p align="left">
-<img width=15% src="https://dai.lids.mit.edu/wp-content/uploads/2018/06/Logo_DAI_highres.png" alt=“BTB” />
+<img width=15% src="https://dai.lids.mit.edu/wp-content/uploads/2018/06/Logo_DAI_highres.png" alt=“DAI-Lab” />
 <i>An open source project from Data to AI Lab at MIT.</i>
 </p>
-
-
 
 <p align="left">
 <img width=20% src="https://dai.lids.mit.edu/wp-content/uploads/2018/08/orion.png" alt=“Orion” />
 </p>
 
-
 [![CircleCI](https://circleci.com/gh/D3-AI/Orion.svg?style=shield)](https://circleci.com/gh/D3-AI/Orion)
+[![Travis CI Shield](https://travis-ci.org/D3-AI/Orion.svg?branch=master)](https://travis-ci.org/D3-AI/Orion)
 
 # Orion
 
@@ -43,23 +41,23 @@ With the ready availability of *automated machine learning* tools, the focus is 
 
 ## Table of Contents
 
-* [Data Format](#data-format)
-   * [Input](#input)
-   * [Output](#output)
-   * [Dataset we use in this library](#dataset-we-use-in-this-library)
-* [Orion Pipelines](#orion-pipelines)
-   * [Current Available Pipelines](#current-available-pipelines)
-   * [Leaderboard](#leaderboard)
-* [Getting Started](#getting-started)
-   * [Requirements](#requirements)
-   * [Install](#install)
-   * [Quickstart: Run a Pipeline on the Demo Dataset](#quickstart-run-a-pipeline-on-the-demo-dataset)
-* [Database](#database)
-* [Docker Usage](#docker-usage)
-   * [Docker Requirements](#docker-requirements)
-   * [Building the Orion Docker Image](#building-the-orion-docker-image)
-   * [Distributing the Orion Docker Image](#distributing-the-orion-docker-image)
-   * [Running the orion-jupyter image](#running-the-orion-jupyter-image)
+* [I. Data Format](#data-format)
+   * [I.1 Input](#input)
+   * [I.2 Output](#output)
+   * [I.2 Dataset we use in this library](#dataset-we-use-in-this-library)
+* [II. Orion Pipelines](#orion-pipelines)
+   * [II.1 Current Available Pipelines](#current-available-pipelines)
+   * [II.2 Leaderboard](#leaderboard)
+* [III. Getting Started](#getting-started)
+   * [III.1 Requirements](#requirements)
+   * [III.2 Install](#install)
+* [IV. Quickstart](#quickstart)
+* [V. Database](#database)
+* [VI. Docker Usage](#docker-usage)
+   * [VI.1 Docker Requirements](#docker-requirements)
+   * [VI.2 Building the Orion Docker Image](#building-the-orion-docker-image)
+   * [VI.3 Distributing the Orion Docker Image](#distributing-the-orion-docker-image)
+   * [VI.4 Running the orion-jupyter image](#running-the-orion-jupyter-image)
 
 # Data Format
 
@@ -138,25 +136,30 @@ This is the list of pipelines available so far, which will grow over time:
 | name | location | description |
 |------|----------|-------------|
 | Dummy | [orion/pipelines/dummy.json](orion/pipelines/dummy.json) | Dummy Pipeline to showcase the input and output format and the usage of sample primitives |
-| LSTM Dynamic Thresholding | [orion/pipelines/lstm_dynamic_threshold.json](orion/pipelines/lstm_dynamic_threshold.json) | LSTM Based pipeline inspired by the [Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper](https://arxiv.org/abs/1802.04431) |
+| LSTM Dynamic Threshold | [orion/pipelines/lstm_dynamic_threshold.json](orion/pipelines/lstm_dynamic_threshold.json) | LSTM Based pipeline inspired by the [Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper](https://arxiv.org/abs/1802.04431) |
 | Mean 24h LSTM | [orion/pipelines/mean_24h_lstm.json](orion/pipelines/mean_24h_lstm.json) | LSTM Based pipeline with 24h mean aggregation preprocessing |
 | Median 24h LSTM | [orion/pipelines/median_24h_lstm.json](orion/pipelines/median_24h_lstm.json) | LSTM Based pipeline with 24h median aggregation preprocessing |
 | Sum 24h LSTM | [orion/pipelines/sum_24h_lstm.json](orion/pipelines/sum_24h_lstm.json) | LSTM Based pipeline with 24h sum aggregation preprocessing |
 | Skew 24h LSTM | [orion/pipelines/skew_24h_lstm.json](orion/pipelines/skew_24h_lstm.json) | LSTM Based pipeline with 24h skew aggregation preprocessing |
+| CycleGAN | [orion/pipelines/cyclegan.json](orion/pipelines/cyclegan.json) | CycleGAN Based pipeline |
+| ARIMA | [orion/pipelines/arima.json](orion/pipelines/arima.json) | ARIMA Based pipeline |
 
 ## Leaderboard
 
 In this repository we maintain this up-to-date leaderboard with the current scoring of the
-pipelines according to the scoring procedure explained in the [SCORING.md](SCORING.md) document.
+pipelines according to the benchmarking procedure explained in the [benchmark section of the
+documentation](BENCHMARK.md).
 
-| pipeline                  |   rank |   accuracy |         f1 |   precision |      recall |
-|---------------------------|--------|------------|------------|-------------|-------------|
-| LSTM Dynamic Thresholding |      1 |   0.914346 | 0.0959928  |   0.519355  | 0.0632723   |
-| Sum 24h LSTM              |      2 |   0.909754 | 0.0051408  |   0.12791   | 0.0033509   |
-| Median 24h LSTM           |      3 |   0.90824  | 0.00423816 |   0.0438055 | 0.00497061  |
-| Skew 24h LSTM             |      4 |   0.900272 | 0.00060083 |   0.0220449 | 0.000311794 |
-| Mean 24h LSTM             |      5 |   0.871457 | 0.00610279 |   0.103166  | 0.00593213  |
-
+| pipeline                  |   accuracy |        f1 |   precision |     recall |
+|---------------------------|------------|-----------|-------------|------------|
+| CycleGAN                  |   0.781147 | 0.137234  |   0.147674  | 0.18173    |
+| LSTM Dynamic Thresholding |   0.832052 | 0.125999  |   0.178968  | 0.151298   |
+| Dummy                     |   0.818975 | 0.108436  |   0.13994   | 0.133865   |
+| Mean 24h LSTM             |   0.667412 | 0.0420656 |   0.0775713 | 0.0456106  |
+| Sum 24h LSTM              |   0.685844 | 0.0417817 |   0.066248  | 0.033882   |
+| ARIMA                     |   0.510343 | 0.038821  |   0.0604475 | 0.0377441  |
+| Median 24h LSTM           |   0.673667 | 0.0237867 |   0.0604165 | 0.0178578  |
+| Skew 24h LSTM             |   0.369548 | 0.01142   |   0.0213837 | 0.00902504 |
 
 # Getting Started
 
@@ -205,12 +208,12 @@ distributed and run as a docker image, making its usage in offline systems easie
 
 For more details please head to the [Docker Usage](#docker-usage) section below.
 
-## Quickstart: Run a Pipeline on the Demo Dataset
+# Quickstart
 
 In the following steps we will show a short guide about how to run one of the **Orion Pipelines**
 on one of the signals from the **Demo Dataset**.
 
-### 1. Load the data
+## 1. Load the data
 
 In the first step we will load the **S-1** signal from the **Demo Dataset**.
 
@@ -238,7 +241,7 @@ The output will be a table in the format described above:
 4  1222905600 -0.370746
 ```
 
-### 2. Detect anomalies using a pipeline
+## 2. Detect anomalies using a pipeline
 
 Once we have the data, let us try to use the LSTM pipeline to analyze it and search for anomalies.
 
@@ -265,7 +268,7 @@ Output format described above:
 0  1394323200  1399701600  0.673494
 ```
 
-### 3. Evaluate performance
+## 3. Evaluate performance
 
 In this next step we will load some already known anomalous intervals and evaluate how
 good our anomaly detection was by comparing those with our detected intervals.
@@ -297,7 +300,7 @@ accuracy_score(known_anomalies, anomalies, test)  # -> 0.972987721691678
 f1_score(known_anomalies, anomalies, test)  # -> 0.7155172413793103
 ```
 
-## Database
+# Database
 
 **Orion** comes ready to use a MongoDB Database to easily register and explore:
 
@@ -319,7 +322,7 @@ This, among other things, allows:
 * Detecting and keeping a history of system failures for later investigation.
 
 The complete **Database schema and usage instructions** can be found in the
-[DATABASE.md](DATABASE.md) file
+[database section of the documentation](DATABASE.md)
 
 
 # Docker Usage
@@ -430,7 +433,7 @@ In this case, the code changes and the notebooks that you create within jupyter 
 inside the container and you will only be able to access and download them through the
 jupyter interface.
 
-## What's next?
+<h1>What's next?</h1>
 
 For more details about **Orion** and all its possibilities and features, please check the
 [project documentation site](https://D3-AI.github.io/Orion/)!

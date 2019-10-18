@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import warnings   # noqa isort:skip
+warnings.filterwarnings("ignore")  # noqa isort:skip
+
 import argparse
 import getpass
 import os
@@ -152,7 +155,7 @@ def _evaluate(args):
     else:
         pipelines = args.pipeline
 
-    scores = evaluate_pipelines(pipelines, args.signal, args.metric, args.rank)
+    scores = evaluate_pipelines(pipelines, args.signal, args.metric, args.rank, args.holdout)
 
     if args.output:
         print('Writing results in {}'.format(args.output))
@@ -302,6 +305,10 @@ def get_parser():
                           help='Metric to use. Use multiple times for more metrics.')
     evaluate.add_argument('-r', '--rank', help='Rank scores based on this metric.')
     evaluate.add_argument('-o', '--output', help='Write the results in the specified CSV file.')
+    evaluate.add_argument('--holdout', dest='holdout', action='store_true', default=None,
+                          help='Holdout test data during training.')
+    evaluate.add_argument('--no-holdout', dest='holdout', action='store_false', default=None,
+                          help='Do not holdout test data curing training.')
     group = evaluate.add_mutually_exclusive_group(required=True)
     group.add_argument('-a', '--all', action='store_true', help='Evaluate all known pipelines.')
     group.add_argument('pipeline', default=[], nargs='*',

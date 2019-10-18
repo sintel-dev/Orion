@@ -10,15 +10,18 @@
    :caption: Advanced Usage
    :hidden:
 
-   API Reference <api/orion>
+   Benchmark <benchmark>
+   database
 
 .. toctree::
    :caption: Resources
    :hidden:
 
+   API Reference <api/orion>
    contributing
    authors
    history
+
 
 Indices and tables
 ==================

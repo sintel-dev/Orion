@@ -1,4 +1,4 @@
-# Orion Scoring
+# Benchmark
 
 This document explains the scoring system being used in Orion in order to evaluate how good
 a pipeline is detecting anomalies.
@@ -115,16 +115,15 @@ The complete evaluation process described above is directly available using the
 This function expects the following inputs:
 
 * `pipelines (dict or list)`: dictionary with pipeline names as keys and their
-    JSON paths as values. If a list is given, it should be of JSON paths,
-    and the paths themselves will be used as names.
-* `signals (list, optional)`: list of signals. If not given, all the NASA signals
-    are used.
+JSON paths as values. If a list is given, it should be of JSON paths,
+and the paths themselves will be used as names.
+* `signals (list, optional)`: list of signals. If not given, all the NASA signals are used.
 * `metrics (dict or list, optional)`: dictionary with metric names as keys and
-    scoring functions as values. If a list is given, it should be of scoring
-    functions, and they `__name__` value will be used as the metric name.
-    If not given, all the available metrics will be used.
+scoring functions as values. If a list is given, it should be of scoring
+functions, and they `__name__` value will be used as the metric name.
+If not given, all the available metrics will be used.
 * `rank (str, optional)`: Sort and rank the pipelines based on the given metric.
-    If not given, rank using the first metric.
+If not given, rank using the first metric.
 
 And returns a `pandas.DataFrame` which contains the average of the scores obtained with
 each scoring function accross all the signals for each pipeline, ranked by the indicated metric.
