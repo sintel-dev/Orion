@@ -89,7 +89,7 @@ f1_score(truth, detected, sample_weight=weights) = 0.1218487394957983
 
 The whole process can be summarized in this diagram:
 
-![Scoring](docs/images/Scoring.png?raw=true "Scoring")
+![Scoring](docs/images/scoring-300.png?raw=true "Scoring")
 
 ## Evaluating the Pipelines
 
