@@ -1,9 +1,8 @@
 {
     "name": "orion.primitives.timeseries_anomalies.regression_errors",
     "contributors": [
-        "xx <xx@mail.com>"
+        "Carles Sala <csala@csail.mit.edu>"
     ],
-    "documentation": "",
     "description": "Compute an array of absolute errors comparing predictions and expected output. Optionally smooth them using EWMA",
     "classifiers": {
         "type": "postprocessor",

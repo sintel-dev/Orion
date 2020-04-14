@@ -1,8 +1,6 @@
 {
     "name": "orion.primitives.cyclegan.score_anomalies_set",
-    "contributors": [
-        "xx <xx@mail.com>"
-    ],
+    "contributors": ["Dongyu Liu <dongyu@mit.edu>"],
     "description": "Compute an array of anomaly scores based on a combination of reconstruction error and critic output",
     "classifiers": {
         "type": "postprocessor",

@@ -1,9 +1,8 @@
 {
     "name": "orion.primitives.custom.rolling_window_sequences_autoencoder",
     "contributors": [
-        "xx <xx@mail.com>"
+        "Alexander Geiger <geigera@mit.edu>"
     ],
-    "documentation": "",
     "description": "Create rolling window sequences out of timeseries data.",
     "classifiers": {
         "type": "estimator",

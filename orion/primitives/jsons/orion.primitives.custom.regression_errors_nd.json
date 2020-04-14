@@ -1,9 +1,8 @@
 {
     "name": "orion.primitives.custom.regression_errors_nd",
     "contributors": [
-        "xx <xx@mail.com>"
+        "Alexander Geiger <geigera@mit.edu>"
     ],
-    "documentation": "",
     "description": "Compute an array of absolute errors comparing predictions and expected output.",
     "classifiers": {
         "type": "postprocessor",

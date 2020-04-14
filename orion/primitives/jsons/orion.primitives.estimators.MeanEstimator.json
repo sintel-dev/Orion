@@ -1,8 +1,6 @@
 {
     "name": "orion.primitives.estimators.MeanEstimator",
-    "contributors": [
-        "xx <xx@mail.com>"
-    ],
+    "contributors": ["Carles Sala <csala@csail.mit.edu>"],
     "documentation": "",
     "description": "Simple Estimator that always returns the mean of the values seen during fit.",
     "classifiers": {

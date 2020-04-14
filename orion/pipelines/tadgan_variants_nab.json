@@ -6,8 +6,8 @@
         "mlprimitives.custom.timeseries_preprocessing.intervals_to_mask",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
         "orion.primitives.cyclegan.CycleGAN",
-        "orion.primitives.cyclegan.score_anomalies_set",
-        "orion.primitives.timeseries_anomalies.find_anomalies_set"
+        "orion.primitives.cyclegan.score_anomalies_variants",
+        "orion.primitives.timeseries_anomalies.find_anomalies_variants"
     ],
     "init_params": {
         "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
@@ -24,11 +24,11 @@
             "target_size": 1,
             "drop_windows": false
         },
-        "orion.primitives.cyclegan.score_anomalies_set#1": {
+        "orion.primitives.cyclegan.score_anomalies_variants#1": {
             "error_smooth_window": 200,
             "critic_smooth_window": 200
         },
-        "orion.primitives.timeseries_anomalies.find_anomalies_set#1": {
+        "orion.primitives.timeseries_anomalies.find_anomalies_variants#1": {
             "window_size": 2000,
             "window_step_size": 100
         },
@@ -137,10 +137,10 @@
         "mlprimitives.custom.timeseries_preprocessing.intervals_to_mask#1": {
             "mask": "drop"
         },
-        "orion.primitives.timeseries_anomalies.find_anomalies_set#1": {
+        "orion.primitives.timeseries_anomalies.find_anomalies_variants#1": {
             "index": "true_index"
         },
-        "orion.primitives.cyclegan.score_anomalies_set#1": {
+        "orion.primitives.cyclegan.score_anomalies_variants#1": {
             "y": "X"
         }
     },

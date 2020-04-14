@@ -1,9 +1,9 @@
 {
     "name": "orion.primitives.timeseries_anomalies.find_anomalies",
     "contributors": [
-        "xx <xx@mail.com>"
+        "Carles Sala <csala@csail.mit.edu>"
     ],
-    "documentation": "",
+    "documentation": "https://arxiv.org/pdf/1802.04431.pdf",
     "description": "Extract anomalies from sequences of errors following the approach explained in the related paper.",
     "classifiers": {
         "type": "postprocessor",

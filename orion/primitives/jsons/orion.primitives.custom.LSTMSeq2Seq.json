@@ -1,9 +1,9 @@
 {
     "name": "orion.primitives.custom.LSTMSeq2Seq",
     "contributors": [
-        "xx <xx@mail.com>"
+        "Alexander Geiger <geigera@mit.edu>"
     ],
-    "documentation": "",
+    "documentation": "https://arxiv.org/pdf/1802.04431.pdf",
     "description": "Double Stacked LSTM Time Series Regressor similar to the one described in the paper referenced as documentation.",
     "classifiers": {
         "type": "estimator",

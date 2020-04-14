@@ -1,7 +1,8 @@
 {
     "name": "orion.primitives.cyclegan.CycleGAN",
     "contributors": [
-        "xx <xx@mail.com>"
+        "Alexander Geiger <geigera@mit.edu>",
+        "Dongyu Liu <dongyu@mit.edu>"
     ],
     "documentation": "",
     "description": "CycleGan for time series",
