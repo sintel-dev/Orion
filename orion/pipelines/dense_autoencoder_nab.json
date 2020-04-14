@@ -1,0 +1,53 @@
+{
+    "primitives": [
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_average",
+        "sklearn.impute.SimpleImputer",
+        "sklearn.preprocessing.MinMaxScaler",
+        "mlprimitives.custom.timeseries_preprocessing.intervals_to_mask",
+        "orion.primitives.custom.rolling_window_sequences_autoencoder",
+        "orion.primitives.custom.LSTMSeq2Seq",
+        "orion.primitives.custom.regression_errors_nd",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
+    ],
+    "init_params": {
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_average#1": {
+            "time_column": "timestamp",
+            "interval": 600
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [
+                -1,
+                1
+            ]
+        },
+        "orion.primitives.custom.rolling_window_sequences_autoencoder#1": {
+            "window_size": 100,
+            "target_size": 0,
+            "step_size": 1,
+            "drop_windows": false
+        },
+        "orion.primitives.custom.LSTMSeq2Seq#1": {
+            "epochs": 1,
+            "verbose": false,
+            "input_shape": [100, 1],
+            "target_shape": [100, 1]
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size": 2000,
+            "window_step_size": 100
+        }
+    },
+    "output_names": {
+        "mlprimitives.custom.timeseries_preprocessing.intervals_to_mask#1": {
+            "mask": "drop"
+        },
+        "orion.primitives.custom.LSTMSeq2Seq#1": {
+            "y": "y_hat"
+        }
+    },
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "true_index"
+        }
+    }
+}

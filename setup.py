@@ -18,8 +18,7 @@ except IOError:
 
 install_requires = [
     'tensorflow==1.14.0',      # ts-GPU version only works with 1.14 currently
-                               # need further investigation
-    'tensorflow-gpu==1.14.0',
+    # 'tensorflow-gpu==1.14.0',  # need CUDA and cuDNN to be installed first
     'baytune>=0.2.3,<0.3',
     'mlblocks>=0.3.0,<0.4',
     'mlprimitives>=0.2.2,<0.3',

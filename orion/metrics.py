@@ -4,7 +4,7 @@ from sklearn import metrics
 def _overlap(expected, observed):
     first = expected[0] - observed[1]
     second = expected[1] - observed[0]
-    return first * second < 0
+    return first * second <= 0
 
 
 def _any_overlap(part, intervals):

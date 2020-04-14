@@ -1,0 +1,78 @@
+{
+    "primitives": [
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_average",
+        "sklearn.impute.SimpleImputer",
+        "sklearn.preprocessing.MinMaxScaler",
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
+        "keras.Sequential.LSTMTimeSeriesRegressor",
+        "orion.primitives.timeseries_anomalies.regression_errors",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
+    ],
+    "init_params": {
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_average#1": {
+            "time_column": "timestamp",
+            "interval": 1
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [-1, 1]
+        },
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 250
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size": 2000,
+            "window_step_size": 100
+        },
+        "keras.Sequential.LSTMTimeSeriesRegressor": {
+            "epochs": 35,
+            "verbose": false,
+            "layers": [
+                {
+                    "class": "keras.layers.CuDNNLSTM",
+                    "parameters": {
+                        "input_shape": "input_shape",
+                        "units": "lstm_1_units",
+                        "return_sequences": true
+                    }
+                },
+                {
+                    "class": "keras.layers.Dropout",
+                    "parameters": {
+                        "rate": "dropout_1_rate"
+                    }
+                },
+                {
+                    "class": "keras.layers.CuDNNLSTM",
+                    "parameters": {
+                        "units": "lstm_2_units",
+                        "return_sequences": false
+                    }
+                },
+                {
+                    "class": "keras.layers.Dropout",
+                    "parameters": {
+                        "rate": "dropout_2_rate"
+                    }
+                },
+                {
+                    "class": "keras.layers.Dense",
+                    "parameters": {
+                        "units": "dense_units",
+                        "activation": "linear"
+                    }
+                }
+            ]
+        }
+    },
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "target_index"
+        }
+    },
+    "output_names": {
+        "keras.Sequential.LSTMTimeSeriesRegressor#1": {
+            "y": "y_hat"
+        }
+    }
+}

@@ -3,11 +3,12 @@ import warnings
 from datetime import datetime
 
 import pandas as pd
+import numpy as np
 from scipy import signal as scipy_signal
 
 from orion import metrics
 from orion.metrics import score_overlap
-from orion.analysis import analyze2
+from orion.analysis import analyze3
 from orion.data import load_anomalies, load_signal
 
 warnings.filterwarnings("ignore")
@@ -21,60 +22,6 @@ METRICS = {
     'recall': metrics.recall_score,
     'f1': metrics.f1_score,
 }
-NASA_SIGNALS = (
-    'P-1', 'S-1', 'E-1', 'E-2', 'E-3', 'E-4', 'E-5', 'E-6', 'E-7',
-    'E-8', 'E-9', 'E-10', 'E-11', 'E-12', 'E-13', 'A-1', 'D-1', 'P-3',
-    'D-2', 'D-3', 'D-4', 'A-2', 'A-3', 'A-4', 'G-1', 'G-2', 'D-5',
-    'D-6', 'D-7', 'F-1', 'P-4', 'G-3', 'T-1', 'T-2', 'D-8', 'D-9',
-    'F-2', 'G-4', 'T-3', 'D-11', 'D-12', 'B-1', 'G-6', 'G-7', 'P-7',
-    'R-1', 'A-5', 'A-6', 'A-7', 'D-13', 'A-8', 'A-9', 'F-3', 'M-6',
-    'M-1', 'M-2', 'S-2', 'P-10', 'T-4', 'T-5', 'F-7', 'M-3', 'M-4',
-    'M-5', 'P-15', 'C-1', 'C-2', 'T-12', 'T-13', 'F-4', 'F-5', 'D-14',
-    'T-9', 'P-14', 'T-8', 'P-11', 'D-15', 'D-16', 'M-7', 'F-8'
-)
-
-
-# def _evaluate_on_signal_train_test(pipeline, signal_name, metrics, detrend):
-#     train = load_signal('{}-train'.format(signal_name))
-#     test = load_signal('{}-test'.format(signal_name))
-#
-#     if detrend:
-#         train['value'] = signal.detrend(train['value'])
-#         test['value'] = signal.detrend(test['value'])
-#
-#     truth = load_anomalies(signal_name)
-#
-#     anomalies = analyze_train_test(pipeline, train, test, truth)
-#
-#     tp, fp, fn = score_overlap(truth, anomalies)
-#
-#     return {
-#         name: scorer(truth, anomalies, test)
-#         for name, scorer in metrics.items()
-#     }, tp, fp, fn
-#
-#
-# def _evaluate_on_signal_split(pipeline, signal_name, metrics, split, detrend):
-#     train, test = load_signal(signal_name, test_size=split)
-#
-#     if split == 1:
-#         train = test
-#
-#     if detrend:
-#         train['value'] = signal.detrend(train['value'])
-#         test['value'] = signal.detrend(test['value'])
-#
-#     truth = load_anomalies(signal_name)
-#
-#     anomalies = analyze_train_test(pipeline, train, test, truth)
-#
-#     tp, fp, fn = score_overlap(truth, anomalies)
-#
-#     return {
-#         name: scorer(truth, anomalies, test)
-#         for name, scorer in metrics.items()
-#     }, tp, fp, fn
-
 
 def _evaluate_on_signal(pipeline, signal, metrics, holdout=True, split=None, detrend=False):
     if holdout:
@@ -94,24 +41,28 @@ def _evaluate_on_signal(pipeline, signal, metrics, holdout=True, split=None, det
 
     truth = load_anomalies(signal)
 
-    start = datetime.utcnow()
-    anomalies = analyze2(pipeline, train, test, truth)
-    elapsed = datetime.utcnow() - start
+    anomalies_set = analyze3(pipeline, train, test, truth)
 
     truth = load_anomalies(signal)
-#     print(truth)
-#     print(anomalies)
 
-    scores = {
-        name: scorer(truth, anomalies, test)
-        for name, scorer in metrics.items()
-    }
-    scores['elapsed'] = elapsed.total_seconds()
-    tp, fp, fn = score_overlap(truth, anomalies)
+    scores_set = list()
+    tps = list()
+    fps = list()
+    fns = list()
+    for anomalies in anomalies_set:
+        scores = {
+            name: scorer(truth, anomalies, test)
+            for name, scorer in metrics.items()
+        }
+        scores_set.append(scores)
+        tp, fp, fn = score_overlap(truth, anomalies)
+        tps.append(tp)
+        fps.append(fp)
+        fns.append(fn)
 
-    return scores, tp, fp, fn
+    return scores_set, tps, fps, fns
 
-def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS, holdout=None, split=None, detrend=False):
+def evaluate_pipeline(pipeline, signals, metrics=METRICS, holdout=None, split=None, detrend=False):
     """Evaluate a pipeline on multiple signals with multiple metrics.
 
     The pipeline is used to analyze the given signals and later on the
@@ -135,8 +86,10 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS, holdout=N
     elif not isinstance(holdout, tuple):
         holdout = (holdout, )
 
+    comb_num = 10
+        
     scores = list()
-    tp_sum, fp_sum, fn_sum = 0, 0, 0
+    tp_sums, fp_sums, fn_sums = [0]*comb_num, [0]*comb_num, [0]*comb_num
     signal_num = len(signals)
     for idx, signal in enumerate(signals):
         print('{}/{} {} using {}'.format(idx+1, signal_num, signal, pipeline))
@@ -144,27 +97,33 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, metrics=METRICS, holdout=N
             try:
                 LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
                             pipeline, signal, holdout_)
-                score, tp, fp, fn = _evaluate_on_signal(pipeline, signal, metrics, holdout_, split, detrend)
+                score_set, tps, fps, fns = _evaluate_on_signal(pipeline, signal, metrics, holdout_, split, detrend)
             except Exception:
                 LOGGER.exception("Exception scoring pipeline %s on signal %s (Holdout: %s)",
                                  pipeline, signal, holdout_)
-                score = (0, 0)
+                score_set, tps, fps, fns = list(), [0]*comb_num, [0]*comb_num, [0]*comb_num
                 score = {name: 0 for name in metrics.keys()}
-                score['elapsed'] = 0
-                tp, fp, fn = 0, 0, 0
+                for ni in range(comb_num):  # comb_num combinations
+                    score_set.append(score)
 
-            score['holdout'] = holdout_
-            scores.append(score)
-            tp_sum += tp
-            fp_sum += fp
-            fn_sum += fn
-
-    scores = pd.DataFrame(scores).groupby('holdout').mean().reset_index()
-
-    # Move holdout and elapsed column to the last position
-    scores['elapsed'] = scores.pop('elapsed')
-
-    return scores, tp_sum, fp_sum, fn_sum
+            scores.append(score_set)
+            
+            for ni in range(comb_num):
+                tp_sums[ni] += tps[ni]
+                fp_sums[ni] += fps[ni]
+                fn_sums[ni] += fns[ni]
+    
+    final_scores = []
+    for ni in range(comb_num):
+        final_score = dict()
+        for name in metrics.keys():
+            ele = list()
+            for nj in range(signal_num):
+                ele.append(scores[nj][ni][name])
+            final_score[name] = np.array(ele).mean()
+        final_scores.append(pd.Series(final_score))
+    
+    return final_scores, tp_sums, fp_sums, fn_sums
 
 
 def evaluate_pipelines(pipelines, signals=None, metrics=None, rank=None, holdout=(True, False), split=None, detrend=False):
@@ -195,10 +154,9 @@ def evaluate_pipelines(pipelines, signals=None, metrics=None, rank=None, holdout
             each scoring function accross all the signals for each pipeline, ranked
             by the indicated metric.
     """
-    signals = signals or NASA_SIGNALS
+    signals = signals
     metrics = metrics or METRICS
 
-    scores = list()
     if isinstance(pipelines, list):
         pipelines = {pipeline: pipeline for pipeline in pipelines}
 
@@ -217,23 +175,16 @@ def evaluate_pipelines(pipelines, signals=None, metrics=None, rank=None, holdout
     if isinstance(pipelines, list):
         pipelines = dict(zip(pipelines, pipelines))
 
+    results = list()
     for name, pipeline in pipelines.items():
         LOGGER.info("Evaluating pipeline: %s", name)
-        score, tp, fp, fn = evaluate_pipeline(pipeline, signals, metrics, holdout, split, detrend)
-        score['pipeline'] = name
-        score['tp'] = tp
-        score['fp'] = fp
-        score['fn'] = fn
-        scores.append(score)
+        scores, tps, fps, fns = evaluate_pipeline(pipeline, signals, metrics, holdout, split, detrend)
+        for i in range(len(scores)):
+            scores[i]['pipeline'] = name 
+            scores[i]['tp'] = tps[i] 
+            scores[i]['fp'] = fps[i]
+            scores[i]['fn'] = fns[i]
+        results.append(scores)
 
-    scores = pd.concat(scores)
-
-    rank = rank or list(metrics.keys())[0]
-    scores.sort_values(rank, ascending=False, inplace=True)
-    scores.reset_index(drop=True, inplace=True)
-    scores.index.name = 'rank'
-    scores.reset_index(drop=False, inplace=True)
-    scores['rank'] += 1
-
-    return scores.set_index('pipeline').reset_index()
+    return results
 
