@@ -1,0 +1,62 @@
+{
+    "name": "orion.primitives.cyclegan.score_anomalies",
+    "contributors": [
+        "xx <xx@mail.com>"
+    ],
+    "description": "Compute an array of anomaly scores based on a combination of reconstruction error and critic output",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "feature_extractor"
+    },
+    "modalities": ["timeseries"],
+    "primitive": "orion.primitives.cyclegan.score_anomalies",
+    "produce": {
+        "args": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "y_hat",
+                "type": "ndarray"
+            },
+            {
+                "name": "critic",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "errors",
+                "type": "ndarray"
+            },
+            {
+                "name": "true_index",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "tunable": {
+            "score_window": {
+                "type": "int",
+                "default": 10,
+                "range": [2, 200]
+            },
+            "critic_smooth_window": {
+                "type": "int",
+                "default": 200,
+                "range": [2, 400]
+            },
+            "error_smooth_window": {
+                "type": "int",
+                "default": 200,
+                "range": [2, 400]
+            }
+        }
+    }
+}

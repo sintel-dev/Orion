@@ -1,6 +1,8 @@
 {
     "name": "orion.primitives.intervals.build_anomaly_intervals",
-    "contributors": ["Carles Sala <csala@csail.mit.edu>"],
+    "contributors": [
+        "xx <xx@mail.com>"
+    ],
     "documentation": "",
     "description": "Build anomaly intervals, optionally including the average severity.",
     "classifiers": {
