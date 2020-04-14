@@ -11,7 +11,6 @@ def _any_overlap(part, intervals):
     for interval in intervals:
         if _overlap(part, interval):
             return 1
-
     return 0
 
 
@@ -38,7 +37,8 @@ def _partition(expected, observed, start=None, end=None):
     observed_parts = list()
     weights = list()
     for part in partitions:
-        weights.append(part[1] - part[0])
+#         weights.append(part[1] - part[0])
+        weights.append(part[1] - part[0] + 1)
         expected_parts.append(_any_overlap(part, expected))
         observed_parts.append(_any_overlap(part, observed))
 
@@ -60,12 +60,41 @@ def _score(scorer, expected, observed, data=None, start=None, end=None):
         start = data['timestamp'].min()
         end = data['timestamp'].max()
 
-    expected = list(expected[['start', 'end']].itertuples(index=False))
-    observed = list(observed[['start', 'end']].itertuples(index=False))
+    if not isinstance(expected, list):
+        expected = list(expected[['start', 'end']].itertuples(index=False))
+    if not isinstance(observed, list):
+        observed = list(observed[['start', 'end']].itertuples(index=False))
 
     expected, observed, weights = _partition(expected, observed, start, end)
 
     return scorer(expected, observed, sample_weight=weights)
+
+
+def score_overlap(expected, observed):
+
+    if not isinstance(expected, list):
+        expected = list(expected[['start', 'end']].itertuples(index=False))
+    if not isinstance(observed, list):
+        observed = list(observed[['start', 'end']].itertuples(index=False))
+
+    tp, fp, fn = 0, 0, 0
+
+    observed_copy = observed.copy()
+
+    for expected_seq in expected:
+        found = False
+        for observed_seq in observed:
+            if _overlap(expected_seq, observed_seq):
+                if not found:
+                    tp += 1
+                    found = True
+                if observed_seq in observed_copy:
+                    observed_copy.remove(observed_seq)
+        if not found:
+            fn += 1
+    fp += len(observed_copy)
+
+    return tp, fp, fn
 
 
 def accuracy_score(expected, observed, data=None, start=None, end=None):
@@ -118,3 +147,4 @@ def precision_score(expected, observed, data=None, start=None, end=None):
         * end (int): Maximum timestamp of the original data.
     """
     return _score(metrics.precision_score, expected, observed, data, start, end)
+

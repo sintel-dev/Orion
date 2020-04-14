@@ -8,7 +8,7 @@ from scipy import signal as scipy_signal
 
 from orion import metrics
 from orion.metrics import score_overlap
-from orion.analysis import analyze3
+from orion.analysis import analyze_variants
 from orion.data import load_anomalies, load_signal
 
 warnings.filterwarnings("ignore")
@@ -41,7 +41,7 @@ def _evaluate_on_signal(pipeline, signal, metrics, holdout=True, split=None, det
 
     truth = load_anomalies(signal)
 
-    anomalies_set = analyze3(pipeline, train, test, truth)
+    anomalies_set = analyze_variants(pipeline, train, test, truth)
 
     truth = load_anomalies(signal)
 
