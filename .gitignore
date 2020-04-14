@@ -111,3 +111,6 @@ notebooks/ses
 notebooks-private/
 orion-jupyter.tar
 *.csv
+
+# editor config
+.vscode/

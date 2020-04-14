@@ -4,19 +4,22 @@
 from setuptools import setup, find_packages
 
 try:
-    with open('README.md') as readme_file:
+    with open('README.md', encoding='utf-8') as readme_file:
         readme = readme_file.read()
 except IOError:
     readme = ''
 
 try:
-    with open('HISTORY.md') as history_file:
+    with open('HISTORY.md', encoding='utf-8') as history_file:
         history = history_file.read()
 except IOError:
     history = ''
 
 
 install_requires = [
+    'tensorflow==1.14.0',      # ts-GPU version only works with 1.14 currently
+                               # need further investigation
+    'tensorflow-gpu==1.14.0',
     'baytune>=0.2.3,<0.3',
     'mlblocks>=0.3.0,<0.4',
     'mlprimitives>=0.2.2,<0.3',
@@ -26,6 +29,7 @@ install_requires = [
     'pymongo>=3.7.2,<4',
     'scikit-learn>=0.20.1,<0.21',
     'tabulate>=0.8.3,<0.9',
+    'similaritymeasures>=0.4.3'
 ]
 
 setup_requires = [
