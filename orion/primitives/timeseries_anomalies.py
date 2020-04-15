@@ -169,7 +169,6 @@ def _find_threshold_dynamic(errors, z_range):
         if cost < best_cost:
             best_z = z[0]
 
-    ## Hacked for benchmark
     return mean + best_z * std
 
 def _find_threshold_constant(errors, z=4):
