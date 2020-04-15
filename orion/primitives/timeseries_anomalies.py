@@ -140,7 +140,7 @@ def z_cost(z, errors, mean, std):
     return numerator / denominator
 
 
-def _find_threshold(errors, z_range):
+def _find_threshold_dynamic(errors, z_range):
     """Find the ideal threshold.
 
     The ideal threshold is the one that minimizes the z_cost function. Scipy.fmin is used
@@ -160,19 +160,37 @@ def _find_threshold(errors, z_range):
     mean = errors.mean()
     std = errors.std()
 
-#     min_z, max_z = z_range
-#     best_z = min_z
-#     best_cost = np.inf
-#     for z in range(min_z, max_z):
-#         best = fmin(z_cost, z, args=(errors, mean, std), full_output=True, disp=False)
-#         z, cost = best[0:2]
-#         if cost < best_cost:
-#             best_z = z[0]
+    min_z, max_z = z_range
+    best_z = min_z
+    best_cost = np.inf
+    for z in range(min_z, max_z):
+        best = fmin(z_cost, z, args=(errors, mean, std), full_output=True, disp=False)
+        z, cost = best[0:2]
+        if cost < best_cost:
+            best_z = z[0]
 
-    ### Hacked for benchmark
-    # always return 4 stdeev from mean
-    return mean + 4 * std
-#     return mean + best_z * std
+    ## Hacked for benchmark
+    return mean + best_z * std
+
+def _find_threshold_constant(errors, z=4):
+    """Find the ideal threshold.
+
+    The threshold is computed using "mean + z * standard deviation" 
+
+    Args:
+        errors (ndarray):
+            Array of errors.
+        z (int):
+            The number of standard deviations from the mean.
+
+    Returns:
+        float:
+            Calculated threshold value.
+    """
+    mean = errors.mean()
+    std = errors.std()
+
+    return mean + z * std
 
 
 def _find_sequences(errors, epsilon, anomaly_padding):
@@ -375,7 +393,7 @@ def _merge_sequences(sequences):
     return np.array(new_sequences)
 
 
-def _find_window_sequences(window, z_range, anomaly_padding, min_percent, window_start):
+def _find_window_sequences(window, z_range, anomaly_padding, min_percent, window_start, th_method=0):
     """Find sequences of values that are anomalous.
 
     We first find the threshold for the window, then find all sequences above that threshold.
@@ -396,6 +414,9 @@ def _find_window_sequences(window, z_range, anomaly_padding, min_percent, window
             highest non-anomalous error in the window sequence.
         window_start (int):
             Index of the first error value in the window.
+        th_method (int):
+            0: constant
+            1: dynamic threshold
 
     Returns:
         ndarray:
@@ -403,7 +424,10 @@ def _find_window_sequences(window, z_range, anomaly_padding, min_percent, window
             that was found in the window.
     """
 
-    threshold = _find_threshold(window, z_range)
+    if th_method == 0:
+        threshold = _find_threshold_constant(window, 4)
+    elif th_method == 1:
+        threshold = _find_threshold_dynamic(window, z_range)
     window_sequences, max_below = _find_sequences(window, threshold, anomaly_padding)
     max_errors = _get_max_errors(window, window_sequences, max_below)
     pruned_anomalies = _prune_anomalies(max_errors, min_percent)
