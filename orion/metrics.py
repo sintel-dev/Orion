@@ -45,6 +45,10 @@ def _partition(expected, observed, start=None, end=None):
     return expected_parts, observed_parts, weights
 
 
+def _pad(lst):
+    return [(part[0], part[1] + 1) for part in lst]
+
+
 def _score(scorer, expected, observed, data=None, start=None, end=None):
     """Compute a score between the ground truth and the detected anomalies.
 
@@ -60,12 +64,52 @@ def _score(scorer, expected, observed, data=None, start=None, end=None):
         start = data['timestamp'].min()
         end = data['timestamp'].max()
 
-    expected = list(expected[['start', 'end']].itertuples(index=False))
-    observed = list(observed[['start', 'end']].itertuples(index=False))
+    if not isinstance(expected, list):
+        expected = list(expected[['start', 'end']].itertuples(index=False))
+    if not isinstance(observed, list):
+        observed = list(observed[['start', 'end']].itertuples(index=False))
+
+    expected = _pad(expected)
+    observed = _pad(observed)
 
     expected, observed, weights = _partition(expected, observed, start, end)
 
     return scorer(expected, observed, sample_weight=weights)
+
+
+def score_overlap(expected, observed):
+    """Compute an overlap score between the ground truth and the detected anomalies.
+
+    Args:
+        * expected (pd.DataFrame): Ground truth.
+        * observed (pd.DataFramne): Detected anomalies.
+    """
+    if not isinstance(expected, list):
+        expected = list(expected[['start', 'end']].itertuples(index=False))
+    if not isinstance(observed, list):
+        observed = list(observed[['start', 'end']].itertuples(index=False))
+
+    expected = _pad(expected)
+    observed = _pad(observed)
+
+    tp, fp, fn = 0, 0, 0
+
+    observed_copy = observed.copy()
+
+    for expected_seq in expected:
+        found = False
+        for observed_seq in observed:
+            if _overlap(expected_seq, observed_seq):
+                if not found:
+                    tp += 1
+                    found = True
+                if observed_seq in observed_copy:
+                    observed_copy.remove(observed_seq)
+        if not found:
+            fn += 1
+    fp += len(observed_copy)
+
+    return tp, fp, fn
 
 
 def accuracy_score(expected, observed, data=None, start=None, end=None):
