@@ -8,7 +8,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def _load_pipeline(pipeline, hyperparams=None):
-
     if isinstance(pipeline, str) and os.path.isfile(pipeline):
         pipeline = MLPipeline.load(pipeline)
     else:

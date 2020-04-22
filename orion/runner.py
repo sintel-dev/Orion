@@ -1,3 +1,9 @@
+"""Orion runner.
+
+Functions responsible for executing Pipelines on Signals
+and storing the results inside an Orion Database using
+the Orion Explorer.
+"""
 import logging
 
 LOGGER = logging.getLogger(__name__)
@@ -67,6 +73,18 @@ def start_signalrun(orex, datarun, signal):
 
 
 def start_datarun(orex, experiment, pipeline):
+    """Start executing a Datarun and store the results on DB.
+
+    Args:
+        orex (OrionExplorer):
+            OrionExplorer instance to use to store the results
+            inside the Database.
+        experiment (Experiment):
+            The Experiment to which the created Datarun will
+            belong.
+        pipeline (Pipeline):
+            Pipeline to use for the Datarun.
+    """
     datarun = orex.add_datarun(experiment, pipeline)
     datarun.start()
     LOGGER.info('Datarun %s started', datarun.id)

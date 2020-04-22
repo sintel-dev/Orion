@@ -1,3 +1,22 @@
+"""Orion Database Schema.
+
+This module contains some utility functions and functions that assist
+on the usage of MongoEngine to define a DB Schema.
+
+Afterwards, there are the classes the define the actual Orion Database
+Schema:
+    * Dataset
+    * Signal
+    * Template
+    * Pipeline
+    * Experiment
+    * Datarun
+    * Signalrun
+    * Event
+    * EventInteraction
+    * Annotation
+"""
+
 import copy
 from datetime import datetime
 
@@ -274,7 +293,7 @@ class Pipeline(OrionDocument):   # New
     json = PipelineField(required=True)   # New
     created_by = fields.StringField()
 
-    unique_key_fields = ['name']
+    unique_key_fields = ['name', 'template']
 
     def load(self):
         return MLPipeline(self.json)
@@ -364,7 +383,7 @@ class Event(OrionDocument):
     start_time = fields.IntField(required=True)
     stop_time = fields.IntField(required=True)
     severity = fields.FloatField()   # New - renamed
-    source = fields.StringField()   # New
+    source = fields.StringField(choices=['orion', 'shape matching', 'manually created'])
 
 
 class EventInteraction(OrionDocument):   # New
