@@ -27,9 +27,14 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Dataset(OrionDocument):
+    """Dataset object.
+
+    A **Dataset** represents a group of Signals that are grouped together under a
+    common name, which is usually defined by an external entity.
+    """
     name = fields.StringField(required=True)
     entity = fields.StringField()
-    created_by = fields.StringField()  # New
+    created_by = fields.StringField()
 
     unique_key_fields = ['name', 'entity']
 
@@ -39,6 +44,13 @@ class Dataset(OrionDocument):
 
 
 class Signal(OrionDocument):
+    """Signal object.
+
+    A Signal belongs to a Dataset and contains all the required details to be
+    able to load the observations from a timeseries signal, as well as some
+    metadata about it, such as the minimum and maximum timestamps that have to
+    be used.
+    """
     name = fields.StringField(required=True)
     dataset = fields.ReferenceField(Dataset, reverse_delete_rule=CASCADE)
     data_location = fields.StringField()
@@ -61,14 +73,28 @@ class Signal(OrionDocument):
         return data
 
 
-class Template(OrionDocument):   # New - Renamed from Pipeline
+class Template(OrionDocument):
+    """Template object.
+
+    A **Template** represents an MLPipeline template from which later on
+    Pipelines will be derived to run on Experiments with different hyperparameter
+    values.
+
+    The Template includes the complete JSON specification of the MLPipeline it
+    represents.
+    """
     name = fields.StringField(required=True)
-    json = PipelineField(required=True)   # New - Renamed from mlpipeline
+    json = PipelineField(required=True)
     created_by = fields.StringField()
 
     unique_key_fields = ['name']
 
     def load(self):
+        """Load this Template as an MLPipeline.
+
+        Returns:
+            MLPipeline
+        """
         return MLPipeline(self.json)
 
     @property
@@ -76,24 +102,41 @@ class Template(OrionDocument):   # New - Renamed from Pipeline
         return Pipeline.find(template=self)
 
 
-class Pipeline(OrionDocument):   # New
+class Pipeline(OrionDocument):
+    """Pipeline object.
+
+    A **Pipeline** represents an MLPipeline object.
+    It is derived from a Template by setting a specific set of
+    hyperparameter values.
+    """
     name = fields.StringField(required=True)
-    template = fields.ReferenceField(Template, reverse_delete_rule=CASCADE)  # New
-    json = PipelineField(required=True)   # New
+    template = fields.ReferenceField(Template, reverse_delete_rule=CASCADE)
+    json = PipelineField(required=True)
     created_by = fields.StringField()
 
     unique_key_fields = ['name', 'template']
 
     def load(self):
+        """Load this Pipeline as an MLPipeline.
+
+        Returns:
+            MLPipeline
+        """
         return MLPipeline(self.json)
 
 
 class Experiment(OrionDocument):
-    name = fields.StringField(required=True)   # New
+    """Experiment object.
+
+    An Experiment is associated with a Dataset, a subset of its Signals and a Template.
+    It represents a collection of Dataruns, executions of Pipelines generated from the
+    Experiment Template over its Signals Set.
+    """
+    name = fields.StringField(required=True)
     project = fields.StringField()
-    template = fields.ReferenceField(Template, reverse_delete_rule=CASCADE)  # New
+    template = fields.ReferenceField(Template, reverse_delete_rule=CASCADE)
     dataset = fields.ReferenceField(Dataset, reverse_delete_rule=CASCADE)
-    signals = fields.ListField(fields.ReferenceField(Signal, reverse_delete_rule=CASCADE))   # New
+    signals = fields.ListField(fields.ReferenceField(Signal, reverse_delete_rule=CASCADE))
     created_by = fields.StringField()
 
     unique_key_fields = ['name', 'project']
@@ -104,6 +147,18 @@ class Experiment(OrionDocument):
 
 
 class Datarun(OrionDocument, Status):
+    """Datarun object.
+
+    The Datarun object represents a single execution of a Pipeline over a set
+    of Signals, within the context of an Experiment.
+
+    It contains all the information about the environment and context where this
+    execution took place, which potentially allows to later on reproduce the results
+    in a new environment.
+
+    It also contains information about whether the execution was successful or not,
+    when it started and ended, and the number of events that were found in this experiment.
+    """
     experiment = fields.ReferenceField(Experiment, reverse_delete_rule=CASCADE)
     pipeline = fields.ReferenceField(Pipeline, reverse_delete_rule=CASCADE)
     start_time = fields.DateTimeField()
@@ -111,7 +166,7 @@ class Datarun(OrionDocument, Status):
     software_versions = fields.ListField(fields.StringField())
     budget_type = fields.StringField()
     budget_amount = fields.IntField()
-    events = fields.IntField()
+    num_events = fields.IntField()
 
     _software_versions = list(freeze.freeze())
 
@@ -120,33 +175,69 @@ class Datarun(OrionDocument, Status):
         return Signalrun.find(datarun=self)
 
     def start(self):
+        """Mark this Datarun as started on DB.
+
+        The ``start_time`` will be set to ``datetime.utcnow()``,
+        the ``status`` will be set to RUNNING and the software
+        versions will be captured.
+        """
         self.start_time = datetime.utcnow()
         self.status = self.STATUS_RUNNING
         self.software_versions = self._software_versions
         self.save()
 
     def end(self, status):
+        """Mark this Datarun as ended on DB.
+
+        The ``end_time`` will be set to ``datetime.utcnow()``, the ``status``
+        will be set to the given value, and the ``num_events`` field will be
+        populated with the sum of the events detected by the children Signalruns.
+        """
         self.end_time = datetime.utcnow()
         self.status = status
-        self.events = Event.find(signalrun__in=self.signalruns).count()
+        self.num_events = Event.find(signalrun__in=self.signalruns).count()
         self.save()
 
 
-class Signalrun(OrionDocument, Status):   # New
+class Signalrun(OrionDocument, Status):
+    """Signalrun object.
+
+    The Signalrun object represents a single executions of a Pipeline on a Signal
+    within a Datarun.
+
+    It contains information about whether the execution was successful or not, when
+    it started and ended, the number of events that were found by the Pipeline, and
+    where the model and metrics are stored.
+    """
     datarun = fields.ReferenceField(Datarun, reverse_delete_rule=CASCADE)
     signal = fields.ReferenceField(Signal, reverse_delete_rule=CASCADE)
     start_time = fields.DateTimeField()
     end_time = fields.DateTimeField()
     model_location = fields.StringField()
     metrics_location = fields.StringField()
-    events = fields.IntField()
+    num_events = fields.IntField()
+
+    @property
+    def events(self):
+        return Event.find(signalrun=self)
 
     def start(self):
+        """Mark this Signalrun as started on DB.
+
+        The ``start_time`` will be set to ``datetime.utcnow()``,
+        the ``status`` will be set to RUNNING.
+        """
         self.start_time = datetime.utcnow()
         self.status = self.STATUS_RUNNING
         self.save()
 
     def end(self, status, events):
+        """Mark this Signalrun as ended on DB.
+
+        The ``end_time`` will be set to ``datetime.utcnow()``, the ``status``
+        will be set to the given value, and the given events will be inserted
+        into the Database.
+        """
         try:
             for start_time, stop_time, severity in events:
                 Event.insert(
@@ -167,15 +258,28 @@ class Signalrun(OrionDocument, Status):   # New
 
 
 class Event(OrionDocument):
-    signalrun = fields.ReferenceField(Signalrun, reverse_delete_rule=CASCADE)   # New - renamed
+    """Event object.
+
+    An Event represents an anomalous period on a Signal.
+    It is descrived by start and stop times and, optionally, a severity score.
+
+    It is always associated to a Signal and, optionally, to a Signalrun.
+    """
+    signalrun = fields.ReferenceField(Signalrun, reverse_delete_rule=CASCADE)
     signal = fields.ReferenceField(Signal, reverse_delete_rule=CASCADE)
     start_time = fields.IntField(required=True)
     stop_time = fields.IntField(required=True)
-    severity = fields.FloatField()   # New - renamed
+    severity = fields.FloatField()
     source = fields.StringField(choices=['orion', 'shape matching', 'manually created'])
 
 
-class EventInteraction(OrionDocument):   # New
+class EventInteraction(OrionDocument):
+    """EventInteraction object.
+
+    The EventInteraction object represents an interaction of a user with an
+    Event and includes information about the assocaiated Event, the action
+    performed and, if changed, the specified start and stop times.
+    """
     event = fields.ReferenceField(Event, reverse_delete_rule=CASCADE)
     action = fields.StringField()
     start_time = fields.IntField(required=True)
@@ -183,8 +287,13 @@ class EventInteraction(OrionDocument):   # New
     created_by = fields.StringField()
 
 
-class Annotation(OrionDocument):   # New - Renamed
+class Annotation(OrionDocument):
+    """Annotation object.
+
+    User Annotation related to an event. The Annotations consist on a tag and
+    a free text field where the user can insert comments about the Event.
+    """
     event = fields.ReferenceField(Event, reverse_delete_rule=CASCADE)
-    tag = fields.StringField()   # New
-    comment = fields.StringField()    # New - renamed
+    tag = fields.StringField()
+    comment = fields.StringField()
     created_by = fields.StringField()
