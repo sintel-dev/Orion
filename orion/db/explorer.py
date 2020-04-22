@@ -6,19 +6,14 @@ a simple programatic access to creating and reading objects in the Orion Databas
 import json
 import logging
 import os
-import pickle
-from datetime import datetime
 
-import pandas as pd
-from bson import ObjectId
-from bson.errors import InvalidId
 from gridfs import GridFS
 from mlblocks import MLPipeline
-from mongoengine import connect, Document
+from mongoengine import connect
 from pymongo.database import Database
 
-from orion.db import schema
 from orion.data import load_signal
+from orion.db import schema
 
 LOGGER = logging.getLogger(__name__)
 
@@ -785,8 +780,8 @@ class OrionDBExplorer:
             Datarun
         """
         return schema.Signalrun.insert(
-            experiment=experiment,
-            pipeline=pipeline,
+            datarun=datarun,
+            signal=signal,
         )
 
     def get_signalruns(self, datarun=None, signal=None, status=None):

@@ -5,6 +5,7 @@ and storing the results inside an Orion Database using
 the Orion Explorer.
 """
 import logging
+import pickle
 
 LOGGER = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ def get_outputs_spec(pipeline):
     return outputs, output_names
 
 
-def process_pipeline_output(orex, pipeline_output, output_names):
+def process_pipeline_output(orex, signalrun, pipeline_output, output_names):
     if not isinstance(pipeline_output, tuple):
         return pipeline_output
 
@@ -61,7 +62,7 @@ def start_signalrun(orex, datarun, signal):
         pipeline_output = mlpipeline.predict(data, output_=outputs)
 
         LOGGER.info('Processing pipeline %s predictions on signal %s', pipeline.name, signal.name)
-        events = process_pipeline_output(orex, pipeline_output, output_names)
+        events = process_pipeline_output(orex, signalrun, pipeline_output, output_names)
         status = signalrun.STATUS_SUCCESS
 
     except Exception:

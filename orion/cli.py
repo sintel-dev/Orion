@@ -6,6 +6,7 @@ warnings.filterwarnings("ignore")  # noqa isort:skip
 
 import argparse
 import getpass
+import logging
 import os
 import sys
 from urllib.error import HTTPError
@@ -14,9 +15,8 @@ import tabulate
 
 from orion import PIPELINES
 from orion.data import load_signal
+from orion.db.explorer import OrionDBExplorer
 from orion.evaluation import evaluate_pipelines
-from orion.explorer import OrionExplorer
-from orion.utils import logging_setup
 
 
 def _reset(explorer, args):
@@ -317,6 +317,27 @@ def get_parser():
     return parser
 
 
+def logging_setup(verbosity=1, logfile=None, logger_name=None):
+    logger = logging.getLogger(logger_name)
+    log_level = (3 - verbosity) * 10
+    fmt = '%(asctime)s - %(process)d - %(levelname)s - %(module)s - %(message)s'
+    formatter = logging.Formatter(fmt)
+    logger.setLevel(log_level)
+    logger.propagate = False
+
+    if logfile:
+        file_handler = logging.FileHandler(logfile)
+        file_handler.setLevel(logging.DEBUG)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+
+    else:
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(log_level)
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
+
+
 def main():
     parser = get_parser()
     args = parser.parse_args()
@@ -326,6 +347,6 @@ def main():
     if args.action == 'evaluate':
         _evaluate(args)
     else:
-        explorer = OrionExplorer(args.database)
+        explorer = OrionDBExplorer(args.database)
 
         args.function(explorer, args)
