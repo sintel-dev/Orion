@@ -27,8 +27,20 @@ DATA_PATH = os.path.join(
 BUCKET = 'd3-ai-orion'
 S3_URL = 'https://{}.s3.amazonaws.com/{}'
 
+NASA_SIGNALS = (
+    'P-1', 'S-1', 'E-1', 'E-2', 'E-3', 'E-4', 'E-5', 'E-6', 'E-7',
+    'E-8', 'E-9', 'E-10', 'E-11', 'E-12', 'E-13', 'A-1', 'D-1', 'P-3',
+    'D-2', 'D-3', 'D-4', 'A-2', 'A-3', 'A-4', 'G-1', 'G-2', 'D-5',
+    'D-6', 'D-7', 'F-1', 'P-4', 'G-3', 'T-1', 'T-2', 'D-8', 'D-9',
+    'F-2', 'G-4', 'T-3', 'D-11', 'D-12', 'B-1', 'G-6', 'G-7', 'P-7',
+    'R-1', 'A-5', 'A-6', 'A-7', 'D-13', 'A-8', 'A-9', 'F-3', 'M-6',
+    'M-1', 'M-2', 'S-2', 'P-10', 'T-4', 'T-5', 'F-7', 'M-3', 'M-4',
+    'M-5', 'P-15', 'C-1', 'C-2', 'T-12', 'T-13', 'F-4', 'F-5', 'D-14',
+    'T-9', 'P-14', 'T-8', 'P-11', 'D-15', 'D-16', 'M-7', 'F-8'
+)
 
-def download(name, test_size=None):
+
+def download(name, test_size=None, data_path=DATA_PATH):
     """Load the CSV with the given name from S3.
 
     If the CSV has never been loaded before, it will be downloaded
@@ -62,21 +74,34 @@ def download(name, test_size=None):
         path = parts[1]
         url = S3_URL.format(bucket, path)
 
-        filename = os.path.join(DATA_PATH, path.split('/')[-1])
+        filename = os.path.join(data_path, path.split('/')[-1])
     else:
-        filename = os.path.join(DATA_PATH, name + '.csv')
+        filename = os.path.join(data_path, name + '.csv')
 
     if os.path.exists(filename):
         data = pd.read_csv(filename)
     else:
         url = url or S3_URL.format(BUCKET, '{}.csv'.format(name))
 
-        LOGGER.debug('Downloading CSV %s from %s', name, url)
-        os.makedirs(DATA_PATH, exist_ok=True)
+        LOGGER.info('Downloading CSV %s from %s', name, url)
+        os.makedirs(data_path, exist_ok=True)
         data = pd.read_csv(url)
         data.to_csv(filename, index=False)
 
     return data
+
+
+def download_demo(path='orion-data', split=False):
+    if not os.path.exists(path):
+        os.makedirs(path, exist_ok=True)
+
+    LOGGER.info('Downloading Orion Demo Data to folder %s', path)
+    for signal in NASA_SIGNALS[0:3]:
+        if split:
+            download(signal + '-train', data_path=path)
+            download(signal + '-test', data_path=path)
+        else:
+            download(signal, data_path=path)
 
 
 def load_csv(path, timestamp_column=None, value_column=None):
