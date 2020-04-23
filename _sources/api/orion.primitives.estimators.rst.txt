@@ -1,0 +1,7 @@
+orion.primitives.estimators module
+==================================
+
+.. automodule:: orion.primitives.estimators
+   :members:
+   :undoc-members:
+   :show-inheritance:

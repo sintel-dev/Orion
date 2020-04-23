@@ -1,0 +1,7 @@
+orion.primitives.intervals module
+=================================
+
+.. automodule:: orion.primitives.intervals
+   :members:
+   :undoc-members:
+   :show-inheritance:

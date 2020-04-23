@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>orion.primitives.detectors module &mdash; Orion 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="orion.primitives.estimators module" href="orion.primitives.estimators.html" />
+    <link rel="prev" title="orion.primitives package" href="orion.primitives.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Orion
+          
+
+          
+            
+            <img src="../_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#data-format">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#orion-pipelines">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#current-available-pipelines">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#leaderboard">Leaderboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#install">Install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#docker">Docker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#evaluate-performance">3. Evaluate performance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#database">Database</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmark.html#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#evaluate-function">Evaluate function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#fields">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#signal">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id1">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id2">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id3">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#experiment">Experiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id4">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#datarun">Datarun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id5">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#signalrun">Signalrun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id6">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#event">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id7">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#event-interaction">Event Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id8">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id9">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="orion.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="orion.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="orion.db.html">orion.db package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="orion.primitives.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.runner.html">orion.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../history.html#id1">0.1.0 - 2020-04-23</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Orion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="orion.html">orion package</a> &raquo;</li>
+        
+          <li><a href="orion.primitives.html">orion.primitives package</a> &raquo;</li>
+        
+      <li>orion.primitives.detectors module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.primitives.detectors.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-orion.primitives.detectors">
+<span id="orion-primitives-detectors-module"></span><h1>orion.primitives.detectors module<a class="headerlink" href="#module-orion.primitives.detectors" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="orion.primitives.detectors.ThresholdDetector">
+<em class="property">class </em><code class="sig-prename descclassname">orion.primitives.detectors.</code><code class="sig-name descname">ThresholdDetector</code><span class="sig-paren">(</span><em class="sig-param">value_column</em>, <em class="sig-param">ratio</em>, <em class="sig-param">severity=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/detectors.html#ThresholdDetector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.detectors.ThresholdDetector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Threshold Detector.</p>
+<p>This is a dummy anomaly detector that classifies as an anomaly
+any value that is further away from the expected value than
+the maximum distance seen during the fit phase.</p>
+<p>Optionally, it also returns the severity of the anomaly, which
+is simply the difference between the actual value and the maximum
+expected value.</p>
+<p>This detector is here only to serve as reference of what
+an anomaly detection primitive looks like, and is not intended
+to be used in real scenarios.</p>
+<dl class="method">
+<dt id="orion.primitives.detectors.ThresholdDetector.detect">
+<code class="sig-name descname">detect</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/detectors.html#ThresholdDetector.detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.detectors.ThresholdDetector.detect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="orion.primitives.detectors.ThresholdDetector.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/detectors.html#ThresholdDetector.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.detectors.ThresholdDetector.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="orion.primitives.estimators.html" class="btn btn-neutral float-right" title="orion.primitives.estimators module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="orion.primitives.html" class="btn btn-neutral float-left" title="orion.primitives package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, MIT Data To AI Lab
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

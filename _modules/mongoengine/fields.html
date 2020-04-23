@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>mongoengine.fields &mdash; Orion 0.1.0-dev documentation</title>
+  <title>mongoengine.fields &mdash; Orion 0.1.1.dev0 documentation</title>
   
 
   
@@ -23,10 +23,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -53,6 +53,9 @@
             <a href="../../index.html" class="icon icon-home"> Orion
           
 
+          
+            
+            <img src="../../_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -83,65 +86,89 @@
 <li class="toctree-l2"><a class="reference internal" href="../../readme.html#table-of-contents">Table of Contents</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html#id1">Data Format</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id2">Input</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id3">Output</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id4">Dataset we use in this library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#data-format">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html#id5">Orion Pipelines</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id6">Current Available Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id9">Leaderboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#orion-pipelines">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#current-available-pipelines">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#leaderboard">Leaderboard</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html#id10">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id11">Requirements</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#requirements">Requirements</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../readme.html#python">Python</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../readme.html#mongodb">MongoDB</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id13">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#install">Install</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../readme.html#docker">Docker</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id15">Quickstart: Run a Pipeline on the Demo Dataset</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../readme.html#load-the-data">1. Load the data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../readme.html#evaluate-performance">3. Evaluate performance</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id16">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#evaluate-performance">3. Evaluate performance</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html#id17">Docker Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id18">Docker Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id19">Building the Orion Docker Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id20">Distributing the Orion Docker Image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../readme.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../readme.html#distributing-as-a-file">Distributing as a file</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#id21">Running the orion-jupyter image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../readme.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../readme.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#what-s-next">What’s next?</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#database">Database</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Usage</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/orion.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/orion.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.analysis.html">orion.analysis module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.cli.html">orion.cli module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.data.html">orion.data module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.evaluation.html">orion.evaluation module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.explorer.html">orion.explorer module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.metrics.html">orion.metrics module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.model.html">orion.model module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.utils.html">orion.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../benchmark.html">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmark.html#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmark.html#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmark.html#evaluate-function">Evaluate function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../database.html">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#fields">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#signal">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id1">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id2">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id3">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#experiment">Experiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id4">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#datarun">Datarun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id5">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#signalrun">Signalrun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id6">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#event">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id7">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#event-interaction">Event Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id8">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id9">Fields</a></li>
 </ul>
 </li>
 </ul>
@@ -149,6 +176,30 @@
 </ul>
 <p class="caption"><span class="caption-text">Resources</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/orion.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/orion.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.db.html">orion.db package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.primitives.html">orion.primitives package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/orion.primitives.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/orion.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.data.html">orion.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.runner.html">orion.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../contributing.html#types-of-contributions">Types of Contributions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../contributing.html#report-bugs">Report Bugs</a></li>
@@ -167,7 +218,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../history.html#id1">0.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history.html#id1">0.1.0 - 2020-04-23</a></li>
 </ul>
 </li>
 </ul>
@@ -240,9 +291,9 @@
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
-<span class="kn">from</span> <span class="nn">operator</span> <span class="k">import</span> <span class="n">itemgetter</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
 
-<span class="kn">from</span> <span class="nn">bson</span> <span class="k">import</span> <span class="n">Binary</span><span class="p">,</span> <span class="n">DBRef</span><span class="p">,</span> <span class="n">ObjectId</span><span class="p">,</span> <span class="n">SON</span>
+<span class="kn">from</span> <span class="nn">bson</span> <span class="kn">import</span> <span class="n">Binary</span><span class="p">,</span> <span class="n">DBRef</span><span class="p">,</span> <span class="n">ObjectId</span><span class="p">,</span> <span class="n">SON</span>
 <span class="kn">import</span> <span class="nn">gridfs</span>
 <span class="kn">import</span> <span class="nn">pymongo</span>
 <span class="kn">import</span> <span class="nn">six</span>
@@ -255,25 +306,25 @@
     <span class="kn">import</span> <span class="nn">dateutil.parser</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">bson.int64</span> <span class="k">import</span> <span class="n">Int64</span>
+    <span class="kn">from</span> <span class="nn">bson.int64</span> <span class="kn">import</span> <span class="n">Int64</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">Int64</span> <span class="o">=</span> <span class="nb">int</span>
 
 
-<span class="kn">from</span> <span class="nn">mongoengine.base</span> <span class="k">import</span> <span class="p">(</span><span class="n">BaseDocument</span><span class="p">,</span> <span class="n">BaseField</span><span class="p">,</span> <span class="n">ComplexBaseField</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">mongoengine.base</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BaseDocument</span><span class="p">,</span> <span class="n">BaseField</span><span class="p">,</span> <span class="n">ComplexBaseField</span><span class="p">,</span>
                               <span class="n">GeoJsonBaseField</span><span class="p">,</span> <span class="n">LazyReference</span><span class="p">,</span> <span class="n">ObjectIdField</span><span class="p">,</span>
                               <span class="n">get_document</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">mongoengine.base.utils</span> <span class="k">import</span> <span class="n">LazyRegexCompiler</span>
-<span class="kn">from</span> <span class="nn">mongoengine.common</span> <span class="k">import</span> <span class="n">_import_class</span>
-<span class="kn">from</span> <span class="nn">mongoengine.connection</span> <span class="k">import</span> <span class="n">DEFAULT_CONNECTION_NAME</span><span class="p">,</span> <span class="n">get_db</span>
-<span class="kn">from</span> <span class="nn">mongoengine.document</span> <span class="k">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">EmbeddedDocument</span>
-<span class="kn">from</span> <span class="nn">mongoengine.errors</span> <span class="k">import</span> <span class="n">DoesNotExist</span><span class="p">,</span> <span class="n">InvalidQueryError</span><span class="p">,</span> <span class="n">ValidationError</span>
-<span class="kn">from</span> <span class="nn">mongoengine.python_support</span> <span class="k">import</span> <span class="n">StringIO</span>
-<span class="kn">from</span> <span class="nn">mongoengine.queryset</span> <span class="k">import</span> <span class="n">DO_NOTHING</span>
-<span class="kn">from</span> <span class="nn">mongoengine.queryset.base</span> <span class="k">import</span> <span class="n">BaseQuerySet</span>
+<span class="kn">from</span> <span class="nn">mongoengine.base.utils</span> <span class="kn">import</span> <span class="n">LazyRegexCompiler</span>
+<span class="kn">from</span> <span class="nn">mongoengine.common</span> <span class="kn">import</span> <span class="n">_import_class</span>
+<span class="kn">from</span> <span class="nn">mongoengine.connection</span> <span class="kn">import</span> <span class="n">DEFAULT_CONNECTION_NAME</span><span class="p">,</span> <span class="n">get_db</span>
+<span class="kn">from</span> <span class="nn">mongoengine.document</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">EmbeddedDocument</span>
+<span class="kn">from</span> <span class="nn">mongoengine.errors</span> <span class="kn">import</span> <span class="n">DoesNotExist</span><span class="p">,</span> <span class="n">InvalidQueryError</span><span class="p">,</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">mongoengine.python_support</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">from</span> <span class="nn">mongoengine.queryset</span> <span class="kn">import</span> <span class="n">DO_NOTHING</span>
+<span class="kn">from</span> <span class="nn">mongoengine.queryset.base</span> <span class="kn">import</span> <span class="n">BaseQuerySet</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageOps</span>
+    <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageOps</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">Image</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">ImageOps</span> <span class="o">=</span> <span class="kc">None</span>
@@ -305,7 +356,7 @@
 <span class="k">class</span> <span class="nc">StringField</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A unicode string field.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span> <span class="k">if</span> <span class="n">regex</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_length</span> <span class="o">=</span> <span class="n">min_length</span>
@@ -376,7 +427,7 @@
         <span class="sa">r</span><span class="s1">&#39;(?:/?|[/?]\S+)$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
     <span class="n">_URL_SCHEMES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http&#39;</span><span class="p">,</span> <span class="s1">&#39;https&#39;</span><span class="p">,</span> <span class="s1">&#39;ftp&#39;</span><span class="p">,</span> <span class="s1">&#39;ftps&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_regex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">schemes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_regex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">schemes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">url_regex</span> <span class="o">=</span> <span class="n">url_regex</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_URL_REGEX</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schemes</span> <span class="o">=</span> <span class="n">schemes</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_URL_SCHEMES</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">URLField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -424,7 +475,7 @@
 
     <span class="n">error_msg</span> <span class="o">=</span> <span class="s1">&#39;Invalid email address: </span><span class="si">%s</span><span class="s1">&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain_whitelist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_utf8_user</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain_whitelist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_utf8_user</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">allow_ip_domain</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the EmailField.</span>
 
@@ -502,7 +553,7 @@
 <span class="k">class</span> <span class="nc">IntField</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;32-bit integer field.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="n">min_value</span><span class="p">,</span> <span class="n">max_value</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">IntField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -535,7 +586,7 @@
 <span class="k">class</span> <span class="nc">LongField</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;64-bit integer field.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="n">min_value</span><span class="p">,</span> <span class="n">max_value</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LongField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -571,7 +622,7 @@
 <span class="k">class</span> <span class="nc">FloatField</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Floating point number field.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="n">min_value</span><span class="p">,</span> <span class="n">max_value</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FloatField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -613,7 +664,7 @@
 <span class="sd">    .. versionadded:: 0.3</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_string</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_string</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="n">decimal</span><span class="o">.</span><span class="n">ROUND_HALF_UP</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param min_value: Validation rule for the minimum acceptable value.</span>
@@ -809,7 +860,7 @@
 <span class="sd">    .. versionadded:: 0.5</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param separator: Allows to customize the separator used for storage (default ``,``)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -842,7 +893,7 @@
         <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
 
@@ -852,7 +903,7 @@
             <span class="k">return</span> <span class="n">data</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_from_string</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ComplexDateTimeField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__set__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -884,7 +935,7 @@
 <span class="sd">    Only valid values are subclasses of :class:`~mongoengine.EmbeddedDocument`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># XXX ValidationError raised outside of the &quot;validate&quot; method.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
             <span class="nb">isinstance</span><span class="p">(</span><span class="n">document_type</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="ow">or</span>
@@ -1069,12 +1120,12 @@
 <span class="sd">        Required means it cannot be empty - as the default for ListFields is []</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="n">field</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Document class being used rather than a document object</span>
             <span class="k">return</span> <span class="bp">self</span>
@@ -1120,7 +1171,7 @@
 <span class="sd">    .. versionadded:: 0.9</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param document_type: The type of</span>
 <span class="sd">         :class:`~mongoengine.EmbeddedDocument` the list will hold.</span>
@@ -1150,7 +1201,7 @@
     <span class="n">_ordering</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_order_reverse</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="s1">&#39;ordering&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_ordering</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ordering&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;reverse&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -1194,7 +1245,7 @@
 <span class="sd">    .. versionchanged:: 0.5 - Can now handle complex / varying types of data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="n">field</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_auto_dereference</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -1245,7 +1296,7 @@
 <span class="sd">    .. versionadded:: 0.5</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># XXX ValidationError raised outside of the &quot;validate&quot; method.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">BaseField</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Argument to MapField constructor must be a valid &#39;</span>
@@ -1295,7 +1346,7 @@
 <span class="sd">    .. versionchanged:: 0.5 added `reverse_delete_rule`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="n">dbref</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="n">dbref</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">reverse_delete_rule</span><span class="o">=</span><span class="n">DO_NOTHING</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialises the Reference Field.</span>
 
@@ -1330,7 +1381,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">document_type_obj</span> <span class="o">=</span> <span class="n">get_document</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">document_type_obj</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">document_type_obj</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Descriptor to allow lazy dereferencing.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Document class being used rather than a document object</span>
@@ -1422,7 +1473,7 @@
 <span class="sd">    .. versionadded:: 0.9</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">auto_sync</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">auto_sync</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialises the Cached Reference Field.</span>
 
 <span class="sd">        :param fields:  A list of fields to be cached in document</span>
@@ -1445,7 +1496,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">CachedReferenceField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">start_listener</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">mongoengine</span> <span class="k">import</span> <span class="n">signals</span>
+        <span class="kn">from</span> <span class="nn">mongoengine</span> <span class="kn">import</span> <span class="n">signals</span>
 
         <span class="n">signals</span><span class="o">.</span><span class="n">post_save</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_document_pre_save</span><span class="p">,</span>
                                   <span class="n">sender</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">document_type</span><span class="p">)</span>
@@ -1484,7 +1535,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">document_type_obj</span> <span class="o">=</span> <span class="n">get_document</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">document_type_obj</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">document_type_obj</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Document class being used rather than a document object</span>
             <span class="k">return</span> <span class="bp">self</span>
@@ -1595,7 +1646,7 @@
 <span class="sd">    .. versionadded:: 0.3</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">choices</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;choices&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GenericReferenceField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1621,7 +1672,7 @@
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">_class_name</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GenericReferenceField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_validate_choices</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
 
@@ -1696,11 +1747,11 @@
 <span class="k">class</span> <span class="nc">BinaryField</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A binary data field.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_bytes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_bytes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_bytes</span> <span class="o">=</span> <span class="n">max_bytes</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BinaryField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle bytearrays in python 3.1&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY3</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -1733,7 +1784,7 @@
 
     <span class="n">_fs</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">instance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">db_alias</span><span class="o">=</span><span class="n">DEFAULT_CONNECTION_NAME</span><span class="p">,</span>
                  <span class="n">collection_name</span><span class="o">=</span><span class="s1">&#39;fs&#39;</span><span class="p">):</span>
@@ -1745,7 +1796,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">newfile</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Used for partial writes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gridout</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_fs&#39;</span><span class="p">,</span> <span class="s1">&#39;grid_id&#39;</span><span class="p">,</span> <span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="s1">&#39;instance&#39;</span><span class="p">,</span> <span class="s1">&#39;db_alias&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;collection_name&#39;</span><span class="p">,</span> <span class="s1">&#39;newfile&#39;</span><span class="p">,</span> <span class="s1">&#39;gridout&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
@@ -1755,10 +1806,10 @@
             <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_id</span><span class="p">)</span>
 
     <span class="n">__nonzero__</span> <span class="o">=</span> <span class="fm">__bool__</span>  <span class="c1"># For Py2 support</span>
@@ -1776,15 +1827,15 @@
     <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__copy__</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_id</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">gridout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">gridout</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">gridout</span> <span class="k">else</span> <span class="s1">&#39;&lt;no file&gt;&#39;</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_id</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">GridFSProxy</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_id</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">grid_id</span><span class="p">)</span> <span class="ow">and</span>
                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">collection_name</span><span class="p">)</span> <span class="ow">and</span>
@@ -1792,7 +1843,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
     <span class="nd">@property</span>
@@ -1884,13 +1935,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">proxy_class</span> <span class="o">=</span> <span class="n">GridFSProxy</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_alias</span><span class="o">=</span><span class="n">DEFAULT_CONNECTION_NAME</span><span class="p">,</span> <span class="n">collection_name</span><span class="o">=</span><span class="s1">&#39;fs&#39;</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_alias</span><span class="o">=</span><span class="n">DEFAULT_CONNECTION_NAME</span><span class="p">,</span> <span class="n">collection_name</span><span class="o">=</span><span class="s1">&#39;fs&#39;</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FileField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span> <span class="o">=</span> <span class="n">collection_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db_alias</span> <span class="o">=</span> <span class="n">db_alias</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
 
@@ -1905,7 +1956,7 @@
             <span class="n">grid_file</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
         <span class="k">return</span> <span class="n">grid_file</span>
 
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">GridFSProxy</span><span class="p">))</span> <span class="ow">or</span>
@@ -2110,7 +2161,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">proxy_class</span> <span class="o">=</span> <span class="n">ImageGridFsProxy</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thumbnail_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thumbnail_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">collection_name</span><span class="o">=</span><span class="s1">&#39;images&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">Image</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span><span class="s1">&#39;PIL library was not found&#39;</span><span class="p">)</span>
@@ -2170,7 +2221,7 @@
     <span class="n">COLLECTION_NAME</span> <span class="o">=</span> <span class="s1">&#39;mongoengine.counters&#39;</span>
     <span class="n">VALUE_DECORATOR</span> <span class="o">=</span> <span class="nb">int</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">db_alias</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sequence_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">db_alias</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sequence_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">value_decorator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span> <span class="o">=</span> <span class="n">collection_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">COLLECTION_NAME</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db_alias</span> <span class="o">=</span> <span class="n">db_alias</span> <span class="ow">or</span> <span class="n">DEFAULT_CONNECTION_NAME</span>
@@ -2228,7 +2279,7 @@
             <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">c</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isupper</span><span class="p">()</span> <span class="k">else</span> <span class="n">c</span>
                            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">owner</span><span class="o">.</span><span class="n">_class_name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SequenceField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">_initialised</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
@@ -2237,7 +2288,7 @@
 
         <span class="k">return</span> <span class="n">value</span>
 
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">_initialised</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
@@ -2265,7 +2316,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_binary</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Store UUID data in the database</span>
 
@@ -2477,7 +2528,7 @@
 <span class="sd">    .. versionadded:: 0.15</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="n">passthrough</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dbref</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_type</span><span class="p">,</span> <span class="n">passthrough</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dbref</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">reverse_delete_rule</span><span class="o">=</span><span class="n">DO_NOTHING</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialises the Reference Field.</span>
 
@@ -2527,7 +2578,7 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="n">LazyReference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">document_type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">passthrough</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">passthrough</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">value</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Descriptor to allow lazy dereferencing.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Document class being used rather than a document object</span>
@@ -2615,7 +2666,7 @@
 <span class="sd">    .. versionadded:: 0.15</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">passthrough</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;passthrough&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GenericLazyReferenceField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2635,7 +2686,7 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="n">LazyReference</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">passthrough</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">passthrough</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">value</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
 

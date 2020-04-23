@@ -1,0 +1,7 @@
+orion.primitives.detectors module
+=================================
+
+.. automodule:: orion.primitives.detectors
+   :members:
+   :undoc-members:
+   :show-inheritance:

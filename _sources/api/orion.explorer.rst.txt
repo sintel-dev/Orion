@@ -1,7 +1,0 @@
-orion.explorer module
-=====================
-
-.. automodule:: orion.explorer
-   :members:
-   :undoc-members:
-   :show-inheritance:

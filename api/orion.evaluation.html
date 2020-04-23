@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>orion.evaluation module &mdash; Orion 0.1.0-dev documentation</title>
+  <title>orion.evaluation module &mdash; Orion 0.1.1.dev0 documentation</title>
   
 
   
@@ -23,10 +23,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="orion.explorer module" href="orion.explorer.html" />
+    <link rel="next" title="orion.metrics module" href="orion.metrics.html" />
     <link rel="prev" title="orion.data module" href="orion.data.html" /> 
 </head>
 
@@ -55,6 +55,9 @@
             <a href="../index.html" class="icon icon-home"> Orion
           
 
+          
+            
+            <img src="../_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -85,72 +88,120 @@
 <li class="toctree-l2"><a class="reference internal" href="../readme.html#table-of-contents">Table of Contents</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../readme.html#id1">Data Format</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id2">Input</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id3">Output</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id4">Dataset we use in this library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#data-format">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../readme.html#id5">Orion Pipelines</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id6">Current Available Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id9">Leaderboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#orion-pipelines">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#current-available-pipelines">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#leaderboard">Leaderboard</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../readme.html#id10">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id11">Requirements</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#requirements">Requirements</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../readme.html#python">Python</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../readme.html#mongodb">MongoDB</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id13">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#install">Install</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../readme.html#docker">Docker</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id15">Quickstart: Run a Pipeline on the Demo Dataset</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../readme.html#load-the-data">1. Load the data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../readme.html#evaluate-performance">3. Evaluate performance</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id16">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#evaluate-performance">3. Evaluate performance</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../readme.html#id17">Docker Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id18">Docker Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id19">Building the Orion Docker Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id20">Distributing the Orion Docker Image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../readme.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../readme.html#distributing-as-a-file">Distributing as a file</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#id21">Running the orion-jupyter image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../readme.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../readme.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../readme.html#what-s-next">What’s next?</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#database">Database</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Usage</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="orion.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.evaluation module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.explorer.html">orion.explorer module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.metrics.html">orion.metrics module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.model.html">orion.model module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmark.html#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#evaluate-function">Evaluate function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#fields">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#signal">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id1">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id2">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id3">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#experiment">Experiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id4">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#datarun">Datarun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id5">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#signalrun">Signalrun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id6">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#event">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id7">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#event-interaction">Event Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id8">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id9">Fields</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 <p class="caption"><span class="caption-text">Resources</span></p>
-<ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="orion.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="orion.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="orion.db.html">orion.db package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="orion.primitives.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.runner.html">orion.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../contributing.html#types-of-contributions">Types of Contributions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../contributing.html#report-bugs">Report Bugs</a></li>
@@ -169,7 +220,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../history.html#id1">0.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history.html#id1">0.1.0 - 2020-04-23</a></li>
 </ul>
 </li>
 </ul>
@@ -244,7 +295,7 @@
 <span id="orion-evaluation-module"></span><h1>orion.evaluation module<a class="headerlink" href="#module-orion.evaluation" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="orion.evaluation.evaluate_pipeline">
-<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">evaluate_pipeline</code><span class="sig-paren">(</span><em class="sig-param">pipeline</em>, <em class="sig-param">signals=('P-1'</em>, <em class="sig-param">'S-1'</em>, <em class="sig-param">'E-1'</em>, <em class="sig-param">'E-2'</em>, <em class="sig-param">'E-3'</em>, <em class="sig-param">'E-4'</em>, <em class="sig-param">'E-5'</em>, <em class="sig-param">'E-6'</em>, <em class="sig-param">'E-7'</em>, <em class="sig-param">'E-8'</em>, <em class="sig-param">'E-9'</em>, <em class="sig-param">'E-10'</em>, <em class="sig-param">'E-11'</em>, <em class="sig-param">'E-12'</em>, <em class="sig-param">'E-13'</em>, <em class="sig-param">'A-1'</em>, <em class="sig-param">'D-1'</em>, <em class="sig-param">'P-3'</em>, <em class="sig-param">'D-2'</em>, <em class="sig-param">'D-3'</em>, <em class="sig-param">'D-4'</em>, <em class="sig-param">'A-2'</em>, <em class="sig-param">'A-3'</em>, <em class="sig-param">'A-4'</em>, <em class="sig-param">'G-1'</em>, <em class="sig-param">'G-2'</em>, <em class="sig-param">'D-5'</em>, <em class="sig-param">'D-6'</em>, <em class="sig-param">'D-7'</em>, <em class="sig-param">'F-1'</em>, <em class="sig-param">'P-4'</em>, <em class="sig-param">'G-3'</em>, <em class="sig-param">'T-1'</em>, <em class="sig-param">'T-2'</em>, <em class="sig-param">'D-8'</em>, <em class="sig-param">'D-9'</em>, <em class="sig-param">'F-2'</em>, <em class="sig-param">'G-4'</em>, <em class="sig-param">'T-3'</em>, <em class="sig-param">'D-11'</em>, <em class="sig-param">'D-12'</em>, <em class="sig-param">'B-1'</em>, <em class="sig-param">'G-6'</em>, <em class="sig-param">'G-7'</em>, <em class="sig-param">'P-7'</em>, <em class="sig-param">'R-1'</em>, <em class="sig-param">'A-5'</em>, <em class="sig-param">'A-6'</em>, <em class="sig-param">'A-7'</em>, <em class="sig-param">'D-13'</em>, <em class="sig-param">'A-8'</em>, <em class="sig-param">'A-9'</em>, <em class="sig-param">'F-3'</em>, <em class="sig-param">'M-6'</em>, <em class="sig-param">'M-1'</em>, <em class="sig-param">'M-2'</em>, <em class="sig-param">'S-2'</em>, <em class="sig-param">'P-10'</em>, <em class="sig-param">'T-4'</em>, <em class="sig-param">'T-5'</em>, <em class="sig-param">'F-7'</em>, <em class="sig-param">'M-3'</em>, <em class="sig-param">'M-4'</em>, <em class="sig-param">'M-5'</em>, <em class="sig-param">'P-15'</em>, <em class="sig-param">'C-1'</em>, <em class="sig-param">'C-2'</em>, <em class="sig-param">'T-12'</em>, <em class="sig-param">'T-13'</em>, <em class="sig-param">'F-4'</em>, <em class="sig-param">'F-5'</em>, <em class="sig-param">'D-14'</em>, <em class="sig-param">'T-9'</em>, <em class="sig-param">'P-14'</em>, <em class="sig-param">'T-8'</em>, <em class="sig-param">'P-11'</em>, <em class="sig-param">'D-15'</em>, <em class="sig-param">'D-16'</em>, <em class="sig-param">'M-7'</em>, <em class="sig-param">'F-8')</em>, <em class="sig-param">metrics={'accuracy': &lt;function accuracy_score&gt;</em>, <em class="sig-param">'f1': &lt;function f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function precision_score&gt;</em>, <em class="sig-param">'recall': &lt;function recall_score&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation.html#evaluate_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.evaluate_pipeline" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">evaluate_pipeline</code><span class="sig-paren">(</span><em class="sig-param">pipeline</em>, <em class="sig-param">signals=('P-1'</em>, <em class="sig-param">'S-1'</em>, <em class="sig-param">'E-1'</em>, <em class="sig-param">'E-2'</em>, <em class="sig-param">'E-3'</em>, <em class="sig-param">'E-4'</em>, <em class="sig-param">'E-5'</em>, <em class="sig-param">'E-6'</em>, <em class="sig-param">'E-7'</em>, <em class="sig-param">'E-8'</em>, <em class="sig-param">'E-9'</em>, <em class="sig-param">'E-10'</em>, <em class="sig-param">'E-11'</em>, <em class="sig-param">'E-12'</em>, <em class="sig-param">'E-13'</em>, <em class="sig-param">'A-1'</em>, <em class="sig-param">'D-1'</em>, <em class="sig-param">'P-3'</em>, <em class="sig-param">'D-2'</em>, <em class="sig-param">'D-3'</em>, <em class="sig-param">'D-4'</em>, <em class="sig-param">'A-2'</em>, <em class="sig-param">'A-3'</em>, <em class="sig-param">'A-4'</em>, <em class="sig-param">'G-1'</em>, <em class="sig-param">'G-2'</em>, <em class="sig-param">'D-5'</em>, <em class="sig-param">'D-6'</em>, <em class="sig-param">'D-7'</em>, <em class="sig-param">'F-1'</em>, <em class="sig-param">'P-4'</em>, <em class="sig-param">'G-3'</em>, <em class="sig-param">'T-1'</em>, <em class="sig-param">'T-2'</em>, <em class="sig-param">'D-8'</em>, <em class="sig-param">'D-9'</em>, <em class="sig-param">'F-2'</em>, <em class="sig-param">'G-4'</em>, <em class="sig-param">'T-3'</em>, <em class="sig-param">'D-11'</em>, <em class="sig-param">'D-12'</em>, <em class="sig-param">'B-1'</em>, <em class="sig-param">'G-6'</em>, <em class="sig-param">'G-7'</em>, <em class="sig-param">'P-7'</em>, <em class="sig-param">'R-1'</em>, <em class="sig-param">'A-5'</em>, <em class="sig-param">'A-6'</em>, <em class="sig-param">'A-7'</em>, <em class="sig-param">'D-13'</em>, <em class="sig-param">'A-8'</em>, <em class="sig-param">'A-9'</em>, <em class="sig-param">'F-3'</em>, <em class="sig-param">'M-6'</em>, <em class="sig-param">'M-1'</em>, <em class="sig-param">'M-2'</em>, <em class="sig-param">'S-2'</em>, <em class="sig-param">'P-10'</em>, <em class="sig-param">'T-4'</em>, <em class="sig-param">'T-5'</em>, <em class="sig-param">'F-7'</em>, <em class="sig-param">'M-3'</em>, <em class="sig-param">'M-4'</em>, <em class="sig-param">'M-5'</em>, <em class="sig-param">'P-15'</em>, <em class="sig-param">'C-1'</em>, <em class="sig-param">'C-2'</em>, <em class="sig-param">'T-12'</em>, <em class="sig-param">'T-13'</em>, <em class="sig-param">'F-4'</em>, <em class="sig-param">'F-5'</em>, <em class="sig-param">'D-14'</em>, <em class="sig-param">'T-9'</em>, <em class="sig-param">'P-14'</em>, <em class="sig-param">'T-8'</em>, <em class="sig-param">'P-11'</em>, <em class="sig-param">'D-15'</em>, <em class="sig-param">'D-16'</em>, <em class="sig-param">'M-7'</em>, <em class="sig-param">'F-8')</em>, <em class="sig-param">metrics={'accuracy': &lt;function accuracy_score&gt;</em>, <em class="sig-param">'f1': &lt;function f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function precision_score&gt;</em>, <em class="sig-param">'recall': &lt;function recall_score&gt;}</em>, <em class="sig-param">holdout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation.html#evaluate_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.evaluate_pipeline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate a pipeline on multiple signals with multiple metrics.</p>
 <p>The pipeline is used to analyze the given signals and later on the
 detected anomalies are scored against the known anomalies using the
@@ -275,7 +326,7 @@ be used.</p></li>
 
 <dl class="function">
 <dt id="orion.evaluation.evaluate_pipelines">
-<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">evaluate_pipelines</code><span class="sig-paren">(</span><em class="sig-param">pipelines</em>, <em class="sig-param">signals=None</em>, <em class="sig-param">metrics=None</em>, <em class="sig-param">rank=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation.html#evaluate_pipelines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.evaluate_pipelines" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">evaluate_pipelines</code><span class="sig-paren">(</span><em class="sig-param">pipelines</em>, <em class="sig-param">signals=None</em>, <em class="sig-param">metrics=None</em>, <em class="sig-param">rank=None</em>, <em class="sig-param">holdout=(True</em>, <em class="sig-param">False)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation.html#evaluate_pipelines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.evaluate_pipelines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate a list of pipelines on multiple signals with multiple metrics.</p>
 <p>The pipelines are used to analyze the given signals and later on the
 detected anomalies are scored against the known anomalies using the
@@ -322,7 +373,7 @@ by the indicated metric.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="orion.explorer.html" class="btn btn-neutral float-right" title="orion.explorer module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="orion.metrics.html" class="btn btn-neutral float-right" title="orion.metrics module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="orion.data.html" class="btn btn-neutral float-left" title="orion.data module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

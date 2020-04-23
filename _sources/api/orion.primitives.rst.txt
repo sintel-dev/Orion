@@ -1,0 +1,16 @@
+orion.primitives package
+========================
+
+.. automodule:: orion.primitives
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+
+   orion.primitives.detectors
+   orion.primitives.estimators
+   orion.primitives.intervals

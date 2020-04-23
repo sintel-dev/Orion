@@ -1,0 +1,502 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>orion.db.base module &mdash; Orion 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="orion.db.explorer module" href="orion.db.explorer.html" />
+    <link rel="prev" title="orion.db package" href="orion.db.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Orion
+          
+
+          
+            
+            <img src="../_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#data-format">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#orion-pipelines">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#current-available-pipelines">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#leaderboard">Leaderboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#install">Install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../readme.html#docker">Docker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#evaluate-performance">3. Evaluate performance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#database">Database</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmark.html#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmark.html#evaluate-function">Evaluate function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database.html">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#fields">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#signal">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id1">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id2">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id3">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#experiment">Experiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id4">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#datarun">Datarun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id5">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#signalrun">Signalrun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id6">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#event">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id7">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#event-interaction">Event Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id8">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../database.html#id9">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="orion.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="orion.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="orion.db.html">orion.db package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="orion.primitives.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.runner.html">orion.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../history.html#id1">0.1.0 - 2020-04-23</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Orion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="orion.html">orion package</a> &raquo;</li>
+        
+          <li><a href="orion.db.html">orion.db package</a> &raquo;</li>
+        
+      <li>orion.db.base module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.db.base.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-orion.db.base">
+<span id="orion-db-base-module"></span><h1>orion.db.base module<a class="headerlink" href="#module-orion.db.base" title="Permalink to this headline">¶</a></h1>
+<p>Orion Database Schema.</p>
+<p>This module contains some utility functions and classes that assist
+on the usage of MongoEngine to define a DB Schema.</p>
+<dl class="class">
+<dt id="orion.db.base.OrionDocument">
+<em class="property">class </em><code class="sig-prename descclassname">orion.db.base.</code><code class="sig-name descname">OrionDocument</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#OrionDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.OrionDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mongoengine.document.Document</span></code></p>
+<p>Parent class for all the Document classes in Orion.</p>
+<p>This class defines a few defaults, such as the <code class="docutils literal notranslate"><span class="pre">instert_time</span></code> field
+and index, as well as a few utility methods to ease the interaction
+with the database models.</p>
+<dl class="method">
+<dt id="orion.db.base.OrionDocument.find">
+<em class="property">classmethod </em><code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">as_df_=False</em>, <em class="sig-param">only_=None</em>, <em class="sig-param">exclude_=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#OrionDocument.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.OrionDocument.find" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="orion.db.base.OrionDocument.find_one">
+<em class="property">classmethod </em><code class="sig-name descname">find_one</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#OrionDocument.find_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.OrionDocument.find_one" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="orion.db.base.OrionDocument.find_or_insert">
+<em class="property">classmethod </em><code class="sig-name descname">find_or_insert</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#OrionDocument.find_or_insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.OrionDocument.find_or_insert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="orion.db.base.OrionDocument.get">
+<em class="property">classmethod </em><code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#OrionDocument.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.OrionDocument.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="orion.db.base.OrionDocument.insert">
+<em class="property">classmethod </em><code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#OrionDocument.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.OrionDocument.insert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="orion.db.base.OrionDocument.insert_time">
+<code class="sig-name descname">insert_time</code><a class="headerlink" href="#orion.db.base.OrionDocument.insert_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Datetime field.</p>
+<p>Uses the python-dateutil library if available alternatively use time.strptime
+to parse the dates.  Note: python-dateutil’s parser is fully featured and when
+installed you can utilise it to convert varying types of date formats into valid
+python datetime objects.</p>
+<p>Note: To default the field to the current datetime, use: DateTimeField(default=datetime.utcnow)</p>
+<dl class="simple">
+<dt>Note: Microseconds are rounded to the nearest millisecond.</dt><dd><p>Pre UTC microsecond support is effectively broken.
+Use <code class="xref py py-class docutils literal notranslate"><span class="pre">ComplexDateTimeField</span></code> if you
+need accurate microsecond support.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="orion.db.base.OrionDocument.last">
+<em class="property">classmethod </em><code class="sig-name descname">last</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#OrionDocument.last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.OrionDocument.last" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="orion.db.base.OrionMeta">
+<em class="property">class </em><code class="sig-prename descclassname">orion.db.base.</code><code class="sig-name descname">OrionMeta</code><a class="reference internal" href="../_modules/orion/db/base.html#OrionMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.OrionMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mongoengine.base.metaclasses.TopLevelDocumentMetaclass</span></code></p>
+<p>Metaclass for the OrionDocument class.</p>
+<p>It ensures that the <code class="docutils literal notranslate"><span class="pre">meta</span></code> attribute from the OrionDocument
+parent class is used even if the child class defines a new one
+by merging both of them together.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="orion.db.base.PipelineField">
+<em class="property">class </em><code class="sig-prename descclassname">orion.db.base.</code><code class="sig-name descname">PipelineField</code><span class="sig-paren">(</span><em class="sig-param">field=None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#PipelineField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.PipelineField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mongoengine.fields.DictField</span></code></p>
+<dl class="method">
+<dt id="orion.db.base.PipelineField.to_mongo">
+<code class="sig-name descname">to_mongo</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">use_db_field=True</em>, <em class="sig-param">fields=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#PipelineField.to_mongo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.PipelineField.to_mongo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a Python type to a MongoDB-compatible type.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="orion.db.base.PipelineField.to_python">
+<code class="sig-name descname">to_python</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#PipelineField.to_python"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.PipelineField.to_python" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a MongoDB-compatible type to a Python type.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="orion.db.base.PipelineField.validate">
+<code class="sig-name descname">validate</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#PipelineField.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.PipelineField.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure that a list of valid fields is being used.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="orion.db.base.Status">
+<em class="property">class </em><code class="sig-prename descclassname">orion.db.base.</code><code class="sig-name descname">Status</code><a class="reference internal" href="../_modules/orion/db/base.html#Status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.Status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mixin that adds a status field and a method to check its live value.</p>
+<dl class="attribute">
+<dt id="orion.db.base.Status.STATUS_ERRORED">
+<code class="sig-name descname">STATUS_ERRORED</code><em class="property"> = 'ERRORED'</em><a class="headerlink" href="#orion.db.base.Status.STATUS_ERRORED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="orion.db.base.Status.STATUS_PENDING">
+<code class="sig-name descname">STATUS_PENDING</code><em class="property"> = 'PENDING'</em><a class="headerlink" href="#orion.db.base.Status.STATUS_PENDING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="orion.db.base.Status.STATUS_RUNNING">
+<code class="sig-name descname">STATUS_RUNNING</code><em class="property"> = 'RUNNING'</em><a class="headerlink" href="#orion.db.base.Status.STATUS_RUNNING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="orion.db.base.Status.STATUS_SUCCESS">
+<code class="sig-name descname">STATUS_SUCCESS</code><em class="property"> = 'SUCCESS'</em><a class="headerlink" href="#orion.db.base.Status.STATUS_SUCCESS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="orion.db.base.Status.get_status">
+<code class="sig-name descname">get_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#Status.get_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.Status.get_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="orion.db.base.Status.status">
+<code class="sig-name descname">status</code><a class="headerlink" href="#orion.db.base.Status.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>A unicode string field.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.db.base.key_has_dollar">
+<code class="sig-prename descclassname">orion.db.base.</code><code class="sig-name descname">key_has_dollar</code><span class="sig-paren">(</span><em class="sig-param">d</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#key_has_dollar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.key_has_dollar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively check if any key in a dict contains a dollar sign.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.db.base.remove_dots">
+<code class="sig-prename descclassname">orion.db.base.</code><code class="sig-name descname">remove_dots</code><span class="sig-paren">(</span><em class="sig-param">document</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#remove_dots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.remove_dots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="orion.db.base.restore_dots">
+<code class="sig-prename descclassname">orion.db.base.</code><code class="sig-name descname">restore_dots</code><span class="sig-paren">(</span><em class="sig-param">document</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#restore_dots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.restore_dots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="orion.db.base.walk">
+<code class="sig-prename descclassname">orion.db.base.</code><code class="sig-name descname">walk</code><span class="sig-paren">(</span><em class="sig-param">document</em>, <em class="sig-param">transform</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/db/base.html#walk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.base.walk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="orion.db.explorer.html" class="btn btn-neutral float-right" title="orion.db.explorer module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="orion.db.html" class="btn btn-neutral float-left" title="orion.db package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, MIT Data To AI Lab
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

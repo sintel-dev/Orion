@@ -1,0 +1,7 @@
+orion.db.schema module
+======================
+
+.. automodule:: orion.db.schema
+   :members:
+   :undoc-members:
+   :show-inheritance:

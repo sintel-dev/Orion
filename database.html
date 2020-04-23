@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Database Schema &mdash; Orion 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="orion package" href="api/orion.html" />
+    <link rel="prev" title="Benchmark" href="benchmark.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Orion
+          
+
+          
+            
+            <img src="_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#data-format">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#orion-pipelines">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#current-available-pipelines">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#leaderboard">Leaderboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install">Install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#docker">Docker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#evaluate-performance">3. Evaluate performance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#database">Database</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#evaluate-function">Evaluate function</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fields">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#signal">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#experiment">Experiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#datarun">Datarun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#signalrun">Signalrun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#event">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#event-interaction">Event Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/orion.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/orion.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.db.html">orion.db package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.primitives.html">orion.primitives package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/orion.primitives.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/orion.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.data.html">orion.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.runner.html">orion.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id1">0.1.0 - 2020-04-23</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Orion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Database Schema</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/database.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="database-schema">
+<h1>Database Schema<a class="headerlink" href="#database-schema" title="Permalink to this headline">¶</a></h1>
+<p>The <strong>Orion Database</strong> contains the following collections and fields:</p>
+<div class="section" id="dataset">
+<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
+<p>A <strong>Dataset</strong> represents a group of Signals that are grouped together under a common name,
+which is usually defined by an external entity.</p>
+<div class="section" id="fields">
+<h3>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Dataset object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">(String)</span></code>: Name of the dataset</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">entity</span> <span class="pre">(String)</span></code>: Name or Id of the entity which this dataset is associated to</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Dataset Object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Dataset Object was inserted</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="signal">
+<h2>Signal<a class="headerlink" href="#signal" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Signal</strong> collection contains all the required details to be able to load the observations
+from a timeseries signal, as well as some metadata about it, such as the minimum and maximum
+timestamps that want to be used or the user that registered it.</p>
+<div class="section" id="id1">
+<h3>Fields<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Signal object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">(String)</span></code>: Name of the signal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Dataset which this signal belongs to</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_time</span> <span class="pre">(Integer)</span></code>: minimum timestamp of this signal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop_time</span> <span class="pre">(Integer)</span></code>: maximum timestamp of this signal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_location</span> <span class="pre">(String)</span></code>: URI of the dataset</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestamp_column</span> <span class="pre">(Integer)</span></code>: index of the timestamp column</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value_column</span> <span class="pre">(Integer)</span></code>: index of the value column</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Signal Object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Signal Object was inserted</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="template">
+<h2>Template<a class="headerlink" href="#template" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Template</strong> collection contains all the pipeline templates from which the
+pipelines that later on will be used to run an experiments are generated.
+The template includes all the default hyperparameter values, as well as the tunable hyperparameter
+ranges.</p>
+<div class="section" id="id2">
+<h3>Fields<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Template object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">(String)</span></code>: Name given to this pipeline template</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">json</span> <span class="pre">(SubDocument)</span></code>: JSON representation of this pipeline template</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Pipeline Template Object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Pipeline Object was inserted</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="pipeline">
+<h2>Pipeline<a class="headerlink" href="#pipeline" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Pipeline</strong> collection contains all the pipelines registered in the system, including
+their details, such as the list of primitives and all the configured hyperparameter values.</p>
+<div class="section" id="id3">
+<h3>Fields<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Pipeline object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">(String)</span></code>: Name given to this pipeline</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">template_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Template
+used to generate this pipeline</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">json</span> <span class="pre">(SubDocument)</span></code>: JSON representation of this pipeline object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Pipeline Object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Pipeline Object was inserted</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="experiment">
+<h2>Experiment<a class="headerlink" href="#experiment" title="Permalink to this headline">¶</a></h2>
+<p>An <strong>Experiment</strong> is associated with a Dataset, a subset of its Signals and a Template,
+and represents a collection of Dataruns, executions of Pipelines generated from the Experiment
+Template over its Signals Set.</p>
+<div class="section" id="id4">
+<h3>Fields<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Experiment object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">(String)</span></code>: Name given to describe the Experiment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">project</span> <span class="pre">(String)</span></code>: Name given to describe the project to which the experiment belongs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">template_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Pipeline used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Dataset to which the Signals belong to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signals</span> <span class="pre">(List</span> <span class="pre">of</span> <span class="pre">Foreign</span> <span class="pre">Keys)</span></code>: A list of Signal IDs from the Dataset associated with this Experiment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Experiment Object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Experiment Object was inserted</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="datarun">
+<h2>Datarun<a class="headerlink" href="#datarun" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Datarun</strong> objects represent single executions of an <strong>Experiment</strong>,
+and contain all the information about the environment and context where this execution
+took place, which potentially allows to later on reproduce the results in a new environment.</p>
+<p>It also contains information about whether the execution was successful or not, when it started
+and ended, and the number of events that were found in this experiment.</p>
+<div class="section" id="id5">
+<h3>Fields<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Datarun object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">experiment_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Experiment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pipeline_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Pipeline used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_time</span> <span class="pre">(DateTime)</span></code>: When the execution started</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">end_time</span> <span class="pre">(DateTime)</span></code>: When the execution ended</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">software_versions</span> <span class="pre">(List</span> <span class="pre">of</span> <span class="pre">Strings)</span></code>: version of each python dependency installed in the
+<em>virtualenv</em> when the execution took place</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">budget_type</span> <span class="pre">(String)</span></code>: Type of budget used (time or number of iterations)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">budget_amount</span> <span class="pre">(Integer)</span></code>: Budget amount</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_events</span> <span class="pre">(Integer)</span></code>: Number of events detected during this Datarun execution</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span> <span class="pre">(String)</span></code>: Whether the Datarun is still running, finished successfully or failed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Datarun Object was inserted</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="signalrun">
+<h2>Signalrun<a class="headerlink" href="#signalrun" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Signalrun</strong> objects represent single executions of a <strong>Pipeline</strong> on a <strong>Signal</strong> within a
+Datarun.</p>
+<p>It contains information about whether the execution was successful or not, when it started
+and ended, the number of events that were found by the Pipeline, and where the model and
+metrics are stored.</p>
+<div class="section" id="id6">
+<h3>Fields<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Datarun object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datarun_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Datarun to which this Signalrun belongs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signal_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Signal used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_time</span> <span class="pre">(DateTime)</span></code>: When the execution started</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">end_time</span> <span class="pre">(DateTime)</span></code>: When the execution ended</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_location</span> <span class="pre">(String)</span></code>: URI of the fitted model</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metrics_location</span> <span class="pre">(String)</span></code>: URI of the metrics</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_revents</span> <span class="pre">(Integer)</span></code>: Number of events detected during this Signalrun execution</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span> <span class="pre">(String)</span></code>: Whether the Signalrun is still running, finished successfully or failed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Datarun Object was inserted</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="event">
+<h2>Event<a class="headerlink" href="#event" title="Permalink to this headline">¶</a></h2>
+<p>Each one of the anomalies detected by the pipelines is stored as an <strong>Event</strong>, which
+contains the details about the start time, the stop time and the severity score.</p>
+<div class="section" id="id7">
+<h3>Fields<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Event object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signalrun_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Signalrun during which this
+Event was detected.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signal_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Signal to which this Event relates</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_time</span> <span class="pre">(Integer)</span></code>: Timestamp where the anomalous interval starts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop_time</span> <span class="pre">(Integer)</span></code>: Timestamp where the anomalous interval ends</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">severity</span> <span class="pre">(Float)</span></code>: Severity score given by the pipeline to this Event</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">(String)</span></code>: <code class="docutils literal notranslate"><span class="pre">ORION</span></code>, <code class="docutils literal notranslate"><span class="pre">SHAPE_MATCHING</span></code>, or <code class="docutils literal notranslate"><span class="pre">MANUALLY_CREATED</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_annotations</span> <span class="pre">(int)</span></code>: Number of Annotation associated to this Event.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Event Object was inserted</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="event-interaction">
+<h2>Event Interaction<a class="headerlink" href="#event-interaction" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Event Interaction</strong> collection records all the interaction history related to events.</p>
+<div class="section" id="id8">
+<h3>Fields<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Interaction object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of the Event to which this event relates</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">action</span> <span class="pre">(String)</span></code>: Action type performed on this event, such as delete, split, and adjust</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_time</span> <span class="pre">(Integer)</span></code>: Timestamp where the anomalous interval starts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop_time</span> <span class="pre">(Integer)</span></code>: Timestamp where the anomalous interval ends</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user who interacted with the target Object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Event Interaction Object was inserted</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="annotation">
+<h2>Annotation<a class="headerlink" href="#annotation" title="Permalink to this headline">¶</a></h2>
+<p>Each Event can have multiple <strong>Annotations</strong>, from one or more users.
+<strong>Annotations</strong> are expected to be inserted by the domain experts after the Datarun has
+finished and they analyze the results.</p>
+<div class="section" id="id9">
+<h3>Fields<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Comment object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event_id</span> <span class="pre">(ObjectID</span> <span class="pre">-</span> <span class="pre">Foreign</span> <span class="pre">Key)</span></code>: Unique Identifier of the Event to which this Annotation relates</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span> <span class="pre">(String)</span></code>: User given tag for this event</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span> <span class="pre">(String)</span></code>: Comment text</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Annotation Object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Annotation Object was inserted</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api/orion.html" class="btn btn-neutral float-right" title="orion package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="benchmark.html" class="btn btn-neutral float-left" title="Benchmark" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, MIT Data To AI Lab
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

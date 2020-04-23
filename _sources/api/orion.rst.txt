@@ -6,6 +6,14 @@ orion package
    :undoc-members:
    :show-inheritance:
 
+Subpackages
+-----------
+
+.. toctree::
+
+   orion.db
+   orion.primitives
+
 Submodules
 ----------
 
@@ -15,7 +23,6 @@ Submodules
    orion.cli
    orion.data
    orion.evaluation
-   orion.explorer
    orion.metrics
-   orion.model
+   orion.runner
    orion.utils

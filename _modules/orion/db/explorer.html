@@ -1,0 +1,1432 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>orion.db.explorer &mdash; Orion 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Orion
+          
+
+          
+            
+            <img src="../../../_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#data-format">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#orion-pipelines">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#current-available-pipelines">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#leaderboard">Leaderboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../readme.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../readme.html#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#install">Install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../readme.html#docker">Docker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#evaluate-performance">3. Evaluate performance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#database">Database</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark.html">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../benchmark.html#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#evaluate-function">Evaluate function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../database.html">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#fields">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#signal">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id1">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id2">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id3">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#experiment">Experiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id4">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#datarun">Datarun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id5">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#signalrun">Signalrun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id6">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#event">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id7">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#event-interaction">Event Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id8">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id9">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/orion.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/orion.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.db.html">orion.db package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.primitives.html">orion.primitives package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/orion.primitives.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/orion.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.data.html">orion.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.runner.html">orion.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../history.html#id1">0.1.0 - 2020-04-23</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Orion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../orion.html">orion</a> &raquo;</li>
+        
+      <li>orion.db.explorer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for orion.db.explorer</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Orion DB Explorer model.</span>
+
+<span class="sd">This model defines the ``orion.db.explorer.OrionDBExplorer``, which provides</span>
+<span class="sd">a simple programatic access to creating and reading objects in the Orion Database.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">gridfs</span> <span class="kn">import</span> <span class="n">GridFS</span>
+<span class="kn">from</span> <span class="nn">mlblocks</span> <span class="kn">import</span> <span class="n">MLPipeline</span>
+<span class="kn">from</span> <span class="nn">mongoengine</span> <span class="kn">import</span> <span class="n">connect</span>
+<span class="kn">from</span> <span class="nn">mongoengine.errors</span> <span class="kn">import</span> <span class="n">NotUniqueError</span>
+<span class="kn">from</span> <span class="nn">pymongo.database</span> <span class="kn">import</span> <span class="n">Database</span>
+
+<span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_signal</span>
+<span class="kn">from</span> <span class="nn">orion.db</span> <span class="kn">import</span> <span class="n">schema</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="OrionDBExplorer"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer">[docs]</a><span class="k">class</span> <span class="nc">OrionDBExplorer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;User interface for the Orion Database.</span>
+
+<span class="sd">    This class provides a user-frienly programming interface to</span>
+<span class="sd">    interact with the Orion database models.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        user (str):</span>
+<span class="sd">            Unique identifier of the user that creates this OrionExporer</span>
+<span class="sd">            instance. This username or user ID will be used to populate</span>
+<span class="sd">            the ``created_by`` field of all the objects created in the</span>
+<span class="sd">            database during this session.</span>
+<span class="sd">        database (str):</span>
+<span class="sd">            Name of the MongoDB database to use. Defaults to ``orion``.</span>
+<span class="sd">        mongodb_config (dict or str):</span>
+<span class="sd">            A dict or a path to JSON file with additional arguments can be</span>
+<span class="sd">            passed to provide connection details different than the defaults</span>
+<span class="sd">            for the MongoDB Database:</span>
+<span class="sd">                * ``host``: Hostname or IP address of the MongoDB Instance.</span>
+<span class="sd">                * ``port``: Port to which MongoDB is listening.</span>
+<span class="sd">                * ``username``: username to authenticate with.</span>
+<span class="sd">                * ``password``: password to authenticate with.</span>
+<span class="sd">                * ``authentication_source``: database to authenticate against.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        Simples use case:</span>
+<span class="sd">        &gt;&gt;&gt; orex = OrionExplorer(&#39;my_username&#39;)</span>
+
+<span class="sd">        Passing a path to a JSON file with connection details.</span>
+<span class="sd">        &gt;&gt;&gt; orex = OrionExplorer(</span>
+<span class="sd">        ...      user=&#39;my_username&#39;,</span>
+<span class="sd">        ...      database=&#39;orion&#39;,</span>
+<span class="sd">        ...      mongodb_config=&#39;/path/to/my/mongodb_config.json&#39;,</span>
+<span class="sd">        ... )</span>
+
+<span class="sd">        Passing all the possible initialization arguments as a dict:</span>
+<span class="sd">        &gt;&gt;&gt; mongodb_config = {</span>
+<span class="sd">        ...      &#39;host&#39;: &#39;localhost&#39;,</span>
+<span class="sd">        ...      &#39;port&#39;: 27017,</span>
+<span class="sd">        ...      &#39;username&#39;: &#39;orion&#39;,</span>
+<span class="sd">        ...      &#39;password&#39;: &#39;secret_password&#39;,</span>
+<span class="sd">        ...      &#39;authentication_source&#39;: &#39;admin&#39;,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; orex = OrionExplorer(</span>
+<span class="sd">        ...      user=&#39;my_username&#39;,</span>
+<span class="sd">        ...      database=&#39;orion&#39;,</span>
+<span class="sd">        ...      mongodb_config=mongodb_config</span>
+<span class="sd">        ... )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;orion&#39;</span><span class="p">,</span> <span class="n">mongodb_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initiaize this OrionDBExplorer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (str):</span>
+<span class="sd">                Unique identifier of the user that creates this OrionExporer</span>
+<span class="sd">                instance. This username or user ID will be used to populate</span>
+<span class="sd">                the ``created_by`` field of all the objects created in the</span>
+<span class="sd">                database during this session.</span>
+<span class="sd">            database (str):</span>
+<span class="sd">                Name of the MongoDB database to use. Defaults to ``orion``.</span>
+<span class="sd">            mongodb_config (dict or str):</span>
+<span class="sd">                A dict or a path to JSON file with additional arguments can be</span>
+<span class="sd">                passed to provide connection details different than the defaults</span>
+<span class="sd">                for the MongoDB Database:</span>
+<span class="sd">                    * ``host``: Hostname or IP address of the MongoDB Instance.</span>
+<span class="sd">                    * ``port``: Port to which MongoDB is listening.</span>
+<span class="sd">                    * ``username``: username to authenticate with.</span>
+<span class="sd">                    * ``password``: password to authenticate with.</span>
+<span class="sd">                    * ``authentication_source``: database to authenticate against.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mongodb_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mongodb_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mongodb_config</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mongodb_config</span><span class="p">)</span> <span class="k">as</span> <span class="n">config_file</span><span class="p">:</span>
+                <span class="n">mongodb_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mongodb_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">mongodb_config</span> <span class="o">=</span> <span class="n">mongodb_config</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">mongodb_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;database&#39;</span><span class="p">,</span> <span class="n">database</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="o">**</span><span class="n">mongodb_config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fs</span> <span class="o">=</span> <span class="n">GridFS</span><span class="p">(</span><span class="n">Database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">))</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.drop_database"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.drop_database">[docs]</a>    <span class="k">def</span> <span class="nf">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Drop the database.</span>
+
+<span class="sd">        This method is used for development purposes and will</span>
+<span class="sd">        most likely be removed in the future.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">)</span></div>
+
+    <span class="c1"># ####### #</span>
+    <span class="c1"># Dataset #</span>
+    <span class="c1"># ####### #</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_dataset"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">add_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new Dataset object to the database.</span>
+
+<span class="sd">        The Dataset needs to be given a name and, optionally, an identitifier,</span>
+<span class="sd">        name or ID, of the entity which produced the Dataset.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Dataset</span>
+<span class="sd">            entity (str):</span>
+<span class="sd">                Name or Id of the entity which this Dataset is associated to.</span>
+<span class="sd">                Defaults to ``None``.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotUniqueError:</span>
+<span class="sd">                If a Dataset with the same name and entity values already exists.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">entity</span><span class="o">=</span><span class="n">entity</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_datasets"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">get_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query the Datasets collection.</span>
+
+<span class="sd">        All the details about the matching Datasets will be returned in</span>
+<span class="sd">        a ``pandas.DataFrame``.</span>
+
+<span class="sd">        All the arguments are optional, so a call without arguments will</span>
+<span class="sd">        return a table with information about all the Datasets availabe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Dataset.</span>
+<span class="sd">            entity (str):</span>
+<span class="sd">                Name or Id of the entity which returned Datasets need to be</span>
+<span class="sd">                associated to.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Datasets.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">as_df_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">entity</span><span class="o">=</span><span class="n">entity</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_dataset"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a Dataset object from the database.</span>
+
+<span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
+<span class="sd">        least one argument needs to be passed with a value different than ``None``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dataset (Dataset, ObjectID or str):</span>
+<span class="sd">                Dataset object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to retreive.</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Dataset.</span>
+<span class="sd">            entity (str):</span>
+<span class="sd">                Name or Id of the entity which this Dataset is associated to.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Dataset.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the no arguments are passed with a value different than</span>
+<span class="sd">                ``None`` or the query resolves to more than one object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">entity</span><span class="o">=</span><span class="n">entity</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># ###### #</span>
+    <span class="c1"># Signal #</span>
+    <span class="c1"># ###### #</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_signal"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_signal">[docs]</a>    <span class="k">def</span> <span class="nf">add_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">data_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new Signal object to the database.</span>
+
+<span class="sd">        The signal needs to be given a name and be associated to a Dataset.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Signal.</span>
+<span class="sd">            dataset (Dataset or ObjectID or str):</span>
+<span class="sd">                Dataset object which the created Signal belongs to or the</span>
+<span class="sd">                corresponding ObjectId.</span>
+<span class="sd">            data_location (str):</span>
+<span class="sd">                Path to the CSV containing the Signal data. If the signal is</span>
+<span class="sd">                one of the signals provided by Orion, this can be omitted and</span>
+<span class="sd">                the signal will be loaded based on the signal name.</span>
+<span class="sd">            start_time (int):</span>
+<span class="sd">                Optional. Minimum timestamp to use for this signal. If not provided</span>
+<span class="sd">                this defaults to the minimum timestamp found in the signal data.</span>
+<span class="sd">            stop_time (int):</span>
+<span class="sd">                Optional. Maximum timestamp to use for this signal. If not provided</span>
+<span class="sd">                this defaults to the maximum timestamp found in the signal data.</span>
+<span class="sd">            timestamp_column (int):</span>
+<span class="sd">                Optional. Index of the timestamp column.</span>
+<span class="sd">            value_column (int):</span>
+<span class="sd">                Optional. Index of the value column.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotUniqueError:</span>
+<span class="sd">                If a Signal with the same name already exists for this Dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Signal</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_location</span> <span class="o">=</span> <span class="n">data_location</span> <span class="ow">or</span> <span class="n">name</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">data_location</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="p">,</span> <span class="n">value_column</span><span class="p">)</span>
+        <span class="n">timestamps</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">start_time</span><span class="p">:</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">timestamps</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">stop_time</span><span class="p">:</span>
+            <span class="n">stop_time</span> <span class="o">=</span> <span class="n">timestamps</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+            <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+            <span class="n">stop_time</span><span class="o">=</span><span class="n">stop_time</span><span class="p">,</span>
+            <span class="n">data_location</span><span class="o">=</span><span class="n">data_location</span><span class="p">,</span>
+            <span class="n">timestamp_column</span><span class="o">=</span><span class="n">timestamp_column</span><span class="p">,</span>
+            <span class="n">value_column</span><span class="o">=</span><span class="n">value_column</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_signals"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_signals">[docs]</a>    <span class="k">def</span> <span class="nf">add_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a multiple Signal objects to the database.</span>
+
+<span class="sd">        All the signals will be added to the Dataset using the CSV filename</span>
+<span class="sd">        as their name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dataset (Dataset or ObjectID or str):</span>
+<span class="sd">                Dataset object which the created Signals belongs to or the</span>
+<span class="sd">                corresponding ObjectId.</span>
+<span class="sd">            signals_path (str):</span>
+<span class="sd">                Path to the folder where the signals can be found. All the CSV</span>
+<span class="sd">                files in this folder will be added.</span>
+<span class="sd">            start_time (int):</span>
+<span class="sd">                Optional. Minimum timestamp to use for these signals. If not provided</span>
+<span class="sd">                this defaults to the minimum timestamp found in the signal data.</span>
+<span class="sd">            stop_time (int):</span>
+<span class="sd">                Optional. Maximum timestamp to use for these signals. If not provided</span>
+<span class="sd">                this defaults to the maximum timestamp found in the signal data.</span>
+<span class="sd">            timestamp_column (int):</span>
+<span class="sd">                Optional. Index of the timestamp column.</span>
+<span class="sd">            value_column (int):</span>
+<span class="sd">                Optional. Index of the value column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">signals_path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">):</span>
+                <span class="n">signal_name</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>   <span class="c1"># remove from filename .csv</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_signal</span><span class="p">(</span>
+                        <span class="n">name</span><span class="o">=</span><span class="n">signal_name</span><span class="p">,</span>
+                        <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+                        <span class="n">data_location</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">signals_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">),</span>
+                        <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+                        <span class="n">stop_time</span><span class="o">=</span><span class="n">stop_time</span><span class="p">,</span>
+                        <span class="n">timestamp_column</span><span class="o">=</span><span class="n">timestamp_column</span><span class="p">,</span>
+                        <span class="n">value_column</span><span class="o">=</span><span class="n">value_column</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="n">NotUniqueError</span><span class="p">:</span>
+                    <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_signals"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_signals">[docs]</a>    <span class="k">def</span> <span class="nf">get_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query the Signals collection.</span>
+
+<span class="sd">        All the details about the matching Signals will be returned in</span>
+<span class="sd">        a ``pandas.DataFrame``.</span>
+
+<span class="sd">        All the arguments are optional, so a call without arguments will</span>
+<span class="sd">        return a table with information about all the Signals availabe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Signal.</span>
+<span class="sd">            dataset (Dataset, ObjectID or str):</span>
+<span class="sd">                Dataset object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) to which the Signals have to belong.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Signals.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">as_df_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_signal"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_signal">[docs]</a>    <span class="k">def</span> <span class="nf">get_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a Signal object from the database.</span>
+
+<span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
+<span class="sd">        least one argument needs to be passed with a value different than ``None``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            signal (Signal, ObjectID or str):</span>
+<span class="sd">                Signal object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to retreive.</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Signal.</span>
+<span class="sd">            dataset (Dataset, ObjectID or str):</span>
+<span class="sd">                Dataset object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) to which the Signal has to belong.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Signals.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the no arguments are passed with a value different than</span>
+<span class="sd">                ``None`` or the query resolves to more than one object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Signal</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># ######## #</span>
+    <span class="c1"># Template #</span>
+    <span class="c1"># ######## #</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_template"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_template">[docs]</a>    <span class="k">def</span> <span class="nf">add_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new Template object to the database.</span>
+
+<span class="sd">        The template can be passed as a name of a registered MLPipeline,</span>
+<span class="sd">        or as a path to an MLPipeline JSON specification, or as a full</span>
+<span class="sd">        dictionary specification of an MLPipeline or directly as an</span>
+<span class="sd">        MLPipeline instance.</span>
+
+<span class="sd">        If the ``template`` argument is not passed, the given ``name`` will</span>
+<span class="sd">        be used to load an MLPipeline.</span>
+
+<span class="sd">        During this step, apart from the Template object, a new Pipeline object</span>
+<span class="sd">        using the default hyperparameters and with the same name as the</span>
+<span class="sd">        Template will also be created.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Template.</span>
+<span class="sd">            template (str, dict or MLPipeline):</span>
+<span class="sd">                Name of the MLBlocks template to load or path to its JSON</span>
+<span class="sd">                file or dictionary specification or MLPipeline instance.</span>
+<span class="sd">                If not given, the ``name`` of the template is used.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotUniqueError:</span>
+<span class="sd">                If a Template with the same name already exists.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Template</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">template</span> <span class="ow">or</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">template</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">template</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="n">pipeline_dict</span> <span class="o">=</span> <span class="n">MLPipeline</span><span class="p">(</span><span class="n">template</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+        <span class="n">template</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">Template</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">pipeline_dict</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+        <span class="p">)</span>
+        <span class="n">schema</span><span class="o">.</span><span class="n">Pipeline</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">pipeline_dict</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">template</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_templates"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_templates">[docs]</a>    <span class="k">def</span> <span class="nf">get_templates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query the Templates collection.</span>
+
+<span class="sd">        All the details about the matching Templates will be returned in</span>
+<span class="sd">        a ``pandas.DataFrame``, except for the JSON specification of the</span>
+<span class="sd">        template, which will be removed from the table for readability.</span>
+
+<span class="sd">        In order to access the JSON specification of each Template, please</span>
+<span class="sd">        retreive them using the ``get_template`` method.</span>
+
+<span class="sd">        All the arguments are optional, so a call without arguments will</span>
+<span class="sd">        return a table with information about all the Templates availabe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Template.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Templates.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Template</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">as_df_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
+            <span class="n">exclude_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_template"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_template">[docs]</a>    <span class="k">def</span> <span class="nf">get_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a Template object from the database.</span>
+
+<span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
+<span class="sd">        least one argument needs to be passed with a value different than ``None``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            template (Template, ObjectID or str):</span>
+<span class="sd">                Template object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to retreive.</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Template.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Templates.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the no arguments are passed with a value different than</span>
+<span class="sd">                ``None`` or the query resolves to more than one object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Template</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Template</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># ######## #</span>
+    <span class="c1"># Pipeline #</span>
+    <span class="c1"># ######## #</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_pipeline"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">add_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new Pipeline object to the database.</span>
+
+<span class="sd">        The Pipeline will consist on a copy of the given Template using</span>
+<span class="sd">        the indicated hyperparameters.</span>
+
+<span class="sd">        The hyperparameters can be passed as a dictionary containing the</span>
+<span class="sd">        hyperparameter values following the MLBlocks specification format,</span>
+<span class="sd">        or a path to a JSON file containing the corresponding values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Pipeline.</span>
+<span class="sd">            template (Template or ObjectID or str):</span>
+<span class="sd">                Template object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to use to create this Pipeline.</span>
+<span class="sd">            hyperparamers (dict or str):</span>
+<span class="sd">                dict containing the hyperparameter values following the MLBlocks</span>
+<span class="sd">                specification format, or a path to a JSON file containing the</span>
+<span class="sd">                corresponding values.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotUniqueError:</span>
+<span class="sd">                If a Pipeline with the same name for this Template already exists.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Pipeline</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="n">pipeline</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Pipeline</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">pipeline</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_pipelines"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_pipelines">[docs]</a>    <span class="k">def</span> <span class="nf">get_pipelines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query the Pipelines collection.</span>
+
+<span class="sd">        All the details about the matching Pipelines will be returned in</span>
+<span class="sd">        a ``pandas.DataFrame``, except for the JSON specification of the</span>
+<span class="sd">        pipeline, which will be removed from the table for readability.</span>
+
+<span class="sd">        In order to access the JSON specification of each Pipeline, please</span>
+<span class="sd">        retreive them using the ``get_pipeline`` method.</span>
+
+<span class="sd">        All the arguments are optional, so a call without arguments will</span>
+<span class="sd">        return a table with information about all the Pipelines availabe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Pipeline.</span>
+<span class="sd">            template (Template or ObjectID or str):</span>
+<span class="sd">                Template object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) from which the Pipelines have to be derived.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Pipelines.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Pipeline</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">as_df_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
+            <span class="n">exclude_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_pipeline"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">get_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a Pipeline object from the database.</span>
+
+<span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
+<span class="sd">        least one argument needs to be passed with a value different than ``None``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pipeline (Template, ObjectID or str):</span>
+<span class="sd">                Pipeline object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to retreive.</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Pipeline.</span>
+<span class="sd">            template (Template or ObjectID or str):</span>
+<span class="sd">                Template object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) from which the Pipeline has to be derived.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Pipeline.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the no arguments are passed with a value different than</span>
+<span class="sd">                ``None`` or the query resolves to more than one object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Pipeline</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Pipeline</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># ########## #</span>
+    <span class="c1"># Experiment #</span>
+    <span class="c1"># ########## #</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_experiment"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">add_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new Experiment object to the database.</span>
+
+<span class="sd">        The Experiment will have to be associated to a Template and a Dataset.</span>
+
+<span class="sd">        Optionally, a list of Signal objects or the corresponding ObjectIds have to</span>
+<span class="sd">        can be passed to associate this Experiment to only a subset of Signals from</span>
+<span class="sd">        the Dataset. In this case, the Signals passed need to be part of the Dataset,</span>
+<span class="sd">        otherwise an Exception will be raised.</span>
+
+<span class="sd">        If no Signals are passed, all the Signals from the Dataset are used.</span>
+
+<span class="sd">        A project name can also be passed as a string to group experiments of</span>
+<span class="sd">        a single project together.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Experiment.</span>
+<span class="sd">            template (Template or ObjectID or str):</span>
+<span class="sd">                Template object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to use in this Experiment.</span>
+<span class="sd">            dataset (Dataset or ObjectID or str):</span>
+<span class="sd">                Dataset object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) which will be used for this Experiment.</span>
+<span class="sd">            signals (list[Signal, ObjectId or str]):</span>
+<span class="sd">                list of Signals (or their corresponding ObjectIds) to be used for</span>
+<span class="sd">                this Experiment.</span>
+<span class="sd">            project (str):</span>
+<span class="sd">                Name of the project which this Experiment belongs to.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotUniqueError:</span>
+<span class="sd">                If an Experiment with the same name for this Template already exists.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Experiment</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">signals</span><span class="p">:</span>
+            <span class="n">signals</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">signals</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span><span class="o">.</span><span class="n">dataset</span> <span class="o">!=</span> <span class="n">dataset</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All Signals must belong to the Dataset&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Experiment</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+            <span class="n">signals</span><span class="o">=</span><span class="n">signals</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_experiments"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_experiments">[docs]</a>    <span class="k">def</span> <span class="nf">get_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query the Experiments collection.</span>
+
+<span class="sd">        All the details about the matching Experiments will be returned in</span>
+<span class="sd">        a ``pandas.DataFrame``.</span>
+
+<span class="sd">        All the arguments are optional, so a call without arguments will</span>
+<span class="sd">        return a table with information about all the Experiments availabe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Experiment.</span>
+<span class="sd">            template (Template or ObjectID or str):</span>
+<span class="sd">                Template that the Experiments must use.</span>
+<span class="sd">            dataset (Dataset or ObjectID or str):</span>
+<span class="sd">                Dataset that the Experiments must use.</span>
+<span class="sd">            signals (list[Signal, ObjectId or str]):</span>
+<span class="sd">                Signals that the Experiments must use.</span>
+<span class="sd">            project (str):</span>
+<span class="sd">                Name of the project which the Experiments must belong to.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Experiments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Experiment</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">as_df_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+            <span class="n">signals</span><span class="o">=</span><span class="n">signals</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_experiment"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">get_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get an Experiment object from the database.</span>
+
+<span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
+<span class="sd">        least one argument needs to be passed with a value different than ``None``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            experiment (Experiment, ObjectID or str):</span>
+<span class="sd">                Experiment object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to retreive.</span>
+<span class="sd">            name (str):</span>
+<span class="sd">                Name of the Experiment.</span>
+<span class="sd">            template (Template or ObjectID or str):</span>
+<span class="sd">                Template that the Experiment must use.</span>
+<span class="sd">            dataset (Dataset or ObjectID or str):</span>
+<span class="sd">                Dataset that the Experiment must use.</span>
+<span class="sd">            signals (list[Signal, ObjectId or str]):</span>
+<span class="sd">                Signals that the Experiment must use.</span>
+<span class="sd">            project (str):</span>
+<span class="sd">                Name of the project which the Experiment must belong to.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Experiment.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the no arguments are passed with a value different than</span>
+<span class="sd">                ``None`` or the query resolves to more than one object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Experiment</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+            <span class="n">signals</span><span class="o">=</span><span class="n">signals</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># ####### #</span>
+    <span class="c1"># Datarun #</span>
+    <span class="c1"># ####### #</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_datarun"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_datarun">[docs]</a>    <span class="k">def</span> <span class="nf">add_datarun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new Datarun object to the database.</span>
+
+<span class="sd">        The Datarun needs to be associated to an Experiment and a Pipeline.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            experiment (Experiment or ObjectID or str):</span>
+<span class="sd">                Experiment object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) to which this Datarun belongs.</span>
+<span class="sd">            pipeline (Pipeline or ObjectID or str):</span>
+<span class="sd">                Pipeline object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) used by this Datarun.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Datarun</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Datarun</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+            <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_dataruns"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_dataruns">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataruns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query the Dataruns collection.</span>
+
+<span class="sd">        All the details about the matching Dataruns will be returned in</span>
+<span class="sd">        a ``pandas.DataFrame``.</span>
+
+<span class="sd">        All the arguments are optional, so a call without arguments will</span>
+<span class="sd">        return a table with information about all the Dataruns availabe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            experiment (Experiment or ObjectID or str):</span>
+<span class="sd">                Experiment to which the Dataruns must belong.</span>
+<span class="sd">            pipeline (Pipeline or ObjectID or str):</span>
+<span class="sd">                Pipeline which the Dataruns must use.</span>
+<span class="sd">            status (str):</span>
+<span class="sd">                Status which the Dataruns must have.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Datarun</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">as_df_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+            <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+            <span class="n">exclude_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;software_versions&#39;</span><span class="p">],</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_datarun"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_datarun">[docs]</a>    <span class="k">def</span> <span class="nf">get_datarun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a Datarun object from the database.</span>
+
+<span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
+<span class="sd">        least one argument needs to be passed with a value different than ``None``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            datarun (Datarun, ObjectID or str):</span>
+<span class="sd">                Datarun object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to retreive.</span>
+<span class="sd">            experiment (Experiment or ObjectID or str):</span>
+<span class="sd">                Experiment to which the Datarun must belong.</span>
+<span class="sd">            pipeline (Pipeline or ObjectID or str):</span>
+<span class="sd">                Pipeline which the Datarun must use.</span>
+<span class="sd">            status (str):</span>
+<span class="sd">                Status which the Datarun must have.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the no arguments are passed with a value different than</span>
+<span class="sd">                ``None`` or the query resolves to more than one object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Datarun</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Datarun</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+            <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># ######### #</span>
+    <span class="c1"># Signalrun #</span>
+    <span class="c1"># ######### #</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_signalrun"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_signalrun">[docs]</a>    <span class="k">def</span> <span class="nf">add_signalrun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new Signalrun object to the database.</span>
+
+<span class="sd">        The Signalrun needs to be associated to a Datarun and a Signal.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            datarun (Datarun or ObjectID or str):</span>
+<span class="sd">                Datarun object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) to which this Signalrun belongs.</span>
+<span class="sd">            signal (Signal or ObjectID or str):</span>
+<span class="sd">                Signal object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) used by this Signalrun.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Datarun</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Signalrun</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">datarun</span><span class="o">=</span><span class="n">datarun</span><span class="p">,</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_signalruns"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_signalruns">[docs]</a>    <span class="k">def</span> <span class="nf">get_signalruns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query the Signalruns collection.</span>
+
+<span class="sd">        All the details about the matching Signalruns will be returned in</span>
+<span class="sd">        a ``pandas.DataFrame``.</span>
+
+<span class="sd">        All the arguments are optional, so a call without arguments will</span>
+<span class="sd">        return a table with information about all the Dataruns availabe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            datarun (Datarun or ObjectID or str):</span>
+<span class="sd">                Datarun to which the Signalruns must belong.</span>
+<span class="sd">            signal (Signal or ObjectID or str):</span>
+<span class="sd">                Signal which the Signalruns must use.</span>
+<span class="sd">            status (str):</span>
+<span class="sd">                Status which the Signalruns must have.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Signalrun</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">as_df_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">datarun</span><span class="o">=</span><span class="n">datarun</span><span class="p">,</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_signalrun"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_signalrun">[docs]</a>    <span class="k">def</span> <span class="nf">get_signalrun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datarun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a Signalrun object from the database.</span>
+
+<span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
+<span class="sd">        least one argument needs to be passed with a value different than ``None``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            signalrun (Signalrun, ObjectID or str):</span>
+<span class="sd">                Signalrun object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to retreive.</span>
+<span class="sd">            datarun (Datarun or ObjectID or str):</span>
+<span class="sd">                Datarun to which the Signalrun must belong.</span>
+<span class="sd">            signal (Signal or ObjectID or str):</span>
+<span class="sd">                Signal which the Signalrun must use.</span>
+<span class="sd">            status (str):</span>
+<span class="sd">                Status which the Signalrun must have.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the no arguments are passed with a value different than</span>
+<span class="sd">                ``None`` or the query resolves to more than one object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Signalrun</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Signalrun</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">signalrun</span><span class="o">=</span><span class="n">signalrun</span><span class="p">,</span>
+            <span class="n">datarun</span><span class="o">=</span><span class="n">datarun</span><span class="p">,</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># ##### #</span>
+    <span class="c1"># Event #</span>
+    <span class="c1"># ##### #</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_event"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_event">[docs]</a>    <span class="k">def</span> <span class="nf">add_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">stop_time</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new Event object to the database.</span>
+
+<span class="sd">        The Event needs to have at least a start_time and a stop_time,</span>
+<span class="sd">        and be associated to either a Signal or a Signalrun.</span>
+
+<span class="sd">        If a Signalrun is given but no Signal is, the created Event will</span>
+<span class="sd">        be associated to the Signalrun signal value.</span>
+
+<span class="sd">        If both a Signalrun and a Signal are given, the Signal must be</span>
+<span class="sd">        the one used by the Signalrun.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            start_time (int):</span>
+<span class="sd">                Timestamp at which the event starts.</span>
+<span class="sd">            stop_time (int):</span>
+<span class="sd">                Timestamp at which the event ends.</span>
+<span class="sd">            source (str):</span>
+<span class="sd">                Description of where this Event was created. It must be &quot;orion&quot;,</span>
+<span class="sd">                &quot;shape matching&quot; or &quot;manually created&quot;.</span>
+<span class="sd">            severity (float):</span>
+<span class="sd">                Severity score value. Optional.</span>
+<span class="sd">            signalrun (Signalrun or ObjectID or str):</span>
+<span class="sd">                Signalrun object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) to which this Event is associated.</span>
+<span class="sd">            signal (Signal or ObjectID or str):</span>
+<span class="sd">                Signal object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) to which this Event is associated.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                if neither a Signal or a Signalrun are given, or if the Signal</span>
+<span class="sd">                is not the one used by the Signalrun.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">signal</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">signalrun</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;An Event must be associated to either a Signalrun or a Signal&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">signal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">signalrun</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_signalrun</span><span class="p">(</span><span class="n">signalrun</span><span class="p">)</span><span class="o">.</span><span class="n">signal</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Signal cannot be different than Signalrun.signal&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">signalrun</span><span class="o">=</span><span class="n">signalrun</span><span class="p">,</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">signal</span> <span class="ow">or</span> <span class="n">signalrun</span><span class="o">.</span><span class="n">signal</span><span class="p">,</span>
+            <span class="n">start_time</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">start_time</span><span class="p">),</span>
+            <span class="n">stop_time</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">stop_time</span><span class="p">),</span>
+            <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_events"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_events">[docs]</a>    <span class="k">def</span> <span class="nf">get_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query the Events collection.</span>
+
+<span class="sd">        All the details about the matching Signalruns will be returned in</span>
+<span class="sd">        a ``pandas.DataFrame``.</span>
+
+<span class="sd">        All the arguments are optional, so a call without arguments will</span>
+<span class="sd">        return a table with information about all the Events availabe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            signalrun (Signalrun or ObjectID or str):</span>
+<span class="sd">                Signalrun to which the Events must belong.</span>
+<span class="sd">            signal (Signal or ObjectID or str):</span>
+<span class="sd">                Signal to which the Events be associated.</span>
+<span class="sd">            source (str):</span>
+<span class="sd">                Source from which the Events must come.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">as_df_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">signalrun</span><span class="o">=</span><span class="n">signalrun</span><span class="p">,</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_event"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_event">[docs]</a>    <span class="k">def</span> <span class="nf">get_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get an Event object from the database.</span>
+
+<span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
+<span class="sd">        least one argument needs to be passed with a value different than ``None``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (Event, ObjectID or str):</span>
+<span class="sd">                Event object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to retreive.</span>
+<span class="sd">            signalrun (Signalrun or ObjectID or str):</span>
+<span class="sd">                Signalrun to which the Events must belong.</span>
+<span class="sd">            signal (Signal or ObjectID or str):</span>
+<span class="sd">                Signal to which the Events be associated.</span>
+<span class="sd">            source (str):</span>
+<span class="sd">                Source from which the Events must come.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the no arguments are passed with a value different than</span>
+<span class="sd">                ``None`` or the query resolves to more than one object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span>
+            <span class="n">signalrun</span><span class="o">=</span><span class="n">signalrun</span><span class="p">,</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># ########## #</span>
+    <span class="c1"># Annotation #</span>
+    <span class="c1"># ########## #</span>
+
+<div class="viewcode-block" id="OrionDBExplorer.add_annotation"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new Annotation object to the database.</span>
+
+<span class="sd">        The Event needs to be associated with an Event, and can be given a</span>
+<span class="sd">        ``tag`` and a text comment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (Event or ObjectID or str):</span>
+<span class="sd">                Event object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) to which this Annotation is associated.</span>
+<span class="sd">            tag (str):</span>
+<span class="sd">                Tag of this Annotation.</span>
+<span class="sd">            comment (str):</span>
+<span class="sd">                Text comment of this Annotation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Annotation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Annotation</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span>
+            <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span>
+            <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_annotations"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">get_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query the Annotations collection.</span>
+
+<span class="sd">        All the details about the matching Annotations will be returned in</span>
+<span class="sd">        a ``pandas.DataFrame``.</span>
+
+<span class="sd">        All the arguments are optional, so a call without arguments will</span>
+<span class="sd">        return a table with information about all the Annotations availabe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (Event or ObjectID or str):</span>
+<span class="sd">                Event to which the Annotations must belong.</span>
+<span class="sd">            tag (str):</span>
+<span class="sd">                Tag which the Annotations must have.</span>
+<span class="sd">            comment (str):</span>
+<span class="sd">                Comment which the Annotations must have.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Annotations.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Annotation</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">as_df_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span>
+            <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrionDBExplorer.get_annotation"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">get_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get an Event object from the database.</span>
+
+<span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
+<span class="sd">        least one argument needs to be passed with a value different than ``None``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            annotation (Annotation, ObjectID or str):</span>
+<span class="sd">                Annotation object (or the corresponding ObjectID, or its string</span>
+<span class="sd">                representation) that we want to retreive.</span>
+<span class="sd">            event (Event or ObjectID or str):</span>
+<span class="sd">                Event to which the Annotation must belong.</span>
+<span class="sd">            tag (str):</span>
+<span class="sd">                Tag which the Annotation must have.</span>
+<span class="sd">            comment (str):</span>
+<span class="sd">                Comment which the Annotation must have.</span>
+<span class="sd">            created_by (str):</span>
+<span class="sd">                Unique identifier of the user that created the Annotation.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the no arguments are passed with a value different than</span>
+<span class="sd">                ``None`` or the query resolves to more than one object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Annotation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Annotation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">,</span>
+            <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span>
+            <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span>
+            <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, MIT Data To AI Lab
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

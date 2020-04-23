@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Benchmark &mdash; Orion 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Database Schema" href="database.html" />
+    <link rel="prev" title="Orion" href="readme.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Orion
+          
+
+          
+            
+            <img src="_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#data-format">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#orion-pipelines">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#current-available-pipelines">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#leaderboard">Leaderboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install">Install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#docker">Docker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#evaluate-performance">3. Evaluate performance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#database">Database</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Usage</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluate-function">Evaluate function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="database.html#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#fields">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#signal">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#id1">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#id2">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#id3">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#experiment">Experiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#id4">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#datarun">Datarun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#id5">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#signalrun">Signalrun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#id6">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#event">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#id7">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#event-interaction">Event Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#id8">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="database.html#id9">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/orion.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/orion.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.db.html">orion.db package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.primitives.html">orion.primitives package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/orion.primitives.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/orion.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.data.html">orion.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.runner.html">orion.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id1">0.1.0 - 2020-04-23</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Orion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Benchmark</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/benchmark.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="benchmark">
+<h1>Benchmark<a class="headerlink" href="#benchmark" title="Permalink to this headline">¶</a></h1>
+<p>This document explains the scoring system being used in Orion in order to evaluate how good
+a pipeline is detecting anomalies.</p>
+<div class="section" id="data-used-for-the-scoring">
+<h2>Data used for the scoring<a class="headerlink" href="#data-used-for-the-scoring" title="Permalink to this headline">¶</a></h2>
+<p>For the scoring, we will be using the demo signals and a list of their known anomalies, obtained from
+the <a class="reference external" href="https://github.com/khundman/telemanom/blob/master/labeled_anomalies.csv">telemanom repository</a>
+and computing how similar the anomalies detected by the pipeline are with these prevoiusly known
+anomalies.</p>
+</div>
+<div class="section" id="calculating-a-score">
+<h2>Calculating a Score<a class="headerlink" href="#calculating-a-score" title="Permalink to this headline">¶</a></h2>
+<p>Here we describe how we compute a score about how similar a set of previously known anomalies
+and a set of detected anomalies are.</p>
+<div class="section" id="scoring-input">
+<h3>Scoring Input<a class="headerlink" href="#scoring-input" title="Permalink to this headline">¶</a></h3>
+<p>The information that we have is:</p>
+<ul class="simple">
+<li><p>The time series start (min) and end (max) timestamps.</p></li>
+<li><p>A list of start/stop pairs of timestamps for the known anomalies.</p></li>
+<li><p>A list of start/stop pairs of timestamps for the detected anomalies.</p></li>
+</ul>
+<p>An example of this would be:</p>
+<ul class="simple">
+<li><p>Timeseries start, end</p></li>
+</ul>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>data_span = (1222819200, 1442016000)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Known anomalies (in this case only one):</p></li>
+</ul>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>ground_truth = [
+    (1392768000, 1402423200)
+]
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Detected anomalies (in this case only one):</p></li>
+</ul>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>anomalies = [
+    (1398729600, 1399356000)
+]
+</pre></div>
+</div>
+</div>
+<div class="section" id="scoring-process-reformat-as-labels-with-weights">
+<h3>Scoring process: Reformat as labels with weights<a class="headerlink" href="#scoring-process-reformat-as-labels-with-weights" title="Permalink to this headline">¶</a></h3>
+<p>The solution implemented in Orion has been to use all the previous information to compute a
+list of labels, 1s and 0s, and then use the scikit-learn metrics passing a weights array.</p>
+<p>For this we do the following:</p>
+<ol class="arabic simple">
+<li><p>Make a sorted set of all the timestamps and compute consecutive intervals:</p></li>
+</ol>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>intervals = [
+    (1222819200, 1392768000),
+    (1392768000, 1398729600),
+    (1398729600, 1399356000)
+    (1399356000, 1402423200),
+    (1402423200, 1442016000)
+]
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>For both the known and detected anomalies sequences, compute a label for each interval
+using 1 if the interval intersects with one of the anomaly intervals in the sequence:</p></li>
+</ol>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>truth = [0, 1, 1, 1, 0]
+detected = [0, 0, 1, 0, 0]
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Compute a vector of weights using the lengths of the intervals:</p></li>
+</ol>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>weights = [169948800, 5961600, 626400, 3067200, 39592800]
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Compute a score using the labels:</p></li>
+</ol>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>accuracy_score(truth, detected, sample_weight=weights) = 0.9588096176586519
+f1_score(truth, detected, sample_weight=weights) = 0.1218487394957983
+</pre></div>
+</div>
+<p>The whole process can be summarized in this diagram:</p>
+<a class="reference external image-reference" href="_static/scoring-300.png?raw=true"><img alt="Scoring" src="_static/scoring-300.png?raw=true" /></a>
+</div>
+</div>
+<div class="section" id="evaluating-the-pipelines">
+<h2>Evaluating the Pipelines<a class="headerlink" href="#evaluating-the-pipelines" title="Permalink to this headline">¶</a></h2>
+<p>Once we know how to compute a score given a set of known anomalies and another one of detected
+anomalies, we can evaluate the overall performance of our pipelines in order to know which
+one has the best performance.</p>
+<p>For this we:</p>
+<ol class="arabic simple">
+<li><p>Use each pipeline to detect anomalies on all our demo signals.</p></li>
+<li><p>Retreive the list of known anomalies for each of these signals.</p></li>
+<li><p>Compute the scores for each signal using multiple metrics (e.g. accuraccy and f1).</p></li>
+<li><p>Average the score obtained for each metric and pipeline accross all the signals.</p></li>
+<li><p>Finally, we rank our pipelines sorting them by one of the computed scores.</p></li>
+</ol>
+<p>The output of this process is the <a class="reference external" href="README.md#leaderboard">Leaderboard table from the README.md</a>.</p>
+</div>
+<div class="section" id="evaluate-function">
+<h2>Evaluate function<a class="headerlink" href="#evaluate-function" title="Permalink to this headline">¶</a></h2>
+<p>The complete evaluation process described above is directly available using the
+<code class="docutils literal notranslate"><span class="pre">orion.evaluation.evaluate_pipelines</span></code> function.</p>
+<p>This function expects the following inputs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pipelines</span> <span class="pre">(dict</span> <span class="pre">or</span> <span class="pre">list)</span></code>: dictionary with pipeline names as keys and their
+JSON paths as values. If a list is given, it should be of JSON paths,
+and the paths themselves will be used as names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signals</span> <span class="pre">(list,</span> <span class="pre">optional)</span></code>: list of signals. If not given, all the NASA signals are used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metrics</span> <span class="pre">(dict</span> <span class="pre">or</span> <span class="pre">list,</span> <span class="pre">optional)</span></code>: dictionary with metric names as keys and
+scoring functions as values. If a list is given, it should be of scoring
+functions, and they <code class="docutils literal notranslate"><span class="pre">__name__</span></code> value will be used as the metric name.
+If not given, all the available metrics will be used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rank</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: Sort and rank the pipelines based on the given metric.
+If not given, rank using the first metric.</p></li>
+</ul>
+<p>And returns a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> which contains the average of the scores obtained with
+each scoring function accross all the signals for each pipeline, ranked by the indicated metric.</p>
+<p>This is an example of how to call this function:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>In [1]: from orion.evaluation import evaluate_pipelines
+
+In [2]: pipelines = [
+   ...:     &#39;orion/pipelines/skew_24h_lstm.json&#39;,
+   ...:     &#39;orion/pipelines/lstm_dynamic_threshold.json&#39;
+   ...: ]
+
+In [3]: metrics = [&#39;f1&#39;, &#39;accuracy&#39;, &#39;recall&#39;, &#39;precision&#39;]
+
+In [4]: signals = [&#39;S-1&#39;, &#39;P-1&#39;]
+
+In [5]: scores = evaluate_pipelines(pipelines, signals, metrics, rank=&#39;f1&#39;)
+
+In [6]: scores
+Out[6]:
+                                      pipeline  rank  accuracy        f1  precision    recall
+0  orion/pipelines/lstm_dynamic_threshold.json     1  0.946529  0.060924     0.5000  0.032438
+1           orion/pipelines/skew_24h_lstm.json     2  0.939685  0.015370     0.0625  0.008762
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="database.html" class="btn btn-neutral float-right" title="Database Schema" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="readme.html" class="btn btn-neutral float-left" title="Orion" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, MIT Data To AI Lab
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
