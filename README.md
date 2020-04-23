@@ -232,14 +232,16 @@ The output will be a table in the format described above:
 Once we have the data, let us try to use the LSTM pipeline to analyze it and search for anomalies.
 
 In order to do so, we will have import the `orion.analysis.analyze` function and pass it
-the train and test dataframes and the path to the pipeline JSON that we want to use:
+the train and test dataframes and the name of the pipeline that we want to use:
 
 ```python3
 from orion.analysis import analyze
 
-pipeline_path = 'orion/pipelines/lstm_dynamic_threshold.json'
-
-anomalies = analyze(pipeline_path, train, test)
+anomalies = analyze(
+    pipeline='lstm_dynamic_threshold',
+    train=train,
+    test=test
+)
 ```
 
 **NOTE:** Depending on your system and the exact versions that you might have installed
