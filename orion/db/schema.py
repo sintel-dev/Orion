@@ -53,9 +53,9 @@ class Signal(OrionDocument):
     """
     name = fields.StringField(required=True)
     dataset = fields.ReferenceField(Dataset, reverse_delete_rule=CASCADE)
-    data_location = fields.StringField()
     start_time = fields.IntField()
     stop_time = fields.IntField()
+    data_location = fields.StringField()
     timestamp_column = fields.IntField()
     value_column = fields.IntField()
     created_by = fields.StringField()
@@ -215,7 +215,7 @@ class Signalrun(OrionDocument, Status):
     end_time = fields.DateTimeField()
     model_location = fields.StringField()
     metrics_location = fields.StringField()
-    num_events = fields.IntField()
+    num_events = fields.IntField(default=0)
 
     @property
     def events(self):
@@ -245,7 +245,8 @@ class Signalrun(OrionDocument, Status):
                     signal=self.signal,
                     start_time=start_time,
                     stop_time=stop_time,
-                    severity=severity
+                    severity=severity,
+                    source=Event.SOURCE_ORION,
                 )
         except Exception:
             LOGGER.exception('Error storing signalrun %s events', self.id)
@@ -253,7 +254,7 @@ class Signalrun(OrionDocument, Status):
 
         self.end_time = datetime.utcnow()
         self.status = status
-        self.events = len(events)
+        self.num_events = len(events)
         self.save()
 
 
@@ -265,12 +266,30 @@ class Event(OrionDocument):
 
     It is always associated to a Signal and, optionally, to a Signalrun.
     """
+    SOURCE_ORION = 'ORION'
+    SOURCE_SHAPE_MATCHING = 'SHAPE_MATCHING'
+    SOURCE_MANUALLY_CREATED = 'MANUALLY_CREATED'
+    SOURCE_CHOICES = (SOURCE_ORION, SOURCE_SHAPE_MATCHING, SOURCE_MANUALLY_CREATED)
+
     signalrun = fields.ReferenceField(Signalrun, reverse_delete_rule=CASCADE)
     signal = fields.ReferenceField(Signal, reverse_delete_rule=CASCADE)
     start_time = fields.IntField(required=True)
     stop_time = fields.IntField(required=True)
     severity = fields.FloatField()
-    source = fields.StringField(choices=['orion', 'shape matching', 'manually created'])
+    source = fields.StringField(required=True, choices=SOURCE_CHOICES)
+    num_annotations = fields.IntField(default=0)
+
+    @property
+    def annotations(self):
+        return Annotation.find(event=self)
+
+    @property
+    def event_interactions(self):
+        return EventInteraction.find(event=self)
+
+    @property
+    def latest_event_interaction(self):
+        return self.event_interactions.last()
 
 
 class EventInteraction(OrionDocument):
@@ -297,3 +316,8 @@ class Annotation(OrionDocument):
     tag = fields.StringField()
     comment = fields.StringField()
     created_by = fields.StringField()
+
+    def save(self):
+        super().save()
+        self.event.num_annotations = self.event.annotations.count()
+        self.event.save()

@@ -149,7 +149,9 @@ class OrionDocument(Document, metaclass=OrionMeta):
         ]).rename(columns={'_id': name + '_id'})
 
         if exclude_:
-            df = df.drop(exclude_, axis=1)
+            for column in exclude_:
+                if column in df:
+                    del df[column]
 
         return df
 

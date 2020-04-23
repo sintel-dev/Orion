@@ -52,14 +52,14 @@ def start_signalrun(orex, datarun, signal):
     try:
         data = signalrun.signal.load()
         pipeline = signalrun.datarun.pipeline
-        outputs, output_names = get_outputs_spec(pipeline)
-
-        LOGGER.info('Fitting pipeline %s on signal %s', pipeline.name, signal.name)
         mlpipeline = pipeline.load()
-        mlpipeline.fit(data)
+        outputs, output_names = get_outputs_spec(mlpipeline)
 
-        LOGGER.info('Producing pipeline %s on signal %s', pipeline.name, signal.name)
-        pipeline_output = mlpipeline.predict(data, output_=outputs)
+        LOGGER.info('Running pipeline %s on signal %s', pipeline.name, signal.name)
+        pipeline_output = mlpipeline.fit(data, output_=outputs)
+
+        # LOGGER.info('Producing pipeline %s on signal %s', pipeline.name, signal.name)
+        # pipeline_output = mlpipeline.predict(data, output_=outputs)
 
         LOGGER.info('Processing pipeline %s predictions on signal %s', pipeline.name, signal.name)
         events = process_pipeline_output(orex, signalrun, pipeline_output, output_names)
@@ -80,10 +80,10 @@ def start_datarun(orex, experiment, pipeline):
         orex (OrionExplorer):
             OrionExplorer instance to use to store the results
             inside the Database.
-        experiment (Experiment):
+        experiment (Experiment or ObjectId or str):
             The Experiment to which the created Datarun will
             belong.
-        pipeline (Pipeline):
+        pipeline (Pipeline or ObjectId or str):
             Pipeline to use for the Datarun.
     """
     datarun = orex.add_datarun(experiment, pipeline)
