@@ -6,13 +6,16 @@ __version__ = '0.1.1.dev0'
 
 import os
 
+from orion.core import Orion
+from orion.functional import detect_anomalies, evaluate_pipeline, fit_pipeline
+
 _BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 MLBLOCKS_PRIMITIVES = os.path.join(_BASE_PATH, 'primitives', 'jsons')
 MLBLOCKS_PIPELINES = os.path.join(_BASE_PATH, 'pipelines')
 
-
-def get_available_templates():
-    return [
-        filename[:-5]
-        for filename in os.listdir(MLBLOCKS_PIPELINES)
-    ]
+__all__ = (
+    'Orion',
+    'detect_anomalies',
+    'evaluate_pipeline',
+    'fit_pipeline'
+)
