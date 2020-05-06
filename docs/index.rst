@@ -10,8 +10,9 @@
    :caption: Advanced Usage
    :hidden:
 
-   Benchmark <benchmark>
+   benchmark
    database
+   docker
 
 .. toctree::
    :caption: Resources

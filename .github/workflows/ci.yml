@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: [3.6, 3.7]
+        python-version: [3.6, 3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
@@ -50,10 +50,4 @@ jobs:
       name: Install pandoc - Ubuntu
       run: |
         sudo apt install pandoc
-    - if: matrix.os == 'macos-latest'
-      name: Install pandoc - MacOS
-      run: |
-        brew install pandoc
-    - name: Build docs
-      run: |
         make docs

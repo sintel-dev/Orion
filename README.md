@@ -49,9 +49,10 @@ With the ready availability of *automated machine learning* tools, the focus is 
 * [II. Orion Pipelines](#orion-pipelines)
    * [II.1 Current Available Pipelines](#current-available-pipelines)
    * [II.2 Leaderboard](#leaderboard)
-* [III. Getting Started](#getting-started)
+* [III. Install](#install)
    * [III.1 Requirements](#requirements)
-   * [III.2 Install](#install)
+   * [III.2 Install with pip](#install-with-pip)
+   * [III.3 Docker](#docker)
 * [IV. Quickstart](#quickstart)
 * [V. Database](#database)
 
@@ -157,7 +158,7 @@ BENCHMARK.md).
 | Median 24h LSTM           |   0.673667 | 0.0237867 |   0.0604165 | 0.0178578  |
 | Skew 24h LSTM             |   0.369548 | 0.01142   |   0.0213837 | 0.00902504 |
 
-# Getting Started
+# Install
 
 ## Requirements
 
@@ -174,7 +175,7 @@ where you are trying to run **Orion**.
 In order to be fully operational, **Orion** requires having access to a
 [MongoDB](https://www.mongodb.com/) database running version **3.6** or higher.
 
-## Install
+## Install with pip
 
 The easiest and recommended way to install **Orion** is using [pip](https://pip.pypa.io/en/stable/):
 
@@ -187,7 +188,7 @@ This will pull and install the latest stable release from [PyPi](https://pypi.or
 If you want to install from source or contribute to the project please read the
 [Contributing Guide](https://sdv-dev.github.io/Copulas/contributing.html#get-started).
 
-### Docker
+## Docker
 
 Even thought it's not mandatory to use it, **Orion** comes with the possibility to be
 distributed and run as a docker image, making its usage in offline systems easier.
@@ -270,9 +271,7 @@ Once it is fitted, we are ready to use it to detect anomalies in our data:
 anomalies = orion.detect(test_data)
 ```
 
-> :warning: **NOTE:** Depending on your system and the exact versions that you might have installed
-> some *WARNINGS* may be printed. These can be safely ignored as they do not interfere
-> with the proper behavior of the pipeline.
+> :warning: Depending on your system and the exact versions that you might have installed some *WARNINGS* may be printed. These can be safely ignored as they do not interfere with the proper behavior of the pipeline.
 
 The output of the previous command will be a ``pandas.DataFrame`` containing a table in the
 Output format described above:
