@@ -49,7 +49,11 @@ class Orion:
             with open(pipeline) as json_file:
                 pipeline = json.load(json_file)
 
-        return MLPipeline(pipeline, init_params=self._hyperparameters)
+        mlpipeline = MLPipeline(pipeline)
+        if self._hyperparameters:
+            mlpipeline.set_hyperparameters(self._hyperparameters)
+
+        return mlpipeline
 
     def __init__(self, pipeline: Union[str, dict, MLPipeline] = None,
                  hyperparameters: dict = None):

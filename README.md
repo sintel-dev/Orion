@@ -212,8 +212,8 @@ the `'S-1-train'` and `'S-1-test'` names.
 ```python3
 from orion.data import load_signal
 
-train = load_signal('S-1-train')
-test = load_signal('S-1-test')
+train_data = load_signal('S-1-train')
+test_data = load_signal('S-1-test')
 ```
 
 The output will be a table in the format described above:
@@ -227,26 +227,52 @@ The output will be a table in the format described above:
 4  1222905600 -0.370746
 ```
 
-## 2. Detect anomalies using a pipeline
+## 2. Detect anomalies using Orion
 
-Once we have the data, let us try to use the LSTM pipeline to analyze it and search for anomalies.
+Once we have the data, let us try to use an Orion pipeline to analyze it and search for anomalies.
 
-In order to do so, we will have import the `orion.analysis.analyze` function and pass it
-the train and test dataframes and the name of the pipeline that we want to use:
+In order to do so, we will have to create an instance of the `orion.Orion` class.
 
 ```python3
-from orion.analysis import analyze
+from orion import Orion
 
-anomalies = analyze(
+orion = Orion()
+```
+
+Optionally, we might want to select a pipeline other than the default one or alter the
+hyperparameters by the underlying MLBlocks pipeline.
+
+For example, let's select the `lstm_dynamic_threshold` pipeline and reduce the number of
+training epochs and increase the verbosity if the LSTM primitive that it uses.
+
+```python3
+hyperparameters = {
+    'keras.Sequential.LSTMTimeSeriesRegressor#1': {
+        'epochs': 5,
+        'verbose': True
+    }
+}
+orion = Orion(
     pipeline='lstm_dynamic_threshold',
-    train=train,
-    test=test
+    hyperparameters=hyperparameters
 )
 ```
 
-**NOTE:** Depending on your system and the exact versions that you might have installed
-some *WARNINGS* may be printed. These can be safely ignored as they do not interfere
-with the proper behavior of the pipeline.
+Once we the pipeline is ready, we can proceed to fit it to our data:
+
+```python3
+orion.fit(train_data)
+```
+
+Once it is fitted, we are ready to use it to detect anomalies in our data:
+
+```python3
+anomalies = orion.detect(test_data)
+```
+
+> :warning: **NOTE:** Depending on your system and the exact versions that you might have installed
+> some *WARNINGS* may be printed. These can be safely ignored as they do not interfere
+> with the proper behavior of the pipeline.
 
 The output of the previous command will be a ``pandas.DataFrame`` containing a table in the
 Output format described above:
@@ -256,7 +282,7 @@ Output format described above:
 0  1394323200  1399701600  0.673494
 ```
 
-## 3. Evaluate performance
+## 3. Evaluate the performance of your pipeline
 
 In this next step we will load some already known anomalous intervals and evaluate how
 good our anomaly detection was by comparing those with our detected intervals.
@@ -266,7 +292,7 @@ For this, we will first load the known anomalies for the signal that we are usin
 ```python3
 from orion.data import load_anomalies
 
-known_anomalies = load_anomalies('S-1')
+ground_truth = load_anomalies('S-1')
 ```
 
 The output will be a table in the same format as the `anomalies` one.
@@ -276,16 +302,22 @@ The output will be a table in the same format as the `anomalies` one.
 0  1392768000  1402423200
 ```
 
-Afterwards, we pass the ground truth, the detected anomalies and the original test data
-to the `orion.metrics.accuracy_score` and `orion.metrics.f1_score` functions in order
-to compute a score that indicates how good our anomaly detection was:
+Afterwards, we can call the `Orion.evaluate` method, passing both the test data
+and the ground truth:
 
 ```python3
-from orion.metrics import accuracy_score, f1_score
+scores = orion.evaluate(test_data, ground_truth)
+```
 
-accuracy_score(known_anomalies, anomalies, test)  # -> 0.972987721691678
+The output will be a ``pandas.Series`` containing a collection of scores indicating
+how the predictions were:
 
-f1_score(known_anomalies, anomalies, test)  # -> 0.7155172413793103
+```
+accuracy     0.988131
+f1           0.892193
+recall       0.805369
+precision    1.000000
+dtype: float64
 ```
 
 # Database
