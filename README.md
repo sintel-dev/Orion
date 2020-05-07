@@ -8,6 +8,7 @@
 </p>
 
 [![Development Status](https://img.shields.io/badge/Development%20Status-2%20--%20Pre--Alpha-yellow)](https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha)
+[![PyPi Shield](https://img.shields.io/pypi/v/orion-ml.svg)](https://pypi.python.org/pypi/orion-ml)
 [![CircleCI](https://circleci.com/gh/D3-AI/Orion.svg?style=shield)](https://circleci.com/gh/D3-AI/Orion)
 [![Travis CI Shield](https://travis-ci.org/D3-AI/Orion.svg?branch=master)](https://travis-ci.org/D3-AI/Orion)
 
@@ -45,7 +46,7 @@ With the ready availability of *automated machine learning* tools, the focus is 
 * [I. Data Format](#data-format)
    * [I.1 Input](#input)
    * [I.2 Output](#output)
-   * [I.2 Dataset we use in this library](#dataset-we-use-in-this-library)
+   * [I.3 Dataset we use in this library](#dataset-we-use-in-this-library)
 * [II. Orion Pipelines](#orion-pipelines)
    * [II.1 Current Available Pipelines](#current-available-pipelines)
    * [II.2 Leaderboard](#leaderboard)
