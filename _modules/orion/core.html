@@ -1,0 +1,606 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>orion.core &mdash; Orion 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Orion
+          
+
+          
+            
+            <img src="../../_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#data-format">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#orion-pipelines">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#current-available-pipelines">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#leaderboard">Leaderboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#install">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../readme.html#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#install-with-pip">Install with pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#docker">Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#detect-anomalies-using-orion">2. Detect anomalies using Orion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#evaluate-the-performance-of-your-pipeline">3. Evaluate the performance of your pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#database">Database</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../benchmark.html">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmark.html#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmark.html#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmark.html#evaluate-function">Evaluate function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../database.html">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#fields">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#signal">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id1">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id2">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id3">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#experiment">Experiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id4">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#datarun">Datarun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id5">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#signalrun">Signalrun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id6">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#event">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id7">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#event-interaction">Event Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id8">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../database.html#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../database.html#id9">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../docker.html">Docker Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#docker-requirements">Docker Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#building-the-orion-docker-image">Building the Orion Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#distributing-the-orion-docker-image">Distributing the Orion Docker Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../docker.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../docker.html#distributing-as-a-file">Distributing as a file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#running-the-orion-jupyter-image">Running the orion-jupyter image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../docker.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../docker.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/orion.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/orion.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.db.html">orion.db package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.primitives.html">orion.primitives package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/orion.primitives.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/orion.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.core.html">orion.core module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.data.html">orion.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.functional.html">orion.functional module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.metrics.html">orion.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.runner.html">orion.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../history.html#id1">0.1.0 - 2020-04-23</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Orion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>orion.core</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for orion.core</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Orion Core module.</span>
+
+<span class="sd">This module defines the Orion Class, which is responsible for the</span>
+<span class="sd">main anomaly detection functionality, as well as the interaction</span>
+<span class="sd">with the underlying MLBlocks pipelines.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">mlblocks</span> <span class="kn">import</span> <span class="n">MLPipeline</span>
+
+<span class="kn">from</span> <span class="nn">orion.metrics</span> <span class="kn">import</span> <span class="n">METRICS</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Orion"><a class="viewcode-back" href="../../api/orion.core.html#orion.Orion">[docs]</a><span class="k">class</span> <span class="nc">Orion</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Orion Class.</span>
+
+<span class="sd">    The Orion Class provides the main anomaly detection functionalities</span>
+<span class="sd">    of Orion and is responsible for the interaction with the underlying</span>
+<span class="sd">    MLBlocks pipelines.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pipeline (str, dict or MLPipeline):</span>
+<span class="sd">            Pipeline to use. It can be passed as:</span>
+<span class="sd">                * An ``str`` with a path to a JSON file.</span>
+<span class="sd">                * An ``str`` with the name of a registered pipeline.</span>
+<span class="sd">                * An ``MLPipeline`` instance.</span>
+<span class="sd">                * A ``dict`` with an ``MLPipeline`` specification.</span>
+<span class="sd">        hyperparameters (dict):</span>
+<span class="sd">            Additional hyperparameters to set to the Pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">PIPELINES_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;pipelines&#39;</span><span class="p">)</span>
+    <span class="n">PIPELINES</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">PIPELINES_DIR</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">DEFAULT_PIPELINE</span> <span class="o">=</span> <span class="s1">&#39;lstm_dynamic_threshold&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_get_mlpipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pipeline</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">pipeline</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+                <span class="n">pipeline</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="n">mlpipeline</span> <span class="o">=</span> <span class="n">MLPipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hyperparameters</span><span class="p">:</span>
+            <span class="n">mlpipeline</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyperparameters</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mlpipeline</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">MLPipeline</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">hyperparameters</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pipeline</span> <span class="o">=</span> <span class="n">pipeline</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_PIPELINE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mlpipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mlpipeline</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fitted</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pipeline</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_pipeline</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hyperparameters</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyperparameters</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fitted</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_fitted</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Orion.fit"><a class="viewcode-back" href="../../api/orion.core.html#orion.Orion.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit the pipeline to the given data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (DataFrame):</span>
+<span class="sd">                Input data, passed as a ``pandas.DataFrame`` containing</span>
+<span class="sd">                exactly two columns: timestamp and value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mlpipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mlpipeline</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mlpipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fitted</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_outputs_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">outputs_spec</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">visualization_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mlpipeline</span><span class="o">.</span><span class="n">get_output_names</span><span class="p">(</span><span class="s1">&#39;visualization&#39;</span><span class="p">)</span>
+            <span class="n">outputs_spec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;visualization&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">visualization_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="n">outputs_spec</span><span class="p">,</span> <span class="n">visualization_outputs</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_build_events_df</span><span class="p">(</span><span class="n">events</span><span class="p">):</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">events</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;severity&#39;</span><span class="p">])</span>
+        <span class="n">events</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">events</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">events</span>
+
+    <span class="k">def</span> <span class="nf">_detect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">visualization</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">visualization</span><span class="p">:</span>
+            <span class="n">outputs_spec</span><span class="p">,</span> <span class="n">visualization_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_outputs_spec</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">outputs_spec</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output_</span><span class="o">=</span><span class="n">outputs_spec</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">visualization</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">visualization_names</span><span class="p">:</span>
+                <span class="n">events</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">visualization_outputs</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">visualization_names</span><span class="p">):]</span>
+                <span class="n">visualization_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">visualization_names</span><span class="p">,</span> <span class="n">visualization_outputs</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">events</span> <span class="o">=</span> <span class="n">outputs</span>
+                <span class="n">visualization_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_events_df</span><span class="p">(</span><span class="n">events</span><span class="p">),</span> <span class="n">visualization_dict</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_events_df</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Orion.detect"><a class="viewcode-back" href="../../api/orion.core.html#orion.Orion.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">visualization</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect anomalies in the given data..</span>
+
+<span class="sd">        If ``visualization=True``, also return the visualization</span>
+<span class="sd">        outputs from the MLPipeline object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (DataFrame):</span>
+<span class="sd">                Input data, passed as a ``pandas.DataFrame`` containing</span>
+<span class="sd">                exactly two columns: timestamp and value.</span>
+<span class="sd">            visualization (bool):</span>
+<span class="sd">                If ``True``, also capture the ``visualization`` named</span>
+<span class="sd">                output from the ``MLPipeline`` and return it as a second</span>
+<span class="sd">                output.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DataFrame or tuple:</span>
+<span class="sd">                If visualization is ``False``, it returns the events</span>
+<span class="sd">                DataFrame. If visualization is ``True``, it returns a</span>
+<span class="sd">                tuple containing the events DataFrame followed by the</span>
+<span class="sd">                visualization outputs dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mlpipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">visualization</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Orion.fit_detect"><a class="viewcode-back" href="../../api/orion.core.html#orion.Orion.fit_detect">[docs]</a>    <span class="k">def</span> <span class="nf">fit_detect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">visualization</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Fit the pipeline to the data and then detect anomalies.</span>
+
+<span class="sd">        This method is functionally equivalent to calling ``fit(data)``</span>
+<span class="sd">        and later on ``detect(data)`` but with the difference that</span>
+<span class="sd">        here the ``MLPipeline`` is called only once, using its ``fit``</span>
+<span class="sd">        method, and the output is directly captured without having</span>
+<span class="sd">        to execute the whole pipeline again during the ``predict`` phase.</span>
+
+<span class="sd">        If ``visualization=True``, also return the visualization</span>
+<span class="sd">        outputs from the MLPipeline object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (DataFrame):</span>
+<span class="sd">                Input data, passed as a ``pandas.DataFrame`` containing</span>
+<span class="sd">                exactly two columns: timestamp and value.</span>
+<span class="sd">            visualization (bool):</span>
+<span class="sd">                If ``True``, also capture the ``visualization`` named</span>
+<span class="sd">                output from the ``MLPipeline`` and return it as a second</span>
+<span class="sd">                output.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DataFrame or tuple:</span>
+<span class="sd">                If visualization is ``False``, it returns the events</span>
+<span class="sd">                DataFrame. If visualization is ``True``, it returns a</span>
+<span class="sd">                tuple containing the events DataFrame followed by the</span>
+<span class="sd">                visualization outputs dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mlpipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mlpipeline</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mlpipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">visualization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fitted</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="Orion.save"><a class="viewcode-back" href="../../api/orion.core.html#orion.Orion.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save this object using pickle.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str):</span>
+<span class="sd">                Path to the file where the serialization of</span>
+<span class="sd">                this object will be stored.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pickle_file</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pickle_file</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Orion.load"><a class="viewcode-back" href="../../api/orion.core.html#orion.Orion.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load an Orion instance from a pickle file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str):</span>
+<span class="sd">                Path to the file where the instance has been</span>
+<span class="sd">                previously serialized.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Orion</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the serialized object is not an Orion instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pickle_file</span><span class="p">:</span>
+            <span class="n">orion</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pickle_file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orion</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Serialized object is not an Orion instance&#39;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">orion</span></div>
+
+<div class="viewcode-block" id="Orion.evaluate"><a class="viewcode-back" href="../../api/orion.core.html#orion.Orion.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">truth</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">fit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">train_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">METRICS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Evaluate the performance against a ground truth.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (DataFrame):</span>
+<span class="sd">                Input data, passed as a ``pandas.DataFrame`` containing</span>
+<span class="sd">                exactly two columns: timestamp and value.</span>
+<span class="sd">            truth (DataFrame):</span>
+<span class="sd">                Ground truth passed as a ``pandas.DataFrame`` containing</span>
+<span class="sd">                two columns: start and stop.</span>
+<span class="sd">            fit (bool):</span>
+<span class="sd">                Whether to fit the pipeline before evaluating it.</span>
+<span class="sd">                Defaults to ``False``.</span>
+<span class="sd">            train_data (DataFrame):</span>
+<span class="sd">                Training data, passed as a ``pandas.DataFrame`` containing</span>
+<span class="sd">                exactly two columns: timestamp and value.</span>
+<span class="sd">                If not given, the pipeline is fitted on ``data``.</span>
+<span class="sd">            metrics (list):</span>
+<span class="sd">                List of metrics to used passed as a list of strings.</span>
+<span class="sd">                If not given, it defaults to all the Orion metrics.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Series:</span>
+<span class="sd">                ``pandas.Series`` containing one element for each</span>
+<span class="sd">                metric applied, with the metric name as index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">fit</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mlpipeline</span><span class="o">.</span><span class="n">predict</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mlpipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mlpipeline</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">train_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Fit first and then predict</span>
+                <span class="n">mlpipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+                <span class="n">method</span> <span class="o">=</span> <span class="n">mlpipeline</span><span class="o">.</span><span class="n">predict</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Fit and predict at once</span>
+                <span class="n">method</span> <span class="o">=</span> <span class="n">mlpipeline</span><span class="o">.</span><span class="n">fit</span>
+
+        <span class="n">events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">metric</span><span class="p">:</span> <span class="n">METRICS</span><span class="p">[</span><span class="n">metric</span><span class="p">](</span><span class="n">truth</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, MIT Data To AI Lab
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

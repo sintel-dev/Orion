@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Benchmark &mdash; Orion 0.1.1.dev0 documentation</title>
+  <title>Docker Usage &mdash; Orion 0.1.1.dev0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Database Schema" href="database.html" />
-    <link rel="prev" title="Orion" href="readme.html" /> 
+    <link rel="next" title="orion package" href="api/orion.html" />
+    <link rel="prev" title="Database Schema" href="database.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -119,15 +119,15 @@
 </ul>
 <p class="caption"><span class="caption-text">Advanced Usage</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmark</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#data-used-for-the-scoring">Data used for the scoring</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#calculating-a-score">Calculating a Score</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#scoring-input">Scoring Input</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#evaluate-function">Evaluate function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#evaluate-function">Evaluate function</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">Database Schema</a><ul>
@@ -173,17 +173,17 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="docker.html">Docker Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="docker.html#docker-requirements">Docker Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="docker.html#building-the-orion-docker-image">Building the Orion Docker Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="docker.html#distributing-the-orion-docker-image">Distributing the Orion Docker Image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="docker.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="docker.html#distributing-as-a-file">Distributing as a file</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Docker Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#docker-requirements">Docker Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-orion-docker-image">Building the Orion Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#distributing-the-orion-docker-image">Distributing the Orion Docker Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#distributing-as-a-file">Distributing as a file</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="docker.html#running-the-orion-jupyter-image">Running the orion-jupyter image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="docker.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
-<li class="toctree-l3"><a class="reference internal" href="docker.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-orion-jupyter-image">Running the orion-jupyter image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
 </ul>
 </li>
 </ul>
@@ -283,14 +283,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Benchmark</li>
+      <li>Docker Usage</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/D3-AI/Orion/blob/master/docs/benchmark.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/docker.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -304,149 +304,91 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="benchmark">
-<h1>Benchmark<a class="headerlink" href="#benchmark" title="Permalink to this headline">¶</a></h1>
-<p>This document explains the scoring system being used in Orion in order to evaluate how good
-a pipeline is detecting anomalies.</p>
-<div class="section" id="data-used-for-the-scoring">
-<h2>Data used for the scoring<a class="headerlink" href="#data-used-for-the-scoring" title="Permalink to this headline">¶</a></h2>
-<p>For the scoring, we will be using the demo signals and a list of their known anomalies, obtained from
-the <a class="reference external" href="https://github.com/khundman/telemanom/blob/master/labeled_anomalies.csv">telemanom repository</a>
-and computing how similar the anomalies detected by the pipeline are with these prevoiusly known
-anomalies.</p>
+  <div class="section" id="docker-usage">
+<h1>Docker Usage<a class="headerlink" href="#docker-usage" title="Permalink to this headline">¶</a></h1>
+<p><strong>Orion</strong> comes configured and ready to be distributed and run as a docker image which starts
+a jupyter notebook already configured to use orion, with all the required dependencies already
+installed.</p>
+<div class="section" id="docker-requirements">
+<h2>Docker Requirements<a class="headerlink" href="#docker-requirements" title="Permalink to this headline">¶</a></h2>
+<p>The only requirement in order to run the Orion Docker image is to have Docker installed and
+that the user has enough permissions to run it.</p>
+<p>Installation instructions for any possible system compatible can be found <a class="reference external" href="https://docs.docker.com/install/">here</a></p>
+<p>Additionally, the system that builds the Orion Docker image will also need to have a working
+internet connection that allows downloading the base image and the additional python depenedencies.</p>
 </div>
-<div class="section" id="calculating-a-score">
-<h2>Calculating a Score<a class="headerlink" href="#calculating-a-score" title="Permalink to this headline">¶</a></h2>
-<p>Here we describe how we compute a score about how similar a set of previously known anomalies
-and a set of detected anomalies are.</p>
-<div class="section" id="scoring-input">
-<h3>Scoring Input<a class="headerlink" href="#scoring-input" title="Permalink to this headline">¶</a></h3>
-<p>The information that we have is:</p>
-<ul class="simple">
-<li><p>The time series start (min) and end (max) timestamps.</p></li>
-<li><p>A list of start/stop pairs of timestamps for the known anomalies.</p></li>
-<li><p>A list of start/stop pairs of timestamps for the detected anomalies.</p></li>
-</ul>
-<p>An example of this would be:</p>
-<ul class="simple">
-<li><p>Timeseries start, end</p></li>
-</ul>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>data_span = (1222819200, 1442016000)
+<div class="section" id="building-the-orion-docker-image">
+<h2>Building the Orion Docker Image<a class="headerlink" href="#building-the-orion-docker-image" title="Permalink to this headline">¶</a></h2>
+<p>After having cloned the <strong>Orion</strong> repository, all you have to do in order to build the Orion Docker
+Image is running this command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make docker-jupyter-build
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Known anomalies (in this case only one):</p></li>
-</ul>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>ground_truth = [
-    (1392768000, 1402423200)
-]
+<p>After a few minutes, the new image, called <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code>, will have been built into the system
+and will be ready to be used or distributed.</p>
+</div>
+<div class="section" id="distributing-the-orion-docker-image">
+<h2>Distributing the Orion Docker Image<a class="headerlink" href="#distributing-the-orion-docker-image" title="Permalink to this headline">¶</a></h2>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code> image is built, it can be distributed in several ways.</p>
+<div class="section" id="distributing-using-a-docker-registry">
+<h3>Distributing using a Docker registry<a class="headerlink" href="#distributing-using-a-docker-registry" title="Permalink to this headline">¶</a></h3>
+<p>The simplest way to distribute the recently created image is <a class="reference external" href="https://docs.docker.com/registry/">using a registry</a>.</p>
+<p>In order to do so, we will need to have write access to a public or private registry (remember to
+<a class="reference external" href="https://docs.docker.com/engine/reference/commandline/login/">login</a>!) and execute these commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker tag orion-jupyter:latest your-registry-name:some-tag
+docker push your-registry-name:some-tag
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Detected anomalies (in this case only one):</p></li>
-</ul>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>anomalies = [
-    (1398729600, 1399356000)
-]
+<p>Afterwards, in the receiving machine:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker pull your-registry-name:some-tag
+docker tag your-registry-name:some-tag orion-jupyter:latest
 </pre></div>
 </div>
 </div>
-<div class="section" id="scoring-process-reformat-as-labels-with-weights">
-<h3>Scoring process: Reformat as labels with weights<a class="headerlink" href="#scoring-process-reformat-as-labels-with-weights" title="Permalink to this headline">¶</a></h3>
-<p>The solution implemented in Orion has been to use all the previous information to compute a
-list of labels, 1s and 0s, and then use the scikit-learn metrics passing a weights array.</p>
-<p>For this we do the following:</p>
-<ol class="arabic simple">
-<li><p>Make a sorted set of all the timestamps and compute consecutive intervals:</p></li>
-</ol>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>intervals = [
-    (1222819200, 1392768000),
-    (1392768000, 1398729600),
-    (1398729600, 1399356000)
-    (1399356000, 1402423200),
-    (1402423200, 1442016000)
-]
+<div class="section" id="distributing-as-a-file">
+<h3>Distributing as a file<a class="headerlink" href="#distributing-as-a-file" title="Permalink to this headline">¶</a></h3>
+<p>If the distribution of the image has to be done offline for any reason, it can be achieved
+using the following command.</p>
+<p>In the system that already has the image:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker save --output orion-jupyter.tar orion-jupyter
 </pre></div>
 </div>
-<ol class="arabic simple">
-<li><p>For both the known and detected anomalies sequences, compute a label for each interval
-using 1 if the interval intersects with one of the anomaly intervals in the sequence:</p></li>
-</ol>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>truth = [0, 1, 1, 1, 0]
-detected = [0, 0, 1, 0, 0]
+<p>Then copy over the file <code class="docutils literal notranslate"><span class="pre">orion-jupyter.tar</span></code> to the new system and there, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker load --input orion-jupyter.tar
 </pre></div>
 </div>
-<ol class="arabic simple">
-<li><p>Compute a vector of weights using the lengths of the intervals:</p></li>
-</ol>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>weights = [169948800, 5961600, 626400, 3067200, 39592800]
+<p>After these commands, the <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code> image should be available and ready to be used in the
+new system.</p>
+</div>
+</div>
+<div class="section" id="running-the-orion-jupyter-image">
+<h2>Running the orion-jupyter image<a class="headerlink" href="#running-the-orion-jupyter-image" title="Permalink to this headline">¶</a></h2>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code> image has been built, pulled or loaded, it is ready to be run.</p>
+<p>This can be done in two ways:</p>
+<div class="section" id="running-orion-jupyter-with-the-code">
+<h3>Running orion-jupyter with the code<a class="headerlink" href="#running-orion-jupyter-with-the-code" title="Permalink to this headline">¶</a></h3>
+<p>If the Orion source code is available in the system, running the image is as simple as running
+this command from within the root of the project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make docker-jupyter-run
 </pre></div>
 </div>
-<ol class="arabic simple">
-<li><p>Compute a score using the labels:</p></li>
-</ol>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>accuracy_score(truth, detected, sample_weight=weights) = 0.9588096176586519
-f1_score(truth, detected, sample_weight=weights) = 0.1218487394957983
+<p>This will start a jupyter notebook using the docker image, which you can access by pointing your
+browser at <a class="reference external" href="http://127.0.0.1:8888">http://127.0.0.1:8888</a></p>
+<p>In this case, the local version of the project will also mounted within the Docker container,
+which means that any changes that you do in your local code will immediately be available
+within your notebooks, and that any notebook that you create within jupyter will also show
+up in your <code class="docutils literal notranslate"><span class="pre">notebooks</span></code> folder!</p>
+</div>
+<div class="section" id="running-orion-jupyter-without-the-orion-code">
+<h3>Running orion-jupyter without the orion code<a class="headerlink" href="#running-orion-jupyter-without-the-orion-code" title="Permalink to this headline">¶</a></h3>
+<p>If the Orion source code is not available in the system and only the Docker Image is, you can
+still run the image by using this command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run -ti -p8888:8888 orion-jupyter
 </pre></div>
 </div>
-<p>The whole process can be summarized in this diagram:</p>
-<a class="reference external image-reference" href="_static/scoring-300.png?raw=true"><img alt="Scoring" src="_static/scoring-300.png?raw=true" /></a>
-</div>
-</div>
-<div class="section" id="evaluating-the-pipelines">
-<h2>Evaluating the Pipelines<a class="headerlink" href="#evaluating-the-pipelines" title="Permalink to this headline">¶</a></h2>
-<p>Once we know how to compute a score given a set of known anomalies and another one of detected
-anomalies, we can evaluate the overall performance of our pipelines in order to know which
-one has the best performance.</p>
-<p>For this we:</p>
-<ol class="arabic simple">
-<li><p>Use each pipeline to detect anomalies on all our demo signals.</p></li>
-<li><p>Retreive the list of known anomalies for each of these signals.</p></li>
-<li><p>Compute the scores for each signal using multiple metrics (e.g. accuraccy and f1).</p></li>
-<li><p>Average the score obtained for each metric and pipeline accross all the signals.</p></li>
-<li><p>Finally, we rank our pipelines sorting them by one of the computed scores.</p></li>
-</ol>
-<p>The output of this process is the <a class="reference external" href="README.md#leaderboard">Leaderboard table from the README.md</a>.</p>
-</div>
-<div class="section" id="evaluate-function">
-<h2>Evaluate function<a class="headerlink" href="#evaluate-function" title="Permalink to this headline">¶</a></h2>
-<p>The complete evaluation process described above is directly available using the
-<code class="docutils literal notranslate"><span class="pre">orion.evaluation.evaluate_pipelines</span></code> function.</p>
-<p>This function expects the following inputs:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pipelines</span> <span class="pre">(dict</span> <span class="pre">or</span> <span class="pre">list)</span></code>: dictionary with pipeline names as keys and their
-JSON paths as values. If a list is given, it should be of JSON paths,
-and the paths themselves will be used as names.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">signals</span> <span class="pre">(list,</span> <span class="pre">optional)</span></code>: list of signals. If not given, all the NASA signals are used.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">metrics</span> <span class="pre">(dict</span> <span class="pre">or</span> <span class="pre">list,</span> <span class="pre">optional)</span></code>: dictionary with metric names as keys and
-scoring functions as values. If a list is given, it should be of scoring
-functions, and they <code class="docutils literal notranslate"><span class="pre">__name__</span></code> value will be used as the metric name.
-If not given, all the available metrics will be used.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rank</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: Sort and rank the pipelines based on the given metric.
-If not given, rank using the first metric.</p></li>
-</ul>
-<p>And returns a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> which contains the average of the scores obtained with
-each scoring function accross all the signals for each pipeline, ranked by the indicated metric.</p>
-<p>This is an example of how to call this function:</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>In [1]: from orion.evaluation import evaluate_pipelines
-
-In [2]: pipelines = [
-   ...:     &#39;orion/pipelines/skew_24h_lstm.json&#39;,
-   ...:     &#39;orion/pipelines/lstm_dynamic_threshold.json&#39;
-   ...: ]
-
-In [3]: metrics = [&#39;f1&#39;, &#39;accuracy&#39;, &#39;recall&#39;, &#39;precision&#39;]
-
-In [4]: signals = [&#39;S-1&#39;, &#39;P-1&#39;]
-
-In [5]: scores = evaluate_pipelines(pipelines, signals, metrics, rank=&#39;f1&#39;)
-
-In [6]: scores
-Out[6]:
-                                      pipeline  rank  accuracy        f1  precision    recall
-0  orion/pipelines/lstm_dynamic_threshold.json     1  0.946529  0.060924     0.5000  0.032438
-1           orion/pipelines/skew_24h_lstm.json     2  0.939685  0.015370     0.0625  0.008762
-</pre></div>
+<p>In this case, the code changes and the notebooks that you create within jupyter will stay
+inside the container and you will only be able to access and download them through the
+jupyter interface.</p>
 </div>
 </div>
 </div>
@@ -459,10 +401,10 @@ Out[6]:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="database.html" class="btn btn-neutral float-right" title="Database Schema" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="api/orion.html" class="btn btn-neutral float-right" title="orion package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="readme.html" class="btn btn-neutral float-left" title="Orion" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="database.html" class="btn btn-neutral float-left" title="Database Schema" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -98,22 +98,20 @@
 <li class="toctree-l2"><a class="reference internal" href="readme.html#leaderboard">Leaderboard</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="readme.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#install">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="readme.html#requirements">Requirements</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="readme.html#python">Python</a></li>
 <li class="toctree-l3"><a class="reference internal" href="readme.html#mongodb">MongoDB</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#install">Install</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="readme.html#docker">Docker</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-with-pip">Install with pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker">Docker</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html#quickstart">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="readme.html#load-the-data">1. Load the data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#evaluate-performance">3. Evaluate performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#detect-anomalies-using-orion">2. Detect anomalies using Orion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#evaluate-the-performance-of-your-pipeline">3. Evaluate the performance of your pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html#database">Database</a></li>
@@ -174,6 +172,21 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="docker.html">Docker Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#docker-requirements">Docker Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#building-the-orion-docker-image">Building the Orion Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#distributing-the-orion-docker-image">Distributing the Orion Docker Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docker.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docker.html#distributing-as-a-file">Distributing as a file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#running-the-orion-jupyter-image">Running the orion-jupyter image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docker.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docker.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Resources</span></p>
 <ul>
@@ -192,8 +205,10 @@
 <li class="toctree-l2"><a class="reference internal" href="api/orion.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.analysis.html">orion.analysis module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.core.html">orion.core module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.data.html">orion.data module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.functional.html">orion.functional module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.metrics.html">orion.metrics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.runner.html">orion.runner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.utils.html">orion.utils module</a></li>
@@ -294,6 +309,7 @@
 </p><p align="left">
 <img width=20% src="https://dai.lids.mit.edu/wp-content/uploads/2018/08/orion.png" alt=“Orion” />
 </p><a class="reference external image-reference" href="https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha"><img alt="Development Status" src="https://img.shields.io/badge/Development%20Status-2%20--%20Pre--Alpha-yellow" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/orion-ml"><img alt="PyPi Shield" src="https://img.shields.io/pypi/v/orion-ml.svg" /></a>
 <a class="reference external image-reference" href="https://circleci.com/gh/D3-AI/Orion"><img alt="CircleCI" src="https://circleci.com/gh/D3-AI/Orion.svg?style=shield" /></a>
 <a class="reference external image-reference" href="https://travis-ci.org/D3-AI/Orion"><img alt="Travis CI Shield" src="https://travis-ci.org/D3-AI/Orion.svg?branch=master" /></a>
 <div class="section" id="orion">
@@ -331,7 +347,7 @@
 <ul>
 <li><p><a class="reference external" href="#input">I.1 Input</a></p></li>
 <li><p><a class="reference external" href="#output">I.2 Output</a></p></li>
-<li><p><a class="reference external" href="#dataset-we-use-in-this-library">I.2 Dataset we use in this library</a></p></li>
+<li><p><a class="reference external" href="#dataset-we-use-in-this-library">I.3 Dataset we use in this library</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference external" href="#orion-pipelines">II. Orion Pipelines</a></p>
@@ -340,10 +356,11 @@
 <li><p><a class="reference external" href="#leaderboard">II.2 Leaderboard</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference external" href="#getting-started">III. Getting Started</a></p>
+<li><p><a class="reference external" href="#install">III. Install</a></p>
 <ul>
 <li><p><a class="reference external" href="#requirements">III.1 Requirements</a></p></li>
-<li><p><a class="reference external" href="#install">III.2 Install</a></p></li>
+<li><p><a class="reference external" href="#install-with-pip">III.2 Install with pip</a></p></li>
+<li><p><a class="reference external" href="#docker">III.3 Docker</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference external" href="#quickstart">IV. Quickstart</a></p></li>
@@ -579,8 +596,8 @@ pipelines according to the benchmarking procedure explained in the <a class="ref
 </table>
 </div>
 </div>
-<div class="section" id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install">
+<h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="python">
@@ -596,8 +613,8 @@ where you are trying to run <strong>Orion</strong>.</p>
 <a class="reference external" href="https://www.mongodb.com/">MongoDB</a> database running version <strong>3.6</strong> or higher.</p>
 </div>
 </div>
-<div class="section" id="install">
-<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="install-with-pip">
+<h2>Install with pip<a class="headerlink" href="#install-with-pip" title="Permalink to this headline">¶</a></h2>
 <p>The easiest and recommended way to install <strong>Orion</strong> is using <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install orion-ml
 </pre></div>
@@ -605,12 +622,12 @@ where you are trying to run <strong>Orion</strong>.</p>
 <p>This will pull and install the latest stable release from <a class="reference external" href="https://pypi.org/">PyPi</a>.</p>
 <p>If you want to install from source or contribute to the project please read the
 <a class="reference external" href="https://sdv-dev.github.io/Copulas/contributing.html#get-started">Contributing Guide</a>.</p>
+</div>
 <div class="section" id="docker">
-<h3>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h3>
+<h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
 <p>Even thought it’s not mandatory to use it, <strong>Orion</strong> comes with the possibility to be
 distributed and run as a docker image, making its usage in offline systems easier.</p>
 <p>For more details please read the <a class="reference external" href="docker.html">Docker Usage Documentation</a>.</p>
-</div>
 </div>
 </div>
 <div class="section" id="quickstart">
@@ -626,8 +643,8 @@ pipeline and the second one to evaluate its performance.</p>
 the <code class="docutils literal notranslate"><span class="pre">'S-1-train'</span></code> and <code class="docutils literal notranslate"><span class="pre">'S-1-test'</span></code> names.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_signal</span>
 
-<span class="n">train</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1-train&#39;</span><span class="p">)</span>
-<span class="n">test</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1-test&#39;</span><span class="p">)</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1-train&#39;</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1-test&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The output will be a table in the format described above:</p>
@@ -640,23 +657,46 @@ the <code class="docutils literal notranslate"><span class="pre">'S-1-train'</sp
 </pre></div>
 </div>
 </div>
-<div class="section" id="detect-anomalies-using-a-pipeline">
-<h2>2. Detect anomalies using a pipeline<a class="headerlink" href="#detect-anomalies-using-a-pipeline" title="Permalink to this headline">¶</a></h2>
-<p>Once we have the data, let us try to use the LSTM pipeline to analyze it and search for anomalies.</p>
-<p>In order to do so, we will have import the <code class="docutils literal notranslate"><span class="pre">orion.analysis.analyze</span></code> function and pass it
-the train and test dataframes and the name of the pipeline that we want to use:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orion.analysis</span> <span class="kn">import</span> <span class="n">analyze</span>
+<div class="section" id="detect-anomalies-using-orion">
+<h2>2. Detect anomalies using Orion<a class="headerlink" href="#detect-anomalies-using-orion" title="Permalink to this headline">¶</a></h2>
+<p>Once we have the data, let us try to use an Orion pipeline to analyze it and search for anomalies.</p>
+<p>In order to do so, we will have to create an instance of the <code class="docutils literal notranslate"><span class="pre">orion.Orion</span></code> class.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orion</span> <span class="kn">import</span> <span class="n">Orion</span>
 
-<span class="n">anomalies</span> <span class="o">=</span> <span class="n">analyze</span><span class="p">(</span>
+<span class="n">orion</span> <span class="o">=</span> <span class="n">Orion</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Optionally, we might want to select a pipeline other than the default one or alter the
+hyperparameters by the underlying MLBlocks pipeline.</p>
+<p>For example, let’s select the <code class="docutils literal notranslate"><span class="pre">lstm_dynamic_threshold</span></code> pipeline and reduce the number of
+training epochs and increase the verbosity if the LSTM primitive that it uses.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;keras.Sequential.LSTMTimeSeriesRegressor#1&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">orion</span> <span class="o">=</span> <span class="n">Orion</span><span class="p">(</span>
     <span class="n">pipeline</span><span class="o">=</span><span class="s1">&#39;lstm_dynamic_threshold&#39;</span><span class="p">,</span>
-    <span class="n">train</span><span class="o">=</span><span class="n">train</span><span class="p">,</span>
-    <span class="n">test</span><span class="o">=</span><span class="n">test</span>
+    <span class="n">hyperparameters</span><span class="o">=</span><span class="n">hyperparameters</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>NOTE:</strong> Depending on your system and the exact versions that you might have installed
-some <em>WARNINGS</em> may be printed. These can be safely ignored as they do not interfere
-with the proper behavior of the pipeline.</p>
+<p>Once we the pipeline is ready, we can proceed to fit it to our data:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">orion</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once it is fitted, we are ready to use it to detect anomalies in our data:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">anomalies</span> <span class="o">=</span> <span class="n">orion</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">warning</dt>
+<dd class="field-odd"><p>Depending on your system and the exact versions that you might have installed some <em>WARNINGS</em> may be printed. These can be safely ignored as they do not interfere with the proper behavior of the pipeline.</p>
+</dd>
+</dl>
+</div></blockquote>
 <p>The output of the previous command will be a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing a table in the
 Output format described above:</p>
 <div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>        start         end     score
@@ -664,14 +704,14 @@ Output format described above:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="evaluate-performance">
-<h2>3. Evaluate performance<a class="headerlink" href="#evaluate-performance" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="evaluate-the-performance-of-your-pipeline">
+<h2>3. Evaluate the performance of your pipeline<a class="headerlink" href="#evaluate-the-performance-of-your-pipeline" title="Permalink to this headline">¶</a></h2>
 <p>In this next step we will load some already known anomalous intervals and evaluate how
 good our anomaly detection was by comparing those with our detected intervals.</p>
 <p>For this, we will first load the known anomalies for the signal that we are using:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_anomalies</span>
 
-<span class="n">known_anomalies</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="s1">&#39;S-1&#39;</span><span class="p">)</span>
+<span class="n">ground_truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="s1">&#39;S-1&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The output will be a table in the same format as the <code class="docutils literal notranslate"><span class="pre">anomalies</span></code> one.</p>
@@ -679,14 +719,18 @@ good our anomaly detection was by comparing those with our detected intervals.</
 0  1392768000  1402423200
 </pre></div>
 </div>
-<p>Afterwards, we pass the ground truth, the detected anomalies and the original test data
-to the <code class="docutils literal notranslate"><span class="pre">orion.metrics.accuracy_score</span></code> and <code class="docutils literal notranslate"><span class="pre">orion.metrics.f1_score</span></code> functions in order
-to compute a score that indicates how good our anomaly detection was:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orion.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">f1_score</span>
-
-<span class="n">accuracy_score</span><span class="p">(</span><span class="n">known_anomalies</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>  <span class="c1"># -&gt; 0.972987721691678</span>
-
-<span class="n">f1_score</span><span class="p">(</span><span class="n">known_anomalies</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>  <span class="c1"># -&gt; 0.7155172413793103</span>
+<p>Afterwards, we can call the <code class="docutils literal notranslate"><span class="pre">Orion.evaluate</span></code> method, passing both the test data
+and the ground truth:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">scores</span> <span class="o">=</span> <span class="n">orion</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output will be a <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> containing a collection of scores indicating
+how the predictions were:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>accuracy     0.988131
+f1           0.892193
+recall       0.805369
+precision    1.000000
+dtype: float64
 </pre></div>
 </div>
 </div>

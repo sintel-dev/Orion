@@ -98,22 +98,20 @@
 <li class="toctree-l2"><a class="reference internal" href="readme.html#leaderboard">Leaderboard</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="readme.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#install">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="readme.html#requirements">Requirements</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="readme.html#python">Python</a></li>
 <li class="toctree-l3"><a class="reference internal" href="readme.html#mongodb">MongoDB</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#install">Install</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="readme.html#docker">Docker</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-with-pip">Install with pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker">Docker</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html#quickstart">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="readme.html#load-the-data">1. Load the data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#detect-anomalies-using-a-pipeline">2. Detect anomalies using a pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#evaluate-performance">3. Evaluate performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#detect-anomalies-using-orion">2. Detect anomalies using Orion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#evaluate-the-performance-of-your-pipeline">3. Evaluate the performance of your pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html#database">Database</a></li>
@@ -174,6 +172,21 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="docker.html">Docker Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#docker-requirements">Docker Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#building-the-orion-docker-image">Building the Orion Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#distributing-the-orion-docker-image">Distributing the Orion Docker Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docker.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docker.html#distributing-as-a-file">Distributing as a file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#running-the-orion-jupyter-image">Running the orion-jupyter image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docker.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docker.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Resources</span></p>
 <ul>
@@ -192,8 +205,10 @@
 <li class="toctree-l2"><a class="reference internal" href="api/orion.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.analysis.html">orion.analysis module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.core.html">orion.core module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.data.html">orion.data module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.evaluation.html">orion.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.functional.html">orion.functional module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.metrics.html">orion.metrics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.runner.html">orion.runner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.utils.html">orion.utils module</a></li>
@@ -458,14 +473,32 @@
         <li><a href="api/orion.db.schema.html#orion.db.schema.Signal.dataset">(orion.db.schema.Signal attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Dataset.DoesNotExist">Dataset.DoesNotExist</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Dataset.MultipleObjectsReturned">Dataset.MultipleObjectsReturned</a>
 </li>
-      <li><a href="api/orion.primitives.detectors.html#orion.primitives.detectors.ThresholdDetector.detect">detect() (orion.primitives.detectors.ThresholdDetector method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.core.html#orion.core.Orion.DEFAULT_PIPELINE">DEFAULT_PIPELINE (orion.core.Orion attribute)</a>
+
+      <ul>
+        <li><a href="api/orion.html#orion.Orion.DEFAULT_PIPELINE">(orion.Orion attribute)</a>
 </li>
+      </ul></li>
+      <li><a href="api/orion.core.html#orion.core.Orion.detect">detect() (orion.core.Orion method)</a>
+
+      <ul>
+        <li><a href="api/orion.html#orion.Orion.detect">(orion.Orion method)</a>
+</li>
+        <li><a href="api/orion.primitives.detectors.html#orion.primitives.detectors.ThresholdDetector.detect">(orion.primitives.detectors.ThresholdDetector method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/orion.html#orion.detect_anomalies">detect_anomalies() (in module orion)</a>
+
+      <ul>
+        <li><a href="api/orion.functional.html#orion.functional.detect_anomalies">(in module orion.functional)</a>
+</li>
+      </ul></li>
       <li><a href="api/orion.data.html#orion.data.download">download() (in module orion.data)</a>
 </li>
       <li><a href="api/orion.data.html#orion.data.download_demo">download_demo() (in module orion.data)</a>
@@ -496,20 +529,32 @@
       </ul></li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Dataset.entity">entity (orion.db.schema.Dataset attribute)</a>
 </li>
-      <li><a href="api/orion.evaluation.html#orion.evaluation.evaluate_pipeline">evaluate_pipeline() (in module orion.evaluation)</a>
+      <li><a href="api/orion.core.html#orion.core.Orion.evaluate">evaluate() (orion.core.Orion method)</a>
+
+      <ul>
+        <li><a href="api/orion.html#orion.Orion.evaluate">(orion.Orion method)</a>
 </li>
+      </ul></li>
+      <li><a href="api/orion.html#orion.evaluate_pipeline">evaluate_pipeline() (in module orion)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.html#orion.evaluation.evaluate_pipeline">(in module orion.evaluation)</a>
+</li>
+        <li><a href="api/orion.functional.html#orion.functional.evaluate_pipeline">(in module orion.functional)</a>
+</li>
+      </ul></li>
       <li><a href="api/orion.evaluation.html#orion.evaluation.evaluate_pipelines">evaluate_pipelines() (in module orion.evaluation)</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event">Event (class in orion.db.schema)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Annotation.event">event (orion.db.schema.Annotation attribute)</a>
 
       <ul>
         <li><a href="api/orion.db.schema.html#orion.db.schema.EventInteraction.event">(orion.db.schema.EventInteraction attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.DoesNotExist">Event.DoesNotExist</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.MultipleObjectsReturned">Event.MultipleObjectsReturned</a>
@@ -544,14 +589,30 @@
 </li>
       <li><a href="api/orion.db.base.html#orion.db.base.OrionDocument.find_one">find_one() (orion.db.base.OrionDocument class method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.db.base.html#orion.db.base.OrionDocument.find_or_insert">find_or_insert() (orion.db.base.OrionDocument class method)</a>
 </li>
-      <li><a href="api/orion.primitives.detectors.html#orion.primitives.detectors.ThresholdDetector.fit">fit() (orion.primitives.detectors.ThresholdDetector method)</a>
+      <li><a href="api/orion.core.html#orion.core.Orion.fit">fit() (orion.core.Orion method)</a>
 
       <ul>
+        <li><a href="api/orion.html#orion.Orion.fit">(orion.Orion method)</a>
+</li>
+        <li><a href="api/orion.primitives.detectors.html#orion.primitives.detectors.ThresholdDetector.fit">(orion.primitives.detectors.ThresholdDetector method)</a>
+</li>
         <li><a href="api/orion.primitives.estimators.html#orion.primitives.estimators.MeanEstimator.fit">(orion.primitives.estimators.MeanEstimator method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.core.html#orion.core.Orion.fit_detect">fit_detect() (orion.core.Orion method)</a>
+
+      <ul>
+        <li><a href="api/orion.html#orion.Orion.fit_detect">(orion.Orion method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/orion.html#orion.fit_pipeline">fit_pipeline() (in module orion)</a>
+
+      <ul>
+        <li><a href="api/orion.functional.html#orion.functional.fit_pipeline">(in module orion.functional)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -574,8 +635,6 @@
         <li><a href="api/orion.db.html#orion.db.OrionDBExplorer.get_annotations">(orion.db.OrionDBExplorer method)</a>
 </li>
       </ul></li>
-      <li><a href="api/orion.html#orion.get_available_templates">get_available_templates() (in module orion)</a>
-</li>
       <li><a href="api/orion.db.explorer.html#orion.db.explorer.OrionDBExplorer.get_datarun">get_datarun() (orion.db.explorer.OrionDBExplorer method)</a>
 
       <ul>
@@ -742,12 +801,16 @@
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.latest_event_interaction">latest_event_interaction() (orion.db.schema.Event property)</a>
 </li>
-      <li><a href="api/orion.db.schema.html#orion.db.schema.Pipeline.load">load() (orion.db.schema.Pipeline method)</a>
+      <li><a href="api/orion.core.html#orion.core.Orion.load">load() (orion.core.Orion class method)</a>
 
       <ul>
+        <li><a href="api/orion.db.schema.html#orion.db.schema.Pipeline.load">(orion.db.schema.Pipeline method)</a>
+</li>
         <li><a href="api/orion.db.schema.html#orion.db.schema.Signal.load">(orion.db.schema.Signal method)</a>
 </li>
         <li><a href="api/orion.db.schema.html#orion.db.schema.Template.load">(orion.db.schema.Template method)</a>
+</li>
+        <li><a href="api/orion.html#orion.Orion.load">(orion.Orion class method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -830,16 +893,24 @@
         <li><a href="api/orion.db.schema.html#orion.db.schema.Template.objects">(orion.db.schema.Template attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api/orion.html#orion.Orion">Orion (class in orion)</a>
+
+      <ul>
+        <li><a href="api/orion.core.html#orion.core.Orion">(class in orion.core)</a>
+</li>
+      </ul></li>
       <li><a href="api/orion.html#module-orion">orion (module)</a>
 </li>
       <li><a href="api/orion.analysis.html#module-orion.analysis">orion.analysis (module)</a>
 </li>
-      <li><a href="api/orion.data.html#module-orion.data">orion.data (module)</a>
+      <li><a href="api/orion.core.html#module-orion.core">orion.core (module)</a>
 </li>
-      <li><a href="api/orion.db.html#module-orion.db">orion.db (module)</a>
+      <li><a href="api/orion.data.html#module-orion.data">orion.data (module)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.db.html#module-orion.db">orion.db (module)</a>
+</li>
       <li><a href="api/orion.db.base.html#module-orion.db.base">orion.db.base (module)</a>
 </li>
       <li><a href="api/orion.db.explorer.html#module-orion.db.explorer">orion.db.explorer (module)</a>
@@ -847,6 +918,8 @@
       <li><a href="api/orion.db.schema.html#module-orion.db.schema">orion.db.schema (module)</a>
 </li>
       <li><a href="api/orion.evaluation.html#module-orion.evaluation">orion.evaluation (module)</a>
+</li>
+      <li><a href="api/orion.functional.html#module-orion.functional">orion.functional (module)</a>
 </li>
       <li><a href="api/orion.metrics.html#module-orion.metrics">orion.metrics (module)</a>
 </li>
@@ -888,10 +961,22 @@
 </li>
       <li><a href="api/orion.db.base.html#orion.db.base.PipelineField">PipelineField (class in orion.db.base)</a>
 </li>
+      <li><a href="api/orion.core.html#orion.core.Orion.PIPELINES">PIPELINES (orion.core.Orion attribute)</a>
+
+      <ul>
+        <li><a href="api/orion.html#orion.Orion.PIPELINES">(orion.Orion attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Template.pipelines">pipelines() (orion.db.schema.Template property)</a>
 </li>
+      <li><a href="api/orion.core.html#orion.core.Orion.PIPELINES_DIR">PIPELINES_DIR (orion.core.Orion attribute)</a>
+
+      <ul>
+        <li><a href="api/orion.html#orion.Orion.PIPELINES_DIR">(orion.Orion attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/orion.metrics.html#orion.metrics.precision_score">precision_score() (in module orion.metrics)</a>
 </li>
       <li><a href="api/orion.primitives.estimators.html#orion.primitives.estimators.MeanEstimator.predict">predict() (orion.primitives.estimators.MeanEstimator method)</a>
@@ -920,8 +1005,14 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.db.schema.html#orion.db.schema.Annotation.save">save() (orion.db.schema.Annotation method)</a>
+      <li><a href="api/orion.core.html#orion.core.Orion.save">save() (orion.core.Orion method)</a>
+
+      <ul>
+        <li><a href="api/orion.db.schema.html#orion.db.schema.Annotation.save">(orion.db.schema.Annotation method)</a>
 </li>
+        <li><a href="api/orion.html#orion.Orion.save">(orion.Orion method)</a>
+</li>
+      </ul></li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.severity">severity (orion.db.schema.Event attribute)</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Signal">Signal (class in orion.db.schema)</a>
@@ -958,10 +1049,10 @@
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.SOURCE_MANUALLY_CREATED">SOURCE_MANUALLY_CREATED (orion.db.schema.Event attribute)</a>
 </li>
-      <li><a href="api/orion.db.schema.html#orion.db.schema.Event.SOURCE_ORION">SOURCE_ORION (orion.db.schema.Event attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.db.schema.html#orion.db.schema.Event.SOURCE_ORION">SOURCE_ORION (orion.db.schema.Event attribute)</a>
+</li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.SOURCE_SHAPE_MATCHING">SOURCE_SHAPE_MATCHING (orion.db.schema.Event attribute)</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Datarun.start">start() (orion.db.schema.Datarun method)</a>

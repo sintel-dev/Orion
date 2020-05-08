@@ -21,8 +21,10 @@ Submodules
 
    orion.analysis
    orion.cli
+   orion.core
    orion.data
    orion.evaluation
+   orion.functional
    orion.metrics
    orion.runner
    orion.utils

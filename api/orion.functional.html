@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>orion package &mdash; Orion 0.1.1.dev0 documentation</title>
+  <title>orion.functional module &mdash; Orion 0.1.1.dev0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="orion.db package" href="orion.db.html" />
-    <link rel="prev" title="Docker Usage" href="../docker.html" /> 
+    <link rel="next" title="orion.metrics module" href="orion.metrics.html" />
+    <link rel="prev" title="orion.evaluation module" href="orion.evaluation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -191,8 +191,8 @@
 </ul>
 <p class="caption"><span class="caption-text">Resources</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="orion.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="orion.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="orion.db.html">orion.db package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="orion.db.html#submodules">Submodules</a></li>
 </ul>
@@ -203,13 +203,13 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.core.html">orion.core module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.evaluation.html">orion.evaluation module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.functional.html">orion.functional module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.functional module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.metrics.html">orion.metrics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.runner.html">orion.runner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
@@ -283,14 +283,16 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>orion package</li>
+          <li><a href="orion.html">orion package</a> &raquo;</li>
+        
+      <li>orion.functional module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.functional.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -304,186 +306,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-orion">
-<span id="orion-package"></span><h1>orion package<a class="headerlink" href="#module-orion" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="orion.Orion">
-<em class="property">class </em><code class="sig-prename descclassname">orion.</code><code class="sig-name descname">Orion</code><span class="sig-paren">(</span><em class="sig-param">pipeline: Union[str</em>, <em class="sig-param">dict</em>, <em class="sig-param">mlblocks.mlpipeline.MLPipeline] = None</em>, <em class="sig-param">hyperparameters: dict = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/core.html#Orion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.Orion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Orion Class.</p>
-<p>The Orion Class provides the main anomaly detection functionalities
-of Orion and is responsible for the interaction with the underlying
-MLBlocks pipelines.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pipeline</strong> (<em>str</em><em>, </em><em>dict</em><em> or </em><em>MLPipeline</em>) – <dl class="simple">
-<dt>Pipeline to use. It can be passed as:</dt><dd><ul>
-<li><p>An <code class="docutils literal notranslate"><span class="pre">str</span></code> with a path to a JSON file.</p></li>
-<li><p>An <code class="docutils literal notranslate"><span class="pre">str</span></code> with the name of a registered pipeline.</p></li>
-<li><p>An <code class="docutils literal notranslate"><span class="pre">MLPipeline</span></code> instance.</p></li>
-<li><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> with an <code class="docutils literal notranslate"><span class="pre">MLPipeline</span></code> specification.</p></li>
+  <div class="section" id="module-orion.functional">
+<span id="orion-functional-module"></span><h1>orion.functional module<a class="headerlink" href="#module-orion.functional" title="Permalink to this headline">¶</a></h1>
+<p>Orion Functional API.</p>
+<p>This module provides a collection of simple python functions that
+allow using Orion performing as little steps as possible, hidding
+away all the complexity related to loading data, creating class
+instances or serializing and de-serializing previously fitted
+pipelines.</p>
+<p>Currently implemented functions:
+- <cite>fit_pipeline</cite>: Learn an Orion pipeline and save it for later usage.
+- <cite>detect_anomalies</cite>: Analyze a signal to detect anomalies. Optionally learn</p>
+<blockquote>
+<div><p>a pipeline on the way.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><cite>evaluate_pipeline</cite>: Evaluate the performance of a pipeline against a list
+of known anomalies.</p></li>
 </ul>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>hyperparameters</strong> (<em>dict</em>) – Additional hyperparameters to set to the Pipeline.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="attribute">
-<dt id="orion.Orion.DEFAULT_PIPELINE">
-<code class="sig-name descname">DEFAULT_PIPELINE</code><em class="property"> = 'lstm_dynamic_threshold'</em><a class="headerlink" href="#orion.Orion.DEFAULT_PIPELINE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="orion.Orion.PIPELINES">
-<code class="sig-name descname">PIPELINES</code><em class="property"> = ('arima', 'mean_24h_lstm', 'lstm_dynamic_threshold', 'skew_24h_lstm', 'cyclegan', 'median_24h_lstm', 'dummy', 'sum_24h_lstm')</em><a class="headerlink" href="#orion.Orion.PIPELINES" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="orion.Orion.PIPELINES_DIR">
-<code class="sig-name descname">PIPELINES_DIR</code><em class="property"> = '/home/travis/build/D3-AI/Orion/orion/pipelines'</em><a class="headerlink" href="#orion.Orion.PIPELINES_DIR" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="orion.Orion.detect">
-<code class="sig-name descname">detect</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">visualization: bool = False</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/orion/core.html#Orion.detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.Orion.detect" title="Permalink to this definition">¶</a></dt>
-<dd><p>Detect anomalies in the given data..</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">visualization=True</span></code>, also return the visualization
-outputs from the MLPipeline object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>DataFrame</em>) – Input data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
-exactly two columns: timestamp and value.</p></li>
-<li><p><strong>visualization</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, also capture the <code class="docutils literal notranslate"><span class="pre">visualization</span></code> named
-output from the <code class="docutils literal notranslate"><span class="pre">MLPipeline</span></code> and return it as a second
-output.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If visualization is <code class="docutils literal notranslate"><span class="pre">False</span></code>, it returns the events
-DataFrame. If visualization is <code class="docutils literal notranslate"><span class="pre">True</span></code>, it returns a
-tuple containing the events DataFrame followed by the
-visualization outputs dict.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>DataFrame or tuple</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="orion.Orion.evaluate">
-<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">truth: pandas.core.frame.DataFrame</em>, <em class="sig-param">fit: bool = False</em>, <em class="sig-param">train_data: pandas.core.frame.DataFrame = None</em>, <em class="sig-param">metrics: List[str] = {'accuracy': &lt;function accuracy_score&gt;</em>, <em class="sig-param">'f1': &lt;function f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function precision_score&gt;</em>, <em class="sig-param">'recall': &lt;function recall_score&gt;}</em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="../_modules/orion/core.html#Orion.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.Orion.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate the performance against a ground truth.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>DataFrame</em>) – Input data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
-exactly two columns: timestamp and value.</p></li>
-<li><p><strong>truth</strong> (<em>DataFrame</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
-two columns: start and stop.</p></li>
-<li><p><strong>fit</strong> (<em>bool</em>) – Whether to fit the pipeline before evaluating it.
-Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>train_data</strong> (<em>DataFrame</em>) – Training data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
-exactly two columns: timestamp and value.
-If not given, the pipeline is fitted on <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p></li>
-<li><p><strong>metrics</strong> (<em>list</em>) – List of metrics to used passed as a list of strings.
-If not given, it defaults to all the Orion metrics.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> containing one element for each
-metric applied, with the metric name as index.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Series</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="orion.Orion.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/core.html#Orion.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.Orion.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the pipeline to the given data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>DataFrame</em>) – Input data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
-exactly two columns: timestamp and value.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="orion.Orion.fit_detect">
-<code class="sig-name descname">fit_detect</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">visualization: bool = False</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/orion/core.html#Orion.fit_detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.Orion.fit_detect" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the pipeline to the data and then detect anomalies.</p>
-<p>This method is functionally equivalent to calling <code class="docutils literal notranslate"><span class="pre">fit(data)</span></code>
-and later on <code class="docutils literal notranslate"><span class="pre">detect(data)</span></code> but with the difference that
-here the <code class="docutils literal notranslate"><span class="pre">MLPipeline</span></code> is called only once, using its <code class="docutils literal notranslate"><span class="pre">fit</span></code>
-method, and the output is directly captured without having
-to execute the whole pipeline again during the <code class="docutils literal notranslate"><span class="pre">predict</span></code> phase.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">visualization=True</span></code>, also return the visualization
-outputs from the MLPipeline object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>DataFrame</em>) – Input data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
-exactly two columns: timestamp and value.</p></li>
-<li><p><strong>visualization</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, also capture the <code class="docutils literal notranslate"><span class="pre">visualization</span></code> named
-output from the <code class="docutils literal notranslate"><span class="pre">MLPipeline</span></code> and return it as a second
-output.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If visualization is <code class="docutils literal notranslate"><span class="pre">False</span></code>, it returns the events
-DataFrame. If visualization is <code class="docutils literal notranslate"><span class="pre">True</span></code>, it returns a
-tuple containing the events DataFrame followed by the
-visualization outputs dict.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>DataFrame or tuple</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="orion.Orion.load">
-<em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">path: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/core.html#Orion.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.Orion.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load an Orion instance from a pickle file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to the file where the instance has been
-previously serialized.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Orion</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If the serialized object is not an Orion instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="orion.Orion.save">
-<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">path: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/core.html#Orion.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.Orion.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save this object using pickle.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to the file where the serialization of
-this object will be stored.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="function">
-<dt id="orion.detect_anomalies">
-<code class="sig-prename descclassname">orion.</code><code class="sig-name descname">detect_anomalies</code><span class="sig-paren">(</span><em class="sig-param">data: Union[str</em>, <em class="sig-param">pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">pipeline: Union[orion.core.Orion</em>, <em class="sig-param">str</em>, <em class="sig-param">mlblocks.mlpipeline.MLPipeline</em>, <em class="sig-param">dict] = None</em>, <em class="sig-param">hyperparameters: Union[str</em>, <em class="sig-param">pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">train_data: Union[str</em>, <em class="sig-param">pandas.core.frame.DataFrame] = None</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/orion/functional.html#detect_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.detect_anomalies" title="Permalink to this definition">¶</a></dt>
+<dt id="orion.functional.detect_anomalies">
+<code class="sig-prename descclassname">orion.functional.</code><code class="sig-name descname">detect_anomalies</code><span class="sig-paren">(</span><em class="sig-param">data: Union[str</em>, <em class="sig-param">pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">pipeline: Union[orion.core.Orion</em>, <em class="sig-param">str</em>, <em class="sig-param">mlblocks.mlpipeline.MLPipeline</em>, <em class="sig-param">dict] = None</em>, <em class="sig-param">hyperparameters: Union[str</em>, <em class="sig-param">pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">train_data: Union[str</em>, <em class="sig-param">pandas.core.frame.DataFrame] = None</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/orion/functional.html#detect_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.functional.detect_anomalies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect anomalies on timeseries data.</p>
 <p>The anomalies are detected using an Orion pipeline which can
 be passed as:</p>
@@ -536,8 +379,8 @@ If not given, the pipeline is used without fitting it first.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="orion.evaluate_pipeline">
-<code class="sig-prename descclassname">orion.</code><code class="sig-name descname">evaluate_pipeline</code><span class="sig-paren">(</span><em class="sig-param">data: Union[str, pandas.core.frame.DataFrame], truth: Union[str, pandas.core.frame.DataFrame], pipeline: Union[str, dict, mlblocks.mlpipeline.MLPipeline], hyperparameters: Union[str, pandas.core.frame.DataFrame] = None, metrics: List[Union[callable, str]] = None, train_data: Union[str, pandas.core.frame.DataFrame] = None</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/orion/functional.html#evaluate_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluate_pipeline" title="Permalink to this definition">¶</a></dt>
+<dt id="orion.functional.evaluate_pipeline">
+<code class="sig-prename descclassname">orion.functional.</code><code class="sig-name descname">evaluate_pipeline</code><span class="sig-paren">(</span><em class="sig-param">data: Union[str, pandas.core.frame.DataFrame], truth: Union[str, pandas.core.frame.DataFrame], pipeline: Union[str, dict, mlblocks.mlpipeline.MLPipeline], hyperparameters: Union[str, pandas.core.frame.DataFrame] = None, metrics: List[Union[callable, str]] = None, train_data: Union[str, pandas.core.frame.DataFrame] = None</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/orion/functional.html#evaluate_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.functional.evaluate_pipeline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the performance of a pipeline.</p>
 <p>The pipeline is evaluated by executing it on a signal
 for which anomalies are known and then applying one or
@@ -588,8 +431,8 @@ If not given, the pipeline is used without fitting it first.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="orion.fit_pipeline">
-<code class="sig-prename descclassname">orion.</code><code class="sig-name descname">fit_pipeline</code><span class="sig-paren">(</span><em class="sig-param">data: Union[str, pandas.core.frame.DataFrame], pipeline: Union[str, mlblocks.mlpipeline.MLPipeline, dict] = None, hyperparameters: Union[str, pandas.core.frame.DataFrame] = None, save_path: str = None</em><span class="sig-paren">)</span> &#x2192; orion.core.Orion<a class="reference internal" href="../_modules/orion/functional.html#fit_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.fit_pipeline" title="Permalink to this definition">¶</a></dt>
+<dt id="orion.functional.fit_pipeline">
+<code class="sig-prename descclassname">orion.functional.</code><code class="sig-name descname">fit_pipeline</code><span class="sig-paren">(</span><em class="sig-param">data: Union[str, pandas.core.frame.DataFrame], pipeline: Union[str, mlblocks.mlpipeline.MLPipeline, dict] = None, hyperparameters: Union[str, pandas.core.frame.DataFrame] = None, save_path: str = None</em><span class="sig-paren">)</span> &#x2192; orion.core.Orion<a class="reference internal" href="../_modules/orion/functional.html#fit_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.functional.fit_pipeline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit an Orion pipeline to the data.</p>
 <dl class="simple">
 <dt>The pipeine can be passed as:</dt><dd><ul class="simple">
@@ -629,52 +472,11 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">None</s
 <dd class="field-even"><p>If no save_path is provided, the fitted Orion instance is returned.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#orion.Orion" title="orion.Orion">Orion</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="orion.html#orion.Orion" title="orion.Orion">Orion</a></p>
 </dd>
 </dl>
 </dd></dl>
 
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="orion.db.html">orion.db package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="orion.db.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="orion.db.base.html">orion.db.base module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.db.explorer.html">orion.db.explorer module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.db.schema.html">orion.db.schema module</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="orion.primitives.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="orion.primitives.detectors.html">orion.primitives.detectors module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.primitives.estimators.html">orion.primitives.estimators module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.primitives.intervals.html">orion.primitives.intervals module</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.core.html">orion.core module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.evaluation.html">orion.evaluation module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.functional.html">orion.functional module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.metrics.html">orion.metrics module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.runner.html">orion.runner module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
-</ul>
-</div>
-</div>
 </div>
 
 
@@ -685,10 +487,10 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">None</s
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="orion.db.html" class="btn btn-neutral float-right" title="orion.db package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="orion.metrics.html" class="btn btn-neutral float-right" title="orion.metrics module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../docker.html" class="btn btn-neutral float-left" title="Docker Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="orion.evaluation.html" class="btn btn-neutral float-left" title="orion.evaluation module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
