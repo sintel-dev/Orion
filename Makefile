@@ -64,6 +64,10 @@ test: ## run tests quickly with the default Python
 test-all: ## run tests on every Python version with tox
 	tox -r
 
+.PHONY: test-readme
+test-readme: ## run the readme snippets
+	rundoc run --single-session python3 -t python3 README.md
+
 .PHONY: coverage
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source orion -m pytest

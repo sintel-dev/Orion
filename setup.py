@@ -35,6 +35,7 @@ setup_requires = [
 tests_require = [
     'pytest>=3.4.2',
     'pytest-cov>=2.6.0',
+    'rundoc>=0.4.3,<0.5',
 ]
 
 development_requires = [
@@ -105,7 +106,7 @@ setup(
     long_description_content_type='text/markdown',
     name='orion-ml',
     packages=find_packages(include=['orion', 'orion.*']),
-    python_requires='>=3.6',
+    python_requires='>=3.6,<3.8',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,
