@@ -4,21 +4,13 @@ from datetime import datetime
 
 import pandas as pd
 
-from orion import metrics
 from orion.analysis import analyze
 from orion.data import NASA_SIGNALS, load_anomalies, load_signal
+from orion.metrics import METRICS
 
 warnings.filterwarnings("ignore")
 
 LOGGER = logging.getLogger(__name__)
-
-
-METRICS = {
-    'accuracy': metrics.accuracy_score,
-    'precision': metrics.precision_score,
-    'recall': metrics.recall_score,
-    'f1': metrics.f1_score,
-}
 
 
 def _evaluate_on_signal(pipeline, signal, metrics, holdout=True):

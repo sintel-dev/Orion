@@ -118,3 +118,11 @@ def precision_score(expected, observed, data=None, start=None, end=None):
         * end (int): Maximum timestamp of the original data.
     """
     return _score(metrics.precision_score, expected, observed, data, start, end)
+
+
+METRICS = {
+    'accuracy': accuracy_score,
+    'f1': f1_score,
+    'recall': recall_score,
+    'precision': precision_score,
+}

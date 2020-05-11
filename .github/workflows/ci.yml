@@ -1,0 +1,53 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: CI
+
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: [3.6, 3.7]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Package
+      run: |
+        python -m pip install --upgrade pip
+        pip install . rundoc
+    - name: Test README
+      run: |
+        make test-readme
+    - name: Install test dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[test]
+    - name: Test with pytest
+      run: |
+        make test
+    - name: Install development dependencies
+      run: |
+        pip install .[dev]
+    - name: Lint with flake8
+      run: |
+        make lint
+    - name: Test with pytest
+      run: |
+        make test
+    - if: matrix.os == 'ubuntu-latest'
+      name: Install pandoc - Ubuntu
+      run: |
+        sudo apt install pandoc
+        make docs
