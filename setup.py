@@ -52,7 +52,7 @@ development_requires = [
     'autodocsumm>=0.1.10,<1',
 
     # style check
-    'flake8>=3.7.7,<4',
+    'flake8>=3.7.7,<3.8',
     'isort>=4.3.4,<5',
 
     # fix style issues
