@@ -4,7 +4,7 @@ import pandas as pd
 from mlblocks import MLPipeline
 
 from orion import evaluation
-from orion.metrics import f1_score
+from orion.eval.evaluation import METRICS
 
 
 @patch('orion.evaluation.load_anomalies')
@@ -13,7 +13,7 @@ from orion.metrics import f1_score
 def test__evaluate_on_signal_holdout(load_signal_mock, analize_mock, load_anomalies_mock):
     pipeline = MagicMock(autospec=MLPipeline)
     signal = 'signal-name'
-    metric_mock = MagicMock(autospec=f1_score, return_value=1)
+    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
     metrics = {
         'metric-name': metric_mock
     }
@@ -45,7 +45,7 @@ def test__evaluate_on_signal_holdout(load_signal_mock, analize_mock, load_anomal
 def test__evaluate_on_signal_no_holdout(load_signal_mock, analize_mock, load_anomalies_mock):
     pipeline = MagicMock(autospec=MLPipeline)
     signal = 'signal-name'
-    metric_mock = MagicMock(autospec=f1_score, return_value=1)
+    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
     metrics = {
         'metric-name': metric_mock
     }
