@@ -13,7 +13,7 @@ from typing import List, Union
 import pandas as pd
 from mlblocks import MLPipeline
 
-from orion.eval.evaluation import METRICS
+from orion.evaluation.contextual import METRICS
 
 LOGGER = logging.getLogger(__name__)
 
