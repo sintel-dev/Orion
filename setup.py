@@ -4,13 +4,13 @@
 from setuptools import setup, find_packages
 
 try:
-    with open('README.md') as readme_file:
+    with open('README.md', encoding='utf-8') as readme_file:
         readme = readme_file.read()
 except IOError:
     readme = ''
 
 try:
-    with open('HISTORY.md') as history_file:
+    with open('HISTORY.md', encoding='utf-8') as history_file:
         history = history_file.read()
 except IOError:
     history = ''
