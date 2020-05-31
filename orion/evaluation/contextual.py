@@ -1,11 +1,28 @@
-""" The evaluator module provides metrics to assess the perfomance of
-anomaly detection methods using classification metrics: accuracy, precision,
-recall, and f1 score. This class addresses the problem as contextual anomalies.
+from orion.evaluation.common import (
+    _accuracy, _any_overlap, _f1_score, _overlap, _precision, _recall, _weighted_segment)
 
-anomaly = [(start, end)] inclusive interval.
-"""
 
-from .common import _accuracy, _any_overlap, _f1_score, _precision, _recall, _weighted_segment
+def _overlap_segment(expected, observed, start=None, end=None):
+    tp, fp, fn = 0, 0, 0
+
+    observed_copy = observed.copy()
+
+    for expected_seq in expected:
+        found = False
+        for observed_seq in observed:
+            if _overlap(expected_seq, observed_seq):
+                if not found:
+                    tp += 1
+                    found = True
+                if observed_seq in observed_copy:
+                    observed_copy.remove(observed_seq)
+
+        if not found:
+            fn += 1
+
+    fp += len(observed_copy)
+
+    return None, fp, fn, tp
 
 
 def _contextual_partition(expected, observed, start=None, end=None):
@@ -196,11 +213,3 @@ def contextual_f1_score(expected, observed, data=None, start=None, end=None, met
             F1 score between the ground truth and detected anomalies.
     """
     return _f1_score(expected, observed, data, start, end, method, contextual_confusion_matrix)
-
-
-METRICS = {
-    'accuracy': contextual_accuracy,
-    'f1': contextual_f1_score,
-    'recall': contextual_recall,
-    'precision': contextual_precision,
-}

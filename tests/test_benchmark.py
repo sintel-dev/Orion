@@ -4,7 +4,7 @@ import pandas as pd
 from mlblocks import MLPipeline
 
 from orion import benchmark
-from orion.evaluation.contextual import METRICS
+from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 
 
 @patch('orion.benchmark.load_anomalies')

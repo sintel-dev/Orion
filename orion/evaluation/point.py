@@ -1,11 +1,4 @@
-""" The evaluator module provides a mechanic to assess the perfomance of
-anomaly detection methods using classification metrics: accuracy, precision,
-recall, and f1 score. This class addresses the problem as point anomalies.
-
-anomaly = [timestamp].
-"""
-
-from .common import _accuracy, _f1_score, _precision, _recall, _weighted_segment
+from orion.evaluation.common import _accuracy, _f1_score, _precision, _recall, _weighted_segment
 
 
 def _point_partition(expected, observed, start=None, end=None):

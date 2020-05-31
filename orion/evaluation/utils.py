@@ -8,12 +8,17 @@ def from_pandas_contextual(df):
     """ Convert contextual ``pandas.DataFrame`` to list of tuples.
 
     Args:
-        df (DataFrame): anomalies, passed as ``pandas.DataFrame``
-        containing two columns: start and stop.
+        df (DataFrame):
+            anomalies, passed as ``pandas.DataFrame``
+            containing two columns: start and stop.
 
     Returns:
         list:
             tuple (start, end) timestamp.
+
+    Raises:
+        KeyError:
+            If the received ``pandas.DataFrame`` does not contain the required columns.
     """
     require = ['start', 'end']
     columns = df.columns.tolist()
@@ -70,12 +75,17 @@ def from_pandas_points(df):
     defined.
 
     Args:
-        df (DataFrame): anomalies, passed as ``pandas.DataFrame``
-        containing one column: timestamp.
+        df (DataFrame):
+            anomalies, passed as ``pandas.DataFrame``
+            containing one column: timestamp.
 
     Returns:
         list:
             tuple (start, end) timestamp.
+
+    Raises:
+        KeyError:
+            If the received ``pandas.DataFrame`` does not contain column `timestamp`.
     """
     time_column = 'timestamp'
     columns = df.columns.tolist()
@@ -96,12 +106,17 @@ def from_pandas_points_labels(df):
     contextually defined.
 
     Args:
-        df (DataFrame): anomalies, passed as ``pandas.DataFrame``
-        containing two columns: timestamp and label.
+        df (DataFrame):
+            anomalies, passed as ``pandas.DataFrame``
+            containing two columns: timestamp and label.
 
     Returns:
         list:
             tuple (start, end) timestamp.
+
+    Raises:
+        KeyError:
+            If the received ``pandas.DataFrame`` does not contain the required columns.
     """
 
     require = ['timestamp', 'label']
