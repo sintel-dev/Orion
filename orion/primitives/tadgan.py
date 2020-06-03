@@ -187,25 +187,38 @@ class TadGAN():
     def _fit(self, X):
         fake = np.ones((self.batch_size, 1))
         valid = -np.ones((self.batch_size, 1))
-        delta = np.zeros((self.batch_size, 1))
-        
+        delta = np.ones((self.batch_size, 1))
+
+        X_ = np.copy(X)
         for epoch in range(1, self.epochs + 1):
-            for _ in range(self.iterations_critic):
-                idx = np.random.randint(0, X.shape[0], self.batch_size)
-                x = X[idx]
-                z = np.random.normal(size=(self.batch_size, self.latent_dim, 1))
+            np.random.shuffle(X_)
+            epoch_g_loss = []
+            epoch_cx_loss = []
+            epoch_cz_loss = []
 
-                cx_loss = self.critic_x_model.train_on_batch([x, z], [valid, fake, delta])
-                cz_loss = self.critic_z_model.train_on_batch([x, z], [valid, fake, delta])
-            
-            # single-directional
-            g_loss = self.encoder_generator_model.train_on_batch([x, z], [valid, valid, x])
-            # bi-directional
-#             g_loss = self.encoder_generator_model.train_on_batch([x, z], [valid, valid, z, x])
+            minibatches_size = self.batch_size * self.iterations_critic
+            num_minibatches = int(X_.shape[0] // minibatches_size)
 
-            if epoch % 500 == 0:
-                print('Epoch: {}/{}, [Dx loss: {}] [Dz loss: {}] [G loss: {}]'.format(
-                    epoch, self.epochs , cx_loss, cz_loss, g_loss))
+            for i in range(num_minibatches):
+                minibatch = X_[i * minibatches_size: (i + 1) * minibatches_size]
+
+                for j in range(self.iterations_critic):
+                    x = minibatch[j * self.batch_size: (j + 1) * self.batch_size]
+                    z = np.random.normal(size=(self.batch_size, self.latent_dim, 1))
+                    epoch_cx_loss.append(
+                        self.critic_x_model.train_on_batch([x, z], [valid, fake, delta]))
+                    epoch_cz_loss.append(
+                        self.critic_z_model.train_on_batch([x, z], [valid, fake, delta]))
+
+                epoch_g_loss.append(
+                    self.encoder_generator_model.train_on_batch([x, z], [valid, valid, x]))
+
+            cx_loss = np.mean(np.array(epoch_cx_loss), axis=0)
+            cz_loss = np.mean(np.array(epoch_cz_loss), axis=0)
+            g_loss = np.mean(np.array(epoch_g_loss), axis=0)
+            print('Epoch: {}/{}, [Dx loss: {}] [Dz loss: {}] [G loss: {}]'.format(
+                epoch, self.epochs, cx_loss, cz_loss, g_loss))
+
 
     def fit(self, X, **kwargs):
         """Fit the TadGAN.
