@@ -26,6 +26,7 @@ install_requires = [
     'pymongo>=3.7.2,<4',
     'scikit-learn>=0.20.1,<0.21',
     'tabulate>=0.8.3,<0.9',
+    'similaritymeasures>=0.4.3'
 ]
 
 setup_requires = [
