@@ -85,14 +85,14 @@ def test_contextual_confusion_matrix_points(expected_point, observed_point):
 
 def test_contextual_confusion_matrix_overlap(expected, observed):
     expected_return = (None, 1, 1, 5)
-    returned = contextual_confusion_matrix(expected, observed, method=_overlap_segment)
+    returned = contextual_confusion_matrix(expected, observed, weighted=False)
     np.testing.assert_array_equal(np.array(returned),
                                   np.array(expected_return))
 
 
 def test_contextual_confusion_matrix_overlap_points(expected_point, observed_point):
     expected_return = (None, 1, 1, 5)
-    returned = contextual_confusion_matrix(expected_point, observed_point, method=_overlap_segment)
+    returned = contextual_confusion_matrix(expected_point, observed_point, weighted=False)
     np.testing.assert_array_equal(np.array(returned),
                                   np.array(expected_return))
 
@@ -105,7 +105,7 @@ def test_contextual_accuracy(expected, observed):
 
 def test_contextual_accuracy_overlap(expected, observed):
     with pytest.raises(ValueError):
-        contextual_accuracy(expected, observed, method=_overlap_segment)
+        contextual_accuracy(expected, observed, weighted=False)
 
 
 def test_contextual_precision(expected, observed):

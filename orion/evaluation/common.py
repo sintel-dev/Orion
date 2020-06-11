@@ -23,9 +23,8 @@ def _weighted_segment(expected, observed, _partition, start=None, end=None):
         expected, observed, sample_weight=weights, labels=[0, 1]).ravel()
 
 
-def _accuracy(expected, observed, data, start, end, method, get_confusion_matrix):
-    tn, fp, fn, tp = get_confusion_matrix(
-        expected, observed, data, start, end, method)
+def _accuracy(expected, observed, data, start, end, cm):
+    tn, fp, fn, tp = cm(expected, observed, data, start, end)
 
     if tn is None:
         raise ValueError("Cannot obtain accuracy score for overlap segment method.")
@@ -33,23 +32,21 @@ def _accuracy(expected, observed, data, start, end, method, get_confusion_matrix
     return (tp + tn) / (tn + fp + fn + tp)
 
 
-def _precision(expected, observed, data, start, end, method, get_confusion_matrix):
-    tn, fp, fn, tp = get_confusion_matrix(
-        expected, observed, data, start, end, method)
+def _precision(expected, observed, data, start, end, cm):
+    tn, fp, fn, tp = cm(expected, observed, data, start, end)
 
     return tp / (tp + fp)
 
 
-def _recall(expected, observed, data, start, end, method, get_confusion_matrix):
-    tn, fp, fn, tp = get_confusion_matrix(
-        expected, observed, data, start, end, method)
+def _recall(expected, observed, data, start, end, cm):
+    tn, fp, fn, tp = cm(expected, observed, data, start, end)
 
     return tp / (tp + fn)
 
 
-def _f1_score(expected, observed, data, start, end, method, get_confusion_matrix):
-    precision = _precision(expected, observed, data, start, end, method, get_confusion_matrix)
-    recall = _recall(expected, observed, data, start, end, method, get_confusion_matrix)
+def _f1_score(expected, observed, data, start, end, cm):
+    precision = _precision(expected, observed, data, start, end, cm)
+    recall = _recall(expected, observed, data, start, end, cm)
 
     try:
         return 2 * (precision * recall) / (precision + recall)

@@ -59,7 +59,8 @@ def _pad(lst):
     return [(part[0], part[1] + 1) for part in lst]
 
 
-def contextual_confusion_matrix(expected, observed, data=None, start=None, end=None, method=None):
+def contextual_confusion_matrix(expected, observed, data=None,
+                                start=None, end=None, weighted=True):
     """Compute the confusion matrix between the ground truth and the detected anomalies.
 
     Args:
@@ -76,21 +77,22 @@ def contextual_confusion_matrix(expected, observed, data=None, start=None, end=N
             Minimum timestamp of the original data.
         end (int):
             Maximum timestamp of the original data.
-        method (function):
-            Function for computing confusion matrix (weighted segment, overlap segment).
+        weighted (boolean):
+            Flag to represent which algorithm to use.
+            If true use weighted segment algorithm, else use overlap segment.
 
     Returns:
         tuple:
             number of true negative, false positive, false negative, true positive.
     """
 
-    def ws(x, y, z, w):
+    def _ws(x, y, z, w):
         return _weighted_segment(x, y, _contextual_partition, z, w)
 
-    if method is not None:
-        function = method
+    if weighted:
+        function = _ws
     else:
-        function = ws
+        function = _overlap_segment
 
     if data is not None:
         start = data['timestamp'].min()
@@ -107,7 +109,7 @@ def contextual_confusion_matrix(expected, observed, data=None, start=None, end=N
     return function(expected, observed, start, end)
 
 
-def contextual_accuracy(expected, observed, data=None, start=None, end=None, method=None):
+def contextual_accuracy(expected, observed, data=None, start=None, end=None, weighted=True):
     """Compute an accuracy score between the ground truth and the detected anomalies.
 
     Args:
@@ -124,17 +126,20 @@ def contextual_accuracy(expected, observed, data=None, start=None, end=None, met
             Minimum timestamp of the original data.
         end (int):
             Maximum timestamp of the original data.
-        method (function):
-            Function for computing confusion matrix (weighted segment, overlap segment).
+        weighted (boolean):
+            Flag to represent which algorithm to use.
+            If true use weighted segment algorithm, else use overlap segment.
 
     Returns:
         float:
             Accuracy score between the ground truth and detected anomalies.
     """
-    return _accuracy(expected, observed, data, start, end, method, contextual_confusion_matrix)
+    def _cm(x, y, z, w, f):
+        return contextual_confusion_matrix(x, y, z, w, f, weighted)
+    return _accuracy(expected, observed, data, start, end, _cm)
 
 
-def contextual_precision(expected, observed, data=None, start=None, end=None, method=None):
+def contextual_precision(expected, observed, data=None, start=None, end=None, weighted=True):
     """Compute an precision score between the ground truth and the detected anomalies.
 
     Args:
@@ -151,17 +156,20 @@ def contextual_precision(expected, observed, data=None, start=None, end=None, me
             Minimum timestamp of the original data.
         end (int):
             Maximum timestamp of the original data.
-        method (function):
-            Function for computing confusion matrix (weighted segment, overlap segment).
+        weighted (boolean):
+            Flag to represent which algorithm to use.
+            If true use weighted segment algorithm, else use overlap segment.
 
     Returns:
         float:
             Precision score between the ground truth and detected anomalies.
     """
-    return _precision(expected, observed, data, start, end, method, contextual_confusion_matrix)
+    def _cm(x, y, z, w, f):
+        return contextual_confusion_matrix(x, y, z, w, f, weighted)
+    return _precision(expected, observed, data, start, end, _cm)
 
 
-def contextual_recall(expected, observed, data=None, start=None, end=None, method=None):
+def contextual_recall(expected, observed, data=None, start=None, end=None, weighted=True):
     """Compute an recall score between the ground truth and the detected anomalies.
 
     Args:
@@ -178,17 +186,20 @@ def contextual_recall(expected, observed, data=None, start=None, end=None, metho
             Minimum timestamp of the original data.
         end (int):
             Maximum timestamp of the original data.
-        method (function):
-            Function for computing confusion matrix (weighted segment, overlap segment).
+        weighted (boolean):
+            Flag to represent which algorithm to use.
+            If true use weighted segment algorithm, else use overlap segment.
 
     Returns:
         float:
             Recall score between the ground truth and detected anomalies.
     """
-    return _recall(expected, observed, data, start, end, method, contextual_confusion_matrix)
+    def _cm(x, y, z, w, f):
+        return contextual_confusion_matrix(x, y, z, w, f, weighted)
+    return _recall(expected, observed, data, start, end, _cm)
 
 
-def contextual_f1_score(expected, observed, data=None, start=None, end=None, method=None):
+def contextual_f1_score(expected, observed, data=None, start=None, end=None, weighted=True):
     """Compute an f1 score between the ground truth and the detected anomalies.
 
     Args:
@@ -205,11 +216,14 @@ def contextual_f1_score(expected, observed, data=None, start=None, end=None, met
             Minimum timestamp of the original data.
         end (int):
             Maximum timestamp of the original data.
-        method (function):
-            Function for computing confusion matrix (weighted segment, overlap segment).
+        weighted (boolean):
+            Flag to represent which algorithm to use.
+            If true use weighted segment algorithm, else use overlap segment.
 
     Returns:
         float:
             F1 score between the ground truth and detected anomalies.
     """
-    return _f1_score(expected, observed, data, start, end, method, contextual_confusion_matrix)
+    def _cm(x, y, z, w, f):
+        return contextual_confusion_matrix(x, y, z, w, f, weighted)
+    return _f1_score(expected, observed, data, start, end, _cm)

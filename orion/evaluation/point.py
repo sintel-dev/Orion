@@ -27,7 +27,7 @@ def _point_partition(expected, observed, start=None, end=None):
     return expected_parts, observed_parts, None
 
 
-def point_confusion_matrix(expected, observed, data=None, start=None, end=None, method=None):
+def point_confusion_matrix(expected, observed, data=None, start=None, end=None):
     """Compute the confusion matrix between the ground truth and the detected anomalies.
 
     Args:
@@ -50,7 +50,7 @@ def point_confusion_matrix(expected, observed, data=None, start=None, end=None, 
             number of true negative, false positive, false negative, true positive.
     """
 
-    def ws(x, y, z, w):
+    def _ws(x, y, z, w):
         return _weighted_segment(x, y, _point_partition, z, w)
 
     if data is not None:
@@ -62,7 +62,7 @@ def point_confusion_matrix(expected, observed, data=None, start=None, end=None, 
     if not isinstance(observed, list):
         observed = list(observed['timestamp'])
 
-    return ws(expected, observed, start, end)
+    return _ws(expected, observed, start, end)
 
 
 def point_accuracy(expected, observed, data=None, start=None, end=None):
@@ -87,7 +87,7 @@ def point_accuracy(expected, observed, data=None, start=None, end=None):
         float:
             Accuracy score between the ground truth and detected anomalies.
     """
-    return _accuracy(expected, observed, data, start, end, None, point_confusion_matrix)
+    return _accuracy(expected, observed, data, start, end, cm=point_confusion_matrix)
 
 
 def point_precision(expected, observed, data=None, start=None, end=None):
@@ -112,7 +112,7 @@ def point_precision(expected, observed, data=None, start=None, end=None):
         float:
             Precision score between the ground truth and detected anomalies.
     """
-    return _precision(expected, observed, data, start, end, None, point_confusion_matrix)
+    return _precision(expected, observed, data, start, end, cm=point_confusion_matrix)
 
 
 def point_recall(expected, observed, data=None, start=None, end=None):
@@ -137,7 +137,7 @@ def point_recall(expected, observed, data=None, start=None, end=None):
         float:
             Recall score between the ground truth and detected anomalies.
     """
-    return _recall(expected, observed, data, start, end, None, point_confusion_matrix)
+    return _recall(expected, observed, data, start, end, cm=point_confusion_matrix)
 
 
 def point_f1_score(expected, observed, data=None, start=None, end=None):
@@ -162,12 +162,4 @@ def point_f1_score(expected, observed, data=None, start=None, end=None):
         float:
             F1 score between the ground truth and detected anomalies.
     """
-    return _f1_score(expected, observed, data, start, end, None, point_confusion_matrix)
-
-
-POINT_METRICS = {
-    'accuracy': point_accuracy,
-    'f1': point_f1_score,
-    'recall': point_recall,
-    'precision': point_precision,
-}
+    return _f1_score(expected, observed, data, start, end, cm=point_confusion_matrix)
