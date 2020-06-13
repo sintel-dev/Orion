@@ -1,7 +1,35 @@
 import numpy as np
 import pandas as pd
+import pytest
+from mlblocks import MLPipeline
 
 from orion import analysis
+
+
+@pytest.fixture
+def tadgan_hyperparameters():
+    return {
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "interval": 1,
+            "time_column": "timestamp",
+        },
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 100,
+            "target_size": 1
+        },
+        'orion.primitives.tadgan.TadGAN#1': {
+            'epochs': 2,
+            'verbose': False
+        }
+    }
+
+
+@pytest.fixture
+def tadgan_pipline(tadgan_hyperparameters):
+    pipeline_path = 'orion/pipelines/tadgan.json'
+    pipline = analysis._load_pipeline(pipeline_path, tadgan_hyperparameters)
+    return pipline
 
 
 def test__build_events_df_empty():
@@ -28,3 +56,13 @@ def test__build_events_df_events():
         'score': [0.572644, 0.572644, 0.572644]
     })
     pd.testing.assert_frame_equal(returned, expected)
+
+
+def test__load_pipeline_tadgan(tadgan_pipline, tadgan_hyperparameters):
+    hyperset = tadgan_pipline.get_hyperparameters()
+    returned = list()
+    for k, v in tadgan_hyperparameters.items():
+        returned.extend([item in hyperset[k].items() for item in v.items()])
+
+    assert isinstance(tadgan_pipline, MLPipeline)
+    assert all(returned)

@@ -14,7 +14,7 @@ def _load_pipeline(pipeline, hyperparams=None):
         pipeline = MLPipeline(pipeline)
 
     if hyperparams is not None:
-        pipeline.set_hyperparams(hyperparams)
+        pipeline.set_hyperparameters(hyperparams)
 
     return pipeline
 
