@@ -39,7 +39,6 @@ NASA_SIGNALS = (
     'T-9', 'P-14', 'T-8', 'P-11', 'D-15', 'D-16', 'M-7', 'F-8'
 )
 
-
 def download(name, test_size=None, data_path=DATA_PATH):
     """Load the CSV with the given name from S3.
 
