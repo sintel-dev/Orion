@@ -14,9 +14,9 @@ from urllib.error import HTTPError
 import tabulate
 
 from orion import PIPELINES
+from orion.benchmark import evaluate_pipelines
 from orion.data import load_signal
 from orion.db.explorer import OrionDBExplorer
-from orion.evaluation import evaluate_pipelines
 
 
 def _reset(explorer, args):
