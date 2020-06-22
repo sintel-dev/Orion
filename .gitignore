@@ -105,6 +105,9 @@ ENV/
 # vim
 .*.swp
 
+# IDE
+.vscode/
+
 data/
 output/
 notebooks/ses

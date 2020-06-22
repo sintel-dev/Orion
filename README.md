@@ -140,7 +140,7 @@ This is the list of pipelines available so far, which will grow over time:
 | Median 24h LSTM | [orion/pipelines/median_24h_lstm.json](orion/pipelines/median_24h_lstm.json) | LSTM Based pipeline with 24h median aggregation preprocessing |
 | Sum 24h LSTM | [orion/pipelines/sum_24h_lstm.json](orion/pipelines/sum_24h_lstm.json) | LSTM Based pipeline with 24h sum aggregation preprocessing |
 | Skew 24h LSTM | [orion/pipelines/skew_24h_lstm.json](orion/pipelines/skew_24h_lstm.json) | LSTM Based pipeline with 24h skew aggregation preprocessing |
-| CycleGAN | [orion/pipelines/cyclegan.json](orion/pipelines/cyclegan.json) | CycleGAN Based pipeline |
+| TadGAN | [orion/pipelines/tadgan.json](orion/pipelines/tadgan.json) | GAN Based pipeline with reconstruction based errors |
 | ARIMA | [orion/pipelines/arima.json](orion/pipelines/arima.json) | ARIMA Based pipeline |
 
 ## Leaderboard
@@ -151,7 +151,7 @@ BENCHMARK.md).
 
 | pipeline                  |   accuracy |        f1 |   precision |     recall |
 |---------------------------|------------|-----------|-------------|------------|
-| CycleGAN                  |   0.781147 | 0.137234  |   0.147674  | 0.18173    |
+| TadGAN                    |   0.781147 | 0.137234  |   0.147674  | 0.18173    |
 | LSTM Dynamic Thresholding |   0.832052 | 0.125999  |   0.178968  | 0.151298   |
 | Dummy                     |   0.818975 | 0.108436  |   0.13994   | 0.133865   |
 | Mean 24h LSTM             |   0.667412 | 0.0420656 |   0.0775713 | 0.0456106  |
