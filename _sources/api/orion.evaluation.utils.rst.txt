@@ -1,0 +1,7 @@
+orion.evaluation.utils module
+=============================
+
+.. automodule:: orion.evaluation.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

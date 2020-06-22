@@ -1,7 +1,17 @@
-orion.evaluation module
-=======================
+orion.evaluation package
+========================
 
 .. automodule:: orion.evaluation
    :members:
    :undoc-members:
    :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+
+   orion.evaluation.common
+   orion.evaluation.contextual
+   orion.evaluation.point
+   orion.evaluation.utils

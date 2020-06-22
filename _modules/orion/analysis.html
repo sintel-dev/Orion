@@ -195,6 +195,10 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/orion.db.html#submodules">Submodules</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.evaluation.html">orion.evaluation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/orion.evaluation.html#submodules">Submodules</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/orion.primitives.html">orion.primitives package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../api/orion.primitives.html#submodules">Submodules</a></li>
 </ul>
@@ -203,12 +207,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/orion.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/orion.benchmark.html">orion.benchmark module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/orion.cli.html">orion.cli module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/orion.core.html">orion.core module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/orion.data.html">orion.data module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.evaluation.html">orion.evaluation module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/orion.functional.html">orion.functional module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/orion.metrics.html">orion.metrics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/orion.runner.html">orion.runner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/orion.utils.html">orion.utils module</a></li>
 </ul>
@@ -316,7 +319,7 @@
         <span class="n">pipeline</span> <span class="o">=</span> <span class="n">MLPipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">hyperparams</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">pipeline</span><span class="o">.</span><span class="n">set_hyperparams</span><span class="p">(</span><span class="n">hyperparams</span><span class="p">)</span>
+        <span class="n">pipeline</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">hyperparams</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">pipeline</span>
 

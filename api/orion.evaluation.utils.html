@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>orion.primitives package &mdash; Orion 0.1.2.dev0 documentation</title>
+  <title>orion.evaluation.utils module &mdash; Orion 0.1.2.dev0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="orion.primitives.detectors module" href="orion.primitives.detectors.html" />
-    <link rel="prev" title="orion.evaluation.utils module" href="orion.evaluation.utils.html" /> 
+    <link rel="next" title="orion.primitives package" href="orion.primitives.html" />
+    <link rel="prev" title="orion.evaluation.point module" href="orion.evaluation.point.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -197,12 +197,12 @@
 <li class="toctree-l4"><a class="reference internal" href="orion.db.html#submodules">Submodules</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="orion.evaluation.html">orion.evaluation package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="orion.evaluation.html#submodules">Submodules</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="orion.evaluation.html">orion.evaluation package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="orion.evaluation.html#submodules">Submodules</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.primitives package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="orion.primitives.html#submodules">Submodules</a></li>
 </ul>
 </li>
 </ul>
@@ -289,14 +289,16 @@
         
           <li><a href="orion.html">orion package</a> &raquo;</li>
         
-      <li>orion.primitives package</li>
+          <li><a href="orion.evaluation.html">orion.evaluation package</a> &raquo;</li>
+        
+      <li>orion.evaluation.utils module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.primitives.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.evaluation.utils.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -310,19 +312,122 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-orion.primitives">
-<span id="orion-primitives-package"></span><h1>orion.primitives package<a class="headerlink" href="#module-orion.primitives" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.detectors.html">orion.primitives.detectors module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.estimators.html">orion.primitives.estimators module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.intervals.html">orion.primitives.intervals module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.tadgan.html">orion.primitives.tadgan module</a></li>
+  <div class="section" id="module-orion.evaluation.utils">
+<span id="orion-evaluation-utils-module"></span><h1>orion.evaluation.utils module<a class="headerlink" href="#module-orion.evaluation.utils" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="orion.evaluation.utils.from_list_points_labels">
+<code class="sig-prename descclassname">orion.evaluation.utils.</code><code class="sig-name descname">from_list_points_labels</code><span class="sig-paren">(</span><em class="sig-param">labels</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/utils.html#from_list_points_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.utils.from_list_points_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert list of labels to list of tuples.</p>
+<p>Convert a list of labels to a list of tuples
+marking the start and end interval of anomalies by
+defining a dummy timestamp range for usage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>labels</strong> (<em>list</em>) – contains binary labels [0, 1].</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple (start, end) timestamp.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.utils.from_list_points_timestamps">
+<code class="sig-prename descclassname">orion.evaluation.utils.</code><code class="sig-name descname">from_list_points_timestamps</code><span class="sig-paren">(</span><em class="sig-param">timestamps</em>, <em class="sig-param">gap=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/utils.html#from_list_points_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.utils.from_list_points_timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert list of timestamps to list of tuples.</p>
+<p>Convert a list of anomalies identified by timestamps,
+to a list of tuples marking the start and end interval
+of anomalies; make it contextually defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timestamps</strong> (<em>list</em>) – contains timestamp of anomalies.</p></li>
+<li><p><strong>gap</strong> (<em>int</em>) – allowed gap between anomalies.</p></li>
 </ul>
-</div>
-</div>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple (start, end) timestamp.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.utils.from_pandas_contextual">
+<code class="sig-prename descclassname">orion.evaluation.utils.</code><code class="sig-name descname">from_pandas_contextual</code><span class="sig-paren">(</span><em class="sig-param">df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/utils.html#from_pandas_contextual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.utils.from_pandas_contextual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert contextual <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> to list of tuples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>DataFrame</em>) – anomalies, passed as <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
+containing two columns: start and stop.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple (start, end) timestamp.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the received <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> does not contain the required columns.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.utils.from_pandas_points">
+<code class="sig-prename descclassname">orion.evaluation.utils.</code><code class="sig-name descname">from_pandas_points</code><span class="sig-paren">(</span><em class="sig-param">df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/utils.html#from_pandas_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.utils.from_pandas_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert point <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> to list of tuples.</p>
+<p>Convert a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> of anomalies identified by
+one column (timestamp) to a list of tuples marking the
+start and end interval of anomalies; make it contextually
+defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>DataFrame</em>) – anomalies, passed as <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
+containing one column: timestamp.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple (start, end) timestamp.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the received <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> does not contain column <cite>timestamp</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.utils.from_pandas_points_labels">
+<code class="sig-prename descclassname">orion.evaluation.utils.</code><code class="sig-name descname">from_pandas_points_labels</code><span class="sig-paren">(</span><em class="sig-param">df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/utils.html#from_pandas_points_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.utils.from_pandas_points_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert point <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> to list of tuples.</p>
+<p>Convert a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> of labeled data where each
+timestamp is labeled by either 0 or 1 to a list of tuples
+marking the start and end interval of anomalies; make it
+contextually defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>DataFrame</em>) – anomalies, passed as <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
+containing two columns: timestamp and label.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple (start, end) timestamp.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the received <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> does not contain the required columns.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
@@ -333,10 +438,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="orion.primitives.detectors.html" class="btn btn-neutral float-right" title="orion.primitives.detectors module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="orion.primitives.html" class="btn btn-neutral float-right" title="orion.primitives package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="orion.evaluation.utils.html" class="btn btn-neutral float-left" title="orion.evaluation.utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="orion.evaluation.point.html" class="btn btn-neutral float-left" title="orion.evaluation.point module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

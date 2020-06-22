@@ -197,6 +197,10 @@
 <li class="toctree-l4"><a class="reference internal" href="api/orion.db.html#submodules">Submodules</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.evaluation.html">orion.evaluation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/orion.evaluation.html#submodules">Submodules</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.primitives.html">orion.primitives package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/orion.primitives.html#submodules">Submodules</a></li>
 </ul>
@@ -205,12 +209,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/orion.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.benchmark.html">orion.benchmark module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.cli.html">orion.cli module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.core.html">orion.core module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.data.html">orion.data module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/orion.evaluation.html">orion.evaluation module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.functional.html">orion.functional module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/orion.metrics.html">orion.metrics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.runner.html">orion.runner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.utils.html">orion.utils module</a></li>
 </ul>
@@ -515,9 +518,9 @@ inside the <a class="reference external" href="orion/pipelines">orion/pipelines<
 <td><p><a class="reference external" href="orion/pipelines/skew_24h_lstm.json">orion/pipelines/skew_24h_lstm.json</a></p></td>
 <td><p>LSTM Based pipeline with 24h skew aggregation preprocessing</p></td>
 </tr>
-<tr class="row-even"><td><p>CycleGAN</p></td>
-<td><p><a class="reference external" href="orion/pipelines/cyclegan.json">orion/pipelines/cyclegan.json</a></p></td>
-<td><p>CycleGAN Based pipeline</p></td>
+<tr class="row-even"><td><p>TadGAN</p></td>
+<td><p><a class="reference external" href="orion/pipelines/tadgan.json">orion/pipelines/tadgan.json</a></p></td>
+<td><p>GAN Based pipeline with reconstruction based errors</p></td>
 </tr>
 <tr class="row-odd"><td><p>ARIMA</p></td>
 <td><p><a class="reference external" href="orion/pipelines/arima.json">orion/pipelines/arima.json</a></p></td>
@@ -547,7 +550,7 @@ pipelines according to the benchmarking procedure explained in the <a class="ref
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>CycleGAN</p></td>
+<tr class="row-even"><td><p>TadGAN</p></td>
 <td><p>0.781147</p></td>
 <td><p>0.137234</p></td>
 <td><p>0.147674</p></td>

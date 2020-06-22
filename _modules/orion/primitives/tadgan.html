@@ -1,0 +1,794 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>orion.primitives.tadgan &mdash; Orion 0.1.2.dev0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Orion
+          
+
+          
+            
+            <img src="../../../_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Orion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#data-format">Data Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#orion-pipelines">Orion Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#current-available-pipelines">Current Available Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#leaderboard">Leaderboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#install">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../readme.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../readme.html#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#install-with-pip">Install with pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#docker">Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#detect-anomalies-using-orion">2. Detect anomalies using Orion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#evaluate-the-performance-of-your-pipeline">3. Evaluate the performance of your pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#database">Database</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark.html">Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#calculating-a-score">Calculating a Score</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../benchmark.html#scoring-input">Scoring Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#evaluate-function">Evaluate function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../database.html">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#fields">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#signal">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id1">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id2">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id3">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#experiment">Experiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id4">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#datarun">Datarun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id5">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#signalrun">Signalrun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id6">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#event">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id7">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#event-interaction">Event Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id8">Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../database.html#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id9">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docker.html">Docker Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../docker.html#docker-requirements">Docker Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../docker.html#building-the-orion-docker-image">Building the Orion Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../docker.html#distributing-the-orion-docker-image">Distributing the Orion Docker Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../docker.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../docker.html#distributing-as-a-file">Distributing as a file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../docker.html#running-the-orion-jupyter-image">Running the orion-jupyter image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../docker.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../docker.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/orion.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/orion.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.db.html">orion.db package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.evaluation.html">orion.evaluation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/orion.evaluation.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.primitives.html">orion.primitives package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/orion.primitives.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/orion.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.benchmark.html">orion.benchmark module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.cli.html">orion.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.core.html">orion.core module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.data.html">orion.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.functional.html">orion.functional module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.runner.html">orion.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.utils.html">orion.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../history.html#id1">0.1.1 - 2020-05-11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../history.html#id2">0.1.0 - 2020-04-23</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Orion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>orion.primitives.tadgan</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for orion.primitives.tadgan</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">keras</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">similaritymeasures</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">K</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">keras.layers.merge</span> <span class="kn">import</span> <span class="n">_Merge</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">mlprimitives.adapters.keras</span> <span class="kn">import</span> <span class="n">build_layer</span>
+<span class="kn">from</span> <span class="nn">mlprimitives.utils</span> <span class="kn">import</span> <span class="n">import_object</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">integrate</span><span class="p">,</span> <span class="n">stats</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RandomWeightedAverage"><a class="viewcode-back" href="../../../api/orion.primitives.tadgan.html#orion.primitives.tadgan.RandomWeightedAverage">[docs]</a><span class="k">class</span> <span class="nc">RandomWeightedAverage</span><span class="p">(</span><span class="n">_Merge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_merge_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            inputs[0] x     original input</span>
+<span class="sd">            inputs[1] x_    predicted input</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="TadGAN"><a class="viewcode-back" href="../../../api/orion.primitives.tadgan.html#orion.primitives.tadgan.TadGAN">[docs]</a><span class="k">class</span> <span class="nc">TadGAN</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;TadGAN class&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
+            <span class="n">built_layer</span> <span class="o">=</span> <span class="n">build_layer</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">built_layer</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_wasserstein_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">K</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_true</span> <span class="o">*</span> <span class="n">y_pred</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_gradient_penalty_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">averaged_samples</span><span class="p">):</span>
+        <span class="n">gradients</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">averaged_samples</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">gradients_sqr</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
+        <span class="n">gradients_sqr_sum</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gradients_sqr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">gradients_sqr</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
+        <span class="n">gradient_l2_norm</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gradients_sqr_sum</span><span class="p">)</span>
+        <span class="n">gradient_penalty</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">gradient_l2_norm</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">K</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">gradient_penalty</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">encoder_input_shape</span><span class="p">,</span> <span class="n">generator_input_shape</span><span class="p">,</span> <span class="n">critic_x_input_shape</span><span class="p">,</span>
+                 <span class="n">critic_z_input_shape</span><span class="p">,</span> <span class="n">layers_encoder</span><span class="p">,</span> <span class="n">layers_generator</span><span class="p">,</span> <span class="n">layers_critic_x</span><span class="p">,</span>
+                 <span class="n">layers_critic_z</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">latent_dim</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                 <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">iterations_critic</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the TadGAN object.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            shape (tuple):</span>
+<span class="sd">                Tuple denoting the shape of an input sample.</span>
+<span class="sd">            encoder_input_shape (tuple):</span>
+<span class="sd">                Shape of encoder input.</span>
+<span class="sd">            generator_input_shape (tuple):</span>
+<span class="sd">                Shape of generator input.</span>
+<span class="sd">            critic_x_input_shape (tuple):</span>
+<span class="sd">                Shape of critic_x input.</span>
+<span class="sd">            critic_z_input_shape (tuple):</span>
+<span class="sd">                Shape of critic_z input.</span>
+<span class="sd">            layers_encoder (list):</span>
+<span class="sd">                List containing layers of encoder.</span>
+<span class="sd">            layers_generator (list):</span>
+<span class="sd">                List containing layers of generator.</span>
+<span class="sd">            layers_critic_x (list):</span>
+<span class="sd">                List containing layers of critic_x.</span>
+<span class="sd">            layers_critic_z (list):</span>
+<span class="sd">                List containing layers of critic_z.</span>
+<span class="sd">            optimizer (str):</span>
+<span class="sd">                String denoting the keras optimizer.</span>
+<span class="sd">            learning_rate (float):</span>
+<span class="sd">                Optional. Float denoting the learning rate of the optimizer. Default 0.005.</span>
+<span class="sd">            epochs (int):</span>
+<span class="sd">                Optional. Integer denoting the number of epochs. Default 2000.</span>
+<span class="sd">            latent_dim (int):</span>
+<span class="sd">                Optional. Integer denoting dimension of latent space. Default 20.</span>
+<span class="sd">            batch_size (int):</span>
+<span class="sd">                Integer denoting the batch size. Default 64.</span>
+<span class="sd">            iterations_critic (int):</span>
+<span class="sd">                Optional. Integer denoting the number of critic training steps per one</span>
+<span class="sd">                Generator/Encoder training step. Default 5.</span>
+<span class="sd">            hyperparameters (dictionary):</span>
+<span class="sd">                Optional. Dictionary containing any additional inputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span> <span class="o">=</span> <span class="n">latent_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations_critic</span> <span class="o">=</span> <span class="n">iterations_critic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_input_shape</span> <span class="o">=</span> <span class="n">encoder_input_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator_input_shape</span> <span class="o">=</span> <span class="n">generator_input_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_input_shape</span> <span class="o">=</span> <span class="n">critic_x_input_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_input_shape</span> <span class="o">=</span> <span class="n">critic_z_input_shape</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers_encoder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_generator</span> <span class="o">=</span> <span class="n">layers_encoder</span><span class="p">,</span> <span class="n">layers_generator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_z</span> <span class="o">=</span> <span class="n">layers_critic_x</span><span class="p">,</span> <span class="n">layers_critic_z</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">import_object</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)(</span><span class="n">learning_rate</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_tadgan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">hyperparameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">hyperparameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_encoder</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">encoder_input_shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_generator</span><span class="p">,</span>
+                                           <span class="bp">self</span><span class="o">.</span><span class="n">generator_input_shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_x</span><span class="p">,</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_input_shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_z</span><span class="p">,</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_input_shape</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">z</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">x_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">z_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">fake_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">x_</span><span class="p">)</span>
+        <span class="n">valid_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">interpolated_x</span> <span class="o">=</span> <span class="n">RandomWeightedAverage</span><span class="p">()([</span><span class="n">x</span><span class="p">,</span> <span class="n">x_</span><span class="p">])</span>
+        <span class="n">validity_interpolated_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">interpolated_x</span><span class="p">)</span>
+        <span class="n">partial_gp_loss_x</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gradient_penalty_loss</span><span class="p">,</span> <span class="n">averaged_samples</span><span class="o">=</span><span class="n">interpolated_x</span><span class="p">)</span>
+        <span class="n">partial_gp_loss_x</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="s1">&#39;gradient_penalty&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">valid_x</span><span class="p">,</span> <span class="n">fake_x</span><span class="p">,</span>
+                                                            <span class="n">validity_interpolated_x</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
+                                          <span class="n">partial_gp_loss_x</span><span class="p">],</span> <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
+                                    <span class="n">loss_weights</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+
+        <span class="n">fake_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span>
+        <span class="n">valid_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">interpolated_z</span> <span class="o">=</span> <span class="n">RandomWeightedAverage</span><span class="p">()([</span><span class="n">z</span><span class="p">,</span> <span class="n">z_</span><span class="p">])</span>
+        <span class="n">validity_interpolated_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">interpolated_z</span><span class="p">)</span>
+        <span class="n">partial_gp_loss_z</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gradient_penalty_loss</span><span class="p">,</span> <span class="n">averaged_samples</span><span class="o">=</span><span class="n">interpolated_z</span><span class="p">)</span>
+        <span class="n">partial_gp_loss_z</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="s1">&#39;gradient_penalty&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">valid_z</span><span class="p">,</span> <span class="n">fake_z</span><span class="p">,</span>
+                                                            <span class="n">validity_interpolated_z</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
+                                          <span class="n">partial_gp_loss_z</span><span class="p">],</span> <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
+                                    <span class="n">loss_weights</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">z_gen</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">x_gen_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">z_gen</span><span class="p">)</span>
+        <span class="n">x_gen</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">z_gen_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x_gen</span><span class="p">)</span>
+        <span class="n">x_gen_rec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">z_gen_</span><span class="p">)</span>
+        <span class="n">fake_gen_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">x_gen_</span><span class="p">)</span>
+        <span class="n">fake_gen_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">z_gen_</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">([</span><span class="n">x_gen</span><span class="p">,</span> <span class="n">z_gen</span><span class="p">],</span> <span class="p">[</span><span class="n">fake_gen_x</span><span class="p">,</span> <span class="n">fake_gen_z</span><span class="p">,</span> <span class="n">x_gen_rec</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
+                                                   <span class="s1">&#39;mse&#39;</span><span class="p">],</span> <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
+                                             <span class="n">loss_weights</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">fake</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">X_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">X_</span><span class="p">)</span>
+            <span class="n">epoch_g_loss</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">epoch_cx_loss</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">epoch_cz_loss</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="n">minibatches_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations_critic</span>
+            <span class="n">num_minibatches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">X_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">minibatches_size</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_minibatches</span><span class="p">):</span>
+                <span class="n">minibatch</span> <span class="o">=</span> <span class="n">X_</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">minibatches_size</span><span class="p">:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">minibatches_size</span><span class="p">]</span>
+
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterations_critic</span><span class="p">):</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">minibatch</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
+                    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                    <span class="n">epoch_cx_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_model</span><span class="o">.</span><span class="n">train_on_batch</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="n">fake</span><span class="p">,</span> <span class="n">delta</span><span class="p">]))</span>
+                    <span class="n">epoch_cz_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_model</span><span class="o">.</span><span class="n">train_on_batch</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="n">fake</span><span class="p">,</span> <span class="n">delta</span><span class="p">]))</span>
+
+                <span class="n">epoch_g_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_model</span><span class="o">.</span><span class="n">train_on_batch</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">x</span><span class="p">]))</span>
+
+            <span class="n">cx_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch_cx_loss</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">cz_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch_cz_loss</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">g_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch_g_loss</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch: </span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">, [Dx loss: </span><span class="si">{}</span><span class="s1">] [Dz loss: </span><span class="si">{}</span><span class="s1">] [G loss: </span><span class="si">{}</span><span class="s1">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">cx_loss</span><span class="p">,</span> <span class="n">cz_loss</span><span class="p">,</span> <span class="n">g_loss</span><span class="p">))</span>
+
+<div class="viewcode-block" id="TadGAN.fit"><a class="viewcode-back" href="../../../api/orion.primitives.tadgan.html#orion.primitives.tadgan.TadGAN.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit the TadGAN.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            X (ndarray):</span>
+<span class="sd">                N-dimensional array containing the input training sequences for the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_tadgan</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TadGAN.predict"><a class="viewcode-back" href="../../../api/orion.primitives.tadgan.html#orion.primitives.tadgan.TadGAN.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Predict values using the initialized object.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            X (ndarray):</span>
+<span class="sd">                N-dimensional array containing the input sequences for the model.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ndarray:</span>
+<span class="sd">                N-dimensional array containing the reconstructions for each input sequence.</span>
+<span class="sd">            ndarray:</span>
+<span class="sd">                N-dimensional array containing the critic scores for each input sequence.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">z_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span>
+        <span class="n">critic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">critic</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_compute_critic_score</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">smooth_window</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        critics (ndarray):</span>
+<span class="sd">            Critic values.</span>
+<span class="sd">        smooth_window (int):</span>
+<span class="sd">            Smooth window that will be applied to compute smooth errors.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray:</span>
+<span class="sd">            Array of anomaly scores.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">critics</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critics</span><span class="p">)</span>
+    <span class="n">l_quantile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">u_quantile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">in_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">critics</span> <span class="o">&gt;=</span> <span class="n">l_quantile</span><span class="p">,</span> <span class="n">critics</span> <span class="o">&lt;=</span> <span class="n">u_quantile</span><span class="p">)</span>
+    <span class="n">critic_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">critics</span><span class="p">[</span><span class="n">in_range</span><span class="p">])</span>
+    <span class="n">critic_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">critics</span><span class="p">)</span>
+
+    <span class="n">z_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critics</span><span class="p">)</span> <span class="o">-</span> <span class="n">critic_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">critic_std</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">z_scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">z_scores</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span>
+        <span class="n">smooth_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="n">smooth_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="k">return</span> <span class="n">z_scores</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_rec_score</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">trues</span><span class="p">,</span> <span class="n">score_window</span><span class="p">,</span> <span class="n">smooth_window</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        predictions (ndarray):</span>
+<span class="sd">            Predicted values.</span>
+<span class="sd">        trues (ndarray):</span>
+<span class="sd">            Ground truth.</span>
+<span class="sd">        score_window (int):</span>
+<span class="sd">            Size of the window over which the scores are calculated.</span>
+<span class="sd">        smooth_window (int):</span>
+<span class="sd">            Smooth window that will be applied to compute smooth errors.</span>
+<span class="sd">        rec_error_type (str):</span>
+<span class="sd">            Reconstruction error types.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray:</span>
+<span class="sd">            Array of anomaly scores.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rec_error_type</span> <span class="o">==</span> <span class="s2">&quot;point&quot;</span><span class="p">):</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">y_h</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y_h</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">trues</span><span class="p">)]</span>
+        <span class="n">errors_smoothed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span>
+            <span class="n">smooth_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="n">smooth_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">errors_smoothed</span><span class="p">)</span>
+        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">z_scores</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">elif</span> <span class="p">(</span><span class="n">rec_error_type</span> <span class="o">==</span> <span class="s2">&quot;area&quot;</span><span class="p">):</span>
+        <span class="n">pd_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">trues</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+        <span class="n">pd_pred</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+        <span class="n">score_measure_true</span> <span class="o">=</span> <span class="n">pd_true</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">score_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                             <span class="n">min_periods</span><span class="o">=</span><span class="n">score_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">)</span>
+        <span class="n">score_measure_pred</span> <span class="o">=</span> <span class="n">pd_pred</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">score_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                             <span class="n">min_periods</span><span class="o">=</span><span class="n">score_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">)</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">score_measure_true</span> <span class="o">-</span> <span class="n">score_measure_pred</span><span class="p">)</span>
+        <span class="n">errors_smoothed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">smooth_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                    <span class="n">win_type</span><span class="o">=</span><span class="s1">&#39;triang&#39;</span><span class="p">,</span>
+                                                    <span class="n">min_periods</span><span class="o">=</span><span class="n">smooth_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">errors_smoothed</span><span class="p">)</span>
+        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">z_scores</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">elif</span> <span class="p">(</span><span class="n">rec_error_type</span> <span class="o">==</span> <span class="s2">&quot;dtw&quot;</span><span class="p">):</span>
+        <span class="c1"># DTW</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">similarity_dtw</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">length_dtw</span> <span class="o">=</span> <span class="p">(</span><span class="n">score_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">hafl_length_dtw</span> <span class="o">=</span> <span class="n">length_dtw</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="c1"># add padding</span>
+        <span class="n">true_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">trues</span><span class="p">,</span> <span class="p">(</span><span class="n">hafl_length_dtw</span><span class="p">,</span> <span class="n">hafl_length_dtw</span><span class="p">),</span>
+                          <span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">constant_values</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">predictions_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+            <span class="n">predictions</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">hafl_length_dtw</span><span class="p">,</span>
+             <span class="n">hafl_length_dtw</span><span class="p">),</span>
+            <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
+            <span class="n">constant_values</span><span class="o">=</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">))</span>
+
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">trues</span><span class="p">)</span> <span class="o">-</span> <span class="n">length_dtw</span><span class="p">:</span>
+            <span class="n">true_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length_dtw</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="n">true_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">length_dtw</span><span class="p">)</span>
+            <span class="n">true_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">true_pad</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">length_dtw</span><span class="p">]</span>
+            <span class="n">preds_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length_dtw</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="n">preds_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">length_dtw</span><span class="p">)</span>
+            <span class="n">preds_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions_pad</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">length_dtw</span><span class="p">]</span>
+            <span class="n">dtw</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">dtw</span><span class="p">(</span><span class="n">true_data</span><span class="p">,</span> <span class="n">preds_data</span><span class="p">)</span>
+            <span class="n">similarity_dtw</span> <span class="o">=</span> <span class="n">similarity_dtw</span> <span class="o">+</span> <span class="p">[</span><span class="n">dtw</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">similarity_dtw</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">length_dtw</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">similarity_dtw</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">trues</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">similarity_dtw</span><span class="p">)</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">length_dtw</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="n">similarity_dtw</span>
+        <span class="n">errors_smoothed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">smooth_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                    <span class="n">min_periods</span><span class="o">=</span><span class="n">smooth_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">errors_smoothed</span><span class="p">)</span>
+        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">z_scores</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">z_scores</span>
+
+
+<div class="viewcode-block" id="score_anomalies"><a class="viewcode-back" href="../../../api/orion.primitives.tadgan.html#orion.primitives.tadgan.score_anomalies">[docs]</a><span class="k">def</span> <span class="nf">score_anomalies</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">critic</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">score_window</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">critic_smooth_window</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                    <span class="n">error_smooth_window</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="o">=</span><span class="s2">&quot;point&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
+<span class="sd">    Anomaly scores are calculated using a combination of reconstruction error and critic score.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        y (ndarray):</span>
+<span class="sd">            Ground truth.</span>
+<span class="sd">        y_hat (ndarray):</span>
+<span class="sd">            Predicted values. Each timestamp has multiple predictions.</span>
+<span class="sd">        index (ndarray):</span>
+<span class="sd">            time index for each y (start position of the window)</span>
+<span class="sd">        critic (ndarray):</span>
+<span class="sd">            Critic score. Each timestamp has multiple critic scores.</span>
+<span class="sd">        score_window (int):</span>
+<span class="sd">            Optional. Size of the window over which the scores are calculated.</span>
+<span class="sd">            If not given, 10 is used.</span>
+<span class="sd">        smooth_window (int):</span>
+<span class="sd">            Optional. Size of window over which smoothing is applied.</span>
+<span class="sd">            If not given, 200 is used.</span>
+<span class="sd">        rec_error_type (str):</span>
+<span class="sd">            Optional. The method to compute reconstruction error.</span>
+<span class="sd">            If not given, &#39;point&#39; is used.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray:</span>
+<span class="sd">            Array of anomaly scores.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">critic_smooth_window</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">error_smooth_window</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">true_index</span> <span class="o">=</span> <span class="n">index</span>  <span class="c1"># no offset</span>
+    <span class="c1"># left offset for half window_size</span>
+    <span class="c1"># true_index = index - (index[1] - index[0]) * (y.shape[1] // 2)</span>
+    <span class="c1"># left offset for one window_size</span>
+    <span class="c1"># true_index = index - (index[1] - index[0]) * (y.shape[1])</span>
+
+    <span class="n">true</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))]</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">true</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="n">critic_extended</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">critic_extended</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">critic</span><span class="p">:</span>
+        <span class="n">critic_extended</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+    <span class="n">critic_extended</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critic_extended</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="n">predictions_md</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">critic_kde_max</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_length</span> <span class="o">=</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">num_errors</span> <span class="o">=</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_hat</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_errors</span><span class="p">):</span>
+        <span class="n">intermediate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">critic_intermediate</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">num_errors</span> <span class="o">+</span> <span class="n">pred_length</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pred_length</span><span class="p">)):</span>
+            <span class="n">intermediate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_hat</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+            <span class="n">critic_intermediate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">critic_extended</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">intermediate</span><span class="p">:</span>
+            <span class="n">predictions_md</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">)))</span>
+
+            <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">([[</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">)),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">),</span> <span class="mi">25</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">),</span> <span class="mi">50</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">),</span> <span class="mi">75</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">))</span>
+            <span class="p">]])</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">critic_intermediate</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">discr_intermediate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critic_intermediate</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">critic_kde_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">discr_intermediate</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
+                        <span class="n">stats</span><span class="o">.</span><span class="n">gaussian_kde</span><span class="p">(</span><span class="n">discr_intermediate</span><span class="p">)(</span><span class="n">critic_intermediate</span><span class="p">))])</span>
+                <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+                    <span class="n">critic_kde_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">discr_intermediate</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">critic_kde_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critic_intermediate</span><span class="p">)))</span>
+
+    <span class="n">predictions_md</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">predictions_md</span><span class="p">)</span>
+
+    <span class="c1"># Compute critic scores</span>
+    <span class="n">critic_scores</span> <span class="o">=</span> <span class="n">_compute_critic_score</span><span class="p">(</span><span class="n">critic_kde_max</span><span class="p">,</span> <span class="n">critic_smooth_window</span><span class="p">)</span>
+
+    <span class="c1"># Compute reconstruction scores</span>
+    <span class="n">res_scores</span> <span class="o">=</span> <span class="n">_compute_rec_score</span><span class="p">(</span>
+        <span class="n">predictions_md</span><span class="p">,</span>
+        <span class="n">true</span><span class="p">,</span>
+        <span class="n">score_window</span><span class="p">,</span>
+        <span class="n">error_smooth_window</span><span class="p">,</span>
+        <span class="n">rec_error_type</span><span class="p">)</span>
+
+    <span class="c1"># Combine the two scores</span>
+    <span class="n">final_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">critic_scores</span><span class="p">,</span> <span class="n">res_scores</span><span class="p">)</span>
+
+    <span class="n">true</span> <span class="o">=</span> <span class="p">[[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">true</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">final_scores</span><span class="p">,</span> <span class="n">true_index</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">predictions</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, MIT Data To AI Lab
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

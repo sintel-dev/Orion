@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>orion.primitives package &mdash; Orion 0.1.2.dev0 documentation</title>
+  <title>orion.primitives.tadgan module &mdash; Orion 0.1.2.dev0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="orion.primitives.detectors module" href="orion.primitives.detectors.html" />
-    <link rel="prev" title="orion.evaluation.utils module" href="orion.evaluation.utils.html" /> 
+    <link rel="next" title="orion.analysis module" href="orion.analysis.html" />
+    <link rel="prev" title="orion.primitives.intervals module" href="orion.primitives.intervals.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -201,8 +201,8 @@
 <li class="toctree-l4"><a class="reference internal" href="orion.evaluation.html#submodules">Submodules</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.primitives package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="orion.primitives.html#submodules">Submodules</a></li>
 </ul>
 </li>
 </ul>
@@ -289,14 +289,16 @@
         
           <li><a href="orion.html">orion package</a> &raquo;</li>
         
-      <li>orion.primitives package</li>
+          <li><a href="orion.primitives.html">orion.primitives package</a> &raquo;</li>
+        
+      <li>orion.primitives.tadgan module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.primitives.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.primitives.tadgan.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -310,19 +312,85 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-orion.primitives">
-<span id="orion-primitives-package"></span><h1>orion.primitives package<a class="headerlink" href="#module-orion.primitives" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.detectors.html">orion.primitives.detectors module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.estimators.html">orion.primitives.estimators module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.intervals.html">orion.primitives.intervals module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.tadgan.html">orion.primitives.tadgan module</a></li>
+  <div class="section" id="module-orion.primitives.tadgan">
+<span id="orion-primitives-tadgan-module"></span><h1>orion.primitives.tadgan module<a class="headerlink" href="#module-orion.primitives.tadgan" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="orion.primitives.tadgan.RandomWeightedAverage">
+<em class="property">class </em><code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">RandomWeightedAverage</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/tadgan.html#RandomWeightedAverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.RandomWeightedAverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">keras.layers.merge._Merge</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="orion.primitives.tadgan.TadGAN">
+<em class="property">class </em><code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">TadGAN</code><span class="sig-paren">(</span><em class="sig-param">shape</em>, <em class="sig-param">encoder_input_shape</em>, <em class="sig-param">generator_input_shape</em>, <em class="sig-param">critic_x_input_shape</em>, <em class="sig-param">critic_z_input_shape</em>, <em class="sig-param">layers_encoder</em>, <em class="sig-param">layers_generator</em>, <em class="sig-param">layers_critic_x</em>, <em class="sig-param">layers_critic_z</em>, <em class="sig-param">optimizer</em>, <em class="sig-param">learning_rate=0.0005</em>, <em class="sig-param">epochs=2000</em>, <em class="sig-param">latent_dim=20</em>, <em class="sig-param">batch_size=64</em>, <em class="sig-param">iterations_critic=5</em>, <em class="sig-param">**hyperparameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/tadgan.html#TadGAN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>TadGAN class</p>
+<dl class="method">
+<dt id="orion.primitives.tadgan.TadGAN.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/tadgan.html#TadGAN.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the TadGAN.
+:param X: N-dimensional array containing the input training sequences for the model.
+:type X: ndarray</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="orion.primitives.tadgan.TadGAN.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/tadgan.html#TadGAN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict values using the initialized object.
+:param X: N-dimensional array containing the input sequences for the model.
+:type X: ndarray</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p>N-dimensional array containing the reconstructions for each input sequence.
+ndarray:</p>
+<blockquote>
+<div><p>N-dimensional array containing the critic scores for each input sequence.</p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.primitives.tadgan.score_anomalies">
+<code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">score_anomalies</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">y_hat</em>, <em class="sig-param">critic</em>, <em class="sig-param">index</em>, <em class="sig-param">score_window=10</em>, <em class="sig-param">critic_smooth_window=200</em>, <em class="sig-param">error_smooth_window=200</em>, <em class="sig-param">rec_error_type='point'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/tadgan.html#score_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.score_anomalies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an array of anomaly scores.
+Anomaly scores are calculated using a combination of reconstruction error and critic score.
+:param y: Ground truth.
+:type y: ndarray
+:param y_hat: Predicted values. Each timestamp has multiple predictions.
+:type y_hat: ndarray
+:param index: time index for each y (start position of the window)
+:type index: ndarray
+:param critic: Critic score. Each timestamp has multiple critic scores.
+:type critic: ndarray
+:param score_window: Optional. Size of the window over which the scores are calculated.</p>
+<blockquote>
+<div><p>If not given, 10 is used.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smooth_window</strong> (<em>int</em>) – Optional. Size of window over which smoothing is applied.
+If not given, 200 is used.</p></li>
+<li><p><strong>rec_error_type</strong> (<em>str</em>) – Optional. The method to compute reconstruction error.
+If not given, ‘point’ is used.</p></li>
 </ul>
-</div>
-</div>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of anomaly scores.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
@@ -333,10 +401,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="orion.primitives.detectors.html" class="btn btn-neutral float-right" title="orion.primitives.detectors module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="orion.analysis.html" class="btn btn-neutral float-right" title="orion.analysis module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="orion.evaluation.utils.html" class="btn btn-neutral float-left" title="orion.evaluation.utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="orion.primitives.intervals.html" class="btn btn-neutral float-left" title="orion.primitives.intervals module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

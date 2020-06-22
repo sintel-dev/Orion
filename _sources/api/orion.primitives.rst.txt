@@ -14,3 +14,4 @@ Submodules
    orion.primitives.detectors
    orion.primitives.estimators
    orion.primitives.intervals
+   orion.primitives.tadgan

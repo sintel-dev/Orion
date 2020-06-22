@@ -197,6 +197,10 @@
 <li class="toctree-l4"><a class="reference internal" href="orion.db.html#submodules">Submodules</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="orion.evaluation.html">orion.evaluation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="orion.evaluation.html#submodules">Submodules</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="orion.primitives.html#submodules">Submodules</a></li>
 </ul>
@@ -205,12 +209,11 @@
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.benchmark.html">orion.benchmark module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">orion.core module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.evaluation.html">orion.evaluation module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.functional.html">orion.functional module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.metrics.html">orion.metrics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.runner.html">orion.runner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
 </ul>
@@ -345,7 +348,7 @@ MLBlocks pipelines.</p>
 
 <dl class="attribute">
 <dt id="orion.core.Orion.PIPELINES">
-<code class="sig-name descname">PIPELINES</code><em class="property"> = ('arima', 'mean_24h_lstm', 'lstm_dynamic_threshold', 'skew_24h_lstm', 'cyclegan', 'median_24h_lstm', 'dummy', 'sum_24h_lstm')</em><a class="headerlink" href="#orion.core.Orion.PIPELINES" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">PIPELINES</code><em class="property"> = ('arima', 'mean_24h_lstm', 'lstm_dynamic_threshold', 'skew_24h_lstm', 'median_24h_lstm', 'dummy', 'sum_24h_lstm', 'tadgan')</em><a class="headerlink" href="#orion.core.Orion.PIPELINES" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -383,7 +386,7 @@ visualization outputs dict.</p>
 
 <dl class="method">
 <dt id="orion.core.Orion.evaluate">
-<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">truth: pandas.core.frame.DataFrame</em>, <em class="sig-param">fit: bool = False</em>, <em class="sig-param">train_data: pandas.core.frame.DataFrame = None</em>, <em class="sig-param">metrics: List[str] = {'accuracy': &lt;function accuracy_score&gt;</em>, <em class="sig-param">'f1': &lt;function f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function precision_score&gt;</em>, <em class="sig-param">'recall': &lt;function recall_score&gt;}</em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="../_modules/orion/core.html#Orion.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.core.Orion.evaluate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">truth: pandas.core.frame.DataFrame</em>, <em class="sig-param">fit: bool = False</em>, <em class="sig-param">train_data: pandas.core.frame.DataFrame = None</em>, <em class="sig-param">metrics: List[str] = {'accuracy': &lt;function contextual_accuracy&gt;</em>, <em class="sig-param">'f1': &lt;function contextual_f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function contextual_precision&gt;</em>, <em class="sig-param">'recall': &lt;function contextual_recall&gt;}</em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="../_modules/orion/core.html#Orion.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.core.Orion.evaluate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the performance against a ground truth.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

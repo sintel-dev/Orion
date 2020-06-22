@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>orion.metrics module &mdash; Orion 0.1.2.dev0 documentation</title>
+  <title>orion.benchmark module &mdash; Orion 0.1.2.dev0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="orion.runner module" href="orion.runner.html" />
-    <link rel="prev" title="orion.functional module" href="orion.functional.html" /> 
+    <link rel="next" title="orion.cli module" href="orion.cli.html" />
+    <link rel="prev" title="orion.analysis module" href="orion.analysis.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -197,6 +197,10 @@
 <li class="toctree-l4"><a class="reference internal" href="orion.db.html#submodules">Submodules</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="orion.evaluation.html">orion.evaluation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="orion.evaluation.html#submodules">Submodules</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="orion.primitives.html#submodules">Submodules</a></li>
 </ul>
@@ -205,12 +209,11 @@
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.benchmark module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.core.html">orion.core module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.evaluation.html">orion.evaluation module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.functional.html">orion.functional module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.metrics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.runner.html">orion.runner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
 </ul>
@@ -286,14 +289,14 @@
         
           <li><a href="orion.html">orion package</a> &raquo;</li>
         
-      <li>orion.metrics module</li>
+      <li>orion.benchmark module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.metrics.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.benchmark.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -307,72 +310,74 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-orion.metrics">
-<span id="orion-metrics-module"></span><h1>orion.metrics module<a class="headerlink" href="#module-orion.metrics" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-orion.benchmark">
+<span id="orion-benchmark-module"></span><h1>orion.benchmark module<a class="headerlink" href="#module-orion.benchmark" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="orion.metrics.accuracy_score">
-<code class="sig-prename descclassname">orion.metrics.</code><code class="sig-name descname">accuracy_score</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/metrics.html#accuracy_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.metrics.accuracy_score" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute an accuracy score between the ground truth and the detected anomalies.</p>
+<dt id="orion.benchmark.evaluate_pipeline">
+<code class="sig-prename descclassname">orion.benchmark.</code><code class="sig-name descname">evaluate_pipeline</code><span class="sig-paren">(</span><em class="sig-param">pipeline</em>, <em class="sig-param">signals=('P-1'</em>, <em class="sig-param">'S-1'</em>, <em class="sig-param">'E-1'</em>, <em class="sig-param">'E-2'</em>, <em class="sig-param">'E-3'</em>, <em class="sig-param">'E-4'</em>, <em class="sig-param">'E-5'</em>, <em class="sig-param">'E-6'</em>, <em class="sig-param">'E-7'</em>, <em class="sig-param">'E-8'</em>, <em class="sig-param">'E-9'</em>, <em class="sig-param">'E-10'</em>, <em class="sig-param">'E-11'</em>, <em class="sig-param">'E-12'</em>, <em class="sig-param">'E-13'</em>, <em class="sig-param">'A-1'</em>, <em class="sig-param">'D-1'</em>, <em class="sig-param">'P-3'</em>, <em class="sig-param">'D-2'</em>, <em class="sig-param">'D-3'</em>, <em class="sig-param">'D-4'</em>, <em class="sig-param">'A-2'</em>, <em class="sig-param">'A-3'</em>, <em class="sig-param">'A-4'</em>, <em class="sig-param">'G-1'</em>, <em class="sig-param">'G-2'</em>, <em class="sig-param">'D-5'</em>, <em class="sig-param">'D-6'</em>, <em class="sig-param">'D-7'</em>, <em class="sig-param">'F-1'</em>, <em class="sig-param">'P-4'</em>, <em class="sig-param">'G-3'</em>, <em class="sig-param">'T-1'</em>, <em class="sig-param">'T-2'</em>, <em class="sig-param">'D-8'</em>, <em class="sig-param">'D-9'</em>, <em class="sig-param">'F-2'</em>, <em class="sig-param">'G-4'</em>, <em class="sig-param">'T-3'</em>, <em class="sig-param">'D-11'</em>, <em class="sig-param">'D-12'</em>, <em class="sig-param">'B-1'</em>, <em class="sig-param">'G-6'</em>, <em class="sig-param">'G-7'</em>, <em class="sig-param">'P-7'</em>, <em class="sig-param">'R-1'</em>, <em class="sig-param">'A-5'</em>, <em class="sig-param">'A-6'</em>, <em class="sig-param">'A-7'</em>, <em class="sig-param">'D-13'</em>, <em class="sig-param">'A-8'</em>, <em class="sig-param">'A-9'</em>, <em class="sig-param">'F-3'</em>, <em class="sig-param">'M-6'</em>, <em class="sig-param">'M-1'</em>, <em class="sig-param">'M-2'</em>, <em class="sig-param">'S-2'</em>, <em class="sig-param">'P-10'</em>, <em class="sig-param">'T-4'</em>, <em class="sig-param">'T-5'</em>, <em class="sig-param">'F-7'</em>, <em class="sig-param">'M-3'</em>, <em class="sig-param">'M-4'</em>, <em class="sig-param">'M-5'</em>, <em class="sig-param">'P-15'</em>, <em class="sig-param">'C-1'</em>, <em class="sig-param">'C-2'</em>, <em class="sig-param">'T-12'</em>, <em class="sig-param">'T-13'</em>, <em class="sig-param">'F-4'</em>, <em class="sig-param">'F-5'</em>, <em class="sig-param">'D-14'</em>, <em class="sig-param">'T-9'</em>, <em class="sig-param">'P-14'</em>, <em class="sig-param">'T-8'</em>, <em class="sig-param">'P-11'</em>, <em class="sig-param">'D-15'</em>, <em class="sig-param">'D-16'</em>, <em class="sig-param">'M-7'</em>, <em class="sig-param">'F-8')</em>, <em class="sig-param">metrics={'accuracy': &lt;function contextual_accuracy&gt;</em>, <em class="sig-param">'f1': &lt;function contextual_f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function contextual_precision&gt;</em>, <em class="sig-param">'recall': &lt;function contextual_recall&gt;}</em>, <em class="sig-param">holdout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/benchmark.html#evaluate_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.benchmark.evaluate_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a pipeline on multiple signals with multiple metrics.</p>
+<p>The pipeline is used to analyze the given signals and later on the
+detected anomalies are scored against the known anomalies using the
+indicated metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>expected</strong> (<em>*</em>) – Ground truth</p></li>
-<li><p><strong>observed</strong> (<em>*</em>) – Detected anomalies</p></li>
-<li><p><strong>data</strong> (<em>*</em>) – Original data. Used to extract start and end.</p></li>
-<li><p><strong>start</strong> (<em>*</em>) – Minimum timestamp of the original data.</p></li>
-<li><p><strong>end</strong> (<em>*</em>) – Maximum timestamp of the original data.</p></li>
+<li><p><strong>pipeline</strong> (<em>str</em>) – Path to the pipeline JSON.</p></li>
+<li><p><strong>signals</strong> (<em>list</em><em>, </em><em>optional</em>) – list of signals. If not given, all the NASA signals
+are used.</p></li>
+<li><p><strong>metrics</strong> (<em>dict</em><em>, </em><em>optional</em>) – dictionary with metric names as keys and
+scoring functions as values. If not given, all the available metrics will
+be used.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Series object containing the average of the scores obtained with</dt><dd><p>each scoring function accross all the signals.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.Series</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="orion.metrics.f1_score">
-<code class="sig-prename descclassname">orion.metrics.</code><code class="sig-name descname">f1_score</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/metrics.html#f1_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.metrics.f1_score" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute an f1 score between the ground truth and the detected anomalies.</p>
+<dt id="orion.benchmark.evaluate_pipelines">
+<code class="sig-prename descclassname">orion.benchmark.</code><code class="sig-name descname">evaluate_pipelines</code><span class="sig-paren">(</span><em class="sig-param">pipelines</em>, <em class="sig-param">signals=None</em>, <em class="sig-param">metrics=None</em>, <em class="sig-param">rank=None</em>, <em class="sig-param">holdout=(True</em>, <em class="sig-param">False)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/benchmark.html#evaluate_pipelines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.benchmark.evaluate_pipelines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a list of pipelines on multiple signals with multiple metrics.</p>
+<p>The pipelines are used to analyze the given signals and later on the
+detected anomalies are scored against the known anomalies using the
+indicated metrics.</p>
+<p>Finally, the scores obtained with each metric are averaged accross all the signals,
+ranked by the indicated metric and returned on a pandas.DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>expected</strong> (<em>*</em>) – Ground truth</p></li>
-<li><p><strong>observed</strong> (<em>*</em>) – Detected anomalies</p></li>
-<li><p><strong>data</strong> (<em>*</em>) – Original data. Used to extract start and end.</p></li>
-<li><p><strong>start</strong> (<em>*</em>) – Minimum timestamp of the original data.</p></li>
-<li><p><strong>end</strong> (<em>*</em>) – Maximum timestamp of the original data.</p></li>
+<li><p><strong>pipelines</strong> (<em>dict</em><em> or </em><em>list</em>) – dictionary with pipeline names as keys and their
+JSON paths as values. If a list is given, it should be of JSON paths,
+and the paths themselves will be used as names.</p></li>
+<li><p><strong>signals</strong> (<em>list</em><em>, </em><em>optional</em>) – list of signals. If not given, all the NASA signals
+are used.</p></li>
+<li><p><strong>metrics</strong> (<em>dict</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – dictionary with metric names as keys and
+scoring functions as values. If a list is given, it should be of scoring
+functions, and they <cite>__name__</cite> value will be used as the metric name.
+If not given, all the available metrics will be used.</p></li>
+<li><p><strong>rank</strong> (<em>str</em><em>, </em><em>optional</em>) – Sort and rank the pipelines based on the given metric.
+If not given, rank using the first metric.</p></li>
 </ul>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="orion.metrics.precision_score">
-<code class="sig-prename descclassname">orion.metrics.</code><code class="sig-name descname">precision_score</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/metrics.html#precision_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.metrics.precision_score" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute an precision score between the ground truth and the detected anomalies.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>expected</strong> (<em>*</em>) – Ground truth</p></li>
-<li><p><strong>observed</strong> (<em>*</em>) – Detected anomalies</p></li>
-<li><p><strong>data</strong> (<em>*</em>) – Original data. Used to extract start and end.</p></li>
-<li><p><strong>start</strong> (<em>*</em>) – Minimum timestamp of the original data.</p></li>
-<li><p><strong>end</strong> (<em>*</em>) – Maximum timestamp of the original data.</p></li>
-</ul>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Table containing the average of the scores obtained with</dt><dd><p>each scoring function accross all the signals for each pipeline, ranked
+by the indicated metric.</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="orion.metrics.recall_score">
-<code class="sig-prename descclassname">orion.metrics.</code><code class="sig-name descname">recall_score</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/metrics.html#recall_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.metrics.recall_score" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute a recall score between the ground truth and the detected anomalies.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>expected</strong> (<em>*</em>) – Ground truth</p></li>
-<li><p><strong>observed</strong> (<em>*</em>) – Detected anomalies</p></li>
-<li><p><strong>data</strong> (<em>*</em>) – Original data. Used to extract start and end.</p></li>
-<li><p><strong>start</strong> (<em>*</em>) – Minimum timestamp of the original data.</p></li>
-<li><p><strong>end</strong> (<em>*</em>) – Maximum timestamp of the original data.</p></li>
-</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -387,10 +392,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="orion.runner.html" class="btn btn-neutral float-right" title="orion.runner module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="orion.cli.html" class="btn btn-neutral float-right" title="orion.cli module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="orion.functional.html" class="btn btn-neutral float-left" title="orion.functional module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="orion.analysis.html" class="btn btn-neutral float-left" title="orion.analysis module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

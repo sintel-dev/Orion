@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>orion.evaluation module &mdash; Orion 0.1.2.dev0 documentation</title>
+  <title>orion.evaluation package &mdash; Orion 0.1.2.dev0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="orion.functional module" href="orion.functional.html" />
-    <link rel="prev" title="orion.data module" href="orion.data.html" /> 
+    <link rel="next" title="orion.evaluation.common module" href="orion.evaluation.common.html" />
+    <link rel="prev" title="orion.db.schema module" href="orion.db.schema.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -192,9 +192,13 @@
 <p class="caption"><span class="caption-text">Resources</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="orion.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="orion.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="orion.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="orion.db.html">orion.db package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="orion.db.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.evaluation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul>
@@ -203,14 +207,13 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="orion.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="orion.benchmark.html">orion.benchmark module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.cli.html">orion.cli module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.core.html">orion.core module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.data.html">orion.data module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.evaluation module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.functional.html">orion.functional module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="orion.metrics.html">orion.metrics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.runner.html">orion.runner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="orion.utils.html">orion.utils module</a></li>
 </ul>
@@ -286,7 +289,7 @@
         
           <li><a href="orion.html">orion package</a> &raquo;</li>
         
-      <li>orion.evaluation module</li>
+      <li>orion.evaluation package</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -308,77 +311,291 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-orion.evaluation">
-<span id="orion-evaluation-module"></span><h1>orion.evaluation module<a class="headerlink" href="#module-orion.evaluation" title="Permalink to this headline">¶</a></h1>
+<span id="orion-evaluation-package"></span><h1>orion.evaluation package<a class="headerlink" href="#module-orion.evaluation" title="Permalink to this headline">¶</a></h1>
+<p>Orion Evaluation subpackage.</p>
+<p>This subpackage contains all the code related to the
+Orion Evaluation usage.</p>
 <dl class="function">
-<dt id="orion.evaluation.evaluate_pipeline">
-<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">evaluate_pipeline</code><span class="sig-paren">(</span><em class="sig-param">pipeline</em>, <em class="sig-param">signals=('P-1'</em>, <em class="sig-param">'S-1'</em>, <em class="sig-param">'E-1'</em>, <em class="sig-param">'E-2'</em>, <em class="sig-param">'E-3'</em>, <em class="sig-param">'E-4'</em>, <em class="sig-param">'E-5'</em>, <em class="sig-param">'E-6'</em>, <em class="sig-param">'E-7'</em>, <em class="sig-param">'E-8'</em>, <em class="sig-param">'E-9'</em>, <em class="sig-param">'E-10'</em>, <em class="sig-param">'E-11'</em>, <em class="sig-param">'E-12'</em>, <em class="sig-param">'E-13'</em>, <em class="sig-param">'A-1'</em>, <em class="sig-param">'D-1'</em>, <em class="sig-param">'P-3'</em>, <em class="sig-param">'D-2'</em>, <em class="sig-param">'D-3'</em>, <em class="sig-param">'D-4'</em>, <em class="sig-param">'A-2'</em>, <em class="sig-param">'A-3'</em>, <em class="sig-param">'A-4'</em>, <em class="sig-param">'G-1'</em>, <em class="sig-param">'G-2'</em>, <em class="sig-param">'D-5'</em>, <em class="sig-param">'D-6'</em>, <em class="sig-param">'D-7'</em>, <em class="sig-param">'F-1'</em>, <em class="sig-param">'P-4'</em>, <em class="sig-param">'G-3'</em>, <em class="sig-param">'T-1'</em>, <em class="sig-param">'T-2'</em>, <em class="sig-param">'D-8'</em>, <em class="sig-param">'D-9'</em>, <em class="sig-param">'F-2'</em>, <em class="sig-param">'G-4'</em>, <em class="sig-param">'T-3'</em>, <em class="sig-param">'D-11'</em>, <em class="sig-param">'D-12'</em>, <em class="sig-param">'B-1'</em>, <em class="sig-param">'G-6'</em>, <em class="sig-param">'G-7'</em>, <em class="sig-param">'P-7'</em>, <em class="sig-param">'R-1'</em>, <em class="sig-param">'A-5'</em>, <em class="sig-param">'A-6'</em>, <em class="sig-param">'A-7'</em>, <em class="sig-param">'D-13'</em>, <em class="sig-param">'A-8'</em>, <em class="sig-param">'A-9'</em>, <em class="sig-param">'F-3'</em>, <em class="sig-param">'M-6'</em>, <em class="sig-param">'M-1'</em>, <em class="sig-param">'M-2'</em>, <em class="sig-param">'S-2'</em>, <em class="sig-param">'P-10'</em>, <em class="sig-param">'T-4'</em>, <em class="sig-param">'T-5'</em>, <em class="sig-param">'F-7'</em>, <em class="sig-param">'M-3'</em>, <em class="sig-param">'M-4'</em>, <em class="sig-param">'M-5'</em>, <em class="sig-param">'P-15'</em>, <em class="sig-param">'C-1'</em>, <em class="sig-param">'C-2'</em>, <em class="sig-param">'T-12'</em>, <em class="sig-param">'T-13'</em>, <em class="sig-param">'F-4'</em>, <em class="sig-param">'F-5'</em>, <em class="sig-param">'D-14'</em>, <em class="sig-param">'T-9'</em>, <em class="sig-param">'P-14'</em>, <em class="sig-param">'T-8'</em>, <em class="sig-param">'P-11'</em>, <em class="sig-param">'D-15'</em>, <em class="sig-param">'D-16'</em>, <em class="sig-param">'M-7'</em>, <em class="sig-param">'F-8')</em>, <em class="sig-param">metrics={'accuracy': &lt;function accuracy_score&gt;</em>, <em class="sig-param">'f1': &lt;function f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function precision_score&gt;</em>, <em class="sig-param">'recall': &lt;function recall_score&gt;}</em>, <em class="sig-param">holdout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation.html#evaluate_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.evaluate_pipeline" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate a pipeline on multiple signals with multiple metrics.</p>
-<p>The pipeline is used to analyze the given signals and later on the
-detected anomalies are scored against the known anomalies using the
-indicated metrics.</p>
+<dt id="orion.evaluation.contextual_accuracy">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">contextual_accuracy</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">weighted=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/contextual.html#contextual_accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.contextual_accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an accuracy score between the ground truth and the detected anomalies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pipeline</strong> (<em>str</em>) – Path to the pipeline JSON.</p></li>
-<li><p><strong>signals</strong> (<em>list</em><em>, </em><em>optional</em>) – list of signals. If not given, all the NASA signals
-are used.</p></li>
-<li><p><strong>metrics</strong> (<em>dict</em><em>, </em><em>optional</em>) – dictionary with metric names as keys and
-scoring functions as values. If not given, all the available metrics will
-be used.</p></li>
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+<li><p><strong>weighted</strong> (<em>boolean</em>) – Flag to represent which algorithm to use.
+If true use weighted segment algorithm, else use overlap segment.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>Series object containing the average of the scores obtained with</dt><dd><p>each scoring function accross all the signals.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>Accuracy score between the ground truth and detected anomalies.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pandas.Series</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="orion.evaluation.evaluate_pipelines">
-<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">evaluate_pipelines</code><span class="sig-paren">(</span><em class="sig-param">pipelines</em>, <em class="sig-param">signals=None</em>, <em class="sig-param">metrics=None</em>, <em class="sig-param">rank=None</em>, <em class="sig-param">holdout=(True</em>, <em class="sig-param">False)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation.html#evaluate_pipelines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.evaluate_pipelines" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate a list of pipelines on multiple signals with multiple metrics.</p>
-<p>The pipelines are used to analyze the given signals and later on the
-detected anomalies are scored against the known anomalies using the
-indicated metrics.</p>
-<p>Finally, the scores obtained with each metric are averaged accross all the signals,
-ranked by the indicated metric and returned on a pandas.DataFrame.</p>
+<dt id="orion.evaluation.contextual_confusion_matrix">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">contextual_confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">weighted=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/contextual.html#contextual_confusion_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.contextual_confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the confusion matrix between the ground truth and the detected anomalies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pipelines</strong> (<em>dict</em><em> or </em><em>list</em>) – dictionary with pipeline names as keys and their
-JSON paths as values. If a list is given, it should be of JSON paths,
-and the paths themselves will be used as names.</p></li>
-<li><p><strong>signals</strong> (<em>list</em><em>, </em><em>optional</em>) – list of signals. If not given, all the NASA signals
-are used.</p></li>
-<li><p><strong>metrics</strong> (<em>dict</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – dictionary with metric names as keys and
-scoring functions as values. If a list is given, it should be of scoring
-functions, and they <cite>__name__</cite> value will be used as the metric name.
-If not given, all the available metrics will be used.</p></li>
-<li><p><strong>rank</strong> (<em>str</em><em>, </em><em>optional</em>) – Sort and rank the pipelines based on the given metric.
-If not given, rank using the first metric.</p></li>
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+<li><p><strong>weighted</strong> (<em>boolean</em>) – Flag to represent which algorithm to use.
+If true use weighted segment algorithm, else use overlap segment.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>Table containing the average of the scores obtained with</dt><dd><p>each scoring function accross all the signals for each pipeline, ranked
-by the indicated metric.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>number of true negative, false positive, false negative, true positive.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
 
+<dl class="function">
+<dt id="orion.evaluation.contextual_f1_score">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">contextual_f1_score</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">weighted=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/contextual.html#contextual_f1_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.contextual_f1_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an f1 score between the ground truth and the detected anomalies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+<li><p><strong>weighted</strong> (<em>boolean</em>) – Flag to represent which algorithm to use.
+If true use weighted segment algorithm, else use overlap segment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>F1 score between the ground truth and detected anomalies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.contextual_precision">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">contextual_precision</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">weighted=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/contextual.html#contextual_precision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.contextual_precision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an precision score between the ground truth and the detected anomalies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+<li><p><strong>weighted</strong> (<em>boolean</em>) – Flag to represent which algorithm to use.
+If true use weighted segment algorithm, else use overlap segment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Precision score between the ground truth and detected anomalies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.contextual_recall">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">contextual_recall</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">weighted=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/contextual.html#contextual_recall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.contextual_recall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an recall score between the ground truth and the detected anomalies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of tuples</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+two columns: start and stop.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+<li><p><strong>weighted</strong> (<em>boolean</em>) – Flag to represent which algorithm to use.
+If true use weighted segment algorithm, else use overlap segment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Recall score between the ground truth and detected anomalies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.point_accuracy">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">point_accuracy</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/point.html#point_accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.point_accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an accuracy score between the ground truth and the detected anomalies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Accuracy score between the ground truth and detected anomalies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.point_confusion_matrix">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">point_confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/point.html#point_confusion_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.point_confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the confusion matrix between the ground truth and the detected anomalies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of true negative, false positive, false negative, true positive.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.point_f1_score">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">point_f1_score</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/point.html#point_f1_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.point_f1_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an f1 score between the ground truth and the detected anomalies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>F1 score between the ground truth and detected anomalies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.point_precision">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">point_precision</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/point.html#point_precision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.point_precision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an precision score between the ground truth and the detected anomalies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Precision score between the ground truth and detected anomalies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.evaluation.point_recall">
+<code class="sig-prename descclassname">orion.evaluation.</code><code class="sig-name descname">point_recall</code><span class="sig-paren">(</span><em class="sig-param">expected</em>, <em class="sig-param">observed</em>, <em class="sig-param">data=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/evaluation/point.html#point_recall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.evaluation.point_recall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an recall score between the ground truth and the detected anomalies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expected</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>observed</strong> (<em>DataFrame</em><em> or </em><em>list of timestamps</em>) – Detected anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> or list containing
+one column: timestamp.</p></li>
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Original data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing timestamp.
+Used to extract start and end.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Minimum timestamp of the original data.</p></li>
+<li><p><strong>end</strong> (<em>int</em>) – Maximum timestamp of the original data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Recall score between the ground truth and detected anomalies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="orion.evaluation.common.html">orion.evaluation.common module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orion.evaluation.contextual.html">orion.evaluation.contextual module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orion.evaluation.point.html">orion.evaluation.point module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orion.evaluation.utils.html">orion.evaluation.utils module</a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -389,10 +606,10 @@ by the indicated metric.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="orion.functional.html" class="btn btn-neutral float-right" title="orion.functional module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="orion.evaluation.common.html" class="btn btn-neutral float-right" title="orion.evaluation.common module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="orion.data.html" class="btn btn-neutral float-left" title="orion.data module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="orion.db.schema.html" class="btn btn-neutral float-left" title="orion.db.schema module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

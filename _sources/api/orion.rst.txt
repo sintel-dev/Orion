@@ -12,6 +12,7 @@ Subpackages
 .. toctree::
 
    orion.db
+   orion.evaluation
    orion.primitives
 
 Submodules
@@ -20,11 +21,10 @@ Submodules
 .. toctree::
 
    orion.analysis
+   orion.benchmark
    orion.cli
    orion.core
    orion.data
-   orion.evaluation
    orion.functional
-   orion.metrics
    orion.runner
    orion.utils

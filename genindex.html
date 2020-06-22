@@ -196,6 +196,10 @@
 <li class="toctree-l4"><a class="reference internal" href="api/orion.db.html#submodules">Submodules</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.evaluation.html">orion.evaluation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/orion.evaluation.html#submodules">Submodules</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.primitives.html">orion.primitives package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/orion.primitives.html#submodules">Submodules</a></li>
 </ul>
@@ -204,12 +208,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/orion.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.analysis.html">orion.analysis module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/orion.benchmark.html">orion.benchmark module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.cli.html">orion.cli module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.core.html">orion.core module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.data.html">orion.data module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/orion.evaluation.html">orion.evaluation module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.functional.html">orion.functional module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/orion.metrics.html">orion.metrics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.runner.html">orion.runner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/orion.utils.html">orion.utils module</a></li>
 </ul>
@@ -334,8 +337,6 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.metrics.html#orion.metrics.accuracy_score">accuracy_score() (in module orion.metrics)</a>
-</li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.EventInteraction.action">action (orion.db.schema.EventInteraction attribute)</a>
 </li>
       <li><a href="api/orion.db.explorer.html#orion.db.explorer.OrionDBExplorer.add_annotation">add_annotation() (orion.db.explorer.OrionDBExplorer method)</a>
@@ -432,6 +433,38 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Annotation.comment">comment (orion.db.schema.Annotation attribute)</a>
 </li>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.contextual_accuracy">contextual_accuracy() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.contextual.html#orion.evaluation.contextual.contextual_accuracy">(in module orion.evaluation.contextual)</a>
+</li>
+      </ul></li>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.contextual_confusion_matrix">contextual_confusion_matrix() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.contextual.html#orion.evaluation.contextual.contextual_confusion_matrix">(in module orion.evaluation.contextual)</a>
+</li>
+      </ul></li>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.contextual_f1_score">contextual_f1_score() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.contextual.html#orion.evaluation.contextual.contextual_f1_score">(in module orion.evaluation.contextual)</a>
+</li>
+      </ul></li>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.contextual_precision">contextual_precision() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.contextual.html#orion.evaluation.contextual.contextual_precision">(in module orion.evaluation.contextual)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.contextual_recall">contextual_recall() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.contextual.html#orion.evaluation.contextual.contextual_recall">(in module orion.evaluation.contextual)</a>
+</li>
+      </ul></li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Annotation.created_by">created_by (orion.db.schema.Annotation attribute)</a>
 
       <ul>
@@ -539,12 +572,12 @@
       <li><a href="api/orion.html#orion.evaluate_pipeline">evaluate_pipeline() (in module orion)</a>
 
       <ul>
-        <li><a href="api/orion.evaluation.html#orion.evaluation.evaluate_pipeline">(in module orion.evaluation)</a>
+        <li><a href="api/orion.benchmark.html#orion.benchmark.evaluate_pipeline">(in module orion.benchmark)</a>
 </li>
         <li><a href="api/orion.functional.html#orion.functional.evaluate_pipeline">(in module orion.functional)</a>
 </li>
       </ul></li>
-      <li><a href="api/orion.evaluation.html#orion.evaluation.evaluate_pipelines">evaluate_pipelines() (in module orion.evaluation)</a>
+      <li><a href="api/orion.benchmark.html#orion.benchmark.evaluate_pipelines">evaluate_pipelines() (in module orion.benchmark)</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event">Event (class in orion.db.schema)</a>
 </li>
@@ -584,8 +617,6 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.metrics.html#orion.metrics.f1_score">f1_score() (in module orion.metrics)</a>
-</li>
       <li><a href="api/orion.db.base.html#orion.db.base.OrionDocument.find">find() (orion.db.base.OrionDocument class method)</a>
 </li>
       <li><a href="api/orion.db.base.html#orion.db.base.OrionDocument.find_one">find_one() (orion.db.base.OrionDocument class method)</a>
@@ -600,6 +631,8 @@
         <li><a href="api/orion.primitives.detectors.html#orion.primitives.detectors.ThresholdDetector.fit">(orion.primitives.detectors.ThresholdDetector method)</a>
 </li>
         <li><a href="api/orion.primitives.estimators.html#orion.primitives.estimators.MeanEstimator.fit">(orion.primitives.estimators.MeanEstimator method)</a>
+</li>
+        <li><a href="api/orion.primitives.tadgan.html#orion.primitives.tadgan.TadGAN.fit">(orion.primitives.tadgan.TadGAN method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -616,6 +649,16 @@
         <li><a href="api/orion.functional.html#orion.functional.fit_pipeline">(in module orion.functional)</a>
 </li>
       </ul></li>
+      <li><a href="api/orion.evaluation.utils.html#orion.evaluation.utils.from_list_points_labels">from_list_points_labels() (in module orion.evaluation.utils)</a>
+</li>
+      <li><a href="api/orion.evaluation.utils.html#orion.evaluation.utils.from_list_points_timestamps">from_list_points_timestamps() (in module orion.evaluation.utils)</a>
+</li>
+      <li><a href="api/orion.evaluation.utils.html#orion.evaluation.utils.from_pandas_contextual">from_pandas_contextual() (in module orion.evaluation.utils)</a>
+</li>
+      <li><a href="api/orion.evaluation.utils.html#orion.evaluation.utils.from_pandas_points">from_pandas_points() (in module orion.evaluation.utils)</a>
+</li>
+      <li><a href="api/orion.evaluation.utils.html#orion.evaluation.utils.from_pandas_points_labels">from_pandas_points_labels() (in module orion.evaluation.utils)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -904,25 +947,33 @@
 </li>
       <li><a href="api/orion.analysis.html#module-orion.analysis">orion.analysis (module)</a>
 </li>
+      <li><a href="api/orion.benchmark.html#module-orion.benchmark">orion.benchmark (module)</a>
+</li>
       <li><a href="api/orion.core.html#module-orion.core">orion.core (module)</a>
 </li>
       <li><a href="api/orion.data.html#module-orion.data">orion.data (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.db.html#module-orion.db">orion.db (module)</a>
 </li>
       <li><a href="api/orion.db.base.html#module-orion.db.base">orion.db.base (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.db.explorer.html#module-orion.db.explorer">orion.db.explorer (module)</a>
 </li>
       <li><a href="api/orion.db.schema.html#module-orion.db.schema">orion.db.schema (module)</a>
 </li>
       <li><a href="api/orion.evaluation.html#module-orion.evaluation">orion.evaluation (module)</a>
 </li>
-      <li><a href="api/orion.functional.html#module-orion.functional">orion.functional (module)</a>
+      <li><a href="api/orion.evaluation.common.html#module-orion.evaluation.common">orion.evaluation.common (module)</a>
 </li>
-      <li><a href="api/orion.metrics.html#module-orion.metrics">orion.metrics (module)</a>
+      <li><a href="api/orion.evaluation.contextual.html#module-orion.evaluation.contextual">orion.evaluation.contextual (module)</a>
+</li>
+      <li><a href="api/orion.evaluation.point.html#module-orion.evaluation.point">orion.evaluation.point (module)</a>
+</li>
+      <li><a href="api/orion.evaluation.utils.html#module-orion.evaluation.utils">orion.evaluation.utils (module)</a>
+</li>
+      <li><a href="api/orion.functional.html#module-orion.functional">orion.functional (module)</a>
 </li>
       <li><a href="api/orion.primitives.html#module-orion.primitives">orion.primitives (module)</a>
 </li>
@@ -931,6 +982,8 @@
       <li><a href="api/orion.primitives.estimators.html#module-orion.primitives.estimators">orion.primitives.estimators (module)</a>
 </li>
       <li><a href="api/orion.primitives.intervals.html#module-orion.primitives.intervals">orion.primitives.intervals (module)</a>
+</li>
+      <li><a href="api/orion.primitives.tadgan.html#module-orion.primitives.tadgan">orion.primitives.tadgan (module)</a>
 </li>
       <li><a href="api/orion.runner.html#module-orion.runner">orion.runner (module)</a>
 </li>
@@ -968,8 +1021,6 @@
         <li><a href="api/orion.html#orion.Orion.PIPELINES">(orion.Orion attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Template.pipelines">pipelines() (orion.db.schema.Template property)</a>
 </li>
       <li><a href="api/orion.core.html#orion.core.Orion.PIPELINES_DIR">PIPELINES_DIR (orion.core.Orion attribute)</a>
@@ -978,10 +1029,44 @@
         <li><a href="api/orion.html#orion.Orion.PIPELINES_DIR">(orion.Orion attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/orion.metrics.html#orion.metrics.precision_score">precision_score() (in module orion.metrics)</a>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.point_accuracy">point_accuracy() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.point.html#orion.evaluation.point.point_accuracy">(in module orion.evaluation.point)</a>
 </li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.point_confusion_matrix">point_confusion_matrix() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.point.html#orion.evaluation.point.point_confusion_matrix">(in module orion.evaluation.point)</a>
+</li>
+      </ul></li>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.point_f1_score">point_f1_score() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.point.html#orion.evaluation.point.point_f1_score">(in module orion.evaluation.point)</a>
+</li>
+      </ul></li>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.point_precision">point_precision() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.point.html#orion.evaluation.point.point_precision">(in module orion.evaluation.point)</a>
+</li>
+      </ul></li>
+      <li><a href="api/orion.evaluation.html#orion.evaluation.point_recall">point_recall() (in module orion.evaluation)</a>
+
+      <ul>
+        <li><a href="api/orion.evaluation.point.html#orion.evaluation.point.point_recall">(in module orion.evaluation.point)</a>
+</li>
+      </ul></li>
       <li><a href="api/orion.primitives.estimators.html#orion.primitives.estimators.MeanEstimator.predict">predict() (orion.primitives.estimators.MeanEstimator method)</a>
+
+      <ul>
+        <li><a href="api/orion.primitives.tadgan.html#orion.primitives.tadgan.TadGAN.predict">(orion.primitives.tadgan.TadGAN method)</a>
 </li>
+      </ul></li>
       <li><a href="api/orion.runner.html#orion.runner.process_pipeline_output">process_pipeline_output() (in module orion.runner)</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Experiment.project">project (orion.db.schema.Experiment attribute)</a>
@@ -992,7 +1077,7 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/orion.metrics.html#orion.metrics.recall_score">recall_score() (in module orion.metrics)</a>
+      <li><a href="api/orion.primitives.tadgan.html#orion.primitives.tadgan.RandomWeightedAverage">RandomWeightedAverage (class in orion.primitives.tadgan)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1014,6 +1099,8 @@
         <li><a href="api/orion.html#orion.Orion.save">(orion.Orion method)</a>
 </li>
       </ul></li>
+      <li><a href="api/orion.primitives.tadgan.html#orion.primitives.tadgan.score_anomalies">score_anomalies() (in module orion.primitives.tadgan)</a>
+</li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.severity">severity (orion.db.schema.Event attribute)</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Signal">Signal (class in orion.db.schema)</a>
@@ -1048,10 +1135,10 @@
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.SOURCE_CHOICES">SOURCE_CHOICES (orion.db.schema.Event attribute)</a>
 </li>
-      <li><a href="api/orion.db.schema.html#orion.db.schema.Event.SOURCE_MANUALLY_CREATED">SOURCE_MANUALLY_CREATED (orion.db.schema.Event attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.db.schema.html#orion.db.schema.Event.SOURCE_MANUALLY_CREATED">SOURCE_MANUALLY_CREATED (orion.db.schema.Event attribute)</a>
+</li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.SOURCE_ORION">SOURCE_ORION (orion.db.schema.Event attribute)</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Event.SOURCE_SHAPE_MATCHING">SOURCE_SHAPE_MATCHING (orion.db.schema.Event attribute)</a>
@@ -1104,6 +1191,8 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.primitives.tadgan.html#orion.primitives.tadgan.TadGAN">TadGAN (class in orion.primitives.tadgan)</a>
+</li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Annotation.tag">tag (orion.db.schema.Annotation attribute)</a>
 </li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Template">Template (class in orion.db.schema)</a>
@@ -1114,10 +1203,10 @@
         <li><a href="api/orion.db.schema.html#orion.db.schema.Pipeline.template">(orion.db.schema.Pipeline attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/orion.db.schema.html#orion.db.schema.Template.DoesNotExist">Template.DoesNotExist</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/orion.db.schema.html#orion.db.schema.Template.DoesNotExist">Template.DoesNotExist</a>
+</li>
       <li><a href="api/orion.db.schema.html#orion.db.schema.Template.MultipleObjectsReturned">Template.MultipleObjectsReturned</a>
 </li>
       <li><a href="api/orion.primitives.detectors.html#orion.primitives.detectors.ThresholdDetector">ThresholdDetector (class in orion.primitives.detectors)</a>

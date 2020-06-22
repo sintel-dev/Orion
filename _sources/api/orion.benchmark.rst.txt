@@ -1,0 +1,7 @@
+orion.benchmark module
+======================
+
+.. automodule:: orion.benchmark
+   :members:
+   :undoc-members:
+   :show-inheritance:

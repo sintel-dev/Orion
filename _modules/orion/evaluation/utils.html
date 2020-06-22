@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>orion.primitives.intervals &mdash; Orion 0.1.2.dev0 documentation</title>
+  <title>orion.evaluation.utils &mdash; Orion 0.1.2.dev0 documentation</title>
   
 
   
@@ -287,7 +287,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>orion.primitives.intervals</li>
+      <li>orion.evaluation.utils</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -302,62 +302,154 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for orion.primitives.intervals</h1><div class="highlight"><pre>
+  <h1>Source code for orion.evaluation.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># helper functions</span>
 
 
-<div class="viewcode-block" id="build_anomaly_intervals"><a class="viewcode-back" href="../../../api/orion.primitives.intervals.html#orion.primitives.intervals.build_anomaly_intervals">[docs]</a><span class="k">def</span> <span class="nf">build_anomaly_intervals</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">time_column</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Group together consecutive anomalous samples in anomaly intervals.</span>
+<div class="viewcode-block" id="from_pandas_contextual"><a class="viewcode-back" href="../../../api/orion.evaluation.utils.html#orion.evaluation.utils.from_pandas_contextual">[docs]</a><span class="k">def</span> <span class="nf">from_pandas_contextual</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Convert contextual ``pandas.DataFrame`` to list of tuples.</span>
 
-<span class="sd">    This is a dummy boundary detection function that groups together</span>
-<span class="sd">    samples that have been consecutively flagged as anomalous and</span>
-<span class="sd">    returns boundaries of anomalous intervals.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame):</span>
+<span class="sd">            anomalies, passed as ``pandas.DataFrame``</span>
+<span class="sd">            containing two columns: start and stop.</span>
 
-<span class="sd">    Optionally, it computes the average severity of each interval.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list:</span>
+<span class="sd">            tuple (start, end) timestamp.</span>
 
-<span class="sd">    This detector is here only to serve as reference of what</span>
-<span class="sd">    an boundary detection primitive looks like, and is not intended</span>
-<span class="sd">    to be used in real scenarios.</span>
+<span class="sd">    Raises:</span>
+<span class="sd">        KeyError:</span>
+<span class="sd">            If the received ``pandas.DataFrame`` does not contain the required columns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">require</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">]</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="n">columns</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">require</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;severity&#39;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">require</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;severity&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">require</span><span class="p">]</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> not found in columns: </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">require</span><span class="p">,</span> <span class="n">columns</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="from_list_points_timestamps"><a class="viewcode-back" href="../../../api/orion.evaluation.utils.html#orion.evaluation.utils.from_list_points_timestamps">[docs]</a><span class="k">def</span> <span class="nf">from_list_points_timestamps</span><span class="p">(</span><span class="n">timestamps</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Convert list of timestamps to list of tuples.</span>
+
+<span class="sd">    Convert a list of anomalies identified by timestamps,</span>
+<span class="sd">    to a list of tuples marking the start and end interval</span>
+<span class="sd">    of anomalies; make it contextually defined.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        timestamps (list): contains timestamp of anomalies.</span>
+<span class="sd">        gap (int): allowed gap between anomalies.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list:</span>
+<span class="sd">            tuple (start, end) timestamp.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">timestamps</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">timestamps</span><span class="p">)</span>
+
+    <span class="n">start_ts</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">max_ts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">timestamps</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="n">anomalies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">break_point</span> <span class="o">=</span> <span class="n">start_ts</span>
+    <span class="k">while</span> <span class="n">break_point</span> <span class="o">&lt;</span> <span class="n">max_ts</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">timestamps</span><span class="p">[</span><span class="n">break_point</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">timestamps</span><span class="p">[</span><span class="n">break_point</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">gap</span><span class="p">:</span>
+            <span class="n">break_point</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">continue</span>
+
+        <span class="n">anomalies</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">timestamps</span><span class="p">[</span><span class="n">start_ts</span><span class="p">],</span> <span class="n">timestamps</span><span class="p">[</span><span class="n">break_point</span><span class="p">]))</span>
+        <span class="n">break_point</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">start_ts</span> <span class="o">=</span> <span class="n">break_point</span>
+
+    <span class="n">anomalies</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">timestamps</span><span class="p">[</span><span class="n">start_ts</span><span class="p">],</span> <span class="n">timestamps</span><span class="p">[</span><span class="n">break_point</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">anomalies</span></div>
+
+
+<div class="viewcode-block" id="from_pandas_points"><a class="viewcode-back" href="../../../api/orion.evaluation.utils.html#orion.evaluation.utils.from_pandas_points">[docs]</a><span class="k">def</span> <span class="nf">from_pandas_points</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Convert point ``pandas.DataFrame`` to list of tuples.</span>
+
+<span class="sd">    Convert a ``pandas.DataFrame`` of anomalies identified by</span>
+<span class="sd">    one column (timestamp) to a list of tuples marking the</span>
+<span class="sd">    start and end interval of anomalies; make it contextually</span>
+<span class="sd">    defined.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame):</span>
+<span class="sd">            anomalies, passed as ``pandas.DataFrame``</span>
+<span class="sd">            containing one column: timestamp.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list:</span>
+<span class="sd">            tuple (start, end) timestamp.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        KeyError:</span>
+<span class="sd">            If the received ``pandas.DataFrame`` does not contain column `timestamp`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">time_column</span> <span class="o">=</span> <span class="s1">&#39;timestamp&#39;</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">time_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> not found in columns: </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_column</span><span class="p">,</span> <span class="n">columns</span><span class="p">))</span>
+
+    <span class="n">timestamps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">from_list_points_timestamps</span><span class="p">(</span><span class="n">timestamps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="from_pandas_points_labels"><a class="viewcode-back" href="../../../api/orion.evaluation.utils.html#orion.evaluation.utils.from_pandas_points_labels">[docs]</a><span class="k">def</span> <span class="nf">from_pandas_points_labels</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Convert point ``pandas.DataFrame`` to list of tuples.</span>
+
+<span class="sd">    Convert a ``pandas.DataFrame`` of labeled data where each</span>
+<span class="sd">    timestamp is labeled by either 0 or 1 to a list of tuples</span>
+<span class="sd">    marking the start and end interval of anomalies; make it</span>
+<span class="sd">    contextually defined.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame):</span>
+<span class="sd">            anomalies, passed as ``pandas.DataFrame``</span>
+<span class="sd">            containing two columns: timestamp and label.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list:</span>
+<span class="sd">            tuple (start, end) timestamp.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        KeyError:</span>
+<span class="sd">            If the received ``pandas.DataFrame`` does not contain the required columns.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">timestamps</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">time_column</span><span class="p">]</span>
+    <span class="n">require</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="n">columns</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">require</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> not found in columns: </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">require</span><span class="p">,</span> <span class="n">columns</span><span class="p">))</span>
 
-    <span class="n">start</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">start_ts</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">timestamps</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">start_ts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">start</span> <span class="o">=</span> <span class="n">index</span>
-                <span class="n">start_ts</span> <span class="o">=</span> <span class="n">timestamp</span>
-            <span class="k">if</span> <span class="n">severity</span><span class="p">:</span>
-                <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">from_pandas_points</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></div>
 
-        <span class="k">elif</span> <span class="n">start_ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">interval</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_ts</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">indices</span><span class="p">:</span>
-                <span class="n">interval</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">index</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">severity</span><span class="p">:</span>
-                <span class="n">interval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
-                <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-            <span class="n">intervals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">interval</span><span class="p">))</span>
+<div class="viewcode-block" id="from_list_points_labels"><a class="viewcode-back" href="../../../api/orion.evaluation.utils.html#orion.evaluation.utils.from_list_points_labels">[docs]</a><span class="k">def</span> <span class="nf">from_list_points_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Convert list of labels to list of tuples.</span>
 
-            <span class="n">start</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">start_ts</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">    Convert a list of labels to a list of tuples</span>
+<span class="sd">    marking the start and end interval of anomalies by</span>
+<span class="sd">    defining a dummy timestamp range for usage.</span>
 
-    <span class="c1"># We might have an open interval at the end</span>
-    <span class="k">if</span> <span class="n">start_ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">interval</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_ts</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">indices</span><span class="p">:</span>
-            <span class="n">interval</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">index</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">severity</span><span class="p">:</span>
-            <span class="n">interval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+<span class="sd">    Args:</span>
+<span class="sd">        labels (list): contains binary labels [0, 1].</span>
 
-        <span class="n">intervals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">interval</span><span class="p">))</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list:</span>
+<span class="sd">            tuple (start, end) timestamp.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span></div>
+    <span class="n">timestamps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">from_pandas_points_labels</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">timestamps</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">}))</span></div>
 </pre></div>
 
            </div>
