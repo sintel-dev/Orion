@@ -10,7 +10,7 @@ import pandas as pd
 
 from orion.analysis import analyze
 from orion.data import NASA_SIGNALS, load_anomalies, load_signal
-from orion.metrics import METRICS
+from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 
 warnings.filterwarnings("ignore")
 

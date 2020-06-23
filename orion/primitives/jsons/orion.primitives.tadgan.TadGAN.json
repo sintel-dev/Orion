@@ -1,0 +1,348 @@
+{
+  "name": "orion.primitives.tadgan.TadGAN",
+  "contributors": [
+      "Alexander Geiger <geigera@mit.edu>",
+      "Dongyu Liu <dongyu@mit.edu>"
+  ],
+  "documentation": "",
+  "description": "time series GAN for anomaly detection",
+  "classifiers": {
+      "type": "estimator",
+      "subtype": "regressor"
+  },
+  "modalities": [],
+  "primitive": "orion.primitives.tadgan.TadGAN",
+  "fit": {
+      "method": "fit",
+      "args": [
+          {
+              "name": "X",
+              "type": "ndarray"
+          }
+      ]
+  },
+  "produce": {
+      "method": "predict",
+      "args": [
+          {
+              "name": "X",
+              "type": "ndarray"
+          }
+      ],
+      "output": [
+          {
+              "name": "y",
+              "type": "ndarray"
+          },
+          {
+              "name": "critic",
+              "type": "ndarray"
+          }
+      ]
+  },
+  "hyperparameters": {
+      "fixed": {
+          "epochs": {
+              "type": "int",
+              "default": 2000
+          },
+          "shape": {
+              "type": "tuple",
+              "default": [100, 1]
+          },
+          "optimizer": {
+              "type": "str",
+              "default": "keras.optimizers.Adam"
+          },
+          "learning_rate": {
+              "type": "float",
+              "default": 0.0005
+          },
+          "latent_dim": {
+              "type": "int",
+              "default": 20
+          },
+          "batch_size": {
+              "type": "int",
+              "default": 64
+          },
+          "n_critic": {
+              "type": "int",
+              "default": 5
+          },
+          "encoder_input_shape": {
+              "type": "tuple",
+              "default": [100, 1]
+          },
+          "generator_input_shape": {
+              "type": "tuple",
+              "default": [20, 1]
+          },
+          "critic_x_input_shape": {
+              "type": "tuple",
+              "default": [100, 1]
+          },
+          "critic_z_input_shape": {
+              "type": "tuple",
+              "default": [20, 1]
+          },
+          "encoder_reshape_shape": {
+              "type": "tuple",
+              "default": [20, 1]
+          },
+          "generator_reshape_shape": {
+              "type": "tuple",
+              "default": [50, 1]
+          },
+          "layers_encoder": {
+              "type": "list",
+              "default": [
+                  {
+                      "class": "keras.layers.Bidirectional",
+                      "parameters": {
+                          "layer": {
+                              "class": "keras.layers.LSTM",
+                              "parameters": {
+                                  "units": 100,
+                                  "return_sequences": true
+                              }
+                          }
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Flatten",
+                      "parameters": {}
+                  },
+                  {
+                      "class": "keras.layers.Dense",
+                      "parameters": {
+                          "units": 20
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Reshape",
+                      "parameters": {
+                          "target_shape": "encoder_reshape_shape"
+                      }
+                  }
+              ]
+          },
+          "layers_generator": {
+              "type": "list",
+              "default": [
+                  {
+                      "class": "keras.layers.Flatten",
+                      "parameters": {}
+                  },
+                  {
+                      "class": "keras.layers.Dense",
+                      "parameters": {
+                          "units": 50
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Reshape",
+                      "parameters": {
+                          "target_shape": "generator_reshape_shape"
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Bidirectional",
+                      "parameters": {
+                          "layer": {
+                              "class": "keras.layers.LSTM",
+                              "parameters": {
+                                  "units": 64,
+                                  "return_sequences": true,
+                                  "dropout": 0.2,
+                                  "recurrent_dropout": 0.2
+                              }
+                          },
+                          "merge_mode": "concat"
+                      }
+                  },
+                  {
+                      "class": "keras.layers.convolutional.UpSampling1D",
+                      "parameters": {
+                          "size": 2
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Bidirectional",
+                      "parameters": {
+                          "layer": {
+                              "class": "keras.layers.LSTM",
+                              "parameters": {
+                                  "units": 64,
+                                  "return_sequences": true,
+                                  "dropout": 0.2,
+                                  "recurrent_dropout": 0.2
+                              }
+                          },
+                          "merge_mode": "concat"
+                      }
+                  },
+                  {
+                      "class": "keras.layers.TimeDistributed",
+                      "parameters": {
+                          "layer": {
+                              "class": "keras.layers.Dense",
+                              "parameters": {
+                                  "units": 1
+                              }
+                          }
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Activation",
+                      "parameters": {
+                          "activation": "tanh"
+                      }
+                  }
+              ]
+          },
+          "layers_critic_x": {
+              "type": "list",
+              "default": [
+                  {
+                      "class": "keras.layers.Conv1D",
+                      "parameters": {
+                          "filters": 64,
+                          "kernel_size": 5
+                      }
+                  },
+                  {
+                      "class": "keras.layers.advanced_activations.LeakyReLU",
+                      "parameters": {
+                          "alpha": 0.2
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Dropout",
+                      "parameters": {
+                          "rate": 0.25
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Conv1D",
+                      "parameters": {
+                          "filters": 64,
+                          "kernel_size": 5
+                      }
+                  },
+                  {
+                      "class": "keras.layers.advanced_activations.LeakyReLU",
+                      "parameters": {
+                          "alpha": 0.2
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Dropout",
+                      "parameters": {
+                          "rate": 0.25
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Conv1D",
+                      "parameters": {
+                          "filters": 64,
+                          "kernel_size": 5
+                      }
+                  },
+                  {
+                      "class": "keras.layers.advanced_activations.LeakyReLU",
+                      "parameters": {
+                          "alpha": 0.2
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Dropout",
+                      "parameters": {
+                          "rate": 0.25
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Conv1D",
+                      "parameters": {
+                          "filters": 64,
+                          "kernel_size": 5
+                      }
+                  },
+                  {
+                      "class": "keras.layers.advanced_activations.LeakyReLU",
+                      "parameters": {
+                          "alpha": 0.2
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Dropout",
+                      "parameters": {
+                          "rate": 0.25
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Flatten",
+                      "parameters": {}
+                  },
+                  {
+                      "class": "keras.layers.Dense",
+                      "parameters": {
+                          "units": 1
+                      }
+                  }
+              ]
+          },
+          "layers_critic_z": {
+              "type": "list",
+              "default": [
+                  {
+                      "class": "keras.layers.Flatten",
+                      "parameters": {}
+                  },
+                  {
+                      "class": "keras.layers.Dense",
+                      "parameters": {
+                          "units": 100
+                      }
+                  },
+                  {
+                      "class": "keras.layers.advanced_activations.LeakyReLU",
+                      "parameters": {
+                          "alpha": 0.2
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Dropout",
+                      "parameters": {
+                          "rate": 0.2
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Dense",
+                      "parameters": {
+                          "units": 100
+                      }
+                  },
+                  {
+                      "class": "keras.layers.advanced_activations.LeakyReLU",
+                      "parameters": {
+                          "alpha": 0.2
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Dropout",
+                      "parameters": {
+                          "rate": 0.2
+                      }
+                  },
+                  {
+                      "class": "keras.layers.Dense",
+                      "parameters": {
+                          "units": 1
+                      }
+                  }
+              ]
+          }
+      }
+  }
+}

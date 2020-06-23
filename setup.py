@@ -4,13 +4,13 @@
 from setuptools import setup, find_packages
 
 try:
-    with open('README.md') as readme_file:
+    with open('README.md', encoding='utf-8') as readme_file:
         readme = readme_file.read()
 except IOError:
     readme = ''
 
 try:
-    with open('HISTORY.md') as history_file:
+    with open('HISTORY.md', encoding='utf-8') as history_file:
         history = history_file.read()
 except IOError:
     history = ''
@@ -26,6 +26,8 @@ install_requires = [
     'pymongo>=3.7.2,<4',
     'scikit-learn>=0.20.1,<0.21',
     'tabulate>=0.8.3,<0.9',
+    'Keras>=2.1.6,<2.4',
+    'similaritymeasures>=0.4.3'
 ]
 
 setup_requires = [
