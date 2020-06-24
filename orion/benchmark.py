@@ -17,9 +17,9 @@ warnings.filterwarnings("ignore")
 
 LOGGER = logging.getLogger(__name__)
 
-BENCHMARK_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    'orion_benchmark'
+BENCHMARK_PATH = os.path.join(os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), '..'),
+    'benchmarking'
 )
 
 BENCHMARK_PIPELINES = os.path.join(os.path.dirname(__file__), 'pipelines')
@@ -56,7 +56,10 @@ def _get_pipelines(with_gpu=False):
 
 
 def _get_data(datasets=None):
-    if isinstance(datasets, list):
+    if isinstance(datasets, dict):
+        return datasets
+
+    elif isinstance(datasets, list):
         if set(datasets).issubset(BENCHMARK_DATA.keys()):
             return {k: v for k, v in BENCHMARK_DATA.items() if k in datasets}
         else:
@@ -65,18 +68,25 @@ def _get_data(datasets=None):
     return BENCHMARK_DATA
 
 
-def _get_hyperparameter(hyperparameters, dataset):
-    if isinstance(hyperparameters, dict) and dataset in hyperparameters.keys():
-        return hyperparameters[dataset]
+def _get_hyperparameter(hyperparameters, name):
+    if isinstance(hyperparameters, dict) and name in hyperparameters.keys():
+        return hyperparameters[name]
 
     return None
 
 
-def _detrend_signal(signal, value_column):
-    return scipy_signal.detrend(signal[value_column])
+def _detrend_signal(df, value_column):
+    df[value_column] = scipy_signal.detrend(df[value_column])
+    return df
 
 
-def _sort_leaderboard(df, rank):
+def _sort_leaderboard(df, rank, metrics):
+    if rank not in df.columns:
+        rank_ = list(metrics.keys())[0]
+        LOGGER.exception("Rank %s is not in %s, using %s instead.",
+                         rank, df.columns, rank_)
+        rank = rank_
+
     df.sort_values(rank, ascending=False, inplace=True)
     df.reset_index(drop=True, inplace=True)
     df.index.name = 'rank'
@@ -94,8 +104,8 @@ def _evaluate_on_signal(pipeline, signal, hyperparameter, metrics, detrend=False
         train = test = load_signal(signal)
 
     if detrend:
-        _detrend_signal(train, 'value')
-        _detrend_signal(test, 'value')
+        train = _detrend_signal(train, 'value')
+        test = _detrend_signal(test, 'value')
 
     start = datetime.utcnow()
     anomalies = analyze(pipeline, train, test, hyperparameter)
@@ -225,11 +235,8 @@ def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=No
 
         metrics = metrics_
 
-    hyperparameters_ = hyperparameters.keys() if hyperparameters is not None else []
     for name, pipeline in pipelines.items():
-        hyperparameter = None
-        if name in hyperparameters_:
-            hyperparameter = hyperparameters[name]
+        hyperparameter = _get_hyperparameter(hyperparameters, name)
 
         LOGGER.info("Evaluating pipeline: %s", name)
         score = evaluate_pipeline(
@@ -241,8 +248,7 @@ def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=No
 
     scores = pd.concat(scores)
 
-    rank = rank or list(metrics.keys())[0]
-    return _sort_leaderboard(scores, rank)
+    return _sort_leaderboard(scores, rank, metrics)
 
 
 def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
@@ -262,9 +268,9 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
             and the paths themselves will be used as names.
         datasets (list, optional): list of signals. If not given, all the NASA, Yahoo,
             and NAB signals are used.
-        hyperparameters (dict, optional): dictionary with (dataset name, pipeline name) as keys and hyperparameter
-            JSON settings path or dictionary as values. If not given, use default
-            hyperparameters.
+        hyperparameters (dict, optional): dictionary with (dataset name, pipeline name)
+            as keys and hyperparameter JSON settings path or dictionary as values.
+            If not given, use default hyperparameters.
         metrics (dict or list, optional): dictionary with metric names as keys and
             scoring functions as values. If a list is given, it should be of scoring
             functions, and their `__name__` value will be used as the metric name.
@@ -288,40 +294,25 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
     results = list()
     for name, signals in datasets.items():
         hyper = _get_hyperparameter(hyperparameters, name)
+        kwarg = kwargs[name] if name in kwargs.keys() else {}
+
         result = evaluate_pipelines(
-            pipelines, signals, hyper, metrics, rank, BENCHMARK_PARAMS[name])
+            pipelines, signals, hyper, metrics, rank, kwarg)
         result['dataset'] = name
         results.append(result)
 
         if output_path:
             LOGGER.info('Saving benchmark report to %s', output_path)
-            result.to_csv(output_path + name + '.csv')
+            result.to_csv(os.path.join(output_path, name + '.csv'))
 
-    results = pd.concat(results).drop('rank', axis=1)
-    results = pipelines.groupby('pipeline').mean().reset_index()
+    results = pd.concat(results).drop(['rank', 'holdout'], axis=1)
+    results = results.groupby('pipeline').mean().reset_index()
 
-    rank = rank or list(metrics.keys())[0]
-    return _sort_leaderboard(results, rank)
+    return _sort_leaderboard(results, rank, metrics)
 
 
 if __name__ == "__main__":
-    # pipelines = {
-    #     "dummy": 'orion/pipelines/dummy.json',
-    #     "arima": 'orion/pipelines/arima.json',
-    #     "lstm": 'orion/pipelines/lstm_dynamic_threshold.json'
-    # }
-
-    # print(pipelines)
-    # dataset = {
-    #     "MSL": BENCHMARK_DATA["MSL"][:2],
-    #     "SMAP": BENCHMARK_DATA["SMAP"][:2],
-    #     "YAHOOA2": BENCHMARK_DATA["YAHOOA2"][:2],
-    #     "realTweets": BENCHMARK_DATA["realTweets"][:2]
-    # }
-
-    dataset = {k: v[:1] for k, v in BENCHMARK_DATA.items()}
-
-    # print(dataset)
-    leaderboard = run_benchmark(pipelines, dataset=dataset, output_path='results/')
-    leaderboard.to_csv('leaderboard.csv')
+    leaderboard = run_benchmark(output_path='results/', **BENCHMARK_PARAMS)
+    output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
+    leaderboard.to_csv(output_path)
     print(leaderboard)
