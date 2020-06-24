@@ -7,6 +7,7 @@ import warnings
 from datetime import datetime
 
 import pandas as pd
+from scipy import signal as scipy_signal
 
 from orion.analysis import analyze
 from orion.data import NASA_SIGNALS, load_anomalies, load_signal
@@ -21,26 +22,79 @@ BENCHMARK_PATH = os.path.join(
     'orion_benchmark'
 )
 
+BENCHMARK_PIPELINES = os.path.join(os.path.dirname(__file__), 'pipelines')
+
 with open('{}/benchmark_data.csv'.format(BENCHMARK_PATH), newline='') as f:
     reader = csv.reader(f)
     BENCHMARK_DATA = {row[0]:ast.literal_eval(row[1]) for row in reader}
 
+with open('{}/benchmark_parameters.csv'.format(BENCHMARK_PATH), newline='') as f:
+    reader = csv.reader(f)
+    BENCHMARK_PARAMS = {row[0]:ast.literal_eval(row[1]) for row in reader}
+
 BENCHMARK_HYPER = pd.read_csv('{}/benchmark_hyperparameters.csv'.format(
     BENCHMARK_PATH), index_col=0).to_dict()
 
-def _get_hyperparameter(pipeline, signal):
-    file = os.path.join(os.path.abspath(pipeline), '_' + signal + '.csv')
-    print(file)
-    if os.path.isfile(file):
-        return file
-    return None 
 
-def _evaluate_on_signal(pipeline, hyperparameter, signal, metrics, holdout=True):
+def _get_pipelines(with_gpu=False):
+    pipeline_path = os.path.join(os.path.dirname(__file__), 'pipelines')
+    pipelines = (f for f in os.listdir(pipeline_path) if f.endswith('.json'))
+    pipelines = sorted(pipelines)
+
+    pipelines_ = dict()
+    for pipeline in pipelines:
+        name = pipeline.split('/', 1)[-1].replace('.json', '')
+        if '_gpu' in name:
+            if with_gpu:
+                name = name.replace('_gpu', '')
+            else:
+                continue
+
+        pipelines_[name] = os.path.join(pipeline_path, pipeline)
+
+    return pipelines_
+
+def _get_data(datasets=None):
+    if isinstance(datasets, list):
+        if set(datasets).issubset(BENCHMARK_DATA.keys()):
+            return {k: v for k, v in BENCHMARK_DATA.items() if k in datasets}
+        else:
+            return datasets
+
+    return BENCHMARK_DATA
+
+
+def _get_hyperparameter(hyperparameters, dataset):
+    if isinstance(hyperparameters, dict) and dataset in hyperparameters.keys():
+        return hyperparameters[dataset]
+
+    return None
+
+
+def _detrend_signal(signal, value_column):
+    return scipy_signal.detrend(signal[value_column])
+
+
+def _sort_leaderboard(df, rank):
+    df.sort_values(rank, ascending=False, inplace=True)
+    df.reset_index(drop=True, inplace=True)
+    df.index.name = 'rank'
+    df.reset_index(drop=False, inplace=True)
+    df['rank'] += 1
+
+    return df.set_index('pipeline').reset_index()
+
+
+def _evaluate_on_signal(pipeline, signal, hyperparameter, metrics, detrend=False, holdout=True):
     if holdout:
         train = load_signal(signal + '-train')
         test = load_signal(signal + '-test')
     else:
         train = test = load_signal(signal)
+
+    if detrend:
+        _detrend_signal(train, 'value')
+        _detrend_signal(test, 'value')
 
     start = datetime.utcnow()
     anomalies = analyze(pipeline, train, test, hyperparameter)
@@ -57,7 +111,8 @@ def _evaluate_on_signal(pipeline, hyperparameter, signal, metrics, holdout=True)
     return scores
 
 
-def evaluate_pipeline(pipeline, hyperparameter=None, signals=NASA_SIGNALS, metrics=METRICS, holdout=None):
+def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metrics=METRICS, 
+                      detrend=False, holdout=None):
     """Evaluate a pipeline on multiple signals with multiple metrics.
 
     The pipeline is used to analyze the given signals and later on the
@@ -94,7 +149,9 @@ def evaluate_pipeline(pipeline, hyperparameter=None, signals=NASA_SIGNALS, metri
             try:
                 LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
                             pipeline, signal, holdout_)
-                score = _evaluate_on_signal(pipeline, hyperparameter, signal, metrics, holdout_)
+                score = _evaluate_on_signal(
+                    pipeline, signal, hyperparameter, metrics, detrend, holdout_)
+
             except Exception:
                 LOGGER.exception("Exception scoring pipeline %s on signal %s (Holdout: %s)",
                                  pipeline, signal, holdout_)
@@ -112,7 +169,8 @@ def evaluate_pipeline(pipeline, hyperparameter=None, signals=NASA_SIGNALS, metri
     return scores
 
 
-def evaluate_pipelines(pipelines, hyperparameters=None, signals=None, metrics=None, rank=None, holdout=(True, False)):
+def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=None, rank=None, 
+                       detrend=False, holdout=(True, False)):
     """Evaluate a list of pipelines on multiple signals with multiple metrics.
 
     The pipelines are used to analyze the given signals and later on the
@@ -173,7 +231,9 @@ def evaluate_pipelines(pipelines, hyperparameters=None, signals=None, metrics=No
             hyperparameter = hyperparameters[name]
 
         LOGGER.info("Evaluating pipeline: %s", name)
-        score = evaluate_pipeline(pipeline, hyperparameter, signals, metrics, holdout)
+        score = evaluate_pipeline(
+            pipeline, signals, hyperparameter, metrics, detrend, holdout)
+
         score['pipeline'] = name
         score['hyperparameter'] = hyperparameter
         scores.append(score)
@@ -181,16 +241,11 @@ def evaluate_pipelines(pipelines, hyperparameters=None, signals=None, metrics=No
     scores = pd.concat(scores)
 
     rank = rank or list(metrics.keys())[0]
-    scores.sort_values(rank, ascending=False, inplace=True)
-    scores.reset_index(drop=True, inplace=True)
-    scores.index.name = 'rank'
-    scores.reset_index(drop=False, inplace=True)
-    scores['rank'] += 1
-
-    return scores.set_index('pipeline').reset_index()
+    return _sort_leaderboard(scores, rank)
 
 
-def run_benchmark(pipelines, datasets=None, hyperparameters=None, metrics=None, rank=None, output_path=None):    
+def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1', 
+                  output_path=None, with_gpu=False, **kwargs):    
     """Benchmark a list of pipelines on multiple signals with multiple metrics.
 
     The pipelines are used to analyze the given signals and later on the
@@ -206,8 +261,7 @@ def run_benchmark(pipelines, datasets=None, hyperparameters=None, metrics=None, 
             and the paths themselves will be used as names.
         datasets (list, optional): list of signals. If not given, all the NASA, Yahoo,
             and NAB signals are used.
-        hyperparameters (dict, optional):
-            dictionary with (dataset name, pipeline name) as keys and hyperparameter 
+        hyperparameters (dict, optional): dictionary with (dataset name, pipeline name) as keys and hyperparameter 
             JSON settings path or dictionary as values. If not given, use default 
             hyperparameters.
         metrics (dict or list, optional): dictionary with metric names as keys and
@@ -218,45 +272,55 @@ def run_benchmark(pipelines, datasets=None, hyperparameters=None, metrics=None, 
             If not given, rank using the first metric.
         output_path (str, optional):
             location to save the final results. If not given, use default location.
+        with_gpu (boolean, optional):
+            use pipeline with gpu config. If not given, use False.
 
     Returns:
         pandas.DataFrame: Table containing the average of the scores obtained with
             each scoring function accross all the signals for each pipeline, ranked
             by the indicated metric.
     """
-    datasets = datasets or BENCHMARK_DATA
+    pipelines = pipelines or _get_pipelines(with_gpu=with_gpu)
+    datasets = _get_data(datasets)
     hyperparameters = hyperparameters or BENCHMARK_HYPER
-    metrics = metrics or METRICS
-
-    print(hyperparameters)
 
     results = list()
     for name, signals in datasets.items():
-        if isinstance(hyperparameters, dict) and name in hyperparameters.keys():
-            hyper =  hyperparameters[name]
-        
-        result = evaluate_pipelines(pipelines, hyper, signals, metrics, rank)
+        hyper = _get_hyperparameter(hyperparameters, name)
+        result = evaluate_pipelines(
+            pipelines, signals, hyper, metrics, rank, BENCHMARK_PARAMS[name])
+        result['dataset'] = name
         results.append(result)
 
         if output_path:
             LOGGER.info('Saving benchmark report to %s', output_path)
             result.to_csv(output_path + name + '.csv')
 
-    return pd.concat(results)
+    results = pd.concat(results).drop('rank', axis=1)
+    results = pipelines.groupby('pipeline').mean().reset_index()
+
+    rank = rank or list(metrics.keys())[0]
+    return _sort_leaderboard(results, rank)
 
 
 if __name__ == "__main__":
-    pipelines = {
-    "dummy": 'orion/pipelines/dummy.json', 
-    "arima": 'orion/pipelines/arima.json',
-    "lstm": 'orion/pipelines/lstm_dynamic_threshold.json'}
+    # pipelines = {
+    #     "dummy": 'orion/pipelines/dummy.json', 
+    #     "arima": 'orion/pipelines/arima.json',
+    #     "lstm": 'orion/pipelines/lstm_dynamic_threshold.json'
+    # }
 
-    print(pipelines)
-    dataset = {
-        "MSL": BENCHMARK_DATA["MSL"][:2],
-        "SMAP": BENCHMARK_DATA["SMAP"][:2],
-        "YAHOOA2": BENCHMARK_DATA["YAHOOA2"][:2],
-        "realTweets": BENCHMARK_DATA["realTweets"][:2]
-    }
-    print(dataset)
-    run_benchmark(pipelines, dataset, output_path='results/')
+    # print(pipelines)
+    # dataset = {
+    #     "MSL": BENCHMARK_DATA["MSL"][:2],
+    #     "SMAP": BENCHMARK_DATA["SMAP"][:2],
+    #     "YAHOOA2": BENCHMARK_DATA["YAHOOA2"][:2],
+    #     "realTweets": BENCHMARK_DATA["realTweets"][:2]
+    # }
+
+    dataset = {k: v[:1] for k, v in BENCHMARK_DATA.items()}
+
+    # print(dataset)
+    leaderboard = run_benchmark(pipelines, dataset=dataset, output_path='results/')
+    leaderboard.to_csv('leaderboard.csv')
+    print(leaderboard)
