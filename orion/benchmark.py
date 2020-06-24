@@ -1,8 +1,8 @@
 import ast
 import csv
-import os
 import json
 import logging
+import os
 import warnings
 from datetime import datetime
 
@@ -26,11 +26,11 @@ BENCHMARK_PIPELINES = os.path.join(os.path.dirname(__file__), 'pipelines')
 
 with open('{}/benchmark_data.csv'.format(BENCHMARK_PATH), newline='') as f:
     reader = csv.reader(f)
-    BENCHMARK_DATA = {row[0]:ast.literal_eval(row[1]) for row in reader}
+    BENCHMARK_DATA = {row[0]: ast.literal_eval(row[1]) for row in reader}
 
 with open('{}/benchmark_parameters.csv'.format(BENCHMARK_PATH), newline='') as f:
     reader = csv.reader(f)
-    BENCHMARK_PARAMS = {row[0]:ast.literal_eval(row[1]) for row in reader}
+    BENCHMARK_PARAMS = {row[0]: ast.literal_eval(row[1]) for row in reader}
 
 BENCHMARK_HYPER = pd.read_csv('{}/benchmark_hyperparameters.csv'.format(
     BENCHMARK_PATH), index_col=0).to_dict()
@@ -53,6 +53,7 @@ def _get_pipelines(with_gpu=False):
         pipelines_[name] = os.path.join(pipeline_path, pipeline)
 
     return pipelines_
+
 
 def _get_data(datasets=None):
     if isinstance(datasets, list):
@@ -111,7 +112,7 @@ def _evaluate_on_signal(pipeline, signal, hyperparameter, metrics, detrend=False
     return scores
 
 
-def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metrics=METRICS, 
+def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metrics=METRICS,
                       detrend=False, holdout=None):
     """Evaluate a pipeline on multiple signals with multiple metrics.
 
@@ -139,7 +140,7 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metri
 
     if isinstance(hyperparameter, str) and os.path.isfile(hyperparameter):
         LOGGER.info("Using pipeline %s with hyperparameter in %s",
-                            pipeline, hyperparameter)
+                    pipeline, hyperparameter)
         with open(hyperparameter) as f:
             hyperparameter = json.load(f)
 
@@ -169,7 +170,7 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metri
     return scores
 
 
-def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=None, rank=None, 
+def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=None, rank=None,
                        detrend=False, holdout=(True, False)):
     """Evaluate a list of pipelines on multiple signals with multiple metrics.
 
@@ -184,8 +185,8 @@ def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=No
         pipelines (dict or list): dictionary with pipeline names as keys and their
             JSON paths as values. If a list is given, it should be of JSON paths,
             and the paths themselves will be used as names.
-        hyperparameters (dict or list, optional): dictionary with pipeline names as keys 
-            and their hyperparameter JSON paths or dictionaries as values. If a list is 
+        hyperparameters (dict or list, optional): dictionary with pipeline names as keys
+            and their hyperparameter JSON paths or dictionaries as values. If a list is
             given, it should be of corresponding order to pipelines.
         signals (list, optional): list of signals. If not given, all the NASA signals
             are used.
@@ -209,8 +210,8 @@ def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=No
         pipelines = {pipeline: pipeline for pipeline in pipelines}
 
     if isinstance(hyperparameters, list):
-        hyperparameters = {pipeline: hyperparameter for pipeline, hyperparameter in 
-                            zip(pipelines.keys(), hyperparameters)}
+        hyperparameters = {pipeline: hyperparameter for pipeline, hyperparameter in
+                           zip(pipelines.keys(), hyperparameters)}
 
     if isinstance(metrics, list):
         metrics_ = dict()
@@ -244,8 +245,8 @@ def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=No
     return _sort_leaderboard(scores, rank)
 
 
-def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1', 
-                  output_path=None, with_gpu=False, **kwargs):    
+def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
+                  output_path=None, with_gpu=False, **kwargs):
     """Benchmark a list of pipelines on multiple signals with multiple metrics.
 
     The pipelines are used to analyze the given signals and later on the
@@ -261,8 +262,8 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
             and the paths themselves will be used as names.
         datasets (list, optional): list of signals. If not given, all the NASA, Yahoo,
             and NAB signals are used.
-        hyperparameters (dict, optional): dictionary with (dataset name, pipeline name) as keys and hyperparameter 
-            JSON settings path or dictionary as values. If not given, use default 
+        hyperparameters (dict, optional): dictionary with (dataset name, pipeline name) as keys and hyperparameter
+            JSON settings path or dictionary as values. If not given, use default
             hyperparameters.
         metrics (dict or list, optional): dictionary with metric names as keys and
             scoring functions as values. If a list is given, it should be of scoring
@@ -305,7 +306,7 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
 
 if __name__ == "__main__":
     # pipelines = {
-    #     "dummy": 'orion/pipelines/dummy.json', 
+    #     "dummy": 'orion/pipelines/dummy.json',
     #     "arima": 'orion/pipelines/arima.json',
     #     "lstm": 'orion/pipelines/lstm_dynamic_threshold.json'
     # }
