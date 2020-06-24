@@ -4,8 +4,8 @@
         "sklearn.impute.SimpleImputer",
         "sklearn.preprocessing.MinMaxScaler",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
-        "mlprimitives.candidates.timeseries.cyclegan.CycleGAN",
-        "mlprimitives.candidates.timeseries.cyclegan.score_anomalies",
+        "orion.primitives.tadgan.TadGAN",
+        "orion.primitives.tadgan.score_anomalies",
         "mlprimitives.custom.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
@@ -25,8 +25,8 @@
             "window_size": 100,
             "target_size": 1
         },
-        "mlprimitives.candidates.timeseries.cyclegan.CycleGAN#1": {
-            "epochs": 2000,
+        "orion.primitives.tadgan.TadGAN#1": {
+            "epochs": 50,
             "layers_encoder": [
                 {
                     "class": "keras.layers.Bidirectional",
@@ -124,18 +124,21 @@
                         }
                     }
             ]
+        },
+        "orion.primitives.tadgan.score_anomalies#1": {
+          "rec_error_type": "dtw"
         }
     },
     "input_names": {
         "mlprimitives.custom.timeseries_anomalies.find_anomalies#1": {
             "index": "index"
         },
-        "mlprimitives.candidates.timeseries.cyclegan.score_anomalies#1": {
+        "orion.primitives.tadgan.score_anomalies#1": {
             "y": "X"
         }
     },
     "output_names": {
-        "mlprimitives.candidates.timeseries.cyclegan.CycleGAN#1": {
+        "orion.primitives.tadgan.TadGAN#1": {
             "y": "y_hat"
         },
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
