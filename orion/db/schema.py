@@ -239,6 +239,8 @@ class Signalrun(OrionDocument, Status):
         into the Database.
         """
         try:
+            if events is None:
+                events = []
             for start_time, stop_time, severity in events:
                 Event.insert(
                     signalrun=self,
@@ -250,7 +252,7 @@ class Signalrun(OrionDocument, Status):
                 )
         except Exception:
             LOGGER.exception('Error storing signalrun %s events', self.id)
-            status = self.STATUS_ERROR
+            status = self.STATUS_ERRORED
 
         self.end_time = datetime.utcnow()
         self.status = status
