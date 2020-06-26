@@ -425,7 +425,7 @@ def test_evaluate_pipelines(evaluate_pipeline_mock):
     pd.testing.assert_frame_equal(returned, expected_return)
 
     evaluate_pipeline_mock.assert_called_once_with(
-        pipeline, [signal], hyper, metrics, False, (True, False))
+        pipeline, [signal], hyper, metrics, detrend=False, holdout=(True, False))
 
 
 @patch('orion.benchmark.evaluate_pipelines')
@@ -458,4 +458,5 @@ def test_run_benchmark(evaluate_pipelines_mock):
     returned = benchmark.run_benchmark(pipeline, datasets, hyper, metrics)
     pd.testing.assert_frame_equal(returned, expected_return)
 
-    evaluate_pipelines_mock.assert_called_once_with(pipeline, signal, hyper, metrics, 'f1', {})
+    evaluate_pipelines_mock.assert_called_once_with(
+        pipeline, signal, hyper, metrics, 'f1', detrend=False, holdout=(True, False))
