@@ -15,16 +15,6 @@ from orion.analysis import analyze
 from orion.data import NASA_SIGNALS, load_anomalies, load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 
-
-def warn(*args, **kwargs):
-    pass
-
-
-warnings.warn = warn
-
-
-warnings.filterwarnings("ignore")
-
 LOGGER = logging.getLogger(__name__)
 
 BENCHMARK_PATH = os.path.join(os.path.join(
@@ -45,31 +35,6 @@ with open('{}/benchmark_parameters.csv'.format(BENCHMARK_PATH), newline='') as f
 BENCHMARK_HYPER = pd.read_csv('{}/benchmark_hyperparameters.csv'.format(
     BENCHMARK_PATH), index_col=0).to_dict()
 
-# Print iterations progress
-
-
-def printProgressBar(iteration, total, prefix='', suffix='',
-                     decimals=1, length=100, fill='█', printEnd="\r"):
-    """
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
-    """
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filledLength = int(length * iteration // total)
-    bar = fill * filledLength + '-' * (length - filledLength)
-    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=printEnd)
-    # Print New Line on Complete
-    if iteration == total:
-        print()
-
 
 def _get_pipelines(with_gpu=False):
     pipeline_path = os.path.join(os.path.dirname(__file__), 'pipelines')
@@ -87,7 +52,6 @@ def _get_pipelines(with_gpu=False):
 
         pipelines_[name] = os.path.join(pipeline_path, pipeline)
 
-    # pipelines_ = {"lstm_dynamic_threshold": pipelines_["lstm_dynamic_threshold"]}
     return pipelines_
 
 
@@ -104,9 +68,9 @@ def _get_data(datasets=None):
     return BENCHMARK_DATA
 
 
-def _get_hyperparameter(hyperparameters, name):
-    if isinstance(hyperparameters, dict) and name in hyperparameters.keys():
-        return hyperparameters[name]
+def _get_parameter(parameters, name):
+    if isinstance(parameters, dict) and name in parameters.keys():
+        return parameters[name]
 
     return None
 
@@ -192,10 +156,6 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metri
 
     scores = list()
 
-    # Initial call to print 0% progress
-    length = len(signals)
-    printProgressBar(0, length, prefix='Progress:', suffix='Complete', length=100)
-
     for i, signal in enumerate(signals):
         for holdout_ in holdout:
             try:
@@ -212,8 +172,6 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metri
 
             score['holdout'] = holdout_
             scores.append(score)
-
-        printProgressBar(i + 1, length, prefix='Progress:', suffix='Complete', length=100)
 
     scores = pd.DataFrame(scores).groupby('holdout').mean().reset_index()
 
@@ -279,7 +237,7 @@ def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=No
         metrics = metrics_
 
     for name, pipeline in pipelines.items():
-        hyperparameter = _get_hyperparameter(hyperparameters, name)
+        hyperparameter = _get_parameter(hyperparameters, name)
 
         LOGGER.info("Evaluating pipeline: %s", name)
         score = evaluate_pipeline(
@@ -303,7 +261,7 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
     indicated metrics.
 
     Finally, the scores obtained with each metric are averaged accross all the signals,
-    ranked by the indicated metric and returned on a pandas.DataFrame.
+    ranked by the indicated metric and returned on a `pandas.DataFrame`.
 
     Args:
         pipelines (dict or list, optional): dictionary with pipeline names as keys and
@@ -311,8 +269,8 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
             and the paths themselves will be used as names. If `None` is given, all
             available pipelines under `orion/pipelines` will be used.
         datasets (dict or list, optional): list of signals or dictionary of dataset name
-            as keys and list of signals as values. If not given, all the NASA, Yahoo,
-            and NAB signals are used.
+            as keys and list of signals as values. If not given, all the datasets defined
+            in `BENCHMARK_DATA` will be used.
         hyperparameters (dict, optional): dictionary with dataset name, pipeline name
             as keys and hyperparameter JSON settings path or dictionary as values.
             If not given, use default hyperparameters.
@@ -339,10 +297,12 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
 
     results = list()
     for name, signals in datasets.items():
-        print('Dataset: {}, Composed of {} signals.'.format(
+        LOGGER.info("Start dataset {} with {} signals..".format(
             name, len(signals)))
-        hyper = _get_hyperparameter(hyperparameters, name)
-        parameters = _get_hyperparameter(BENCHMARK_PARAMS, name)
+
+        # set dataset configuration
+        hyper = _get_parameter(hyperparameters, name)
+        parameters = _get_parameter(BENCHMARK_PARAMS, name)
         holdout = parameters['holdout'] if parameters is not None else (True, False)
         detrend = parameters['detrend'] if parameters is not None else False
 
@@ -361,10 +321,14 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
     return _sort_leaderboard(results, rank, metrics)
 
 
-if __name__ == "__main__":
+def main():
+    warnings.filterwarnings("ignore")
 
-    datasets = ['YAHOOA1']
-    leaderboard = run_benchmark(datasets=datasets, output_path='results/', with_gpu=False)
+    leaderboard = run_benchmark(output_path='results/', with_gpu=False)
     output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
     leaderboard.to_csv(output_path)
     print(leaderboard)
+
+
+if __name__ == "__main__":
+    main()

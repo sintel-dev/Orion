@@ -116,7 +116,7 @@ def test__detrend_signal_no_trend():
     pd.testing.assert_frame_equal(returned, expected_return)
 
 
-def test__get_hyperparameter_pipeline():
+def test__get_parameter_pipeline():
     hyperparameters = {
         "pipeline1": "pipeline1.json",
         "pipeline2": "pipeline2.json",
@@ -124,11 +124,11 @@ def test__get_hyperparameter_pipeline():
     pipeline = "pipeline1"
 
     expected_return = "pipeline1.json"
-    returned = benchmark._get_hyperparameter(hyperparameters, pipeline)
+    returned = benchmark._get_parameter(hyperparameters, pipeline)
     assert returned == expected_return
 
 
-def test__get_hyperparameter_dataset():
+def test__get_parameter_dataset():
     hyperparameters = {
         "dataset1": {
             "pipeline1": "pipeline1.json",
@@ -141,16 +141,16 @@ def test__get_hyperparameter_dataset():
         "pipeline1": "pipeline1.json",
         "pipeline2": "pipeline2.json",
     }
-    returned = benchmark._get_hyperparameter(hyperparameters, dataset)
+    returned = benchmark._get_parameter(hyperparameters, dataset)
     assert returned == expected_return
 
 
-def test__get_hyperparameter_does_not_exist():
+def test__get_parameter_does_not_exist():
     hyperparameters = None
     pipeline = "pipeline1"
 
     expected_return = None
-    returned = benchmark._get_hyperparameter(hyperparameters, pipeline)
+    returned = benchmark._get_parameter(hyperparameters, pipeline)
     assert returned == expected_return
 
 
