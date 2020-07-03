@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>History &mdash; Orion 0.1.2.dev0 documentation</title>
+  <title>History &mdash; Orion 0.1.3.dev0 documentation</title>
   
 
   
@@ -237,8 +237,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">0.1.1 - 2020-05-11</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">0.1.0 - 2020-04-23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">0.1.2 - 2020-06-03</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.1.1 - 2020-05-11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">0.1.0 - 2020-04-23</a></li>
 </ul>
 </li>
 </ul>
@@ -310,15 +311,27 @@
   <div class="section" id="history">
 <h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>0.1.1 - 2020-05-11<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>0.1.2 - 2020-06-03<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>New Evaluation sub-package and refactor TadGAN.</p>
+<ul class="simple">
+<li><p>Two bugs when saving signalrun if there is no event detected - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/92">Issue #92</a> by &#64;dyuliu</p></li>
+<li><p>File encoding/decoding issues about <code class="docutils literal notranslate"><span class="pre">README.md</span></code> and <code class="docutils literal notranslate"><span class="pre">HISTORY.md</span></code> - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/88">Issue #88</a> by &#64;dyuliu</p></li>
+<li><p>Fix bottle neck of <code class="docutils literal notranslate"><span class="pre">score_anomaly</span></code> in Cyclegan primitive - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/86">Issue #86</a> by &#64;dyuliu</p></li>
+<li><p>Adjust <code class="docutils literal notranslate"><span class="pre">epoch</span></code> meaning in Cyclegan primitive - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/85">Issue #85</a> by &#64;sarahmish</p></li>
+<li><p>Rename evaluation to benchmark and metrics to evaluation - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/83">Issue #83</a> by &#64;sarahmish</p></li>
+<li><p>Scoring function for intervals of size one - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/76">Issue #76</a> by &#64;sarahmish</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>0.1.1 - 2020-05-11<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>New class and function based interfaces.</p>
 <ul class="simple">
 <li><p>Implement the Orion Class - <a class="reference external" href="https://github.com/D3-AI/Orion/issues/79">Issue #79</a> by &#64;csala</p></li>
 <li><p>Implement new functional interface - <a class="reference external" href="https://github.com/D3-AI/Orion/issues/80">Issue #80</a> by &#64;csala</p></li>
 </ul>
 </div>
-<div class="section" id="id2">
-<h2>0.1.0 - 2020-04-23<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2>0.1.0 - 2020-04-23<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p>First Orion release to PyPI: <a class="reference external" href="https://pypi.org/project/orion-ml/">https://pypi.org/project/orion-ml/</a></p>
 </div>
 </div>
