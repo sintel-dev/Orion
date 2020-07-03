@@ -114,3 +114,5 @@ notebooks/ses
 notebooks-private/
 orion-jupyter.tar
 *.csv
+
+.DS_Store
