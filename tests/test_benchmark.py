@@ -3,17 +3,17 @@ from unittest.mock import ANY, MagicMock, call, patch
 import pandas as pd
 from mlblocks import MLPipeline
 
-from orion import evaluation
-from orion.metrics import f1_score
+from orion import benchmark
+from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 
 
-@patch('orion.evaluation.load_anomalies')
-@patch('orion.evaluation.analyze')
-@patch('orion.evaluation.load_signal')
+@patch('orion.benchmark.load_anomalies')
+@patch('orion.benchmark.analyze')
+@patch('orion.benchmark.load_signal')
 def test__evaluate_on_signal_holdout(load_signal_mock, analize_mock, load_anomalies_mock):
     pipeline = MagicMock(autospec=MLPipeline)
     signal = 'signal-name'
-    metric_mock = MagicMock(autospec=f1_score, return_value=1)
+    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
     metrics = {
         'metric-name': metric_mock
     }
@@ -22,7 +22,7 @@ def test__evaluate_on_signal_holdout(load_signal_mock, analize_mock, load_anomal
     test = MagicMock(autospec=pd.DataFrame)
     load_signal_mock.side_effect = [train, test]
 
-    returned = evaluation._evaluate_on_signal(pipeline, signal, metrics, holdout=True)
+    returned = benchmark._evaluate_on_signal(pipeline, signal, metrics, holdout=True)
 
     expected_return = {
         'metric-name': 1,
@@ -39,13 +39,13 @@ def test__evaluate_on_signal_holdout(load_signal_mock, analize_mock, load_anomal
     analize_mock.assert_called_once_with(pipeline, train, test)
 
 
-@patch('orion.evaluation.load_anomalies')
-@patch('orion.evaluation.analyze')
-@patch('orion.evaluation.load_signal')
+@patch('orion.benchmark.load_anomalies')
+@patch('orion.benchmark.analyze')
+@patch('orion.benchmark.load_signal')
 def test__evaluate_on_signal_no_holdout(load_signal_mock, analize_mock, load_anomalies_mock):
     pipeline = MagicMock(autospec=MLPipeline)
     signal = 'signal-name'
-    metric_mock = MagicMock(autospec=f1_score, return_value=1)
+    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
     metrics = {
         'metric-name': metric_mock
     }
@@ -54,7 +54,7 @@ def test__evaluate_on_signal_no_holdout(load_signal_mock, analize_mock, load_ano
     test = MagicMock(autospec=pd.DataFrame)
     load_signal_mock.side_effect = [train, test]
 
-    returned = evaluation._evaluate_on_signal(pipeline, signal, metrics, holdout=False)
+    returned = benchmark._evaluate_on_signal(pipeline, signal, metrics, holdout=False)
 
     expected_return = {
         'metric-name': 1,

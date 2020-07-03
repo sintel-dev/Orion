@@ -13,7 +13,7 @@ from typing import List, Union
 import pandas as pd
 from mlblocks import MLPipeline
 
-from orion.metrics import METRICS
+from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 
 LOGGER = logging.getLogger(__name__)
 
@@ -256,7 +256,7 @@ class Orion:
         events = self._detect(method, data)
 
         scores = {
-            metric: METRICS[metric](truth, events, data)
+            metric: METRICS[metric](truth, events, data=data)
             for metric in metrics
         }
 
