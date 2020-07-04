@@ -1,7 +1,7 @@
 History
 =======
 
-## 0.1.2 - 2020-06-03
+## 0.1.2 - 2020-07-03
 
 New Evaluation sub-package and refactor TadGAN.
 
