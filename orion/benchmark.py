@@ -8,6 +8,7 @@ import os
 import warnings
 from datetime import datetime
 
+import dask
 import pandas as pd
 from scipy import signal as scipy_signal
 
@@ -96,31 +97,72 @@ def _sort_leaderboard(df, rank, metrics):
     return df.set_index('pipeline').reset_index()
 
 
-def _evaluate_on_signal(pipeline, signal, hyperparameter, metrics, detrend=False, holdout=True):
+def _load_signal(signal, holdout):
     if holdout:
         train = load_signal(signal + '-train')
         test = load_signal(signal + '-test')
     else:
         train = test = load_signal(signal)
 
+    return train, test
+
+
+@dask.delayed
+def _evaluate_on_signal(pipeline, signal, hyperparameter, metrics, detrend=False, holdout=True):
+    train, test = _load_signal(signal, holdout)
+
     if detrend:
         train = _detrend_signal(train, 'value')
         test = _detrend_signal(test, 'value')
 
-    start = datetime.utcnow()
-    anomalies = analyze(pipeline, train, test, hyperparameter)
-    elapsed = datetime.utcnow() - start
+    try:
+        LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
+                            pipeline, signal, holdout)
 
-    truth = load_anomalies(signal)
+        start = datetime.utcnow()
+        anomalies = analyze(pipeline, train, test, hyperparameter)
+        elapsed = datetime.utcnow() - start
 
-    scores = {
-        name: scorer(truth, anomalies, test)
-        for name, scorer in metrics.items()
-    }
-    scores['elapsed'] = elapsed.total_seconds()
+        truth = load_anomalies(signal)
 
+        scores = {
+            name: scorer(truth, anomalies, test)
+            for name, scorer in metrics.items()
+        }
+        scores['elapsed'] = elapsed.total_seconds()
+
+    except Exception as ex:
+        LOGGER.exception("Exception scoring pipeline %s on signal %s (Holdout: %s), error %s.",
+                 pipeline, signal, holdout, ex)
+
+        scores = {
+            name: 0 for name in metrics.keys()
+        }
+        scores['elapsed'] = 0
+
+    scores['holdout'] = holdout
     return scores
 
+
+def _evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metrics=METRICS,
+                      detrend=False, holdout=(True, False)):
+    LOGGER.info('Evaluating pipeline %s', pipeline)
+    scores = list()
+
+    for signal in signals:
+        for holdout_ in holdout:
+            try:
+                score = _evaluate_on_signal(
+                    pipeline, signal, hyperparameter, metrics, detrend, holdout_)
+
+                scores.append(score)
+
+            except Exception as ex:
+                LOGGER.exception(
+                    "Exception scoring pipeline %s on signal %s (Holdout: %s), error %s.",
+                    pipeline, signal, holdout_, ex)
+
+    return scores
 
 def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metrics=METRICS,
                       detrend=False, holdout=None):
@@ -154,25 +196,8 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metri
         with open(hyperparameter) as f:
             hyperparameter = json.load(f)
 
-    scores = list()
-
-    for i, signal in enumerate(signals):
-        for holdout_ in holdout:
-            try:
-                LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
-                            pipeline, signal, holdout_)
-                score = _evaluate_on_signal(
-                    pipeline, signal, hyperparameter, metrics, detrend, holdout_)
-
-            except Exception:
-                LOGGER.exception("Exception scoring pipeline %s on signal %s (Holdout: %s)",
-                                 pipeline, signal, holdout_)
-                score = (0, 0)
-                score = {name: 0 for name in metrics.keys()}
-
-            score['holdout'] = holdout_
-            scores.append(score)
-
+    
+    scores = _evaluate_pipeline(pipeline, signals, hyperparameter, metrics, detrend, holdout)
     scores = pd.DataFrame(scores).groupby('holdout').mean().reset_index()
 
     # Move holdout and elapsed column to the last position
@@ -307,7 +332,8 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
         detrend = parameters['detrend'] if parameters is not None else False
 
         result = evaluate_pipelines(
-            pipelines, signals, hyper, metrics, rank, detrend=detrend, holdout=holdout)
+            pipelines, signals[:2], hyper, metrics, rank, detrend=detrend, holdout=holdout)
+
         result['dataset'] = name
         results.append(result)
 
@@ -324,7 +350,8 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
 def main():
     warnings.filterwarnings("ignore")
 
-    leaderboard = run_benchmark(output_path='results/', with_gpu=False)
+    dataset = ['MSL']
+    leaderboard = run_benchmark(datasets=dataset, output_path='results/', with_gpu=False)
     output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
     leaderboard.to_csv(output_path)
     print(leaderboard)
