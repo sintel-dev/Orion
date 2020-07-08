@@ -1,39 +1,11 @@
-import os
-from unittest.mock import ANY, MagicMock, call, patch
+from unittest import TestCase
+from unittest.mock import ANY, Mock, call, patch
 
 import pandas as pd
 from mlblocks import MLPipeline
 
 from orion import benchmark
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
-
-
-def test__get_pipelines_gpu():
-    expected_return = {
-        "dummy": 'orion/pipelines/dummy.json',
-        "tadgan": 'orion/pipelines/tadgan_gpu.json',
-        "arima": 'orion/pipelines/arima.json',
-        "lstm_dynamic_threshold": 'orion/pipelines/lstm_dynamic_threshold_gpu.json'
-    }
-    path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    expected_return = {k: os.path.join(path, v) for k, v in expected_return.items()}
-
-    returned = benchmark._get_pipelines(with_gpu=True)
-    assert returned == expected_return
-
-
-def test__get_pipelines():
-    expected_return = {
-        "dummy": 'orion/pipelines/dummy.json',
-        "tadgan": 'orion/pipelines/tadgan.json',
-        "arima": 'orion/pipelines/arima.json',
-        "lstm_dynamic_threshold": 'orion/pipelines/lstm_dynamic_threshold.json'
-    }
-    path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    expected_return = {k: os.path.join(path, v) for k, v in expected_return.items()}
-
-    returned = benchmark._get_pipelines(with_gpu=False)
-    assert returned == expected_return
 
 
 def test__sort_leaderboard_rank():
@@ -154,309 +126,439 @@ def test__get_parameter_does_not_exist():
     assert returned == expected_return
 
 
-def test__get_data_none():
-    expected_return = benchmark.BENCHMARK_DATA
-    returned = benchmark._get_data()
+class TestBenchmark(TestCase):
 
-    assert returned == expected_return
+    @classmethod
+    def setup_class(cls):
+        cls.pipeline = Mock(autospec=MLPipeline)
+        cls.signal = 'signal-name'
+        cls.hyper = None
+        cls.metrics = {
+            'metric-name': Mock(autospec=METRICS['f1'], return_value=1)
+        }
 
+    def set_score(self, metric, elapsed, holdout):
+        return {
+            'metric-name': metric,
+            'elapsed': elapsed,
+            'pipeline': self.pipeline,
+            'holdout': holdout,
+            'signal': self.signal
+        }
 
-def test__get_data_subset():
-    subset = ['MSL', 'YAHOOA2']
-    expected_return = {k: benchmark.BENCHMARK_DATA[k] for k in subset}
-    returned = benchmark._get_data(subset)
+    @patch('orion.benchmark.load_anomalies')
+    @patch('orion.benchmark.analyze')
+    @patch('orion.benchmark.load_signal')
+    def test__evaluate_on_signal(self, load_signal_mock, analyze_mock, load_anomalies_mock):
+        train = Mock(autospec=pd.DataFrame)
+        test = Mock(autospec=pd.DataFrame)
+        load_signal_mock.side_effect = [train, test]
 
-    assert returned == expected_return
+        anomalies = Mock(autospec=pd.DataFrame)
+        analyze_mock.return_value = anomalies
 
+        returned = benchmark._evaluate_on_signal(
+            self.pipeline, self.signal, self.hyper, self.metrics).compute()
 
-def test__get_data_list():
-    signals = ['own1', 'own2']
-    expected_return = signals
-    returned = benchmark._get_data(signals)
+        expected_return = self.set_score(1, ANY, ANY)
+        assert returned == expected_return
 
-    assert returned == expected_return
+        expected_calls = [
+            call('signal-name-train'),
+            call('signal-name-test'),
+        ]
+        assert load_signal_mock.call_args_list == expected_calls
 
+        analyze_mock.assert_called_once_with(self.pipeline, train, test, self.hyper)
 
-@patch('orion.benchmark.load_anomalies')
-@patch('orion.benchmark.analyze')
-@patch('orion.benchmark.load_signal')
-def test__evaluate_on_signal_holdout(load_signal_mock, analyze_mock, load_anomalies_mock):
-    pipeline = MagicMock(autospec=MLPipeline)
-    signal = 'signal-name'
-    hyper = None
-    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
-    metrics = {
-        'metric-name': metric_mock
-    }
+    @patch('orion.benchmark.load_anomalies')
+    @patch('orion.benchmark.analyze')
+    @patch('orion.benchmark.load_signal')
+    def test__evaluate_on_signal_exception(
+            self, load_signal_mock, analyze_mock, load_anomalies_mock):
+        train = Mock(autospec=pd.DataFrame)
+        test = Mock(autospec=pd.DataFrame)
+        load_signal_mock.side_effect = [train, test]
 
-    train = MagicMock(autospec=pd.DataFrame)
-    test = MagicMock(autospec=pd.DataFrame)
-    load_signal_mock.side_effect = [train, test]
+        analyze_mock.side_effect = Exception("failed analyze.")
 
-    returned = benchmark._evaluate_on_signal(pipeline, signal, hyper, metrics, holdout=True)
+        returned = benchmark._evaluate_on_signal(
+            self.pipeline, self.signal, self.hyper, self.metrics).compute()
 
-    expected_return = {
-        'metric-name': 1,
-        'elapsed': ANY
-    }
-    assert returned == expected_return
+        expected_return = self.set_score(0, 0, ANY)
+        assert returned == expected_return
 
-    expected_calls = [
-        call('signal-name-train'),
-        call('signal-name-test'),
-    ]
-    assert load_signal_mock.call_args_list == expected_calls
+        expected_calls = [
+            call('signal-name-train'),
+            call('signal-name-test'),
+        ]
+        assert load_signal_mock.call_args_list == expected_calls
 
-    analyze_mock.assert_called_once_with(pipeline, train, test, hyper)
+        analyze_mock.assert_called_once_with(self.pipeline, train, test, self.hyper)
 
+    @patch('orion.benchmark.load_anomalies')
+    @patch('orion.benchmark.analyze')
+    @patch('orion.benchmark.load_signal')
+    def test__evaluate_on_signal_holdout(
+            self, load_signal_mock, analyze_mock, load_anomalies_mock):
+        train = Mock(autospec=pd.DataFrame)
+        test = Mock(autospec=pd.DataFrame)
+        load_signal_mock.side_effect = [train, test]
 
-@patch('orion.benchmark.load_anomalies')
-@patch('orion.benchmark.analyze')
-@patch('orion.benchmark.load_signal')
-def test__evaluate_on_signal_no_holdout(load_signal_mock, analyze_mock, load_anomalies_mock):
-    pipeline = MagicMock(autospec=MLPipeline)
-    signal = 'signal-name'
-    hyper = None
-    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
-    metrics = {
-        'metric-name': metric_mock
-    }
+        holdout = True
 
-    train = test = MagicMock(autospec=pd.DataFrame)
-    load_signal_mock.side_effect = [train, test]
+        returned = benchmark._evaluate_on_signal(
+            self.pipeline, self.signal, self.hyper, self.metrics, holdout=holdout).compute()
 
-    returned = benchmark._evaluate_on_signal(pipeline, signal, hyper, metrics, holdout=False)
+        expected_return = self.set_score(1, ANY, holdout)
+        assert returned == expected_return
 
-    expected_return = {
-        'metric-name': 1,
-        'elapsed': ANY
-    }
-    assert returned == expected_return
+        expected_calls = [
+            call('signal-name-train'),
+            call('signal-name-test'),
+        ]
+        assert load_signal_mock.call_args_list == expected_calls
 
-    expected_calls = [
-        call('signal-name')
-    ]
-    assert load_signal_mock.call_args_list == expected_calls
+        analyze_mock.assert_called_once_with(self.pipeline, train, test, self.hyper)
 
-    analyze_mock.assert_called_once_with(pipeline, train, test, hyper)
+    @patch('orion.benchmark.load_anomalies')
+    @patch('orion.benchmark.analyze')
+    @patch('orion.benchmark.load_signal')
+    def test__evaluate_on_signal_no_holdout(self, load_signal_mock, analyze_mock,
+                                            load_anomalies_mock):
 
+        train = test = Mock(autospec=pd.DataFrame)
+        load_signal_mock.side_effect = [train, test]
 
-@patch('orion.benchmark.load_anomalies')
-@patch('orion.benchmark.analyze')
-@patch('orion.benchmark.load_signal')
-def test__evaluate_on_signal_no_detrend(load_signal_mock, analyze_mock, load_anomalies_mock):
-    pipeline = MagicMock(autospec=MLPipeline)
-    signal = 'signal-name'
-    hyper = None
-    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
-    metrics = {
-        'metric-name': metric_mock
-    }
+        holdout = False
 
-    train = MagicMock(autospec=pd.DataFrame)
-    test = MagicMock(autospec=pd.DataFrame)
-    load_signal_mock.side_effect = [train, test]
+        returned = benchmark._evaluate_on_signal(
+            self.pipeline, self.signal, self.hyper, self.metrics, holdout=holdout).compute()
 
-    returned = benchmark._evaluate_on_signal(pipeline, signal, hyper, metrics, detrend=False)
+        expected_return = self.set_score(1, ANY, holdout)
+        assert returned == expected_return
 
-    expected_return = {
-        'metric-name': 1,
-        'elapsed': ANY
-    }
-    assert returned == expected_return
+        expected_calls = [
+            call('signal-name')
+        ]
+        assert load_signal_mock.call_args_list == expected_calls
 
-    expected_calls = [
-        call('signal-name-train'),
-        call('signal-name-test'),
-    ]
-    assert load_signal_mock.call_args_list == expected_calls
+        analyze_mock.assert_called_once_with(self.pipeline, train, test, self.hyper)
 
-    analyze_mock.assert_called_once_with(pipeline, train, test, hyper)
+    @patch('orion.benchmark.load_anomalies')
+    @patch('orion.benchmark.analyze')
+    @patch('orion.benchmark.load_signal')
+    def test__evaluate_on_signal_no_detrend(self, load_signal_mock, analyze_mock,
+                                            load_anomalies_mock):
 
+        train = Mock(autospec=pd.DataFrame)
+        test = Mock(autospec=pd.DataFrame)
+        load_signal_mock.side_effect = [train, test]
 
-@patch('orion.benchmark.load_anomalies')
-@patch('orion.benchmark.analyze')
-@patch('orion.benchmark.load_signal')
-@patch('orion.benchmark._detrend_signal')
-def test__evaluate_on_signal_detrend(
-        detrend_signal_mock, load_signal_mock, analyze_mock, load_anomalies_mock):
-    pipeline = MagicMock(autospec=MLPipeline)
-    signal = 'signal-name'
-    hyper = None
-    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
-    metrics = {
-        'metric-name': metric_mock
-    }
+        detrend = False
 
-    train = MagicMock(autospec=pd.DataFrame)
-    test = MagicMock(autospec=pd.DataFrame)
-    load_signal_mock.side_effect = [train, test]
-    detrend_signal_mock.side_effect = [train, test]
+        returned = benchmark._evaluate_on_signal(
+            self.pipeline, self.signal, self.hyper, self.metrics, detrend=detrend).compute()
 
-    returned = benchmark._evaluate_on_signal(pipeline, signal, hyper, metrics, detrend=True)
+        expected_return = self.set_score(1, ANY, ANY)
+        assert returned == expected_return
 
-    expected_return = {
-        'metric-name': 1,
-        'elapsed': ANY
-    }
-    assert returned == expected_return
+        expected_calls = [
+            call('signal-name-train'),
+            call('signal-name-test'),
+        ]
+        assert load_signal_mock.call_args_list == expected_calls
 
-    expected_calls = [
-        call('signal-name-train'),
-        call('signal-name-test'),
-    ]
-    assert load_signal_mock.call_args_list == expected_calls
+        analyze_mock.assert_called_once_with(self.pipeline, train, test, self.hyper)
 
-    expected_calls = [
-        call(train, 'value'),
-        call(test, 'value'),
-    ]
-    assert detrend_signal_mock.call_args_list == expected_calls
+    @patch('orion.benchmark.load_anomalies')
+    @patch('orion.benchmark.analyze')
+    @patch('orion.benchmark.load_signal')
+    @patch('orion.benchmark._detrend_signal')
+    def test__evaluate_on_signal_detrend(self, detrend_signal_mock, load_signal_mock, analyze_mock,
+                                         load_anomalies_mock):
 
-    analyze_mock.assert_called_once_with(pipeline, train, test, hyper)
+        train = Mock(autospec=pd.DataFrame)
+        test = Mock(autospec=pd.DataFrame)
+        load_signal_mock.side_effect = [train, test]
+        detrend_signal_mock.side_effect = [train, test]
 
+        detrend = True
 
-@patch('orion.benchmark._evaluate_on_signal')
-def test_evaluate_pipeline(evaluate_on_signal_mock):
-    pipeline = MagicMock(autospec=MLPipeline)
-    signal = 'signal-name'
-    hyper = MagicMock(autospec=dict)
-    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
-    metrics = {
-        'metric-name': metric_mock
-    }
+        returned = benchmark._evaluate_on_signal(
+            self.pipeline, self.signal, self.hyper, self.metrics, detrend=detrend).compute()
 
-    score = {
-        'metric-name': 1,
-        'elapsed': 1.0
-    }
-    evaluate_on_signal_mock.return_value = score
+        expected_return = self.set_score(1, ANY, ANY)
+        assert returned == expected_return
 
-    benchmark.evaluate_pipeline(pipeline, [signal], hyper, metrics)
+        expected_calls = [
+            call('signal-name-train'),
+            call('signal-name-test'),
+        ]
+        assert load_signal_mock.call_args_list == expected_calls
 
-    expected_calls = [
-        call(pipeline, signal, hyper, metrics, False, True),
-        call(pipeline, signal, hyper, metrics, False, False),
-    ]
-    assert evaluate_on_signal_mock.call_args_list == expected_calls
+        expected_calls = [
+            call(train, 'value'),
+            call(test, 'value'),
+        ]
+        assert detrend_signal_mock.call_args_list == expected_calls
 
+        analyze_mock.assert_called_once_with(self.pipeline, train, test, self.hyper)
 
-@patch('orion.benchmark._evaluate_on_signal')
-def test_evaluate_pipeline_holdout(evaluate_on_signal_mock):
-    pipeline = MagicMock(autospec=MLPipeline)
-    signal = 'signal-name'
-    hyper = MagicMock(autospec=dict)
-    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
-    metrics = {
-        'metric-name': metric_mock
-    }
+    @patch('orion.benchmark._evaluate_on_signal')
+    def test__evaluate_pipeline(self, evaluate_on_signal_mock):
+        holdout = (True, False)
+        detrend = False
 
-    score = {
-        'metric-name': 1,
-        'elapsed': 1.0
-    }
-    evaluate_on_signal_mock.return_value = score
+        signals = [self.signal]
 
-    expected_return = pd.DataFrame({
-        'holdout': [True],
-        'metric-name': [1],
-        'elapsed': [1.0]
+        score = self.set_score(1, ANY, ANY)
+        evaluate_on_signal_mock.return_value = score
 
-    })
-    returned = benchmark.evaluate_pipeline(pipeline, [signal], hyper, metrics, holdout=True)
-    pd.testing.assert_frame_equal(returned, expected_return)
+        benchmark._evaluate_pipeline(
+            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
 
-    evaluate_on_signal_mock.assert_called_once_with(pipeline, signal, hyper, metrics, False, True)
+        expected_calls = [
+            call(self.pipeline, self.signal, self.hyper, self.metrics, True, detrend),
+            call(self.pipeline, self.signal, self.hyper, self.metrics, False, detrend),
+        ]
+        assert evaluate_on_signal_mock.call_args_list == expected_calls
 
+    @patch('orion.benchmark._evaluate_on_signal')
+    def test__evaluate_pipeline_holdout_none(self, evaluate_on_signal_mock):
+        holdout = None
+        detrend = False
 
-@patch('orion.benchmark._evaluate_on_signal')
-def test_evaluate_pipeline_no_holdout(evaluate_on_signal_mock):
-    pipeline = MagicMock(autospec=MLPipeline)
-    signal = 'signal-name'
-    hyper = MagicMock(autospec=dict)
-    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
-    metrics = {
-        'metric-name': metric_mock
-    }
+        signals = [self.signal]
 
-    score = {
-        'metric-name': 1,
-        'elapsed': 1.0
-    }
-    evaluate_on_signal_mock.return_value = score
+        score = self.set_score(1, ANY, ANY)
+        evaluate_on_signal_mock.return_value = score
 
-    expected_return = pd.DataFrame({
-        'holdout': [False],
-        'metric-name': [1],
-        'elapsed': [1.0]
-    })
-    returned = benchmark.evaluate_pipeline(pipeline, [signal], hyper, metrics, holdout=False)
-    pd.testing.assert_frame_equal(returned, expected_return)
+        returned = benchmark._evaluate_pipeline(
+            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
 
-    evaluate_on_signal_mock.assert_called_once_with(pipeline, signal, hyper, metrics, False, False)
+        expected_return = [
+            self.set_score(1, ANY, True),
+            self.set_score(1, ANY, False),
+        ]
+        assert returned == expected_return
 
+        expected_calls = [
+            call(self.pipeline, self.signal, self.hyper, self.metrics, True, detrend),
+            call(self.pipeline, self.signal, self.hyper, self.metrics, False, detrend),
+        ]
+        assert evaluate_on_signal_mock.call_args_list == expected_calls
 
-@patch('orion.benchmark.evaluate_pipeline')
-def test_evaluate_pipelines(evaluate_pipeline_mock):
-    pipeline = 'pipeline'
-    signal = 'signal-name'
-    hyper = None
-    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
-    metrics = {
-        'metric-name': metric_mock
-    }
+    @patch('orion.benchmark._evaluate_on_signal')
+    def test__evaluate_pipeline_holdout(self, evaluate_on_signal_mock):
+        holdout = True
+        detrend = False
 
-    score = pd.DataFrame({
-        'holdout': [True, False],
-        'metric-name': [1, 1],
-        'elapsed': [1.0, 1.0]
-    })
-    evaluate_pipeline_mock.return_value = score
+        signals = [self.signal]
 
-    expected_return = pd.DataFrame({
-        'pipeline': [pipeline] * 2,
-        'rank': range(1, 3),
-        'holdout': [True, False],
-        'metric-name': [1] * 2,
-        'elapsed': [1.0] * 2,
-        'hyperparameter': [hyper] * 2
-    })
-    returned = benchmark.evaluate_pipelines([pipeline], [signal], hyper, metrics)
-    pd.testing.assert_frame_equal(returned, expected_return)
+        score = self.set_score(1, ANY, holdout)
+        evaluate_on_signal_mock.return_value = score
 
-    evaluate_pipeline_mock.assert_called_once_with(
-        pipeline, [signal], hyper, metrics, detrend=False, holdout=(True, False))
+        expected_return = [score]
+        returned = benchmark._evaluate_pipeline(
+            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
 
+        assert returned == expected_return
 
-@patch('orion.benchmark.evaluate_pipelines')
-def test_run_benchmark(evaluate_pipelines_mock):
-    pipeline = ['pipeline']
-    signal = ['signal-name']
-    datasets = {'dataset-name': signal}
-    hyper = None
-    metric_mock = MagicMock(autospec=METRICS['f1'], return_value=1)
-    metrics = {
-        'metric-name': metric_mock
-    }
+        evaluate_on_signal_mock.assert_called_once_with(
+            self.pipeline, self.signal, self.hyper, self.metrics, holdout, detrend)
 
-    score = pd.DataFrame({
-        'pipeline': pipeline * 2,
-        'rank': range(1, 3),
-        'holdout': [True, False],
-        'metric-name': [1] * 2,
-        'elapsed': [1.0] * 2,
-        'hyperparameter': [hyper] * 2
-    })
-    evaluate_pipelines_mock.return_value = score
+    @patch('orion.benchmark._evaluate_on_signal')
+    def test__evaluate_pipeline_no_holdout(self, evaluate_on_signal_mock):
+        holdout = False
+        detrend = False
 
-    expected_return = pd.DataFrame({
-        'pipeline': pipeline,
-        'rank': 1,
-        'metric-name': [1],
-        'elapsed': [1.0],
-    })
-    returned = benchmark.run_benchmark(pipeline, datasets, hyper, metrics)
-    pd.testing.assert_frame_equal(returned, expected_return)
+        signals = [self.signal]
 
-    evaluate_pipelines_mock.assert_called_once_with(
-        pipeline, signal, hyper, metrics, 'f1', detrend=False, holdout=(True, False))
+        score = self.set_score(1, ANY, holdout)
+        evaluate_on_signal_mock.return_value = score
+
+        expected_return = [score]
+        returned = benchmark._evaluate_pipeline(
+            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+
+        assert returned == expected_return
+
+        evaluate_on_signal_mock.assert_called_once_with(
+            self.pipeline, self.signal, self.hyper, self.metrics, holdout, detrend)
+
+    @patch('orion.benchmark._evaluate_pipeline')
+    def test_evaluate_pipeline(self, evaluate_pipeline_mock):
+        holdout = False
+        detrend = False
+
+        signals = [self.signal]
+
+        score = self.set_score(1, 1.0, holdout)
+        evaluate_pipeline_mock.return_value = [score]
+
+        order = ['holdout', 'metric-name', 'elapsed']
+        expected_return = pd.DataFrame.from_records([{
+            'metric-name': 1,
+            'elapsed': 1.0,
+            'holdout': holdout
+        }])[order]
+
+        returned = benchmark.evaluate_pipeline(
+            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+
+        pd.testing.assert_frame_equal(returned, expected_return)
+
+        evaluate_pipeline_mock.assert_called_once_with(
+            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+
+    @patch('orion.benchmark._evaluate_pipeline')
+    def test__evaluate_pipelines(self, evaluate_pipeline_mock):
+        holdout = False
+        detrend = False
+
+        signals = [self.signal]
+        pipelines = [self.pipeline]
+
+        score = self.set_score(1, ANY, holdout)
+        evaluate_pipeline_mock.return_value = [score]
+
+        expected_return = [score]
+        returned = benchmark._evaluate_pipelines(
+            pipelines, signals, self.hyper, self.metrics, holdout, detrend)
+
+        assert returned == expected_return
+
+        evaluate_pipeline_mock.assert_called_once_with(
+            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+
+    @patch('orion.benchmark._evaluate_pipeline')
+    def test__evaluate_pipelines_hyperparameter(self, evaluate_pipeline_mock):
+        holdout = False
+        detrend = False
+
+        signals = [self.signal]
+        pipelines = [self.pipeline]
+
+        hyperparameter = Mock(autospec=dict)
+        hyperparameters = [hyperparameter]
+
+        score = self.set_score(1, ANY, holdout)
+        evaluate_pipeline_mock.return_value = [score]
+
+        expected_return = [score]
+        returned = benchmark._evaluate_pipelines(
+            pipelines, signals, hyperparameters, self.metrics, holdout, detrend)
+
+        assert returned == expected_return
+
+        evaluate_pipeline_mock.assert_called_once_with(
+            self.pipeline, signals, hyperparameter, self.metrics, holdout, detrend)
+
+    @patch('orion.benchmark._evaluate_pipeline')
+    def test__evaluate_pipelines_metrics_list(self, evaluate_pipeline_mock):
+        holdout = False
+        detrend = False
+
+        signals = [self.signal]
+        pipelines = [self.pipeline]
+
+        metric = Mock(autospec=METRICS['f1'], return_value=1)
+        metric.__name__ = 'metric-name'
+        metrics = [metric]
+        metrics_ = {metric.__name__: metric}
+
+        score = self.set_score(1, ANY, holdout)
+        evaluate_pipeline_mock.return_value = [score]
+
+        expected_return = [score]
+        returned = benchmark._evaluate_pipelines(
+            pipelines, signals, self.hyper, metrics, holdout, detrend)
+
+        assert returned == expected_return
+
+        evaluate_pipeline_mock.assert_called_once_with(
+            self.pipeline, signals, self.hyper, metrics_, holdout, detrend)
+
+    @patch('orion.benchmark._evaluate_pipeline')
+    def test__evaluate_pipelines_metrics_exception(self, evaluate_pipeline_mock):
+        holdout = False
+        detrend = False
+
+        signals = [self.signal]
+        pipelines = [self.pipeline]
+
+        metric = 'metric-name'
+        metrics = [metric]
+
+        with self.assertRaises(ValueError) as ex:
+            benchmark._evaluate_pipelines(
+                pipelines, signals, self.hyper, metrics, holdout, detrend)
+
+            self.assertTrue(metric in ex.exception)
+
+    @patch('orion.benchmark._evaluate_pipelines')
+    def test_evaluate_pipelines(self, evaluate_pipelines_mock):
+        holdout = False
+        detrend = False
+
+        signals = [self.signal]
+        pipelines = [self.pipeline]
+
+        score = self.set_score(1, ANY, holdout)
+        evaluate_pipelines_mock.return_value = [score]
+
+        order = ['pipeline', 'rank', 'elapsed', 'holdout', 'metric-name', 'signal']
+        expected_return = pd.DataFrame.from_records([{
+            'rank': 1,
+            'metric-name': 1,
+            'elapsed': ANY,
+            'holdout': holdout,
+            'pipeline': self.pipeline,
+            'signal': self.signal
+        }])[order]
+
+        returned = benchmark.evaluate_pipelines(
+            pipelines, signals, self.hyper, self.metrics, holdout, detrend)
+
+        pd.testing.assert_frame_equal(returned, expected_return)
+
+        evaluate_pipelines_mock.assert_called_once_with(
+            pipelines, signals, self.hyper, self.metrics, holdout, detrend)
+
+    @patch('orion.benchmark._evaluate_pipelines')
+    def test_benchmark(self, evaluate_pipelines_mock):
+        holdout = False
+        detrend = False
+
+        signals = [self.signal]
+        pipelines = [self.pipeline]
+        datasets = {'dataset-name': signals}
+
+        score = self.set_score(1, ANY, holdout)
+        evaluate_pipelines_mock.return_value = [score]
+
+        expected_return = pd.DataFrame.from_records([score])
+        returned = benchmark.benchmark(pipelines, datasets, self.hyper, self.metrics)
+
+        pd.testing.assert_frame_equal(returned, expected_return)
+
+        evaluate_pipelines_mock.assert_called_once_with(
+            pipelines, signals, self.hyper, self.metrics, holdout, detrend)
+
+    @patch('orion.benchmark.benchmark')
+    def test_run_benchmark(self, benchmark_mock):
+        signals = [self.signal]
+        pipelines = [self.pipeline]
+        datasets = {'dataset-name': signals}
+        hyper = Mock(autospec=dict)
+
+        score = self.set_score(1, ANY, ANY)
+        benchmark_mock.return_value = pd.DataFrame.from_records([score])
+
+        expected_return = pd.DataFrame.from_records([score])
+        returned = benchmark.run_benchmark(pipelines, datasets, hyper, self.metrics)
+
+        pd.testing.assert_frame_equal(returned, expected_return)
+
+        benchmark_mock.assert_called_once_with(pipelines, datasets, hyper, self.metrics)
