@@ -1,0 +1,35 @@
+{
+    "name": "orion.primitives.azure_anomaly_detector.convert_anomalies_to_contextual",
+    "contributors": "Sarah Alnegheimish <smish@mit.edu>",
+    "description": "Convert list of timestamps to list of tuples.",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "anomaly_intervals"
+    },
+    "modalities": [
+        "timeseries"
+    ],
+    "primitive": "orion.primitives.azure_anomaly_detector.convert_anomalies_to_contextual",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "gap": {
+                "type": "int",
+                "default": 1
+            }
+        }
+    }
+}
