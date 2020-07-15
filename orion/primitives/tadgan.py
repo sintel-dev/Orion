@@ -212,6 +212,7 @@ class TadGAN():
 
     def fit(self, X, **kwargs):
         """Fit the TadGAN.
+
         Args:
             X (ndarray):
                 N-dimensional array containing the input training sequences for the model.
@@ -222,9 +223,11 @@ class TadGAN():
 
     def predict(self, X):
         """Predict values using the initialized object.
+
         Args:
             X (ndarray):
                 N-dimensional array containing the input sequences for the model.
+
         Returns:
             ndarray:
                 N-dimensional array containing the reconstructions for each input sequence.
@@ -242,11 +245,13 @@ class TadGAN():
 
 def _compute_critic_score(critics, smooth_window):
     """Compute an array of anomaly scores.
+
     Args:
         critics (ndarray):
             Critic values.
         smooth_window (int):
             Smooth window that will be applied to compute smooth errors.
+
     Returns:
         ndarray:
             Array of anomaly scores.
@@ -267,6 +272,7 @@ def _compute_critic_score(critics, smooth_window):
 
 def _compute_rec_score(predictions, trues, score_window, smooth_window, rec_error_type):
     """Compute an array of anomaly scores.
+
     Args:
         predictions (ndarray):
             Predicted values.
@@ -278,6 +284,7 @@ def _compute_rec_score(predictions, trues, score_window, smooth_window, rec_erro
             Smooth window that will be applied to compute smooth errors.
         rec_error_type (str):
             Reconstruction error types.
+
     Returns:
         ndarray:
             Array of anomaly scores.
@@ -345,7 +352,9 @@ def _compute_rec_score(predictions, trues, score_window, smooth_window, rec_erro
 def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_window=200,
                     error_smooth_window=200, rec_error_type="point", comb="mult", lam=0.5):
     """Compute an array of anomaly scores.
+
     Anomaly scores are calculated using a combination of reconstruction error and critic score.
+
     Args:
         y (ndarray):
             Ground truth.
@@ -366,13 +375,14 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
             If not given, 200 is used.
         rec_error_type (str):
             Optional. The method to compute reconstruction error. Can be one of
-            `["point", "area", "dtw"]`. If not given, 'point' is used.
+            ["point", "area", "dtw"]. If not given, 'point' is used.
         comb (str):
             Optional. How to combine critic and reconstruction error. Can be one
-            of `["mult", "sum", "res"]`. If not given, 'mult' is used.
+            of ["mult", "sum", "res"]. If not given, 'mult' is used.
         lam (float):
-            Optional. Used if `comb="sum"` as a lambda weighted sum to combine
+            Optional. Used if comb="sum" as a lambda weighted sum to combine
             scores. If not given, 0.5 is used.
+
     Returns:
         ndarray:
             Array of anomaly scores.
