@@ -350,7 +350,7 @@ def _compute_rec_score(predictions, trues, score_window, smooth_window, rec_erro
 
 
 def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_window=200,
-                    error_smooth_window=200, rec_error_type="point", comb="mult", lam=0.5):
+                    error_smooth_window=200, rec_error_type="point", comb="mult", lambda_rec=0.5):
     """Compute an array of anomaly scores.
 
     Anomaly scores are calculated using a combination of reconstruction error and critic score.
@@ -375,12 +375,12 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
             If not given, 200 is used.
         rec_error_type (str):
             Optional. The method to compute reconstruction error. Can be one of
-            ["point", "area", "dtw"]. If not given, 'point' is used.
+            `["point", "area", "dtw"]`. If not given, 'point' is used.
         comb (str):
             Optional. How to combine critic and reconstruction error. Can be one
-            of ["mult", "sum", "res"]. If not given, 'mult' is used.
-        lam (float):
-            Optional. Used if comb="sum" as a lambda weighted sum to combine
+            of `["mult", "sum", "res"]`. If not given, 'mult' is used.
+        lambda_rec (float):
+            Optional. Used if `comb="sum"` as a lambda weighted sum to combine
             scores. If not given, 0.5 is used.
 
     Returns:
@@ -447,7 +447,7 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
     critic_scores = _compute_critic_score(critic_kde_max, critic_smooth_window)
 
     # Compute reconstruction scores
-    res_scores = _compute_rec_score(
+    rec_scores = _compute_rec_score(
         predictions_md,
         true,
         score_window,
@@ -456,13 +456,13 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
 
     # Combine the two scores
     if comb == "mult":
-        final_scores = np.multiply(critic_scores, res_scores)
+        final_scores = np.multiply(critic_scores, rec_scores)
 
     elif comb == "sum":
-        final_scores = lam * (critic_scores - 1) + lam * (res_scores - 1)
+        final_scores = (1 - lambda_rec) * (critic_scores - 1) + lambda_rec * (rec_scores - 1)
 
     elif comb == "res":
-        final_scores = res_scores
+        final_scores = rec_scores
 
     else:
         raise ValueError(
