@@ -20,10 +20,6 @@
             {
                 "name": "index",
                 "type": "ndarray"
-            },
-            {
-                "name": "pad_size",
-                "type": "int"
             }
         ],
         "output": [
@@ -35,6 +31,14 @@
     },
     "hyperparameters": {
         "fixed": {
+            "interval" : {
+                "type": "int",
+                "default": 1
+            },
+            "pad_size" : {
+                "type": "int",
+                "default": 1
+            },
             "subscription_key": {
                 "type": "str"
             },

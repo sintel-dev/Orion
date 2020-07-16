@@ -29,10 +29,6 @@
             {
                 "name": "y_index",
                 "type": "ndarray"
-            },
-            {
-                "name": "pad_size",
-                "type": "int"
             }
         ]
     },
