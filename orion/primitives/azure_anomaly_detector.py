@@ -80,18 +80,18 @@ def detect_anomalies(X, index, interval, pad_size, subscription_key, endpoint, g
             If not given, `None` is used.
         period (int):
             Periodic value of a time series. If not given, `None` is used, and the API
-            will determine the period automatically. 
+            will determine the period automatically.
         max_anomaly_ratio (float):
-            Advanced model parameter, max anomaly ratio in a time series. If not given, 
+            Advanced model parameter, max anomaly ratio in a time series. If not given,
             `None` is used.
         sensitivity (int):
             Advanced model parameter, between 0-99, the lower the value is, the larger
-            the margin value will be which means less anomalies will be accepted. If not given, 
+            the margin value will be which means less anomalies will be accepted. If not given,
             `None` is used.
 
         Returns:
             list:
-                Array containing start-index, end-index, score for each anomalous sequence. 
+                Array containing start-index, end-index, score for each anomalous sequence.
                 Note that the API does not have an anomaly score, and so score is set to `None`.
     """
 
