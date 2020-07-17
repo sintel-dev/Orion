@@ -36,7 +36,7 @@
         }
     },
     "input_names": {
-        "mlprimitives.custom.timeseries_anomalies.find_anomalies#1": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "index": "target_index"
         },
         "numpy.reshape#1": {
