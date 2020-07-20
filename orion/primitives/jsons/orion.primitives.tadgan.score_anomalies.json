@@ -75,7 +75,7 @@
             "comb": {
                 "type": "str",
                 "default": "mult",
-                "options": ["mult", "sum", "res"]
+                "options": ["mult", "sum", "rec"]
             },
             "lambda_rec": {
                 "type": "float",

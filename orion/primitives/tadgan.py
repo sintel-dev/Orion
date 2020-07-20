@@ -378,7 +378,7 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
             `["point", "area", "dtw"]`. If not given, 'point' is used.
         comb (str):
             Optional. How to combine critic and reconstruction error. Can be one
-            of `["mult", "sum", "res"]`. If not given, 'mult' is used.
+            of `["mult", "sum", "rec"]`. If not given, 'mult' is used.
         lambda_rec (float):
             Optional. Used if `comb="sum"` as a lambda weighted sum to combine
             scores. If not given, 0.5 is used.
@@ -461,12 +461,12 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
     elif comb == "sum":
         final_scores = (1 - lambda_rec) * (critic_scores - 1) + lambda_rec * (rec_scores - 1)
 
-    elif comb == "res":
+    elif comb == "rec":
         final_scores = rec_scores
 
     else:
         raise ValueError(
-            'Unknown combination specified {}, use "mult", "sum", or "res" instead.'.format(comb))
+            'Unknown combination specified {}, use "mult", "sum", or "rec" instead.'.format(comb))
 
     true = [[t] for t in true]
     return final_scores, true_index, true, predictions
