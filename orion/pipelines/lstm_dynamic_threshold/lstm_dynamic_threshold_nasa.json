@@ -10,10 +10,6 @@
         "target_column": 0,
         "window_size": 250
     },
-    "mlprimitives.custom.timeseries_anomalies.find_anomalies#1": {
-        "window_size": 2000,
-        "window_step_size": 100
-    },
     "keras.Sequential.LSTMTimeSeriesRegressor#1": {
         "epochs": 35,
         "verbose": false

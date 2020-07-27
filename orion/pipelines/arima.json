@@ -6,8 +6,8 @@
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
         "numpy.reshape",
         "statsmodels.tsa.arima_model.Arima",
-        "mlprimitives.custom.timeseries_anomalies.regression_errors",
-        "mlprimitives.custom.timeseries_anomalies.find_anomalies"
+        "orion.primitives.timeseries_anomalies.regression_errors",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
         "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
@@ -33,10 +33,13 @@
         },
         "statsmodels.tsa.arima_model.Arima#1": {
             "steps": 1
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "fixed_threshold": true
         }
     },
     "input_names": {
-        "mlprimitives.custom.timeseries_anomalies.find_anomalies#1": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "index": "target_index"
         },
         "numpy.reshape#1": {

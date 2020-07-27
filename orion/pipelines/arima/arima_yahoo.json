@@ -22,5 +22,9 @@
     },
     "statsmodels.tsa.arima_model.Arima#1": {
         "steps": 1
+    },
+    "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+        "window_size": 500,
+        "window_step_size": 100
     }
 }
