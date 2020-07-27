@@ -518,6 +518,7 @@
 
 <div class="viewcode-block" id="TadGAN.fit"><a class="viewcode-back" href="../../../api/orion.primitives.tadgan.html#orion.primitives.tadgan.TadGAN.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fit the TadGAN.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            X (ndarray):</span>
 <span class="sd">                N-dimensional array containing the input training sequences for the model.</span>
@@ -528,9 +529,11 @@
 
 <div class="viewcode-block" id="TadGAN.predict"><a class="viewcode-back" href="../../../api/orion.primitives.tadgan.html#orion.primitives.tadgan.TadGAN.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Predict values using the initialized object.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            X (ndarray):</span>
 <span class="sd">                N-dimensional array containing the input sequences for the model.</span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            ndarray:</span>
 <span class="sd">                N-dimensional array containing the reconstructions for each input sequence.</span>
@@ -548,11 +551,13 @@
 
 <span class="k">def</span> <span class="nf">_compute_critic_score</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">smooth_window</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        critics (ndarray):</span>
 <span class="sd">            Critic values.</span>
 <span class="sd">        smooth_window (int):</span>
 <span class="sd">            Smooth window that will be applied to compute smooth errors.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray:</span>
 <span class="sd">            Array of anomaly scores.</span>
@@ -573,6 +578,7 @@
 
 <span class="k">def</span> <span class="nf">_compute_rec_score</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">trues</span><span class="p">,</span> <span class="n">score_window</span><span class="p">,</span> <span class="n">smooth_window</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        predictions (ndarray):</span>
 <span class="sd">            Predicted values.</span>
@@ -584,6 +590,7 @@
 <span class="sd">            Smooth window that will be applied to compute smooth errors.</span>
 <span class="sd">        rec_error_type (str):</span>
 <span class="sd">            Reconstruction error types.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray:</span>
 <span class="sd">            Array of anomaly scores.</span>
@@ -649,9 +656,11 @@
 
 
 <div class="viewcode-block" id="score_anomalies"><a class="viewcode-back" href="../../../api/orion.primitives.tadgan.html#orion.primitives.tadgan.score_anomalies">[docs]</a><span class="k">def</span> <span class="nf">score_anomalies</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">critic</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">score_window</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">critic_smooth_window</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-                    <span class="n">error_smooth_window</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="o">=</span><span class="s2">&quot;point&quot;</span><span class="p">):</span>
+                    <span class="n">error_smooth_window</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="o">=</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="n">comb</span><span class="o">=</span><span class="s2">&quot;mult&quot;</span><span class="p">,</span> <span class="n">lambda_rec</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
+
 <span class="sd">    Anomaly scores are calculated using a combination of reconstruction error and critic score.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        y (ndarray):</span>
 <span class="sd">            Ground truth.</span>
@@ -664,12 +673,22 @@
 <span class="sd">        score_window (int):</span>
 <span class="sd">            Optional. Size of the window over which the scores are calculated.</span>
 <span class="sd">            If not given, 10 is used.</span>
-<span class="sd">        smooth_window (int):</span>
-<span class="sd">            Optional. Size of window over which smoothing is applied.</span>
+<span class="sd">        critic_smooth_window (int):</span>
+<span class="sd">            Optional. Size of window over which smoothing is applied to critic.</span>
+<span class="sd">            If not given, 200 is used.</span>
+<span class="sd">        error_smooth_window (int):</span>
+<span class="sd">            Optional. Size of window over which smoothing is applied to error.</span>
 <span class="sd">            If not given, 200 is used.</span>
 <span class="sd">        rec_error_type (str):</span>
-<span class="sd">            Optional. The method to compute reconstruction error.</span>
-<span class="sd">            If not given, &#39;point&#39; is used.</span>
+<span class="sd">            Optional. The method to compute reconstruction error. Can be one of</span>
+<span class="sd">            `[&quot;point&quot;, &quot;area&quot;, &quot;dtw&quot;]`. If not given, &#39;point&#39; is used.</span>
+<span class="sd">        comb (str):</span>
+<span class="sd">            Optional. How to combine critic and reconstruction error. Can be one</span>
+<span class="sd">            of `[&quot;mult&quot;, &quot;sum&quot;, &quot;rec&quot;]`. If not given, &#39;mult&#39; is used.</span>
+<span class="sd">        lambda_rec (float):</span>
+<span class="sd">            Optional. Used if `comb=&quot;sum&quot;` as a lambda weighted sum to combine</span>
+<span class="sd">            scores. If not given, 0.5 is used.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray:</span>
 <span class="sd">            Array of anomaly scores.</span>
@@ -679,17 +698,12 @@
     <span class="n">error_smooth_window</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
 
     <span class="n">true_index</span> <span class="o">=</span> <span class="n">index</span>  <span class="c1"># no offset</span>
-    <span class="c1"># left offset for half window_size</span>
-    <span class="c1"># true_index = index - (index[1] - index[0]) * (y.shape[1] // 2)</span>
-    <span class="c1"># left offset for one window_size</span>
-    <span class="c1"># true_index = index - (index[1] - index[0]) * (y.shape[1])</span>
 
     <span class="n">true</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))]</span>
 
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">true</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
-    <span class="n">critic_extended</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="n">critic_extended</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">critic</span><span class="p">:</span>
         <span class="n">critic_extended</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
@@ -739,7 +753,7 @@
     <span class="n">critic_scores</span> <span class="o">=</span> <span class="n">_compute_critic_score</span><span class="p">(</span><span class="n">critic_kde_max</span><span class="p">,</span> <span class="n">critic_smooth_window</span><span class="p">)</span>
 
     <span class="c1"># Compute reconstruction scores</span>
-    <span class="n">res_scores</span> <span class="o">=</span> <span class="n">_compute_rec_score</span><span class="p">(</span>
+    <span class="n">rec_scores</span> <span class="o">=</span> <span class="n">_compute_rec_score</span><span class="p">(</span>
         <span class="n">predictions_md</span><span class="p">,</span>
         <span class="n">true</span><span class="p">,</span>
         <span class="n">score_window</span><span class="p">,</span>
@@ -747,7 +761,18 @@
         <span class="n">rec_error_type</span><span class="p">)</span>
 
     <span class="c1"># Combine the two scores</span>
-    <span class="n">final_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">critic_scores</span><span class="p">,</span> <span class="n">res_scores</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">comb</span> <span class="o">==</span> <span class="s2">&quot;mult&quot;</span><span class="p">:</span>
+        <span class="n">final_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">critic_scores</span><span class="p">,</span> <span class="n">rec_scores</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">comb</span> <span class="o">==</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span>
+        <span class="n">final_scores</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">lambda_rec</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">critic_scores</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">lambda_rec</span> <span class="o">*</span> <span class="p">(</span><span class="n">rec_scores</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">comb</span> <span class="o">==</span> <span class="s2">&quot;rec&quot;</span><span class="p">:</span>
+        <span class="n">final_scores</span> <span class="o">=</span> <span class="n">rec_scores</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Unknown combination specified </span><span class="si">{}</span><span class="s1">, use &quot;mult&quot;, &quot;sum&quot;, or &quot;rec&quot; instead.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">comb</span><span class="p">))</span>
 
     <span class="n">true</span> <span class="o">=</span> <span class="p">[[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">true</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">final_scores</span><span class="p">,</span> <span class="n">true_index</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">predictions</span></div>

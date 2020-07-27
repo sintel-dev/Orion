@@ -329,28 +329,32 @@
 <dl class="method">
 <dt id="orion.primitives.tadgan.TadGAN.fit">
 <code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/tadgan.html#TadGAN.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the TadGAN.
-:param X: N-dimensional array containing the input training sequences for the model.
-:type X: ndarray</p>
+<dd><p>Fit the TadGAN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>ndarray</em>) – N-dimensional array containing the input training sequences for the model.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="orion.primitives.tadgan.TadGAN.predict">
 <code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/tadgan.html#TadGAN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Predict values using the initialized object.
-:param X: N-dimensional array containing the input sequences for the model.
-:type X: ndarray</p>
+<dd><p>Predict values using the initialized object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><p>N-dimensional array containing the reconstructions for each input sequence.
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>ndarray</em>) – N-dimensional array containing the input sequences for the model.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>N-dimensional array containing the reconstructions for each input sequence.
 ndarray:</p>
 <blockquote>
 <div><p>N-dimensional array containing the critic scores for each input sequence.</p>
 </div></blockquote>
 </p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>ndarray</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -359,28 +363,28 @@ ndarray:</p>
 
 <dl class="function">
 <dt id="orion.primitives.tadgan.score_anomalies">
-<code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">score_anomalies</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">y_hat</em>, <em class="sig-param">critic</em>, <em class="sig-param">index</em>, <em class="sig-param">score_window=10</em>, <em class="sig-param">critic_smooth_window=200</em>, <em class="sig-param">error_smooth_window=200</em>, <em class="sig-param">rec_error_type='point'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/tadgan.html#score_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.score_anomalies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute an array of anomaly scores.
-Anomaly scores are calculated using a combination of reconstruction error and critic score.
-:param y: Ground truth.
-:type y: ndarray
-:param y_hat: Predicted values. Each timestamp has multiple predictions.
-:type y_hat: ndarray
-:param index: time index for each y (start position of the window)
-:type index: ndarray
-:param critic: Critic score. Each timestamp has multiple critic scores.
-:type critic: ndarray
-:param score_window: Optional. Size of the window over which the scores are calculated.</p>
-<blockquote>
-<div><p>If not given, 10 is used.</p>
-</div></blockquote>
+<code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">score_anomalies</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">y_hat</em>, <em class="sig-param">critic</em>, <em class="sig-param">index</em>, <em class="sig-param">score_window=10</em>, <em class="sig-param">critic_smooth_window=200</em>, <em class="sig-param">error_smooth_window=200</em>, <em class="sig-param">rec_error_type='point'</em>, <em class="sig-param">comb='mult'</em>, <em class="sig-param">lambda_rec=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/tadgan.html#score_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.score_anomalies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an array of anomaly scores.</p>
+<p>Anomaly scores are calculated using a combination of reconstruction error and critic score.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>smooth_window</strong> (<em>int</em>) – Optional. Size of window over which smoothing is applied.
+<li><p><strong>y</strong> (<em>ndarray</em>) – Ground truth.</p></li>
+<li><p><strong>y_hat</strong> (<em>ndarray</em>) – Predicted values. Each timestamp has multiple predictions.</p></li>
+<li><p><strong>index</strong> (<em>ndarray</em>) – time index for each y (start position of the window)</p></li>
+<li><p><strong>critic</strong> (<em>ndarray</em>) – Critic score. Each timestamp has multiple critic scores.</p></li>
+<li><p><strong>score_window</strong> (<em>int</em>) – Optional. Size of the window over which the scores are calculated.
+If not given, 10 is used.</p></li>
+<li><p><strong>critic_smooth_window</strong> (<em>int</em>) – Optional. Size of window over which smoothing is applied to critic.
 If not given, 200 is used.</p></li>
-<li><p><strong>rec_error_type</strong> (<em>str</em>) – Optional. The method to compute reconstruction error.
-If not given, ‘point’ is used.</p></li>
+<li><p><strong>error_smooth_window</strong> (<em>int</em>) – Optional. Size of window over which smoothing is applied to error.
+If not given, 200 is used.</p></li>
+<li><p><strong>rec_error_type</strong> (<em>str</em>) – Optional. The method to compute reconstruction error. Can be one of
+<cite>[“point”, “area”, “dtw”]</cite>. If not given, ‘point’ is used.</p></li>
+<li><p><strong>comb</strong> (<em>str</em>) – Optional. How to combine critic and reconstruction error. Can be one
+of <cite>[“mult”, “sum”, “rec”]</cite>. If not given, ‘mult’ is used.</p></li>
+<li><p><strong>lambda_rec</strong> (<em>float</em>) – Optional. Used if <cite>comb=”sum”</cite> as a lambda weighted sum to combine
+scores. If not given, 0.5 is used.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
