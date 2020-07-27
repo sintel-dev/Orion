@@ -528,14 +528,11 @@ class TestBenchmark(TestCase):
 
     @patch('orion.benchmark._evaluate_pipelines')
     def test_benchmark(self, evaluate_pipelines_mock):
-        holdout = False
-        detrend = False
-
         signals = [self.signal]
         pipelines = [self.pipeline]
         datasets = {'dataset-name': signals}
 
-        score = self.set_score(1, ANY, holdout)
+        score = self.set_score(1, ANY, ANY)
         evaluate_pipelines_mock.return_value = [score]
 
         expected_return = pd.DataFrame.from_records([score])
@@ -544,7 +541,7 @@ class TestBenchmark(TestCase):
         pd.testing.assert_frame_equal(returned, expected_return)
 
         evaluate_pipelines_mock.assert_called_once_with(
-            pipelines, signals, self.hyper, self.metrics, holdout, detrend)
+            pipelines, signals, self.hyper, self.metrics)
 
     @patch('orion.benchmark.benchmark')
     def test_run_benchmark(self, benchmark_mock):

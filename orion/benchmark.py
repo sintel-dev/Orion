@@ -7,6 +7,7 @@ import logging
 import os
 import warnings
 from datetime import datetime
+from functools import partial
 
 import dask
 import pandas as pd
@@ -27,6 +28,10 @@ with open(os.path.join(BENCHMARK_PATH, 'benchmark_data.csv'), newline='') as f:
     reader = csv.reader(f)
     BENCHMARK_DATA = {row[0]: ast.literal_eval(row[1]) for row in reader}
 
+with open(os.path.join(BENCHMARK_PATH, 'benchmark_parameters.csv'), newline='') as f:
+    reader = csv.reader(f)
+    BENCHMARK_PARAMS = {row[0]: ast.literal_eval(row[1]) for row in reader}
+
 BENCHMARK_HYPER = pd.read_csv(
     os.path.join(BENCHMARK_PATH, 'benchmark_hyperparameters.csv'), index_col=0).to_dict()
 
@@ -34,8 +39,8 @@ BENCHMARK_PIPELINES = os.path.join(os.path.dirname(__file__), 'pipelines')
 
 PIPELINES = {
     "arima": os.path.join(BENCHMARK_PIPELINES, 'arima.json'),
-    "lstm_dynamic_threshold": os.path.join(BENCHMARK_PIPELINES, 'lstm_dynamic_threshold_gpu.json'),
-    "tadgan": os.path.join(BENCHMARK_PIPELINES, 'tadgan_gpu.json')
+    "lstm_dynamic_threshold": os.path.join(BENCHMARK_PIPELINES, 'lstm_dynamic_threshold.json'),
+    "tadgan": os.path.join(BENCHMARK_PIPELINES, 'tadgan.json')
 }
 
 
@@ -123,7 +128,7 @@ def _evaluate_pipeline(pipeline, signals, hyperparameter, metrics, holdout, detr
     elif not isinstance(holdout, tuple):
         holdout = (holdout, )
 
-    if isinstance(hyperparameter, str) and os.path.isfile(hyperparameter):
+    if isinstance(hyperparameter, str) and os.path.exists(hyperparameter):
         LOGGER.info("Loading hyperparameter %s", hyperparameter)
         with open(hyperparameter) as f:
             hyperparameter = json.load(f)
@@ -252,9 +257,11 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             dataset, len(signals)))
 
         # set dataset configuration
-        hyper = _get_parameter(hyperparameters, dataset)
+        hyperparameters_ = _get_parameter(hyperparameters, dataset)
+        parameters = _get_parameter(BENCHMARK_PARAMS, dataset) or dict()
 
-        result = _evaluate_pipelines(pipelines, signals, hyper, metrics, False, False)
+        result = _evaluate_pipelines(
+            pipelines, signals[:1], hyperparameters_, metrics, **parameters)
         delayed.extend(result)
 
     persisted = dask.persist(*delayed)
@@ -304,7 +311,6 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
     pipelines = pipelines or PIPELINES
     datasets = datasets or BENCHMARK_DATA
     hyperparameters = hyperparameters or BENCHMARK_HYPER
-    metrics = metrics or METRICS
 
     results = benchmark(pipelines, datasets, hyperparameters, metrics)
 
@@ -318,7 +324,8 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
 def main():
     warnings.filterwarnings("ignore")
 
-    leaderboard = run_benchmark()
+    metrics = {k: partial(fun, weighted=False) for k, fun in METRICS.items()}
+    leaderboard = run_benchmark(metrics=metrics)
     output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
     leaderboard.to_csv(output_path)
     print(leaderboard)

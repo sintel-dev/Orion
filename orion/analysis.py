@@ -7,7 +7,7 @@ from mlblocks import MLPipeline
 LOGGER = logging.getLogger(__name__)
 
 
-def _load_pipeline(pipeline, hyperparams=None):
+def _load_pipeline(pipeline, hyperparams):
     if isinstance(pipeline, str) and os.path.isfile(pipeline):
         pipeline = MLPipeline.load(pipeline)
     else:
