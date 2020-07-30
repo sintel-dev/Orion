@@ -212,6 +212,7 @@ class TadGAN():
 
     def fit(self, X, **kwargs):
         """Fit the TadGAN.
+
         Args:
             X (ndarray):
                 N-dimensional array containing the input training sequences for the model.
@@ -222,9 +223,11 @@ class TadGAN():
 
     def predict(self, X):
         """Predict values using the initialized object.
+
         Args:
             X (ndarray):
                 N-dimensional array containing the input sequences for the model.
+
         Returns:
             ndarray:
                 N-dimensional array containing the reconstructions for each input sequence.
@@ -242,11 +245,13 @@ class TadGAN():
 
 def _compute_critic_score(critics, smooth_window):
     """Compute an array of anomaly scores.
+
     Args:
         critics (ndarray):
             Critic values.
         smooth_window (int):
             Smooth window that will be applied to compute smooth errors.
+
     Returns:
         ndarray:
             Array of anomaly scores.
@@ -267,6 +272,7 @@ def _compute_critic_score(critics, smooth_window):
 
 def _compute_rec_score(predictions, trues, score_window, smooth_window, rec_error_type):
     """Compute an array of anomaly scores.
+
     Args:
         predictions (ndarray):
             Predicted values.
@@ -278,6 +284,7 @@ def _compute_rec_score(predictions, trues, score_window, smooth_window, rec_erro
             Smooth window that will be applied to compute smooth errors.
         rec_error_type (str):
             Reconstruction error types.
+
     Returns:
         ndarray:
             Array of anomaly scores.
@@ -343,9 +350,11 @@ def _compute_rec_score(predictions, trues, score_window, smooth_window, rec_erro
 
 
 def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_window=200,
-                    error_smooth_window=200, rec_error_type="point"):
+                    error_smooth_window=200, rec_error_type="point", comb="mult", lambda_rec=0.5):
     """Compute an array of anomaly scores.
+
     Anomaly scores are calculated using a combination of reconstruction error and critic score.
+
     Args:
         y (ndarray):
             Ground truth.
@@ -358,12 +367,22 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
         score_window (int):
             Optional. Size of the window over which the scores are calculated.
             If not given, 10 is used.
-        smooth_window (int):
-            Optional. Size of window over which smoothing is applied.
+        critic_smooth_window (int):
+            Optional. Size of window over which smoothing is applied to critic.
+            If not given, 200 is used.
+        error_smooth_window (int):
+            Optional. Size of window over which smoothing is applied to error.
             If not given, 200 is used.
         rec_error_type (str):
-            Optional. The method to compute reconstruction error.
-            If not given, 'point' is used.
+            Optional. The method to compute reconstruction error. Can be one of
+            `["point", "area", "dtw"]`. If not given, 'point' is used.
+        comb (str):
+            Optional. How to combine critic and reconstruction error. Can be one
+            of `["mult", "sum", "rec"]`. If not given, 'mult' is used.
+        lambda_rec (float):
+            Optional. Used if `comb="sum"` as a lambda weighted sum to combine
+            scores. If not given, 0.5 is used.
+
     Returns:
         ndarray:
             Array of anomaly scores.
@@ -373,17 +392,12 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
     error_smooth_window = min(math.trunc(y.shape[0] * 0.01), 100)
 
     true_index = index  # no offset
-    # left offset for half window_size
-    # true_index = index - (index[1] - index[0]) * (y.shape[1] // 2)
-    # left offset for one window_size
-    # true_index = index - (index[1] - index[0]) * (y.shape[1])
 
     true = [item[0] for item in y.reshape((y.shape[0], -1))]
 
     for item in y[-1][1:]:
         true.extend(item)
 
-    critic_extended = list()
     critic_extended = list()
     for c in critic:
         critic_extended.extend(np.repeat(c, y_hat.shape[1]).tolist())
@@ -433,7 +447,7 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
     critic_scores = _compute_critic_score(critic_kde_max, critic_smooth_window)
 
     # Compute reconstruction scores
-    res_scores = _compute_rec_score(
+    rec_scores = _compute_rec_score(
         predictions_md,
         true,
         score_window,
@@ -441,7 +455,18 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
         rec_error_type)
 
     # Combine the two scores
-    final_scores = np.multiply(critic_scores, res_scores)
+    if comb == "mult":
+        final_scores = np.multiply(critic_scores, rec_scores)
+
+    elif comb == "sum":
+        final_scores = (1 - lambda_rec) * (critic_scores - 1) + lambda_rec * (rec_scores - 1)
+
+    elif comb == "rec":
+        final_scores = rec_scores
+
+    else:
+        raise ValueError(
+            'Unknown combination specified {}, use "mult", "sum", or "rec" instead.'.format(comb))
 
     true = [[t] for t in true]
     return final_scores, true_index, true, predictions
