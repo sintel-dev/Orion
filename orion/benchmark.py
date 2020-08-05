@@ -13,7 +13,7 @@ import dask
 import pandas as pd
 from scipy import signal as scipy_signal
 
-from orion.analysis import analyze
+from orion.analysis import _load_pipeline, analyze
 from orion.data import NASA_SIGNALS, load_anomalies, load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 from orion.evaluation import contextual_confusion_matrix
@@ -97,8 +97,9 @@ def _evaluate_on_signal(pipeline, name, dataset, signal, hyperparameter, metrics
         LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
                     name, signal, holdout)
 
+        pipeline = _load_pipeline(pipeline, hyperparameter)
         start = datetime.utcnow()
-        anomalies = analyze(pipeline, train, test, hyperparameter)
+        anomalies = analyze(pipeline, train, test)
         elapsed = datetime.utcnow() - start
 
         truth = load_anomalies(signal)
@@ -287,71 +288,6 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
     return df
 
 
-def summarize_results(df, metrics):
-    """ Summarize the result of benchmark.
-
-    The table is summarized for according to the number of wins each pipeline
-    had over ARIMA pipeline per dataset, the number of anomalies detected, and
-    the average f1 score acheived by that pipeline.
-
-    Args:
-        df (`pandas.DataFrame`): detailed dataframe containing the score of each
-            pipeline on each signal.
-        metrics (dict): dictionary with metric names as keys and scoring functions
-            as values.
-
-    Returns:
-        pandas.DataFrame: Table containing the the number of wins each pipeline
-            had over ARIMA pipeline per dataset, the number of anomalies detected, and
-            the average f1 score acheived by that pipeline. The pipelines are ranked
-            by the average f1 score metric.
-    """
-    def return_cm(x):
-        if isinstance(x, int):
-            return (0, 0, 0)
-
-        elif len(x) > 3:
-            return x[1:]
-
-        return x
-
-    df['confusion_matrix'] = df['confusion_matrix'].apply(return_cm)
-    df[['fp', 'fn', 'tp']] = pd.DataFrame(df['confusion_matrix'].tolist(), index=df.index)
-
-    # calculate f1 score
-    df = df.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
-
-    precision = df['tp'] / (df['tp'] + df['fp'])
-    recall = df['tp'] / (df['tp'] + df['fn'])
-    intermediate['f1'] = 2 * (precision * recall) / (precision + recall)
-
-    result = dict()
-
-    # number of wins over ARIMA
-    arima_pipeline = 'orion/pipelines/arima.json'
-    intermediate = df.set_index(['pipeline', 'dataset'])['f1'].unstack().T
-    arima = intermediate.pop(arima_pipeline)
-
-    result['# Wins'] = (intermediate.T > arima).sum(axis=1)
-    result['# Wins'][arima_pipeline] = None
-
-    # number of anomalies detected
-    result['# Anomalies'] = df.groupby('pipeline')[['tp', 'fp']].sum().sum(axis=1).to_dict()
-
-    # average f1 score
-    result['Average F1 Score'] = df.groupby('pipeline')['f1'].mean().to_dict()
-
-    result = pd.DataFrame(result)
-    result.index.name = 'pipeline'
-    result.reset_index(inplace=True)
-
-    rank = 'Average F1 Score'
-    result = _sort_leaderboard(result, rank, metrics)
-    result = result.drop('rank', axis=1).set_index('pipeline')
-
-    return result
-
-
 def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
                   output_path=None):
     """Benchmark a list of pipelines on multiple signals with multiple metrics.
@@ -402,12 +338,81 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
     return results
 
 
+def summarize_results(df, metrics):
+    """ Summarize the result of benchmark.
+
+    The table is summarized for according to the number of wins each pipeline
+    had over ARIMA pipeline per dataset, the number of anomalies detected, and
+    the average f1 score acheived by that pipeline.
+
+    Args:
+        df (`pandas.DataFrame`): detailed dataframe containing the score of each
+            pipeline on each signal.
+        metrics (dict): dictionary with metric names as keys and scoring functions
+            as values.
+
+    Returns:
+        pandas.DataFrame: Table containing the the number of wins each pipeline
+            had over ARIMA pipeline per dataset, the number of anomalies detected, and
+            the average f1 score acheived by that pipeline. The pipelines are ranked
+            by the average f1 score metric.
+    """
+    def return_cm(x):
+        if isinstance(x, int):
+            return (0, 0, 0)
+
+        elif len(x) > 3:
+            return x[1:]
+
+        return x
+
+    df['confusion_matrix'] = df['confusion_matrix'].apply(return_cm)
+    df[['fp', 'fn', 'tp']] = pd.DataFrame(df['confusion_matrix'].tolist(), index=df.index)
+
+    # calculate f1 score
+    df = df.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
+
+    precision = df['tp'] / (df['tp'] + df['fp'])
+    recall = df['tp'] / (df['tp'] + df['fn'])
+    df['f1'] = 2 * (precision * recall) / (precision + recall)
+
+    result = dict()
+
+    # number of wins over ARIMA
+    arima_pipeline = 'orion/pipelines/arima.json'
+    intermediate = df.set_index(['pipeline', 'dataset'])['f1'].unstack().T
+    arima = intermediate.pop(arima_pipeline)
+
+    result['# Wins'] = (intermediate.T > arima).sum(axis=1)
+    result['# Wins'][arima_pipeline] = None
+
+    # number of anomalies detected
+    result['# Anomalies'] = df.groupby('pipeline')[['tp', 'fp']].sum().sum(axis=1).to_dict()
+
+    # average f1 score
+    result['Average F1 Score'] = df.groupby('pipeline')['f1'].mean().to_dict()
+
+    result = pd.DataFrame(result)
+    result.index.name = 'pipeline'
+    result.reset_index(inplace=True)
+
+    rank = 'Average F1 Score'
+    result = _sort_leaderboard(result, rank, metrics)
+    result = result.drop('rank', axis=1).set_index('pipeline')
+
+    return result
+
+
 def main():
     warnings.filterwarnings("ignore")
 
+    path = ["results", "intermediate.csv"]
+    output_path = os.path.join(BENCHMARK_PATH, *path)
+
     METRICS['confusion_matrix'] = contextual_confusion_matrix
     metrics = {k: partial(fun, weighted=False) for k, fun in METRICS.items()}
-    results = run_benchmark(metrics=metrics)
+    results = run_benchmark(metrics=metrics, output_path=output_path)
+
     leaderboard = summarize_results(results, metrics)
     output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
     leaderboard.to_csv(output_path)
