@@ -131,6 +131,8 @@ class TestBenchmark(TestCase):
     @classmethod
     def setup_class(cls):
         cls.pipeline = Mock(autospec=MLPipeline)
+        cls.name = 'pipeline-name'
+        cls.dataset = 'dataset-name'
         cls.signal = 'signal-name'
         cls.hyper = None
         cls.metrics = {
@@ -141,8 +143,9 @@ class TestBenchmark(TestCase):
         return {
             'metric-name': metric,
             'elapsed': elapsed,
-            'pipeline': self.pipeline,
+            'pipeline': self.name,
             'holdout': holdout,
+            'dataset': self.dataset,
             'signal': self.signal
         }
 
@@ -158,14 +161,14 @@ class TestBenchmark(TestCase):
         analyze_mock.return_value = anomalies
 
         returned = benchmark._evaluate_on_signal(
-            self.pipeline, self.signal, self.hyper, self.metrics).compute()
+            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics).compute()
 
         expected_return = self.set_score(1, ANY, ANY)
         assert returned == expected_return
 
         expected_calls = [
             call('signal-name-train'),
-            call('signal-name-test'),
+            call('signal-name-test')
         ]
         assert load_signal_mock.call_args_list == expected_calls
 
@@ -183,14 +186,14 @@ class TestBenchmark(TestCase):
         analyze_mock.side_effect = Exception("failed analyze.")
 
         returned = benchmark._evaluate_on_signal(
-            self.pipeline, self.signal, self.hyper, self.metrics).compute()
+            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics).compute()
 
         expected_return = self.set_score(0, 0, ANY)
         assert returned == expected_return
 
         expected_calls = [
             call('signal-name-train'),
-            call('signal-name-test'),
+            call('signal-name-test')
         ]
         assert load_signal_mock.call_args_list == expected_calls
 
@@ -207,15 +210,15 @@ class TestBenchmark(TestCase):
 
         holdout = True
 
-        returned = benchmark._evaluate_on_signal(
-            self.pipeline, self.signal, self.hyper, self.metrics, holdout=holdout).compute()
+        returned = benchmark._evaluate_on_signal(self.pipeline, self.name,
+                                                 self.dataset, self.signal, self.hyper, self.metrics, holdout=holdout).compute()
 
         expected_return = self.set_score(1, ANY, holdout)
         assert returned == expected_return
 
         expected_calls = [
             call('signal-name-train'),
-            call('signal-name-test'),
+            call('signal-name-test')
         ]
         assert load_signal_mock.call_args_list == expected_calls
 
@@ -232,8 +235,8 @@ class TestBenchmark(TestCase):
 
         holdout = False
 
-        returned = benchmark._evaluate_on_signal(
-            self.pipeline, self.signal, self.hyper, self.metrics, holdout=holdout).compute()
+        returned = benchmark._evaluate_on_signal(self.pipeline, self.name,
+                                                 self.dataset, self.signal, self.hyper, self.metrics, holdout=holdout).compute()
 
         expected_return = self.set_score(1, ANY, holdout)
         assert returned == expected_return
@@ -257,15 +260,15 @@ class TestBenchmark(TestCase):
 
         detrend = False
 
-        returned = benchmark._evaluate_on_signal(
-            self.pipeline, self.signal, self.hyper, self.metrics, detrend=detrend).compute()
+        returned = benchmark._evaluate_on_signal(self.pipeline, self.name,
+                                                 self.dataset, self.signal, self.hyper, self.metrics, detrend=detrend).compute()
 
         expected_return = self.set_score(1, ANY, ANY)
         assert returned == expected_return
 
         expected_calls = [
             call('signal-name-train'),
-            call('signal-name-test'),
+            call('signal-name-test')
         ]
         assert load_signal_mock.call_args_list == expected_calls
 
@@ -285,21 +288,21 @@ class TestBenchmark(TestCase):
 
         detrend = True
 
-        returned = benchmark._evaluate_on_signal(
-            self.pipeline, self.signal, self.hyper, self.metrics, detrend=detrend).compute()
+        returned = benchmark._evaluate_on_signal(self.pipeline, self.name,
+                                                 self.dataset, self.signal, self.hyper, self.metrics, detrend=detrend).compute()
 
         expected_return = self.set_score(1, ANY, ANY)
         assert returned == expected_return
 
         expected_calls = [
             call('signal-name-train'),
-            call('signal-name-test'),
+            call('signal-name-test')
         ]
         assert load_signal_mock.call_args_list == expected_calls
 
         expected_calls = [
             call(train, 'value'),
-            call(test, 'value'),
+            call(test, 'value')
         ]
         assert detrend_signal_mock.call_args_list == expected_calls
 
@@ -315,12 +318,15 @@ class TestBenchmark(TestCase):
         score = self.set_score(1, ANY, ANY)
         evaluate_on_signal_mock.return_value = score
 
-        benchmark._evaluate_pipeline(
-            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+        benchmark._evaluate_pipeline(self.pipeline, self.name,
+                                     self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
         expected_calls = [
-            call(self.pipeline, self.signal, self.hyper, self.metrics, True, detrend),
-            call(self.pipeline, self.signal, self.hyper, self.metrics, False, detrend),
+            call(self.pipeline, self.name,
+                 self.dataset, self.signal, self.hyper, self.metrics, True, detrend),
+
+            call(self.pipeline, self.name,
+                 self.dataset, self.signal, self.hyper, self.metrics, False, detrend)
         ]
         assert evaluate_on_signal_mock.call_args_list == expected_calls
 
@@ -334,18 +340,21 @@ class TestBenchmark(TestCase):
         score = self.set_score(1, ANY, ANY)
         evaluate_on_signal_mock.return_value = score
 
-        returned = benchmark._evaluate_pipeline(
-            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+        returned = benchmark._evaluate_pipeline(self.pipeline, self.name,
+                                                self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
         expected_return = [
             self.set_score(1, ANY, True),
-            self.set_score(1, ANY, False),
+            self.set_score(1, ANY, False)
         ]
         assert returned == expected_return
 
         expected_calls = [
-            call(self.pipeline, self.signal, self.hyper, self.metrics, True, detrend),
-            call(self.pipeline, self.signal, self.hyper, self.metrics, False, detrend),
+            call(self.pipeline, self.name,
+                 self.dataset, self.signal, self.hyper, self.metrics, True, detrend),
+
+            call(self.pipeline, self.name,
+                 self.dataset, self.signal, self.hyper, self.metrics, False, detrend)
         ]
         assert evaluate_on_signal_mock.call_args_list == expected_calls
 
@@ -360,13 +369,13 @@ class TestBenchmark(TestCase):
         evaluate_on_signal_mock.return_value = score
 
         expected_return = [score]
-        returned = benchmark._evaluate_pipeline(
-            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+        returned = benchmark._evaluate_pipeline(self.pipeline, self.name,
+                                                self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
         assert returned == expected_return
 
-        evaluate_on_signal_mock.assert_called_once_with(
-            self.pipeline, self.signal, self.hyper, self.metrics, holdout, detrend)
+        evaluate_on_signal_mock.assert_called_once_with(self.pipeline, self.name,
+                                                        self.dataset, self.signal, self.hyper, self.metrics, holdout, detrend)
 
     @patch('orion.benchmark._evaluate_on_signal')
     def test__evaluate_pipeline_no_holdout(self, evaluate_on_signal_mock):
@@ -379,13 +388,13 @@ class TestBenchmark(TestCase):
         evaluate_on_signal_mock.return_value = score
 
         expected_return = [score]
-        returned = benchmark._evaluate_pipeline(
-            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+        returned = benchmark._evaluate_pipeline(self.pipeline, self.name,
+                                                self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
         assert returned == expected_return
 
-        evaluate_on_signal_mock.assert_called_once_with(
-            self.pipeline, self.signal, self.hyper, self.metrics, holdout, detrend)
+        evaluate_on_signal_mock.assert_called_once_with(self.pipeline, self.name,
+                                                        self.dataset, self.signal, self.hyper, self.metrics, holdout, detrend)
 
     @patch('orion.benchmark._evaluate_pipeline')
     def test_evaluate_pipeline(self, evaluate_pipeline_mock):
@@ -404,16 +413,36 @@ class TestBenchmark(TestCase):
             'holdout': holdout
         }])[order]
 
-        returned = benchmark.evaluate_pipeline(
-            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+        returned = benchmark.evaluate_pipeline(self.pipeline, self.name,
+                                               self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
         pd.testing.assert_frame_equal(returned, expected_return)
 
-        evaluate_pipeline_mock.assert_called_once_with(
-            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+        evaluate_pipeline_mock.assert_called_once_with(self.pipeline, self.name,
+                                                       self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
     @patch('orion.benchmark._evaluate_pipeline')
     def test__evaluate_pipelines(self, evaluate_pipeline_mock):
+        holdout = False
+        detrend = False
+
+        signals = [self.signal]
+        pipelines = {self.name: self.pipeline}
+
+        score = self.set_score(1, ANY, holdout)
+        evaluate_pipeline_mock.return_value = [score]
+
+        expected_return = [score]
+        returned = benchmark._evaluate_pipelines(
+            pipelines, self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
+
+        assert returned == expected_return
+
+        evaluate_pipeline_mock.assert_called_once_with(self.pipeline, self.name,
+                                                       self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
+
+    @patch('orion.benchmark._evaluate_pipeline')
+    def test__evaluate_pipelines_list(self, evaluate_pipeline_mock):
         holdout = False
         detrend = False
 
@@ -425,12 +454,12 @@ class TestBenchmark(TestCase):
 
         expected_return = [score]
         returned = benchmark._evaluate_pipelines(
-            pipelines, signals, self.hyper, self.metrics, holdout, detrend)
+            pipelines, self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
         assert returned == expected_return
 
-        evaluate_pipeline_mock.assert_called_once_with(
-            self.pipeline, signals, self.hyper, self.metrics, holdout, detrend)
+        evaluate_pipeline_mock.assert_called_once_with(self.pipeline, self.pipeline,
+                                                       self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
     @patch('orion.benchmark._evaluate_pipeline')
     def test__evaluate_pipelines_hyperparameter(self, evaluate_pipeline_mock):
@@ -438,7 +467,7 @@ class TestBenchmark(TestCase):
         detrend = False
 
         signals = [self.signal]
-        pipelines = [self.pipeline]
+        pipelines = {self.name: self.pipeline}
 
         hyperparameter = Mock(autospec=dict)
         hyperparameters = [hyperparameter]
@@ -448,12 +477,12 @@ class TestBenchmark(TestCase):
 
         expected_return = [score]
         returned = benchmark._evaluate_pipelines(
-            pipelines, signals, hyperparameters, self.metrics, holdout, detrend)
+            pipelines, self.dataset, signals, hyperparameters, self.metrics, holdout, detrend)
 
         assert returned == expected_return
 
-        evaluate_pipeline_mock.assert_called_once_with(
-            self.pipeline, signals, hyperparameter, self.metrics, holdout, detrend)
+        evaluate_pipeline_mock.assert_called_once_with(self.pipeline, self.name,
+                                                       self.dataset, signals, hyperparameter, self.metrics, holdout, detrend)
 
     @patch('orion.benchmark._evaluate_pipeline')
     def test__evaluate_pipelines_metrics_list(self, evaluate_pipeline_mock):
@@ -461,7 +490,7 @@ class TestBenchmark(TestCase):
         detrend = False
 
         signals = [self.signal]
-        pipelines = [self.pipeline]
+        pipelines = {self.name: self.pipeline}
 
         metric = Mock(autospec=METRICS['f1'], return_value=1)
         metric.__name__ = 'metric-name'
@@ -473,12 +502,12 @@ class TestBenchmark(TestCase):
 
         expected_return = [score]
         returned = benchmark._evaluate_pipelines(
-            pipelines, signals, self.hyper, metrics, holdout, detrend)
+            pipelines, self.dataset, signals, self.hyper, metrics, holdout, detrend)
 
         assert returned == expected_return
 
-        evaluate_pipeline_mock.assert_called_once_with(
-            self.pipeline, signals, self.hyper, metrics_, holdout, detrend)
+        evaluate_pipeline_mock.assert_called_once_with(self.pipeline, self.name,
+                                                       self.dataset, signals, self.hyper, metrics_, holdout, detrend)
 
     @patch('orion.benchmark._evaluate_pipeline')
     def test__evaluate_pipelines_metrics_exception(self, evaluate_pipeline_mock):
@@ -486,14 +515,14 @@ class TestBenchmark(TestCase):
         detrend = False
 
         signals = [self.signal]
-        pipelines = [self.pipeline]
+        pipelines = {self.name: self.pipeline}
 
         metric = 'metric-name'
         metrics = [metric]
 
         with self.assertRaises(ValueError) as ex:
             benchmark._evaluate_pipelines(
-                pipelines, signals, self.hyper, metrics, holdout, detrend)
+                pipelines, self.dataset, signals, self.hyper, metrics, holdout, detrend)
 
             self.assertTrue(metric in ex.exception)
 
@@ -503,34 +532,35 @@ class TestBenchmark(TestCase):
         detrend = False
 
         signals = [self.signal]
-        pipelines = [self.pipeline]
+        pipelines = {self.name, self.pipeline}
 
         score = self.set_score(1, ANY, holdout)
         evaluate_pipelines_mock.return_value = [score]
 
-        order = ['pipeline', 'rank', 'elapsed', 'holdout', 'metric-name', 'signal']
+        order = ['pipeline', 'rank', 'dataset', 'elapsed', 'holdout', 'metric-name', 'signal']
         expected_return = pd.DataFrame.from_records([{
             'rank': 1,
             'metric-name': 1,
             'elapsed': ANY,
             'holdout': holdout,
-            'pipeline': self.pipeline,
+            'pipeline': self.name,
+            'dataset': self.dataset,
             'signal': self.signal
         }])[order]
 
         returned = benchmark.evaluate_pipelines(
-            pipelines, signals, self.hyper, self.metrics, holdout, detrend)
+            pipelines, self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
         pd.testing.assert_frame_equal(returned, expected_return)
 
         evaluate_pipelines_mock.assert_called_once_with(
-            pipelines, signals, self.hyper, self.metrics, holdout, detrend)
+            pipelines, self.dataset, signals, self.hyper, self.metrics, holdout, detrend)
 
     @patch('orion.benchmark._evaluate_pipelines')
     def test_benchmark(self, evaluate_pipelines_mock):
         signals = [self.signal]
-        pipelines = [self.pipeline]
-        datasets = {'dataset-name': signals}
+        datasets = {self.dataset: signals}
+        pipelines = {self.name, self.pipeline}
 
         score = self.set_score(1, ANY, ANY)
         evaluate_pipelines_mock.return_value = [score]
@@ -541,13 +571,13 @@ class TestBenchmark(TestCase):
         pd.testing.assert_frame_equal(returned, expected_return)
 
         evaluate_pipelines_mock.assert_called_once_with(
-            pipelines, signals, self.hyper, self.metrics)
+            pipelines, self.dataset, signals, self.hyper, self.metrics)
 
     @patch('orion.benchmark.benchmark')
     def test_run_benchmark(self, benchmark_mock):
         signals = [self.signal]
-        pipelines = [self.pipeline]
-        datasets = {'dataset-name': signals}
+        datasets = {self.dataset: signals}
+        pipelines = {self.name, self.pipeline}
         hyper = Mock(autospec=dict)
 
         score = self.set_score(1, ANY, ANY)

@@ -16,6 +16,7 @@ from scipy import signal as scipy_signal
 from orion.analysis import analyze
 from orion.data import NASA_SIGNALS, load_anomalies, load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
+from orion.evaluation import contextual_confusion_matrix
 
 LOGGER = logging.getLogger(__name__)
 
@@ -83,7 +84,9 @@ def _sort_leaderboard(df, rank, metrics):
 
 
 @dask.delayed
-def _evaluate_on_signal(pipeline, signal, hyperparameter, metrics, holdout=True, detrend=False):
+def _evaluate_on_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
+                        holdout=True, detrend=False):
+
     train, test = _load_signal(signal, holdout)
 
     if detrend:
@@ -92,7 +95,7 @@ def _evaluate_on_signal(pipeline, signal, hyperparameter, metrics, holdout=True,
 
     try:
         LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
-                    pipeline, signal, holdout)
+                    name, signal, holdout)
 
         start = datetime.utcnow()
         anomalies = analyze(pipeline, train, test, hyperparameter)
@@ -108,21 +111,23 @@ def _evaluate_on_signal(pipeline, signal, hyperparameter, metrics, holdout=True,
 
     except Exception as ex:
         LOGGER.exception("Exception scoring pipeline %s on signal %s (Holdout: %s), error %s.",
-                         pipeline, signal, holdout, ex)
+                         name, signal, holdout, ex)
 
         scores = {
             name: 0 for name in metrics.keys()
         }
         scores['elapsed'] = 0
 
-    scores['pipeline'] = pipeline
+    scores['pipeline'] = name
     scores['holdout'] = holdout
+    scores['dataset'] = dataset
     scores['signal'] = signal
 
     return scores
 
 
-def _evaluate_pipeline(pipeline, signals, hyperparameter, metrics, holdout, detrend):
+def _evaluate_pipeline(pipeline, name, dataset, signals,
+                       hyperparameter, metrics, holdout, detrend):
     if holdout is None:
         holdout = (True, False)
     elif not isinstance(holdout, tuple):
@@ -138,15 +143,15 @@ def _evaluate_pipeline(pipeline, signals, hyperparameter, metrics, holdout, detr
     for signal in signals:
         for holdout_ in holdout:
             score = _evaluate_on_signal(
-                pipeline, signal, hyperparameter, metrics, holdout_, detrend)
+                pipeline, name, dataset, signal, hyperparameter, metrics, holdout_, detrend)
 
             scores.append(score)
 
     return scores
 
 
-def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metrics=METRICS,
-                      holdout=None, detrend=False):
+def evaluate_pipeline(pipeline, pipeline_name=None, dataset="NASA", signals=NASA_SIGNALS,
+                      hyperparameter=None, metrics=METRICS, holdout=None, detrend=False):
     """Evaluate a pipeline on multiple signals with multiple metrics.
 
     The pipeline is used to analyze the given signals and later on the
@@ -155,18 +160,23 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metri
 
     Args:
         pipeline (str): Path to the pipeline JSON.
-        hyperparameter (str or dict, optional): Path to or dictionary of hyperparameters.
-        signals (list, optional): list of signals. If not given, all the NASA signals
+        pipeline_name (str): Name of the pipeline. If not given, use JSON path as name.
+        dataset (str): Name of the dataset which the signals belong to. If not
+            given, use NASA as default.
+        signals (list): List of signals. If not given, all the NASA signals
             are used.
-        metrics (dict, optional): dictionary with metric names as keys and
-            scoring functions as values. If not given, all the available metrics will
-            be used.
+        hyperparameter (str or dict): Path to or dictionary of hyperparameters.
+        metrics (dict): Dictionary with metric names as keys and scoring functions as
+            values. If not given, all the available metrics willbe used.
 
     Returns:
         pandas.Series: Series object containing the average of the scores obtained with
             each scoring function accross all the signals.
     """
-    scores = _evaluate_pipeline(pipeline, signals, hyperparameter, metrics, holdout, detrend)
+    pipeline_name = pipeline_name or pipeline
+    scores = _evaluate_pipeline(
+        pipeline, pipeline_name, dataset, signals, hyperparameter, metrics, holdout, detrend)
+
     scores = dask.compute(*scores)
     scores = pd.DataFrame.from_records(scores).groupby('holdout').mean().reset_index()
 
@@ -176,7 +186,7 @@ def evaluate_pipeline(pipeline, signals=NASA_SIGNALS, hyperparameter=None, metri
     return scores
 
 
-def _evaluate_pipelines(pipelines, signals, hyperparameters, metrics, holdout, detrend):
+def _evaluate_pipelines(pipelines, dataset, signals, hyperparameters, metrics, holdout, detrend):
     if isinstance(pipelines, list):
         pipelines = {pipeline: pipeline for pipeline in pipelines}
 
@@ -200,15 +210,15 @@ def _evaluate_pipelines(pipelines, signals, hyperparameters, metrics, holdout, d
     for name, pipeline in pipelines.items():
         hyperparameter = _get_parameter(hyperparameters, name)
         score = _evaluate_pipeline(
-            pipeline, signals, hyperparameter, metrics, holdout, detrend)
+            pipeline, name, dataset, signals, hyperparameter, metrics, holdout, detrend)
 
         scores.extend(score)
 
     return scores
 
 
-def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=None, rank=None,
-                       holdout=(True, False), detrend=False):
+def evaluate_pipelines(pipelines, dataset=None, signals=None, hyperparameters=None, metrics=None,
+                       rank=None, holdout=(True, False), detrend=False):
     """Evaluate a list of pipelines on multiple signals with multiple metrics.
 
     The pipelines are used to analyze the given signals and later on the
@@ -222,11 +232,13 @@ def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=No
         pipelines (dict or list): dictionary with pipeline names as keys and their
             JSON paths as values. If a list is given, it should be of JSON paths,
             and the paths themselves will be used as names.
+        dataset (str, optional): name of the dataset which the signals belong to. If not
+            given, use NASA as default.
+        signals (list, optional): list of signals. If not given, all the NASA signals
+            are used.
         hyperparameters (dict or list, optional): dictionary with pipeline names as keys
             and their hyperparameter JSON paths or dictionaries as values. If a list is
             given, it should be of corresponding order to pipelines.
-        signals (list, optional): list of signals. If not given, all the NASA signals
-            are used.
         metrics (dict or list, optional): dictionary with metric names as keys and
             scoring functions as values. If a list is given, it should be of scoring
             functions, and they `__name__` value will be used as the metric name.
@@ -239,10 +251,13 @@ def evaluate_pipelines(pipelines, signals=None, hyperparameters=None, metrics=No
             each scoring function accross all the signals for each pipeline, ranked
             by the indicated metric.
     """
+    dataset = dataset or "NASA"
     signals = signals or NASA_SIGNALS
     metrics = metrics or METRICS
 
-    scores = _evaluate_pipelines(pipelines, signals, hyperparameters, metrics, holdout, detrend)
+    scores = _evaluate_pipelines(
+        pipelines, dataset, signals, hyperparameters, metrics, holdout, detrend)
+
     scores = dask.compute(*scores)
     scores = pd.DataFrame.from_records(scores)
 
@@ -261,7 +276,8 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
         parameters = _get_parameter(BENCHMARK_PARAMS, dataset) or dict()
 
         result = _evaluate_pipelines(
-            pipelines, signals[:1], hyperparameters_, metrics, **parameters)
+            pipelines, dataset, signals, hyperparameters_, metrics, **parameters)
+
         delayed.extend(result)
 
     persisted = dask.persist(*delayed)
@@ -269,6 +285,71 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
     df = pd.DataFrame.from_records(results)
 
     return df
+
+
+def summarize_results(df, metrics):
+    """ Summarize the result of benchmark.
+
+    The table is summarized for according to the number of wins each pipeline
+    had over ARIMA pipeline per dataset, the number of anomalies detected, and
+    the average f1 score acheived by that pipeline.
+
+    Args:
+        df (`pandas.DataFrame`): detailed dataframe containing the score of each
+            pipeline on each signal.
+        metrics (dict): dictionary with metric names as keys and scoring functions
+            as values.
+
+    Returns:
+        pandas.DataFrame: Table containing the the number of wins each pipeline
+            had over ARIMA pipeline per dataset, the number of anomalies detected, and
+            the average f1 score acheived by that pipeline. The pipelines are ranked
+            by the average f1 score metric.
+    """
+    def return_cm(x):
+        if isinstance(x, int):
+            return (0, 0, 0)
+
+        elif len(x) > 3:
+            return x[1:]
+
+        return x
+
+    df['confusion_matrix'] = df['confusion_matrix'].apply(return_cm)
+    df[['fp', 'fn', 'tp']] = pd.DataFrame(df['confusion_matrix'].tolist(), index=df.index)
+
+    # calculate f1 score
+    df = df.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
+
+    precision = df['tp'] / (df['tp'] + df['fp'])
+    recall = df['tp'] / (df['tp'] + df['fn'])
+    intermediate['f1'] = 2 * (precision * recall) / (precision + recall)
+
+    result = dict()
+
+    # number of wins over ARIMA
+    arima_pipeline = 'orion/pipelines/arima.json'
+    intermediate = df.set_index(['pipeline', 'dataset'])['f1'].unstack().T
+    arima = intermediate.pop(arima_pipeline)
+
+    result['# Wins'] = (intermediate.T > arima).sum(axis=1)
+    result['# Wins'][arima_pipeline] = None
+
+    # number of anomalies detected
+    result['# Anomalies'] = df.groupby('pipeline')[['tp', 'fp']].sum().sum(axis=1).to_dict()
+
+    # average f1 score
+    result['Average F1 Score'] = df.groupby('pipeline')['f1'].mean().to_dict()
+
+    result = pd.DataFrame(result)
+    result.index.name = 'pipeline'
+    result.reset_index(inplace=True)
+
+    rank = 'Average F1 Score'
+    result = _sort_leaderboard(result, rank, metrics)
+    result = result.drop('rank', axis=1).set_index('pipeline')
+
+    return result
 
 
 def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
@@ -324,8 +405,10 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
 def main():
     warnings.filterwarnings("ignore")
 
+    METRICS['confusion_matrix'] = contextual_confusion_matrix
     metrics = {k: partial(fun, weighted=False) for k, fun in METRICS.items()}
-    leaderboard = run_benchmark(metrics=metrics)
+    results = run_benchmark(metrics=metrics)
+    leaderboard = summarize_results(results, metrics)
     output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
     leaderboard.to_csv(output_path)
     print(leaderboard)
