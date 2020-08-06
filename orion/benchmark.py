@@ -36,12 +36,18 @@ with open(os.path.join(BENCHMARK_PATH, 'benchmark_parameters.csv'), newline='') 
 BENCHMARK_HYPER = pd.read_csv(
     os.path.join(BENCHMARK_PATH, 'benchmark_hyperparameters.csv'), index_col=0).to_dict()
 
-BENCHMARK_PIPELINES = os.path.join(os.path.dirname(__file__), 'pipelines')
+VERIFIED_PATH = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
-PIPELINES = {
-    "arima": os.path.join(BENCHMARK_PIPELINES, 'arima.json'),
-    "lstm_dynamic_threshold": os.path.join(BENCHMARK_PIPELINES, 'lstm_dynamic_threshold.json'),
-    "tadgan": os.path.join(BENCHMARK_PIPELINES, 'tadgan.json')
+VERIFIED_PIPELINES = [
+    os.path.basename(dirname)
+    for dirname in os.listdir(VERIFIED_PATH)
+]
+
+VERIFIED_PIPELINES_GPU = {
+    pipeline: pipeline + '_gpu'
+    if os.path.exists(os.path.join(VERIFIED_PATH, pipeline, pipeline + '_gpu.json'))
+    else pipeline
+    for pipeline in VERIFIED_PIPELINES
 }
 
 
@@ -127,8 +133,8 @@ def _evaluate_on_signal(pipeline, name, dataset, signal, hyperparameter, metrics
     return scores
 
 
-def _evaluate_pipeline(pipeline, name, dataset, signals,
-                       hyperparameter, metrics, holdout, detrend):
+def _evaluate_pipeline(pipeline, name, dataset, signals, hyperparameter, metrics, holdout,
+                       detrend):
     if holdout is None:
         holdout = (True, False)
     elif not isinstance(holdout, tuple):
@@ -325,7 +331,7 @@ def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=M
             each scoring function accross all the signals for each pipeline, ranked
             by the indicated metric.
     """
-    pipelines = pipelines or PIPELINES
+    pipelines = pipelines or VERIFIED_PIPELINES
     datasets = datasets or BENCHMARK_DATA
     hyperparameters = hyperparameters or BENCHMARK_HYPER
 
@@ -379,7 +385,7 @@ def summarize_results(df, metrics):
     result = dict()
 
     # number of wins over ARIMA
-    arima_pipeline = 'orion/pipelines/arima.json'
+    arima_pipeline = 'arima'
     intermediate = df.set_index(['pipeline', 'dataset'])['f1'].unstack().T
     arima = intermediate.pop(arima_pipeline)
 
@@ -403,20 +409,28 @@ def summarize_results(df, metrics):
     return result
 
 
-def main():
+def main(gpu=False):
     warnings.filterwarnings("ignore")
 
-    path = ["results", "intermediate.csv"]
-    output_path = os.path.join(BENCHMARK_PATH, *path)
+    # output path
+    version = "example.csv"
+    output_path = os.path.join(BENCHMARK_PATH, 'results', version)
 
+    # metrics
+    del METRICS['accuracy']
     METRICS['confusion_matrix'] = contextual_confusion_matrix
     metrics = {k: partial(fun, weighted=False) for k, fun in METRICS.items()}
-    results = run_benchmark(metrics=metrics, output_path=output_path)
+
+    # pipelines
+    pipelines = VERIFIED_PIPELINES
+    if gpu:
+        pipelines = VERIFIED_PIPELINES_GPU
+
+    results = run_benchmark(pipelines=pipelines, metrics=metrics, output_path=output_path)
 
     leaderboard = summarize_results(results, metrics)
     output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
     leaderboard.to_csv(output_path)
-    print(leaderboard)
 
 
 if __name__ == "__main__":

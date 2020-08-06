@@ -27,7 +27,7 @@ def tadgan_hyperparameters():
 
 @pytest.fixture
 def tadgan_pipline(tadgan_hyperparameters):
-    pipeline_path = 'orion/pipelines/tadgan.json'
+    pipeline_path = 'tadgan'
     pipline = analysis._load_pipeline(pipeline_path, tadgan_hyperparameters)
     return pipline
 

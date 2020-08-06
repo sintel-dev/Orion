@@ -35,12 +35,12 @@ class Orion:
         hyperparameters (dict):
             Additional hyperparameters to set to the Pipeline.
     """
-
-    PIPELINES_DIR = os.path.join(os.path.dirname(__file__), 'pipelines')
-    PIPELINES = tuple(
-        filename[:-5]
-        for filename in os.listdir(PIPELINES_DIR)
+    PIPELINES_DIR = tuple(
+        dirname
+        for dirname, _, _ in os.walk(os.path.join(os.path.dirname(__file__), 'pipelines'))
+        if os.path.exists(os.path.join(dirname, os.path.basename(dirname) + '.json'))
     )
+    PIPELINES = tuple(os.path.basename(pipeline) for pipeline in PIPELINES_DIR)
     DEFAULT_PIPELINE = 'lstm_dynamic_threshold'
 
     def _get_mlpipeline(self):
