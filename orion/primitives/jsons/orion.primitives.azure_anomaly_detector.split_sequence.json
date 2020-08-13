@@ -42,9 +42,9 @@
                 "type": "int",
                 "default": 6000
             },
-            "pad_size": {
+            "overlap_size": {
                 "type": "int",
-                "default": 2500
+                "default": 12
             }
         }
     }

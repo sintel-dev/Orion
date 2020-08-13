@@ -33,11 +33,11 @@
         "fixed": {
             "interval" : {
                 "type": "int",
-                "default": 1
+                "default": 21600
             },
-            "pad_size" : {
+            "overlap_size" : {
                 "type": "int",
-                "default": 1
+                "default": 12
             },
             "subscription_key": {
                 "type": "str"

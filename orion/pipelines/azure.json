@@ -21,13 +21,13 @@
         "orion.primitives.azure_anomaly_detector.split_sequence#1": {
             "target_column": 0,
             "sequence_size": 6000,
-            "pad_size": 2640
+            "overlap_size": 2640
         },
         "orion.primitives.azure_anomaly_detector.detect_anomalies#1": {
-            "subscription_key": "",
-            "endpoint": "https://ad2.cognitiveservices.azure.com/",
-            "interval": 121600,
-            "pad_size": 2640
+            "subscription_key": "your-key",
+            "endpoint": "your-endpoint",
+            "interval": 21600,
+            "overlap_size": 2640
         }
     },
     "output_names": {
