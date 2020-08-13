@@ -114,6 +114,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/D3-AI/Orion',
-    version='0.1.2.dev0',
+    version='0.1.3.dev0',
     zip_safe=False,
 )

@@ -1,0 +1,95 @@
+{
+    "name": "orion.primitives.timeseries_anomalies.find_anomalies",
+    "contributors": [
+        "Carles Sala <csala@csail.mit.edu>"
+    ],
+    "documentation": "https://arxiv.org/pdf/1802.04431.pdf",
+    "description": "Extract anomalies from sequences of errors following the approach explained in the related paper.",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "anomaly_detector"
+    },
+    "modalities": [
+        "timeseries"
+    ],
+    "primitive": "orion.primitives.timeseries_anomalies.find_anomalies",
+    "produce": {
+        "args": [
+            {
+                "name": "errors",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "z_range": {
+                "type": "tuple",
+                "default": [
+                    0,
+                    12
+                ]
+            },
+            "window_size": {
+                "type": "int",
+                "default": 2000
+            },
+            "window_step_size": {
+                "type": "int",
+                "default": 200
+            },
+            "lower_threshold": {
+                "type": "bool",
+                "default": false
+            },
+            "fixed_threshold": {
+                "type": "bool",
+                "default": false
+            }
+        },
+        "tunable": {
+            "window_size_portion": {
+                "type": "float",
+                "default": null,
+                "range": [
+                    0.01,
+                    1.0
+                ]
+            },
+            "window_step_size_portion": {
+                "type": "float",
+                "default": null,
+                "range": [
+                    0.01,
+                    1.0
+                ]
+            },
+            "min_percent": {
+                "type": "float",
+                "default": 0.13,
+                "range": [
+                    0.01,
+                    0.9
+                ]
+            },
+            "anomaly_padding": {
+                "type": "int",
+                "default": 50,
+                "range": [
+                    0,
+                    400
+                ]
+            }
+        }
+    }
+}
