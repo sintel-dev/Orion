@@ -15,3 +15,4 @@ Submodules
    orion.primitives.estimators
    orion.primitives.intervals
    orion.primitives.tadgan
+   orion.primitives.timeseries_anomalies

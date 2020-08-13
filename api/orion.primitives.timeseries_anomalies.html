@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>orion.primitives package &mdash; Orion 0.1.3.dev0 documentation</title>
+  <title>orion.primitives.timeseries_anomalies module &mdash; Orion 0.1.3.dev0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="orion.primitives.detectors module" href="orion.primitives.detectors.html" />
-    <link rel="prev" title="orion.evaluation.utils module" href="orion.evaluation.utils.html" /> 
+    <link rel="next" title="orion.analysis module" href="orion.analysis.html" />
+    <link rel="prev" title="orion.primitives.tadgan module" href="orion.primitives.tadgan.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -201,8 +201,8 @@
 <li class="toctree-l4"><a class="reference internal" href="orion.evaluation.html#submodules">Submodules</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">orion.primitives package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="orion.primitives.html">orion.primitives package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="orion.primitives.html#submodules">Submodules</a></li>
 </ul>
 </li>
 </ul>
@@ -290,14 +290,16 @@
         
           <li><a href="orion.html">orion package</a> &raquo;</li>
         
-      <li>orion.primitives package</li>
+          <li><a href="orion.primitives.html">orion.primitives package</a> &raquo;</li>
+        
+      <li>orion.primitives.timeseries_anomalies module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.primitives.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/D3-AI/Orion/blob/master/docs/api/orion.primitives.timeseries_anomalies.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -311,20 +313,167 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-orion.primitives">
-<span id="orion-primitives-package"></span><h1>orion.primitives package<a class="headerlink" href="#module-orion.primitives" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.detectors.html">orion.primitives.detectors module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.estimators.html">orion.primitives.estimators module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.intervals.html">orion.primitives.intervals module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.tadgan.html">orion.primitives.tadgan module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="orion.primitives.timeseries_anomalies.html">orion.primitives.timeseries_anomalies module</a></li>
+  <div class="section" id="module-orion.primitives.timeseries_anomalies">
+<span id="orion-primitives-timeseries-anomalies-module"></span><h1>orion.primitives.timeseries_anomalies module<a class="headerlink" href="#module-orion.primitives.timeseries_anomalies" title="Permalink to this headline">¶</a></h1>
+<p>Time Series anomaly detection functions.
+Implementation inspired by the paper <a class="reference external" href="https://arxiv.org/pdf/1802.04431.pdf">https://arxiv.org/pdf/1802.04431.pdf</a></p>
+<dl class="function">
+<dt id="orion.primitives.timeseries_anomalies.count_above">
+<code class="sig-prename descclassname">orion.primitives.timeseries_anomalies.</code><code class="sig-name descname">count_above</code><span class="sig-paren">(</span><em class="sig-param">errors</em>, <em class="sig-param">epsilon</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/timeseries_anomalies.html#count_above"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_anomalies.count_above" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count number of errors and continuous sequences above epsilon.</p>
+<p>Continuous sequences are counted by shifting and counting the number
+of positions where there was a change and the original value was true,
+which means that a sequence started at that position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>errors</strong> (<em>ndarray</em>) – Array of errors.</p></li>
+<li><p><strong>epsilon</strong> (<em>ndarray</em>) – Threshold value.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Number of errors above epsilon.</p></li>
+<li><p>Number of continuous sequences above epsilon.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int, int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.primitives.timeseries_anomalies.deltas">
+<code class="sig-prename descclassname">orion.primitives.timeseries_anomalies.</code><code class="sig-name descname">deltas</code><span class="sig-paren">(</span><em class="sig-param">errors</em>, <em class="sig-param">epsilon</em>, <em class="sig-param">mean</em>, <em class="sig-param">std</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/timeseries_anomalies.html#deltas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_anomalies.deltas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mean and std deltas.</p>
+<p>delta_mean = mean(errors) - mean(all errors below epsilon)
+delta_std = std(errors) - std(all errors below epsilon)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>errors</strong> (<em>ndarray</em>) – Array of errors.</p></li>
+<li><p><strong>epsilon</strong> (<em>ndarray</em>) – Threshold value.</p></li>
+<li><p><strong>mean</strong> (<em>float</em>) – Mean of errors.</p></li>
+<li><p><strong>std</strong> (<em>float</em>) – Standard deviation of errors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>delta_mean.</p></li>
+<li><p>delta_std.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.primitives.timeseries_anomalies.find_anomalies">
+<code class="sig-prename descclassname">orion.primitives.timeseries_anomalies.</code><code class="sig-name descname">find_anomalies</code><span class="sig-paren">(</span><em class="sig-param">errors</em>, <em class="sig-param">index</em>, <em class="sig-param">z_range=(0</em>, <em class="sig-param">10)</em>, <em class="sig-param">window_size=None</em>, <em class="sig-param">window_size_portion=None</em>, <em class="sig-param">window_step_size=None</em>, <em class="sig-param">window_step_size_portion=None</em>, <em class="sig-param">min_percent=0.1</em>, <em class="sig-param">anomaly_padding=50</em>, <em class="sig-param">lower_threshold=False</em>, <em class="sig-param">fixed_threshold=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/timeseries_anomalies.html#find_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_anomalies.find_anomalies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find sequences of error values that are anomalous.</p>
+<p>We first define the window of errors, that we want to analyze. We then find the anomalous
+sequences in that window and store the start/stop index pairs that correspond to each
+sequence, along with its score. Optionally, we can flip the error sequence around the mean
+and apply the same procedure, allowing us to find unusually low error sequences.
+We then move the window and repeat the procedure.
+Lastly, we combine overlapping or consecutive sequences.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>errors</strong> (<em>ndarray</em>) – Array of errors.</p></li>
+<li><p><strong>index</strong> (<em>ndarray</em>) – Array of indices of the errors.</p></li>
+<li><p><strong>z_range</strong> (<em>list</em>) – Optional. List of two values denoting the range out of which the start points for
+the scipy.fmin function are chosen. If not given, (0, 10) is used.</p></li>
+<li><p><strong>window_size</strong> (<em>int</em>) – Optional. Size of the window for which a threshold is calculated. If not given,
+<cite>None</cite> is used, which finds one threshold for the entire sequence of errors.</p></li>
+<li><p><strong>window_size_portion</strong> (<em>float</em>) – Optional. Specify the size of the window to be a portion of the sequence of errors.
+If not given, <cite>None</cite> is used, and window size is used as is.</p></li>
+<li><p><strong>window_step_size</strong> (<em>int</em>) – Optional. Number of steps the window is moved before another threshold is
+calculated for the new window.</p></li>
+<li><p><strong>window_step_size_portion</strong> (<em>float</em>) – Optional. Specify the number of steps to be a portion of the window size. If not given,
+<cite>None</cite> is used, and window step size is used as is.</p></li>
+<li><p><strong>min_percent</strong> (<em>float</em>) – Optional. Percentage of separation the anomalies need to meet between themselves and
+the highest non-anomalous error in the window sequence. It nof given, 0.1 is used.</p></li>
+<li><p><strong>anomaly_padding</strong> (<em>int</em>) – Optional. Number of errors before and after a found anomaly that are added to the
+anomalous sequence. If not given, 50 is used.</p></li>
+<li><p><strong>lower_threshold</strong> (<em>bool</em>) – Optional. Indicates whether to apply a lower threshold to find unusually low errors.
+If not given, <cite>False</cite> is used.</p></li>
+<li><p><strong>fixed_threshold</strong> (<em>bool</em>) – Optional. Indicates whether to use fixed threshold or dynamic threshold. If not
+given, <cite>False</cite> is used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array containing start-index, end-index, score for each anomalous sequence that
+was found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.primitives.timeseries_anomalies.regression_errors">
+<code class="sig-prename descclassname">orion.primitives.timeseries_anomalies.</code><code class="sig-name descname">regression_errors</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">y_hat</em>, <em class="sig-param">smoothing_window=0.01</em>, <em class="sig-param">smooth=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/timeseries_anomalies.html#regression_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_anomalies.regression_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an array of absolute errors comparing predictions and expected output.</p>
+<p>If smooth is True, apply EWMA to the resulting array of errors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – Ground truth.</p></li>
+<li><p><strong>y_hat</strong> (<em>ndarray</em>) – Predicted values.</p></li>
+<li><p><strong>smoothing_window</strong> (<em>float</em>) – Optional. Size of the smoothing window, expressed as a proportion of the total
+length of y. If not given, 0.01 is used.</p></li>
+<li><p><strong>smooth</strong> (<em>bool</em>) – Optional. Indicates whether the returned errors should be smoothed with EWMA.
+If not given, <cite>True</cite> is used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of errors.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="orion.primitives.timeseries_anomalies.z_cost">
+<code class="sig-prename descclassname">orion.primitives.timeseries_anomalies.</code><code class="sig-name descname">z_cost</code><span class="sig-paren">(</span><em class="sig-param">z</em>, <em class="sig-param">errors</em>, <em class="sig-param">mean</em>, <em class="sig-param">std</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/timeseries_anomalies.html#z_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_anomalies.z_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute how bad a z value is.</p>
+<p>The original formula is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="p">(</span><span class="n">delta_mean</span><span class="o">/</span><span class="n">mean</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">delta_std</span><span class="o">/</span><span class="n">std</span><span class="p">)</span>
+<span class="o">------------------------------------------------------</span>
+<span class="n">number</span> <span class="n">of</span> <span class="n">errors</span> <span class="n">above</span> <span class="o">+</span> <span class="p">(</span><span class="n">number</span> <span class="n">of</span> <span class="n">sequences</span> <span class="n">above</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span>
+</pre></div>
 </div>
-</div>
+<p>which computes the “goodness” of <cite>z</cite>, meaning that the higher the value
+the better the <cite>z</cite>.</p>
+<p>In this case, we return this value inverted (we make it negative), to convert
+it into a cost function, as later on we will use scipy.fmin to minimize it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>ndarray</em>) – Value for which a cost score is calculated.</p></li>
+<li><p><strong>errors</strong> (<em>ndarray</em>) – Array of errors.</p></li>
+<li><p><strong>mean</strong> (<em>float</em>) – Mean of errors.</p></li>
+<li><p><strong>std</strong> (<em>float</em>) – Standard deviation of errors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Cost of z.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
@@ -335,10 +484,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="orion.primitives.detectors.html" class="btn btn-neutral float-right" title="orion.primitives.detectors module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="orion.analysis.html" class="btn btn-neutral float-right" title="orion.analysis module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="orion.evaluation.utils.html" class="btn btn-neutral float-left" title="orion.evaluation.utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="orion.primitives.tadgan.html" class="btn btn-neutral float-left" title="orion.primitives.tadgan module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

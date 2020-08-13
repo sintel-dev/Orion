@@ -348,7 +348,7 @@
     <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">test</span> <span class="o">=</span> <span class="n">train</span>
 
-    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">_load_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">hyperparams</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">_load_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">)</span>
     <span class="n">events</span> <span class="o">=</span> <span class="n">_run_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">_build_events_df</span><span class="p">(</span><span class="n">events</span><span class="p">)</span></div>
