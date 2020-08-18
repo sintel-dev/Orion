@@ -13,6 +13,9 @@
     "keras.Sequential.LSTMTimeSeriesRegressor#1": {
         "epochs": 35,
         "verbose": false
+    },
+    "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+        "window_size": 2000,
+        "window_step_size": 100
     }
-    
 }
