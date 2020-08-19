@@ -11,6 +11,7 @@
 [![PyPi Shield](https://img.shields.io/pypi/v/orion-ml.svg)](https://pypi.python.org/pypi/orion-ml)
 [![CircleCI](https://circleci.com/gh/signals-dev/Orion.svg?style=shield)](https://circleci.com/gh/signals-dev/Orion)
 [![Travis CI Shield](https://travis-ci.org/signals-dev/Orion.svg?branch=master)](https://travis-ci.org/signals-dev/Orion)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/signals-dev/Orion/master?filepath=notebooks)
 
 # Orion
 
