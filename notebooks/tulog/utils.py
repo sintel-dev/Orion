@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.gridspec as gridspec
 
+from sklearn.preprocessing import MinMaxScaler
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
+
+np.random.seed(0)
 
 def unroll_ts(y_hat):
     predictions = list()
@@ -22,7 +27,7 @@ def unroll_ts(y_hat):
             if intermediate:
                 predictions.append(np.median(np.asarray(intermediate)))
 
-    return np.asarray(predictions)
+    return np.asarray(predictions[pred_length-1:])
 
 def convert_date(timelist):
     converted = list()
@@ -33,20 +38,54 @@ def convert_date(timelist):
 def convert_date_single(x):
     return datetime.fromtimestamp(x)
 
-def plot_ts(X):
+def plot_ts(X, labels=None):
     fig = plt.figure(figsize=(30, 6))
     ax = fig.add_subplot(111)
     
-    t = range(len(X))
-    plt.plot(t, X)
+    if not isinstance(X, list):
+        X = [X]
+  
+    for x in X:
+        t = range(len(x))
+        plt.plot(t, x)
     
     plt.title('NYC Taxi Demand', size=34)
     plt.ylabel('# passengers', size=30)
     plt.xlabel('Time', size=30)
     plt.xticks(size=26)
     plt.yticks(size=26)
-    
     plt.xlim([t[0], t[-1]])
+    
+    if labels:
+        plt.legend(labels=labels, loc=1, prop={'size': 26})
+    
+    plt.show()
+
+def plot_error(X):
+    plt.figure(figsize = (30, 6))
+    gs1 = gridspec.GridSpec(3, 1)
+    gs1.update(wspace=0.025, hspace=0.05) 
+
+    i = 0
+    for x in X:
+        if len(x) == 2:
+            ax1 = plt.subplot(gs1[i:i+2])
+            for line in x:
+                t = range(len(line))
+                ax1.plot(t, line)
+            i+=1
+        else:
+            ax1 = plt.subplot(gs1[i])
+            t = range(len(line))
+            ax1.plot(t, x, color='tab:red')
+
+        i+=1
+        plt.xlim(t[0], t[-1])
+        plt.yticks(size=22)
+        plt.axis('on')
+        ax1.set_xticklabels([])
+
+    plt.show()
 
 
 def plot(dfs, anomalies=[]):
@@ -79,14 +118,15 @@ def plot(dfs, anomalies=[]):
     for df in dfs:
         plt.plot(time, df['value'])
 
-    colors = ['red'] + ['blue'] * (len(anomalies) - 1)
-    for anomaly in anomalies:
+    colors = ['red'] + ['green'] * (len(anomalies) - 1)
+    for i, anomaly in enumerate(anomalies):
         if not isinstance(anomaly, list):
             anomaly = list(anomaly[['start', 'end']].itertuples(index=False))
+        
         for _, anom in enumerate(anomaly):
             t1 = convert_date_single(anom[0])
             t2 = convert_date_single(anom[1])
-            plt.axvspan(t1, t2, color='red', alpha=0.2)
+            plt.axvspan(t1, t2, color=colors[i], alpha=0.2)
 
     plt.title('NYC Taxi Demand', size=34)
     plt.ylabel('# passengers', size=30)
@@ -103,5 +143,48 @@ def plot(dfs, anomalies=[]):
     # format yticks
     ylabels = ['{:,.0f}'.format(x) + 'K' for x in ax.get_yticks()/1000]
     ax.set_yticklabels(ylabels)
-
+    
+    plt.show()
+    
+    
+def plot_rws(X, y, window=100, k=5, lim=1000):
+    fig = plt.figure(figsize=(30, 6))
+    ax = fig.add_subplot(111)
+    
+    shift = 75
+    X = X[window:]
+    
+    t = range(len(y))
+    plt.plot(t, y)
+    for i in range(k):
+        j = i * shift
+        idx = t[j: window + j]
+        
+        plt.plot(idx, X[j], lw=5, alpha=0.7)
+        
+    plt.title('NYC Taxi Demand', size=34)
+    plt.ylabel('# passengers', size=30)
+    plt.xlabel('Time', size=30)
+    plt.xticks(size=26)
+    plt.yticks(size=26)
+    plt.xlim([t[0], lim])
+    
+    plt.show()
+    
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+    
+    
+    figs = int(np.ceil(k / 5))
+    fig = plt.figure(figsize=(30, figs*3))
+    
+    for i in range(k):
+        j = i * shift
+        idx = t[j: window + j]
+        
+        ax = fig.add_subplot(figs, 5, i+1)
+        plt.plot(idx, X[j], lw=5, color=colors[i+1])
+        plt.axvspan(idx[shift], idx[-1], color='grey', alpha=0.2)
+        plt.title("window %d" % j, size=26)
+        plt.ylim([-1, 1])
+    
     plt.show()
