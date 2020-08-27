@@ -1,0 +1,51 @@
+{
+    "name": "orion.primitives.azure_anomaly_detector.split_sequence",
+    "contributors": "Sarah Alnegheimish <smish@mit.edu>",
+    "description": "Split sequences of time series data.",
+    "classifiers": {
+        "type": "preprocessor",
+        "subtype": "feature_extractor"
+    },
+    "modalities": [
+        "timeseries"
+    ],
+    "primitive": "orion.primitives.azure_anomaly_detector.split_sequence",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "y_index",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "target_column": {
+                "type": "int",
+                "default": 0
+            },
+            "sequence_size": {
+                "type": "int",
+                "default": 6000
+            },
+            "overlap_size": {
+                "type": "int",
+                "default": 12
+            }
+        }
+    }
+}
