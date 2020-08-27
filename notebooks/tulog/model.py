@@ -241,7 +241,7 @@ criticZ = [
     }
 ]
 
-parameters = {
+hyperparameters = {
     "epochs": 100,
     "shape": (100, 1),
     "optimizer": "keras.optimizers.Adam",
