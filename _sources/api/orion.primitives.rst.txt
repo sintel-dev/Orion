@@ -11,6 +11,7 @@ Submodules
 
 .. toctree::
 
+   orion.primitives.azure_anomaly_detector
    orion.primitives.detectors
    orion.primitives.estimators
    orion.primitives.intervals
