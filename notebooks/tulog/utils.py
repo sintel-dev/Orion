@@ -147,44 +147,40 @@ def plot(dfs, anomalies=[]):
     plt.show()
     
     
-def plot_rws(X, y, window=100, k=5, lim=1000):
-    fig = plt.figure(figsize=(30, 6))
-    ax = fig.add_subplot(111)
-    
+def plot_rws(X, window=100, k=5, lim=1000):
     shift = 75
     X = X[window:]
-    
-    t = range(len(y))
-    plt.plot(t, y)
-    for i in range(k):
-        j = i * shift
-        idx = t[j: window + j]
-        
-        plt.plot(idx, X[j], lw=5, alpha=0.7)
-        
-    plt.title('NYC Taxi Demand', size=34)
-    plt.ylabel('# passengers', size=30)
-    plt.xlabel('Time', size=30)
-    plt.xticks(size=26)
-    plt.yticks(size=26)
-    plt.xlim([t[0], lim])
-    
-    plt.show()
-    
+    t = range(len(X))
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     
     
-    figs = int(np.ceil(k / 5))
-    fig = plt.figure(figsize=(30, figs*3))
+    num_figs = int(np.ceil(k / 5)) + 1
+    fig = plt.figure(figsize=(15, num_figs * 2))
     
-    for i in range(k):
+    j = 0
+    ax = fig.add_subplot(num_figs, 5, j+1)
+    idx = t[j: window + j]
+    ax.plot(idx, X[j], lw=2, color=colors[j])
+    plt.title("window %d" % j, size=16)
+    plt.ylim([-1, 1])
+    
+    j = 1
+    ax = fig.add_subplot(num_figs, 5, j+1)
+    idx = t[j: window + j]
+    ax.plot(idx, X[j], lw=2, color=colors[j])
+    ax.set_yticklabels([])
+    plt.title("window %d" % j, size=16)
+    plt.ylim([-1, 1])
+        
+    for i in range(2, k):
         j = i * shift
         idx = t[j: window + j]
         
-        ax = fig.add_subplot(figs, 5, i+1)
-        plt.plot(idx, X[j], lw=5, color=colors[i+1])
-        plt.axvspan(idx[shift], idx[-1], color='grey', alpha=0.2)
-        plt.title("window %d" % j, size=26)
+        ax = fig.add_subplot(num_figs, 5, i+1)
+        ax.plot(idx, X[j], lw=2, color=colors[i+1])
+        ax.set_yticklabels([])
+        plt.title("window %d" % j, size=16)
         plt.ylim([-1, 1])
     
+    plt.tight_layout()
     plt.show()
