@@ -42,7 +42,7 @@ class Orion:
         if os.path.exists(os.path.join(dirname, os.path.basename(dirname) + '.json'))
     )
     PIPELINES = tuple(os.path.basename(pipeline) for pipeline in PIPELINES_DIR)
-    
+
     DEFAULT_PIPELINE = 'lstm_dynamic_threshold'
 
     def _get_mlpipeline(self):
