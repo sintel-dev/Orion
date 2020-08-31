@@ -1,0 +1,30 @@
+{
+    "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "time_column": "timestamp",
+        "interval": 1,
+        "method": "mean"
+    },
+    "sklearn.preprocessing.MinMaxScaler#1": {
+        "feature_range": [
+            -1,
+            1
+        ]
+    },
+    "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+        "target_column": 0,
+        "window_size": 250
+    },
+    "numpy.reshape#1": {
+        "newshape": [
+            -1,
+            250
+        ]
+    },
+    "statsmodels.tsa.arima_model.Arima#1": {
+        "steps": 1
+    },
+    "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+        "window_size": 500,
+        "window_step_size": 100
+    }
+}
