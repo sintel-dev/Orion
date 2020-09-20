@@ -13,7 +13,7 @@ import pandas as pd
 from scipy import signal as scipy_signal
 
 from orion.analysis import _load_pipeline, analyze
-from orion.data import NASA_SIGNALS, load_anomalies, load_signal
+from orion.data import load_anomalies, load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 from orion.evaluation import contextual_confusion_matrix
 
@@ -39,10 +39,8 @@ VERIFIED_PIPELINES = [
 ]
 
 VERIFIED_PIPELINES_GPU = {
-    pipeline: pipeline + '_gpu'
-    if os.path.exists(os.path.join(PIPELINE_DIR, pipeline + '_gpu.json'))
-    else pipeline
-    for pipeline in VERIFIED_PIPELINES
+    'arima': 'arima',
+    'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu'
 }
 
 
@@ -84,8 +82,8 @@ def _sort_leaderboard(df, rank, metrics):
     return df.set_index('pipeline').reset_index()
 
 
-def _evaluate_on_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
-                        holdout=True, detrend=False):
+def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
+                     holdout=True, detrend=False):
 
     train, test = _load_signal(signal, holdout)
 
@@ -109,6 +107,7 @@ def _evaluate_on_signal(pipeline, name, dataset, signal, hyperparameter, metrics
             for name, scorer in metrics.items()
         }
         scores['elapsed'] = elapsed.total_seconds()
+        scores['status'] = 'OK'
 
     except Exception as ex:
         LOGGER.exception("Exception scoring pipeline %s on signal %s (Holdout: %s), error %s.",
@@ -118,6 +117,7 @@ def _evaluate_on_signal(pipeline, name, dataset, signal, hyperparameter, metrics
             name: 0 for name in metrics.keys()
         }
         scores['elapsed'] = 0
+        scores['status'] = 'ERROR'
 
     scores['pipeline'] = name
     scores['holdout'] = holdout
@@ -127,15 +127,17 @@ def _evaluate_on_signal(pipeline, name, dataset, signal, hyperparameter, metrics
     return scores
 
 
-def _evaluate_pipeline(pipeline, name, dataset, signals, hyperparameter, metrics, distributed,
-                       holdout, detrend):
+def _evaluate_pipeline(pipeline, pipeline_name, dataset, signals, hyperparameter, metrics,
+                       distributed, holdout, detrend):
     if holdout is None:
         holdout = (True, False)
     elif not isinstance(holdout, tuple):
         holdout = (holdout, )
 
+    # hyperparameter settings
     if hyperparameter is None:
-        file_path = os.path.join(PIPELINE_DIR, name, name + '_' + dataset.lower() + '.json')
+        file_path = os.path.join(
+            PIPELINE_DIR, pipeline_name, pipeline_name + '_' + dataset.lower() + '.json')
         if os.path.exists(file_path):
             hyperparameter = file_path
 
@@ -145,166 +147,50 @@ def _evaluate_pipeline(pipeline, name, dataset, signals, hyperparameter, metrics
             hyperparameter = json.load(f)
 
     if distributed:
-        function = dask.delayed(_evaluate_on_signal)
+        function = dask.delayed(_evaluate_signal)
     else:
-        function = _evaluate_on_signal
+        function = _evaluate_signal
 
     scores = list()
 
     for signal in signals:
         for holdout_ in holdout:
-            score = function(
-                pipeline, name, dataset, signal, hyperparameter, metrics, holdout_, detrend)
+            score = function(pipeline, pipeline_name, dataset, signal, hyperparameter,
+                             metrics, holdout_, detrend)
 
             scores.append(score)
 
     return scores
 
 
-def evaluate_pipeline(pipeline, pipeline_name=None, dataset="NASA", signals=NASA_SIGNALS,
-                      hyperparameter=None, metrics=METRICS, distributed=False, holdout=None,
-                      detrend=False):
-    """Evaluate a pipeline on multiple signals with multiple metrics.
-
-    The pipeline is used to analyze the given signals and later on the
-    detected anomalies are scored against the known anomalies using the
-    indicated metrics.
-
-    Args:
-        pipeline (str): Path to the pipeline JSON.
-        pipeline_name (str): Name of the pipeline. If not given, use JSON path as name.
-        dataset (str): Name of the dataset which the signals belong to. If not
-            given, use NASA as default.
-        signals (list): List of signals. If not given, all the NASA signals
-            are used.
-        hyperparameter (str or dict): Path to or dictionary of hyperparameters.
-        metrics (dict): Dictionary with metric names as keys and scoring functions as
-            values. If not given, all the available metrics willbe used.
-        distributed (bool): Whether to use dask for distributed computing. If not given,
-            use ``False``.
-        holdout (bool): Whether to use the prespecified train-test split. If not given,
-            use ``False``.
-        detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.
-
-    Returns:
-        pandas.Series: Series object containing the average of the scores obtained with
-            each scoring function accross all the signals.
-    """
-    pipeline_name = pipeline_name or pipeline
-    scores = _evaluate_pipeline(pipeline, pipeline_name, dataset, signals, hyperparameter,
-                                metrics, distributed, holdout, detrend)
-
-    if distributed:
-        scores = dask.compute(*scores)
-
-    scores = pd.DataFrame.from_records(scores).groupby('holdout').mean().reset_index()
-
-    # Move holdout and elapsed column to the last position
-    scores['elapsed'] = scores.pop('elapsed')
-
-    return scores
-
-
 def _evaluate_pipelines(pipelines, dataset, signals, hyperparameters, metrics, distributed,
                         holdout, detrend):
-    if isinstance(pipelines, list):
-        pipelines = {pipeline: pipeline for pipeline in pipelines}
-
-    if isinstance(hyperparameters, list):
-        hyperparameters = {pipeline: hyperparameter for pipeline, hyperparameter in
-                           zip(pipelines.keys(), hyperparameters)}
-
-    if isinstance(metrics, list):
-        metrics_ = dict()
-        for metric in metrics:
-            if callable(metric):
-                metrics_[metric.__name__] = metric
-            elif metric in METRICS:
-                metrics_[metric] = METRICS[metric]
-            else:
-                raise ValueError('Unknown metric: {}'.format(metric))
-
-        metrics = metrics_
 
     scores = list()
     for name, pipeline in pipelines.items():
         hyperparameter = _get_parameter(hyperparameters, name)
         score = _evaluate_pipeline(pipeline, name, dataset, signals, hyperparameter,
                                    metrics, distributed, holdout, detrend)
-
         scores.extend(score)
 
     return scores
 
 
-def evaluate_pipelines(pipelines, dataset=None, signals=None, hyperparameters=None, metrics=None,
-                       rank=None, distributed=False, holdout=False, detrend=False):
-    """Evaluate a list of pipelines on multiple signals with multiple metrics.
-
-    The pipelines are used to analyze the given signals and later on the
-    detected anomalies are scored against the known anomalies using the
-    indicated metrics.
-
-    Finally, the scores obtained with each metric are averaged accross all the signals,
-    ranked by the indicated metric and returned on a pandas.DataFrame.
-
-    Args:
-        pipelines (dict or list): dictionary with pipeline names as keys and their
-            JSON paths as values. If a list is given, it should be of JSON paths,
-            and the paths themselves will be used as names.
-        dataset (str, optional): name of the dataset which the signals belong to. If not
-            given, use NASA as default.
-        signals (list, optional): list of signals. If not given, all the ``NASA_SIGNALS``
-            are used.
-        hyperparameters (dict or list, optional): dictionary with pipeline names as keys
-            and their hyperparameter JSON paths or dictionaries as values. If a list is
-            given, it should be of corresponding order to pipelines.
-        metrics (dict or list, optional): dictionary with metric names as keys and
-            scoring functions as values. If a list is given, it should be of scoring
-            functions, and they ``__name__`` value will be used as the metric name.
-            If not given, all the available metrics will be used.
-        rank (str, optional): Sort and rank the pipelines based on the given metric.
-            If not given, rank using the first metric.
-        distributed (bool): Whether to use dask for distributed computing. If not given,
-            use ``False``.
-        holdout (bool): Whether to use the prespecified train-test split. If not given,
-            use ``False``.
-        detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.
-
-    Returns:
-        pandas.DataFrame: Table containing the average of the scores obtained with
-            each scoring function accross all the signals for each pipeline, ranked
-            by the indicated metric.
-    """
-    dataset = dataset or "NASA"
-    signals = signals or NASA_SIGNALS
-    metrics = metrics or METRICS
-
-    scores = _evaluate_pipelines(
-        pipelines, dataset, signals, hyperparameters, metrics, distributed, holdout, detrend)
-
-    if distributed:
-        scores = dask.compute(*scores)
-
-    scores = pd.DataFrame.from_records(scores)
-
-    return _sort_leaderboard(scores, rank, metrics)
-
-
-def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS,
-              distributed=False):
+def _evaluate_datasets(pipelines, datasets, hyperparameters, metrics, distributed, holdout,
+                       detrend):
     delayed = []
-
     for dataset, signals in datasets.items():
         LOGGER.info("Starting dataset {} with {} signals..".format(
             dataset, len(signals)))
 
-        # set dataset configuration
+        # dataset configuration
         hyperparameters_ = _get_parameter(hyperparameters, dataset)
-        parameters = _get_parameter(BENCHMARK_PARAMS, dataset) or dict()
+        parameters = _get_parameter(BENCHMARK_PARAMS, dataset)
+        if parameters is not None:
+            holdout, detrend = parameters.values()
 
         result = _evaluate_pipelines(
-            pipelines, dataset, signals, hyperparameters_, metrics, distributed, **parameters)
+            pipelines, dataset, signals, hyperparameters_, metrics, distributed, holdout, detrend)
 
         delayed.extend(result)
 
@@ -316,28 +202,15 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
         results = delayed
 
     df = pd.DataFrame.from_records(results)
-
     return df
 
 
-def summarize_results(df, metrics):
+def _summarize_results(df, metrics):
     """ Summarize the result of benchmark.
 
     The table is summarized for according to the number of wins each pipeline
     had over ARIMA pipeline per dataset, the number of anomalies detected, and
     the average f1 score acheived by that pipeline.
-
-    Args:
-        df (`pandas.DataFrame`): detailed dataframe containing the score of each
-            pipeline on each signal.
-        metrics (dict): dictionary with metric names as keys and scoring functions
-            as values.
-
-    Returns:
-        pandas.DataFrame: Table containing the the number of wins each pipeline
-            had over ARIMA pipeline per dataset, the number of anomalies detected, and
-            the average f1 score acheived by that pipeline. The pipelines are ranked
-            by the average f1 score metric.
     """
     def return_cm(x):
         if isinstance(x, int):
@@ -385,56 +258,80 @@ def summarize_results(df, metrics):
     return result
 
 
-def run_benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
-                  output_path=None, distributed=False):
-    """Benchmark a list of pipelines on multiple signals with multiple metrics.
+def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
+              distributed=False, holdout=False, detrend=False, output_path=None):
+    """Evaluate pipelines on the given datasets and evaluate the performance.
 
     The pipelines are used to analyze the given signals and later on the
     detected anomalies are scored against the known anomalies using the
     indicated metrics.
 
     Finally, the scores obtained with each metric are averaged accross all the signals,
-    ranked by the indicated metric and returned on a `pandas.DataFrame`.
+    ranked by the indicated metric and returned on a ``pandas.DataFrame``.
 
     Args:
-        pipelines (dict or list, optional): dictionary with pipeline names as keys and
-            their JSON paths as values. If a list is given, it should be of JSON paths,
-            and the paths themselves will be used as names. If `None` is given, all
-            available pipelines under `orion/pipelines` will be used.
-        datasets (dict or list, optional): list of signals or dictionary of dataset name
-            as keys and list of signals as values. If not given, all the datasets defined
-            in `BENCHMARK_DATA` will be used.
-        hyperparameters (dict, optional): dictionary with dataset name, pipeline name
-            as keys and hyperparameter JSON settings path or dictionary as values.
-            If not given, use default hyperparameters.
-        metrics (dict or list, optional): dictionary with metric names as keys and
+        pipelines (dict or list): dictionary with pipeline names as keys and their
+            JSON paths as values. If a list is given, it should be of JSON paths,
+            and the paths themselves will be used as names. If not give, all verified
+            pipelines will be used for evaluation.
+        datasets (dict or list): dictionary of dataset name as keys and list of signals as
+            values. If a list is given then it will be under a generic name ``dataset``.
+            If not given, all benchmark datasets will be used used.
+        hyperparameters (dict or list): dictionary with pipeline names as keys
+            and their hyperparameter JSON paths or dictionaries as values. If a list is
+            given, it should be of corresponding order to pipelines.
+        metrics (dict or list): dictionary with metric names as keys and
             scoring functions as values. If a list is given, it should be of scoring
-            functions, and their `__name__` value will be used as the metric name.
+            functions, and they ``__name__`` value will be used as the metric name.
             If not given, all the available metrics will be used.
-        rank (str, optional): Sort and rank the pipelines based on the given metric.
+        rank (str): Sort and rank the pipelines based on the given metric.
             If not given, rank using the first metric.
-        output_path (str, optional):
-            location to save the intermediatry results. If not given, intermediatry
-            results will not be saved.
         distributed (bool): Whether to use dask for distributed computing. If not given,
             use ``False``.
+        holdout (bool): Whether to use the prespecified train-test split. If not given,
+            use ``False``.
+        detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.
+        output_path (str): Location to save the intermediatry results. If not given,
+            intermediatry results will not be saved.
 
     Returns:
-        pandas.DataFrame: Table that summarizes the results of the benchmark. It contains
-            the the number of wins each pipeline had over ARIMA pipeline per dataset,
-            the number of anomalies detected, and the average f1 score acheived by
-            that pipeline. The pipelines are ranked by the average f1 score metric.
+        pandas.DataFrame: Table containing the average of the scores obtained with
+            each scoring function accross all the signals for each pipeline, ranked
+            by the indicated metric.
     """
     pipelines = pipelines or VERIFIED_PIPELINES
     datasets = datasets or BENCHMARK_DATA
 
-    results = benchmark(pipelines, datasets, hyperparameters, metrics, distributed)
+    if isinstance(pipelines, list):
+        pipelines = {pipeline: pipeline for pipeline in pipelines}
+
+    if isinstance(datasets, list):
+        datasets = {'dataset': datasets}
+
+    if isinstance(hyperparameters, list):
+        hyperparameters = {pipeline: hyperparameter for pipeline, hyperparameter in
+                           zip(pipelines.keys(), hyperparameters)}
+
+    if isinstance(metrics, list):
+        metrics_ = dict()
+        for metric in metrics:
+            if callable(metric):
+                metrics_[metric.__name__] = metric
+            elif metric in METRICS:
+                metrics_[metric] = METRICS[metric]
+            else:
+                raise ValueError('Unknown metric: {}'.format(metric))
+
+        metrics = metrics_
+
+    results = _evaluate_datasets(
+        pipelines, datasets, hyperparameters, metrics, distributed, holdout, detrend)
 
     if output_path:
         LOGGER.info('Saving benchmark report to %s', output_path)
         results.to_csv(output_path)
 
-    return results
+    return _sort_leaderboard(results, rank, metrics)
 
 
 def main(cuda=False, distributed=False):
@@ -452,10 +349,10 @@ def main(cuda=False, distributed=False):
     if cuda:
         pipelines = VERIFIED_PIPELINES_GPU
 
-    results = run_benchmark(
+    results = benchmark(
         pipelines=pipelines, metrics=metrics, output_path=output_path, distributed=distributed)
 
-    leaderboard = summarize_results(results, metrics)
+    leaderboard = _summarize_results(results, metrics)
     output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
     leaderboard.to_csv(output_path)
 

@@ -14,7 +14,7 @@ from urllib.error import HTTPError
 import tabulate
 
 from orion import PIPELINES
-from orion.benchmark import evaluate_pipelines
+from orion.benchmark import benchmark
 from orion.data import load_signal
 from orion.db.explorer import OrionDBExplorer
 
@@ -155,7 +155,8 @@ def _evaluate(args):
     else:
         pipelines = args.pipeline
 
-    scores = evaluate_pipelines(pipelines, args.signal, args.metric, args.rank, args.holdout)
+    scores = benchmark(pipelines=pipelines, datasets=args.signal, metrics=args.metric,
+                       rank=args.rank, holdout=args.holdout)
 
     if args.output:
         print('Writing results in {}'.format(args.output))
