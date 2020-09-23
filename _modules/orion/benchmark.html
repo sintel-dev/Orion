@@ -304,125 +304,319 @@
            <div itemprop="articleBody">
             
   <h1>Source code for orion.benchmark</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
+<span class="kn">import</span> <span class="nn">dask</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span> <span class="k">as</span> <span class="n">scipy_signal</span>
 
-<span class="kn">from</span> <span class="nn">orion.analysis</span> <span class="kn">import</span> <span class="n">analyze</span>
-<span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">NASA_SIGNALS</span><span class="p">,</span> <span class="n">load_anomalies</span><span class="p">,</span> <span class="n">load_signal</span>
+<span class="kn">from</span> <span class="nn">orion.analysis</span> <span class="kn">import</span> <span class="n">_load_pipeline</span><span class="p">,</span> <span class="n">analyze</span>
+<span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_anomalies</span><span class="p">,</span> <span class="n">load_signal</span>
 <span class="kn">from</span> <span class="nn">orion.evaluation</span> <span class="kn">import</span> <span class="n">CONTEXTUAL_METRICS</span> <span class="k">as</span> <span class="n">METRICS</span>
-
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">orion.evaluation</span> <span class="kn">import</span> <span class="n">contextual_confusion_matrix</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+<span class="n">BENCHMARK_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s1">&#39;..&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;benchmark&#39;</span>
+<span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">_evaluate_on_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">holdout</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BENCHMARK_PATH</span><span class="p">,</span> <span class="s1">&#39;datasets.csv&#39;</span><span class="p">),</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">BENCHMARK_DATA</span> <span class="o">=</span> <span class="p">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BENCHMARK_PATH</span><span class="p">,</span> <span class="s1">&#39;benchmark_parameters.csv&#39;</span><span class="p">),</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">BENCHMARK_PARAMS</span> <span class="o">=</span> <span class="p">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">}</span>
+
+<span class="n">PIPELINE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;pipelines&#39;</span><span class="p">)</span>
+
+<span class="n">VERIFIED_PIPELINES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;arima&#39;</span><span class="p">,</span> <span class="s1">&#39;lstm_dynamic_threshold&#39;</span>
+<span class="p">]</span>
+
+<span class="n">VERIFIED_PIPELINES_GPU</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;arima&#39;</span><span class="p">:</span> <span class="s1">&#39;arima&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;lstm_dynamic_threshold&#39;</span><span class="p">:</span> <span class="s1">&#39;lstm_dynamic_threshold_gpu&#39;</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">holdout</span><span class="p">:</span>
         <span class="n">train</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span> <span class="o">+</span> <span class="s1">&#39;-train&#39;</span><span class="p">)</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span> <span class="o">+</span> <span class="s1">&#39;-test&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">train</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+        <span class="n">train</span> <span class="o">=</span> <span class="n">test</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
 
-    <span class="n">test</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span> <span class="o">+</span> <span class="s1">&#39;-test&#39;</span><span class="p">)</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
-    <span class="n">anomalies</span> <span class="o">=</span> <span class="n">analyze</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
-    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+    <span class="k">return</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span>
 
-    <span class="n">truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
 
-    <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">name</span><span class="p">:</span> <span class="n">scorer</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">scorer</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-    <span class="p">}</span>
-    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_detrend_signal</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">value_column</span><span class="p">):</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">value_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">scipy_signal</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">value_column</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">_get_parameter</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">_sort_leaderboard</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">rank</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">rank_</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Rank </span><span class="si">%s</span><span class="s2"> is not in </span><span class="si">%s</span><span class="s2">, using </span><span class="si">%s</span><span class="s2"> instead.&quot;</span><span class="p">,</span>
+                         <span class="n">rank</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">rank_</span><span class="p">)</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="n">rank_</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rank&#39;</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_evaluate_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span>
+                     <span class="n">holdout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">detrend</span><span class="p">:</span>
+        <span class="n">train</span> <span class="o">=</span> <span class="n">_detrend_signal</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">)</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">_detrend_signal</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (Holdout: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                    <span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">)</span>
+
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">_load_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">anomalies</span> <span class="o">=</span> <span class="n">analyze</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+        <span class="n">truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="n">scorer</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">scorer</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;OK&#39;</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (Holdout: </span><span class="si">%s</span><span class="s2">), error </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span>
+                         <span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
+
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ERROR&#39;</span>
+
+    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;holdout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">holdout</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;signal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">signal</span>
 
     <span class="k">return</span> <span class="n">scores</span>
 
 
-<div class="viewcode-block" id="evaluate_pipeline"><a class="viewcode-back" href="../../api/orion.benchmark.html#orion.benchmark.evaluate_pipeline">[docs]</a><span class="k">def</span> <span class="nf">evaluate_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="n">NASA_SIGNALS</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">METRICS</span><span class="p">,</span> <span class="n">holdout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Evaluate a pipeline on multiple signals with multiple metrics.</span>
-
-<span class="sd">    The pipeline is used to analyze the given signals and later on the</span>
-<span class="sd">    detected anomalies are scored against the known anomalies using the</span>
-<span class="sd">    indicated metrics.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        pipeline (str): Path to the pipeline JSON.</span>
-<span class="sd">        signals (list, optional): list of signals. If not given, all the NASA signals</span>
-<span class="sd">            are used.</span>
-<span class="sd">        metrics (dict, optional): dictionary with metric names as keys and</span>
-<span class="sd">            scoring functions as values. If not given, all the available metrics will</span>
-<span class="sd">            be used.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        pandas.Series: Series object containing the average of the scores obtained with</span>
-<span class="sd">            each scoring function accross all the signals.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">_evaluate_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">pipeline_name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span>
+                       <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">holdout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">holdout</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
     <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">holdout</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="n">holdout</span> <span class="o">=</span> <span class="p">(</span><span class="n">holdout</span><span class="p">,</span> <span class="p">)</span>
 
+    <span class="c1"># hyperparameter settings</span>
+    <span class="k">if</span> <span class="n">hyperparameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">PIPELINE_DIR</span><span class="p">,</span> <span class="n">pipeline_name</span><span class="p">,</span> <span class="n">pipeline_name</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">dataset</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="n">hyperparameter</span> <span class="o">=</span> <span class="n">file_path</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hyperparameter</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">hyperparameter</span><span class="p">):</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading hyperparameter </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hyperparameter</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">hyperparameter</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">distributed</span><span class="p">:</span>
+        <span class="n">function</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">_evaluate_signal</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">function</span> <span class="o">=</span> <span class="n">_evaluate_signal</span>
+
     <span class="n">scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
     <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">holdout_</span> <span class="ow">in</span> <span class="n">holdout</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (Holdout: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
-                            <span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">holdout_</span><span class="p">)</span>
-                <span class="n">score</span> <span class="o">=</span> <span class="n">_evaluate_on_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">holdout_</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (Holdout: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
-                                 <span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">holdout_</span><span class="p">)</span>
-                <span class="n">score</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-                <span class="n">score</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">pipeline_name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span>
+                             <span class="n">metrics</span><span class="p">,</span> <span class="n">holdout_</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
 
-            <span class="n">score</span><span class="p">[</span><span class="s1">&#39;holdout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">holdout_</span>
             <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
 
-    <span class="n">scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;holdout&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-
-    <span class="c1"># Move holdout and elapsed column to the last position</span>
-    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;elapsed&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">scores</span></div>
+    <span class="k">return</span> <span class="n">scores</span>
 
 
-<div class="viewcode-block" id="evaluate_pipelines"><a class="viewcode-back" href="../../api/orion.benchmark.html#orion.benchmark.evaluate_pipelines">[docs]</a><span class="k">def</span> <span class="nf">evaluate_pipelines</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">holdout</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)):</span>
-    <span class="sd">&quot;&quot;&quot;Evaluate a list of pipelines on multiple signals with multiple metrics.</span>
+<span class="k">def</span> <span class="nf">_evaluate_pipelines</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span>
+                        <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">):</span>
+
+    <span class="n">scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">pipelines</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">hyperparameter</span> <span class="o">=</span> <span class="n">_get_parameter</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">_evaluate_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span>
+                                   <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">scores</span>
+
+
+<span class="k">def</span> <span class="nf">_evaluate_datasets</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span>
+                       <span class="n">detrend</span><span class="p">):</span>
+    <span class="n">delayed</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span> <span class="ow">in</span> <span class="n">datasets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting dataset </span><span class="si">{}</span><span class="s2"> with </span><span class="si">{}</span><span class="s2"> signals..&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">dataset</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">signals</span><span class="p">)))</span>
+
+        <span class="c1"># dataset configuration</span>
+        <span class="n">hyperparameters_</span> <span class="o">=</span> <span class="n">_get_parameter</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="n">_get_parameter</span><span class="p">(</span><span class="n">BENCHMARK_PARAMS</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">_evaluate_pipelines</span><span class="p">(</span>
+            <span class="n">pipelines</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameters_</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
+
+        <span class="n">delayed</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">distributed</span><span class="p">:</span>
+        <span class="n">persisted</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">persist</span><span class="p">(</span><span class="o">*</span><span class="n">delayed</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">persisted</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">delayed</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">_summarize_results</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Summarize the result of benchmark.</span>
+
+<span class="sd">    The table is summarized for according to the number of wins each pipeline</span>
+<span class="sd">    had over ARIMA pipeline per dataset, the number of anomalies detected, and</span>
+<span class="sd">    the average f1 score acheived by that pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">return_cm</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;confusion_matrix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;confusion_matrix&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">return_cm</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;fp&#39;</span><span class="p">,</span> <span class="s1">&#39;fn&#39;</span><span class="p">,</span> <span class="s1">&#39;tp&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;confusion_matrix&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="c1"># calculate f1 score</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;pipeline&#39;</span><span class="p">])[[</span><span class="s1">&#39;fp&#39;</span><span class="p">,</span> <span class="s1">&#39;fn&#39;</span><span class="p">,</span> <span class="s1">&#39;tp&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">])</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fn&#39;</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;f1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="c1"># number of wins over ARIMA</span>
+    <span class="n">arima_pipeline</span> <span class="o">=</span> <span class="s1">&#39;arima&#39;</span>
+    <span class="n">intermediate</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;pipeline&#39;</span><span class="p">,</span> <span class="s1">&#39;dataset&#39;</span><span class="p">])[</span><span class="s1">&#39;f1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">arima</span> <span class="o">=</span> <span class="n">intermediate</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">arima_pipeline</span><span class="p">)</span>
+
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;# Wins&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">intermediate</span><span class="o">.</span><span class="n">T</span> <span class="o">&gt;</span> <span class="n">arima</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;# Wins&#39;</span><span class="p">][</span><span class="n">arima_pipeline</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># number of anomalies detected</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;# Anomalies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)[[</span><span class="s1">&#39;tp&#39;</span><span class="p">,</span> <span class="s1">&#39;fp&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="c1"># average f1 score</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;Average F1 Score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)[</span><span class="s1">&#39;f1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;pipeline&#39;</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">rank</span> <span class="o">=</span> <span class="s1">&#39;Average F1 Score&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_sort_leaderboard</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;rank&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<div class="viewcode-block" id="benchmark"><a class="viewcode-back" href="../../api/orion.benchmark.html#orion.benchmark.benchmark">[docs]</a><span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">pipelines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">METRICS</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span>
+              <span class="n">distributed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">holdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Evaluate pipelines on the given datasets and evaluate the performance.</span>
 
 <span class="sd">    The pipelines are used to analyze the given signals and later on the</span>
 <span class="sd">    detected anomalies are scored against the known anomalies using the</span>
 <span class="sd">    indicated metrics.</span>
 
 <span class="sd">    Finally, the scores obtained with each metric are averaged accross all the signals,</span>
-<span class="sd">    ranked by the indicated metric and returned on a pandas.DataFrame.</span>
+<span class="sd">    ranked by the indicated metric and returned on a ``pandas.DataFrame``.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        pipelines (dict or list): dictionary with pipeline names as keys and their</span>
 <span class="sd">            JSON paths as values. If a list is given, it should be of JSON paths,</span>
-<span class="sd">            and the paths themselves will be used as names.</span>
-<span class="sd">        signals (list, optional): list of signals. If not given, all the NASA signals</span>
-<span class="sd">            are used.</span>
-<span class="sd">        metrics (dict or list, optional): dictionary with metric names as keys and</span>
+<span class="sd">            and the paths themselves will be used as names. If not give, all verified</span>
+<span class="sd">            pipelines will be used for evaluation.</span>
+<span class="sd">        datasets (dict or list): dictionary of dataset name as keys and list of signals as</span>
+<span class="sd">            values. If a list is given then it will be under a generic name ``dataset``.</span>
+<span class="sd">            If not given, all benchmark datasets will be used used.</span>
+<span class="sd">        hyperparameters (dict or list): dictionary with pipeline names as keys</span>
+<span class="sd">            and their hyperparameter JSON paths or dictionaries as values. If a list is</span>
+<span class="sd">            given, it should be of corresponding order to pipelines.</span>
+<span class="sd">        metrics (dict or list): dictionary with metric names as keys and</span>
 <span class="sd">            scoring functions as values. If a list is given, it should be of scoring</span>
-<span class="sd">            functions, and they `__name__` value will be used as the metric name.</span>
+<span class="sd">            functions, and they ``__name__`` value will be used as the metric name.</span>
 <span class="sd">            If not given, all the available metrics will be used.</span>
-<span class="sd">        rank (str, optional): Sort and rank the pipelines based on the given metric.</span>
+<span class="sd">        rank (str): Sort and rank the pipelines based on the given metric.</span>
 <span class="sd">            If not given, rank using the first metric.</span>
+<span class="sd">        distributed (bool): Whether to use dask for distributed computing. If not given,</span>
+<span class="sd">            use ``False``.</span>
+<span class="sd">        holdout (bool): Whether to use the prespecified train-test split. If not given,</span>
+<span class="sd">            use ``False``.</span>
+<span class="sd">        detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.</span>
+<span class="sd">        output_path (str): Location to save the intermediatry results. If not given,</span>
+<span class="sd">            intermediatry results will not be saved.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        pandas.DataFrame: Table containing the average of the scores obtained with</span>
 <span class="sd">            each scoring function accross all the signals for each pipeline, ranked</span>
 <span class="sd">            by the indicated metric.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">signals</span> <span class="o">=</span> <span class="n">signals</span> <span class="ow">or</span> <span class="n">NASA_SIGNALS</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="ow">or</span> <span class="n">METRICS</span>
+    <span class="n">pipelines</span> <span class="o">=</span> <span class="n">pipelines</span> <span class="ow">or</span> <span class="n">VERIFIED_PIPELINES</span>
+    <span class="n">datasets</span> <span class="o">=</span> <span class="n">datasets</span> <span class="ow">or</span> <span class="n">BENCHMARK_DATA</span>
 
-    <span class="n">scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">pipelines</span> <span class="o">=</span> <span class="p">{</span><span class="n">pipeline</span><span class="p">:</span> <span class="n">pipeline</span> <span class="k">for</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">pipelines</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datasets</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">datasets</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="n">datasets</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span><span class="n">pipeline</span><span class="p">:</span> <span class="n">hyperparameter</span> <span class="k">for</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">hyperparameter</span> <span class="ow">in</span>
+                           <span class="nb">zip</span><span class="p">(</span><span class="n">pipelines</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">hyperparameters</span><span class="p">)}</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">metrics_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -436,25 +630,41 @@
 
         <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics_</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">pipelines</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">pipelines</span><span class="p">))</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">_evaluate_datasets</span><span class="p">(</span>
+        <span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">pipelines</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Evaluating pipeline: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="n">score</span> <span class="o">=</span> <span class="n">evaluate_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">holdout</span><span class="p">)</span>
-        <span class="n">score</span><span class="p">[</span><span class="s1">&#39;pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output_path</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Saving benchmark report to </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
 
-    <span class="n">scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_sort_leaderboard</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span></div>
 
-    <span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">scores</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">scores</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">scores</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rank&#39;</span>
-    <span class="n">scores</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="k">return</span> <span class="n">scores</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span></div>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../api/orion.benchmark.html#orion.benchmark.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distributed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># output path</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;results.csv&quot;</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BENCHMARK_PATH</span><span class="p">,</span> <span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+
+    <span class="c1"># metrics</span>
+    <span class="k">del</span> <span class="n">METRICS</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
+    <span class="n">METRICS</span><span class="p">[</span><span class="s1">&#39;confusion_matrix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">contextual_confusion_matrix</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">weighted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">fun</span> <span class="ow">in</span> <span class="n">METRICS</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="c1"># pipelines</span>
+    <span class="n">pipelines</span> <span class="o">=</span> <span class="n">VERIFIED_PIPELINES</span>
+    <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+        <span class="n">pipelines</span> <span class="o">=</span> <span class="n">VERIFIED_PIPELINES_GPU</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span>
+        <span class="n">pipelines</span><span class="o">=</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span> <span class="n">distributed</span><span class="o">=</span><span class="n">distributed</span><span class="p">)</span>
+
+    <span class="n">leaderboard</span> <span class="o">=</span> <span class="n">_summarize_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BENCHMARK_PATH</span><span class="p">,</span> <span class="s1">&#39;leaderboard.csv&#39;</span><span class="p">)</span>
+    <span class="n">leaderboard</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
 </pre></div>
 
            </div>

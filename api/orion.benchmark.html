@@ -314,59 +314,40 @@
   <div class="section" id="module-orion.benchmark">
 <span id="orion-benchmark-module"></span><h1>orion.benchmark module<a class="headerlink" href="#module-orion.benchmark" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="orion.benchmark.evaluate_pipeline">
-<code class="sig-prename descclassname">orion.benchmark.</code><code class="sig-name descname">evaluate_pipeline</code><span class="sig-paren">(</span><em class="sig-param">pipeline</em>, <em class="sig-param">signals=('P-1'</em>, <em class="sig-param">'S-1'</em>, <em class="sig-param">'E-1'</em>, <em class="sig-param">'E-2'</em>, <em class="sig-param">'E-3'</em>, <em class="sig-param">'E-4'</em>, <em class="sig-param">'E-5'</em>, <em class="sig-param">'E-6'</em>, <em class="sig-param">'E-7'</em>, <em class="sig-param">'E-8'</em>, <em class="sig-param">'E-9'</em>, <em class="sig-param">'E-10'</em>, <em class="sig-param">'E-11'</em>, <em class="sig-param">'E-12'</em>, <em class="sig-param">'E-13'</em>, <em class="sig-param">'A-1'</em>, <em class="sig-param">'D-1'</em>, <em class="sig-param">'P-3'</em>, <em class="sig-param">'D-2'</em>, <em class="sig-param">'D-3'</em>, <em class="sig-param">'D-4'</em>, <em class="sig-param">'A-2'</em>, <em class="sig-param">'A-3'</em>, <em class="sig-param">'A-4'</em>, <em class="sig-param">'G-1'</em>, <em class="sig-param">'G-2'</em>, <em class="sig-param">'D-5'</em>, <em class="sig-param">'D-6'</em>, <em class="sig-param">'D-7'</em>, <em class="sig-param">'F-1'</em>, <em class="sig-param">'P-4'</em>, <em class="sig-param">'G-3'</em>, <em class="sig-param">'T-1'</em>, <em class="sig-param">'T-2'</em>, <em class="sig-param">'D-8'</em>, <em class="sig-param">'D-9'</em>, <em class="sig-param">'F-2'</em>, <em class="sig-param">'G-4'</em>, <em class="sig-param">'T-3'</em>, <em class="sig-param">'D-11'</em>, <em class="sig-param">'D-12'</em>, <em class="sig-param">'B-1'</em>, <em class="sig-param">'G-6'</em>, <em class="sig-param">'G-7'</em>, <em class="sig-param">'P-7'</em>, <em class="sig-param">'R-1'</em>, <em class="sig-param">'A-5'</em>, <em class="sig-param">'A-6'</em>, <em class="sig-param">'A-7'</em>, <em class="sig-param">'D-13'</em>, <em class="sig-param">'A-8'</em>, <em class="sig-param">'A-9'</em>, <em class="sig-param">'F-3'</em>, <em class="sig-param">'M-6'</em>, <em class="sig-param">'M-1'</em>, <em class="sig-param">'M-2'</em>, <em class="sig-param">'S-2'</em>, <em class="sig-param">'P-10'</em>, <em class="sig-param">'T-4'</em>, <em class="sig-param">'T-5'</em>, <em class="sig-param">'F-7'</em>, <em class="sig-param">'M-3'</em>, <em class="sig-param">'M-4'</em>, <em class="sig-param">'M-5'</em>, <em class="sig-param">'P-15'</em>, <em class="sig-param">'C-1'</em>, <em class="sig-param">'C-2'</em>, <em class="sig-param">'T-12'</em>, <em class="sig-param">'T-13'</em>, <em class="sig-param">'F-4'</em>, <em class="sig-param">'F-5'</em>, <em class="sig-param">'D-14'</em>, <em class="sig-param">'T-9'</em>, <em class="sig-param">'P-14'</em>, <em class="sig-param">'T-8'</em>, <em class="sig-param">'P-11'</em>, <em class="sig-param">'D-15'</em>, <em class="sig-param">'D-16'</em>, <em class="sig-param">'M-7'</em>, <em class="sig-param">'F-8')</em>, <em class="sig-param">metrics={'accuracy': &lt;function contextual_accuracy&gt;</em>, <em class="sig-param">'f1': &lt;function contextual_f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function contextual_precision&gt;</em>, <em class="sig-param">'recall': &lt;function contextual_recall&gt;}</em>, <em class="sig-param">holdout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/benchmark.html#evaluate_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.benchmark.evaluate_pipeline" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate a pipeline on multiple signals with multiple metrics.</p>
-<p>The pipeline is used to analyze the given signals and later on the
-detected anomalies are scored against the known anomalies using the
-indicated metrics.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pipeline</strong> (<em>str</em>) – Path to the pipeline JSON.</p></li>
-<li><p><strong>signals</strong> (<em>list</em><em>, </em><em>optional</em>) – list of signals. If not given, all the NASA signals
-are used.</p></li>
-<li><p><strong>metrics</strong> (<em>dict</em><em>, </em><em>optional</em>) – dictionary with metric names as keys and
-scoring functions as values. If not given, all the available metrics will
-be used.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>Series object containing the average of the scores obtained with</dt><dd><p>each scoring function accross all the signals.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pandas.Series</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="orion.benchmark.evaluate_pipelines">
-<code class="sig-prename descclassname">orion.benchmark.</code><code class="sig-name descname">evaluate_pipelines</code><span class="sig-paren">(</span><em class="sig-param">pipelines</em>, <em class="sig-param">signals=None</em>, <em class="sig-param">metrics=None</em>, <em class="sig-param">rank=None</em>, <em class="sig-param">holdout=(True</em>, <em class="sig-param">False)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/benchmark.html#evaluate_pipelines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.benchmark.evaluate_pipelines" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate a list of pipelines on multiple signals with multiple metrics.</p>
+<dt id="orion.benchmark.benchmark">
+<code class="sig-prename descclassname">orion.benchmark.</code><code class="sig-name descname">benchmark</code><span class="sig-paren">(</span><em class="sig-param">pipelines=None</em>, <em class="sig-param">datasets=None</em>, <em class="sig-param">hyperparameters=None</em>, <em class="sig-param">metrics={'accuracy': &lt;function contextual_accuracy&gt;</em>, <em class="sig-param">'f1': &lt;function contextual_f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function contextual_precision&gt;</em>, <em class="sig-param">'recall': &lt;function contextual_recall&gt;}</em>, <em class="sig-param">rank='f1'</em>, <em class="sig-param">distributed=False</em>, <em class="sig-param">holdout=False</em>, <em class="sig-param">detrend=False</em>, <em class="sig-param">output_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/benchmark.html#benchmark"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.benchmark.benchmark" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate pipelines on the given datasets and evaluate the performance.</p>
 <p>The pipelines are used to analyze the given signals and later on the
 detected anomalies are scored against the known anomalies using the
 indicated metrics.</p>
 <p>Finally, the scores obtained with each metric are averaged accross all the signals,
-ranked by the indicated metric and returned on a pandas.DataFrame.</p>
+ranked by the indicated metric and returned on a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pipelines</strong> (<em>dict</em><em> or </em><em>list</em>) – dictionary with pipeline names as keys and their
 JSON paths as values. If a list is given, it should be of JSON paths,
-and the paths themselves will be used as names.</p></li>
-<li><p><strong>signals</strong> (<em>list</em><em>, </em><em>optional</em>) – list of signals. If not given, all the NASA signals
-are used.</p></li>
-<li><p><strong>metrics</strong> (<em>dict</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – dictionary with metric names as keys and
+and the paths themselves will be used as names. If not give, all verified
+pipelines will be used for evaluation.</p></li>
+<li><p><strong>datasets</strong> (<em>dict</em><em> or </em><em>list</em>) – dictionary of dataset name as keys and list of signals as
+values. If a list is given then it will be under a generic name <code class="docutils literal notranslate"><span class="pre">dataset</span></code>.
+If not given, all benchmark datasets will be used used.</p></li>
+<li><p><strong>hyperparameters</strong> (<em>dict</em><em> or </em><em>list</em>) – dictionary with pipeline names as keys
+and their hyperparameter JSON paths or dictionaries as values. If a list is
+given, it should be of corresponding order to pipelines.</p></li>
+<li><p><strong>metrics</strong> (<em>dict</em><em> or </em><em>list</em>) – dictionary with metric names as keys and
 scoring functions as values. If a list is given, it should be of scoring
-functions, and they <cite>__name__</cite> value will be used as the metric name.
+functions, and they <code class="docutils literal notranslate"><span class="pre">__name__</span></code> value will be used as the metric name.
 If not given, all the available metrics will be used.</p></li>
-<li><p><strong>rank</strong> (<em>str</em><em>, </em><em>optional</em>) – Sort and rank the pipelines based on the given metric.
+<li><p><strong>rank</strong> (<em>str</em>) – Sort and rank the pipelines based on the given metric.
 If not given, rank using the first metric.</p></li>
+<li><p><strong>distributed</strong> (<em>bool</em>) – Whether to use dask for distributed computing. If not given,
+use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>holdout</strong> (<em>bool</em>) – Whether to use the prespecified train-test split. If not given,
+use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>detrend</strong> (<em>bool</em>) – Whether to use <code class="docutils literal notranslate"><span class="pre">scipy.detrend</span></code>. If not given, use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>output_path</strong> (<em>str</em>) – Location to save the intermediatry results. If not given,
+intermediatry results will not be saved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -382,6 +363,11 @@ by the indicated metric.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="function">
+<dt id="orion.benchmark.main">
+<code class="sig-prename descclassname">orion.benchmark.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">cuda=False</em>, <em class="sig-param">distributed=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/benchmark.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.benchmark.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 
