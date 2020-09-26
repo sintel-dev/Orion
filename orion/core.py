@@ -216,7 +216,7 @@ class Orion:
 
             return orion
 
-    def evaluate(self, data: pd.DataFrame, truth: pd.DataFrame, fit: bool = False,
+    def evaluate(self, data: pd.DataFrame, ground_truth: pd.DataFrame, fit: bool = False,
                  train_data: pd.DataFrame = None, metrics: List[str] = METRICS) -> pd.Series:
         """Evaluate the performance against a ground truth.
 
@@ -224,7 +224,7 @@ class Orion:
             data (DataFrame):
                 Input data, passed as a ``pandas.DataFrame`` containing
                 exactly two columns: timestamp and value.
-            truth (DataFrame):
+            ground_truth (DataFrame):
                 Ground truth passed as a ``pandas.DataFrame`` containing
                 two columns: start and stop.
             fit (bool):
@@ -258,7 +258,7 @@ class Orion:
         events = self._detect(method, data)
 
         scores = {
-            metric: METRICS[metric](truth, events, data=data)
+            metric: METRICS[metric](ground_truth, events, data=data)
             for metric in metrics
         }
 
