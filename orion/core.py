@@ -218,15 +218,15 @@ class Orion:
 
     def evaluate(self, data: pd.DataFrame, ground_truth: pd.DataFrame, fit: bool = False,
                  train_data: pd.DataFrame = None, metrics: List[str] = METRICS) -> pd.Series:
-        """Evaluate the performance against a ground truth.
+        """Evaluate the performance against ground truth anomalies.
 
         Args:
             data (DataFrame):
                 Input data, passed as a ``pandas.DataFrame`` containing
                 exactly two columns: timestamp and value.
             ground_truth (DataFrame):
-                Ground truth passed as a ``pandas.DataFrame`` containing
-                two columns: start and stop.
+                Ground truth anomalies passed as a ``pandas.DataFrame``
+                containing two columns: start and stop.
             fit (bool):
                 Whether to fit the pipeline before evaluating it.
                 Defaults to ``False``.
