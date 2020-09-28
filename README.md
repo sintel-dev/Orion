@@ -129,20 +129,17 @@ As ``MLPipeline`` instances, **Orion Pipelines**:
 ## Current Available Pipelines
 
 In the **Orion Project**, the pipelines are included as **JSON** files, which can be found
-inside the [orion/pipelines](orion/pipelines) folder.
+in the subdirectories inside the [orion/pipelines](orion/pipelines) folder.
 
 This is the list of pipelines available so far, which will grow over time:
 
 | name | location | description |
 |------|----------|-------------|
-| Dummy | [orion/pipelines/dummy.json](orion/pipelines/dummy.json) | Dummy Pipeline to showcase the input and output format and the usage of sample primitives |
-| LSTM Dynamic Threshold | [orion/pipelines/lstm_dynamic_threshold.json](orion/pipelines/lstm_dynamic_threshold.json) | LSTM Based pipeline inspired by the [Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper](https://arxiv.org/abs/1802.04431) |
-| Mean 24h LSTM | [orion/pipelines/mean_24h_lstm.json](orion/pipelines/mean_24h_lstm.json) | LSTM Based pipeline with 24h mean aggregation preprocessing |
-| Median 24h LSTM | [orion/pipelines/median_24h_lstm.json](orion/pipelines/median_24h_lstm.json) | LSTM Based pipeline with 24h median aggregation preprocessing |
-| Sum 24h LSTM | [orion/pipelines/sum_24h_lstm.json](orion/pipelines/sum_24h_lstm.json) | LSTM Based pipeline with 24h sum aggregation preprocessing |
-| Skew 24h LSTM | [orion/pipelines/skew_24h_lstm.json](orion/pipelines/skew_24h_lstm.json) | LSTM Based pipeline with 24h skew aggregation preprocessing |
-| TadGAN | [orion/pipelines/tadgan.json](orion/pipelines/tadgan.json) | GAN Based pipeline with reconstruction based errors |
-| ARIMA | [orion/pipelines/arima.json](orion/pipelines/arima.json) | ARIMA Based pipeline |
+| ARIMA | [orion/pipelines/arima](orion/pipelines/verified/arima) | ARIMA Based pipeline |
+| LSTM Dynamic Threshold | [orion/pipelines/lstm_dynamic_threshold](orion/pipelines/verified/lstm_dynamic_threshold) | LSTM Based pipeline inspired by the [Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper](https://arxiv.org/abs/1802.04431) |
+| Dummy | [orion/pipelines/dummy](orion/pipelines/sandox/dummy) | Dummy Pipeline to showcase the input and output format and the usage of sample primitives |
+| TadGAN | [orion/pipelines/tadgan](orion/pipelines/sandbox/tadgan) | GAN Based pipeline with reconstruction based errors |
+| Azure | [orion/pipelines/azure](orion/pipelines/sandbox/azure) | Azure API for [Anomaly Detector](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/)
 
 ## Leaderboard
 
@@ -150,16 +147,14 @@ In this repository we maintain this up-to-date leaderboard with the current scor
 pipelines according to the benchmarking procedure explained in the [benchmark documentation](
 BENCHMARK.md).
 
-| pipeline                  |   accuracy |        f1 |   precision |     recall |
-|---------------------------|------------|-----------|-------------|------------|
-| TadGAN                    |   0.781147 | 0.137234  |   0.147674  | 0.18173    |
-| LSTM Dynamic Thresholding |   0.832052 | 0.125999  |   0.178968  | 0.151298   |
-| Dummy                     |   0.818975 | 0.108436  |   0.13994   | 0.133865   |
-| Mean 24h LSTM             |   0.667412 | 0.0420656 |   0.0775713 | 0.0456106  |
-| Sum 24h LSTM              |   0.685844 | 0.0417817 |   0.066248  | 0.033882   |
-| ARIMA                     |   0.510343 | 0.038821  |   0.0604475 | 0.0377441  |
-| Median 24h LSTM           |   0.673667 | 0.0237867 |   0.0604165 | 0.0178578  |
-| Skew 24h LSTM             |   0.369548 | 0.01142   |   0.0213837 | 0.00902504 |
+Results obtained during benchmarking as well as previous releases can be found within [benchmark/results](benchmark/results) folder as CSV files. Results can also be browsed in the following Google Sheets [document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
+
+
+| pipeline                  |  # Wins | # Detected Anomalies |   Average F1 Score |
+|---------------------------|---------|----------------------|--------------------|
+| LSTM Dynamic Thresholding |    6    |         1704         |   0.6462562565     |
+| ARIMA                     |         |         1715         |   0.5999900362     |
+
 
 # Install
 
