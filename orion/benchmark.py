@@ -32,7 +32,7 @@ with open(os.path.join(BENCHMARK_PATH, 'benchmark_parameters.csv'), newline='') 
     reader = csv.reader(f)
     BENCHMARK_PARAMS = {row[0]: ast.literal_eval(row[1]) for row in reader}
 
-PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines')
+PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
 VERIFIED_PIPELINES = [
     'arima', 'lstm_dynamic_threshold'
@@ -187,7 +187,7 @@ def _evaluate_datasets(pipelines, datasets, hyperparameters, metrics, distribute
         hyperparameters_ = _get_parameter(hyperparameters, dataset)
         parameters = _get_parameter(BENCHMARK_PARAMS, dataset)
         if parameters is not None:
-            holdout, detrend = parameters.values()
+            detrend, holdout = parameters.values()
 
         result = _evaluate_pipelines(
             pipelines, dataset, signals, hyperparameters_, metrics, distributed, holdout, detrend)

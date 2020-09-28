@@ -33,6 +33,9 @@
         },
         "statsmodels.tsa.arima_model.Arima#1": {
             "steps": 1
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "fixed_threshold": true
         }
     },
     "input_names": {
