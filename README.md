@@ -11,6 +11,7 @@
 [![PyPi Shield](https://img.shields.io/pypi/v/orion-ml.svg)](https://pypi.python.org/pypi/orion-ml)
 [![CircleCI](https://circleci.com/gh/signals-dev/Orion.svg?style=shield)](https://circleci.com/gh/signals-dev/Orion)
 [![Travis CI Shield](https://travis-ci.org/signals-dev/Orion.svg?branch=master)](https://travis-ci.org/signals-dev/Orion)
+[![Downloads](https://pepy.tech/badge/orion-ml)](https://pepy.tech/project/orion-ml)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/signals-dev/Orion/master?filepath=notebooks)
 
 # Orion
@@ -43,6 +44,21 @@ With the ready availability of *automated machine learning* tools, the focus is 
 * model audit;
 * scalability;
 
+## Leaderboard
+
+In this repository we maintain this up-to-date leaderboard with the current scoring of the
+pipelines according to the benchmarking procedure explained in the [benchmark documentation](
+BENCHMARK.md).
+
+Results obtained during benchmarking as well as previous releases can be found within [benchmark/results](benchmark/results) folder as CSV files. Results can also be browsed in the following Google Sheets [document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
+
+
+| pipeline                  |  # Wins | # Detected Anomalies |   Average F1 Score |
+|---------------------------|---------|----------------------|--------------------|
+| LSTM Dynamic Thresholding |    6    |         1704         |   0.6462562565     |
+| ARIMA                     |         |         1715         |   0.5999900362     |
+
+
 ## Table of Contents
 
 * [I. Data Format](#data-format)
@@ -51,7 +67,6 @@ With the ready availability of *automated machine learning* tools, the focus is 
    * [I.3 Dataset we use in this library](#dataset-we-use-in-this-library)
 * [II. Orion Pipelines](#orion-pipelines)
    * [II.1 Current Available Pipelines](#current-available-pipelines)
-   * [II.2 Leaderboard](#leaderboard)
 * [III. Install](#install)
    * [III.1 Requirements](#requirements)
    * [III.2 Install with pip](#install-with-pip)
@@ -140,21 +155,6 @@ This is the list of pipelines available so far, which will grow over time:
 | Dummy | [orion/pipelines/dummy](orion/pipelines/sandox/dummy) | Dummy Pipeline to showcase the input and output format and the usage of sample primitives |
 | TadGAN | [orion/pipelines/tadgan](orion/pipelines/sandbox/tadgan) | GAN Based pipeline with reconstruction based errors |
 | Azure | [orion/pipelines/azure](orion/pipelines/sandbox/azure) | Azure API for [Anomaly Detector](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/)
-
-## Leaderboard
-
-In this repository we maintain this up-to-date leaderboard with the current scoring of the
-pipelines according to the benchmarking procedure explained in the [benchmark documentation](
-BENCHMARK.md).
-
-Results obtained during benchmarking as well as previous releases can be found within [benchmark/results](benchmark/results) folder as CSV files. Results can also be browsed in the following Google Sheets [document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
-
-
-| pipeline                  |  # Wins | # Detected Anomalies |   Average F1 Score |
-|---------------------------|---------|----------------------|--------------------|
-| LSTM Dynamic Thresholding |    6    |         1704         |   0.6462562565     |
-| ARIMA                     |         |         1715         |   0.5999900362     |
-
 
 # Install
 
