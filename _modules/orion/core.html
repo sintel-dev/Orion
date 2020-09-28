@@ -522,17 +522,17 @@
 
             <span class="k">return</span> <span class="n">orion</span></div>
 
-<div class="viewcode-block" id="Orion.evaluate"><a class="viewcode-back" href="../../api/orion.core.html#orion.Orion.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">truth</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">fit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<div class="viewcode-block" id="Orion.evaluate"><a class="viewcode-back" href="../../api/orion.core.html#orion.Orion.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">fit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">train_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">METRICS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Evaluate the performance against a ground truth.</span>
+        <span class="sd">&quot;&quot;&quot;Evaluate the performance against ground truth anomalies.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (DataFrame):</span>
 <span class="sd">                Input data, passed as a ``pandas.DataFrame`` containing</span>
 <span class="sd">                exactly two columns: timestamp and value.</span>
-<span class="sd">            truth (DataFrame):</span>
-<span class="sd">                Ground truth passed as a ``pandas.DataFrame`` containing</span>
-<span class="sd">                two columns: start and stop.</span>
+<span class="sd">            ground_truth (DataFrame):</span>
+<span class="sd">                Ground truth anomalies passed as a ``pandas.DataFrame``</span>
+<span class="sd">                containing two columns: start and stop.</span>
 <span class="sd">            fit (bool):</span>
 <span class="sd">                Whether to fit the pipeline before evaluating it.</span>
 <span class="sd">                Defaults to ``False``.</span>
@@ -564,7 +564,7 @@
         <span class="n">events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
         <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">metric</span><span class="p">:</span> <span class="n">METRICS</span><span class="p">[</span><span class="n">metric</span><span class="p">](</span><span class="n">truth</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">metric</span><span class="p">:</span> <span class="n">METRICS</span><span class="p">[</span><span class="n">metric</span><span class="p">](</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span>
         <span class="p">}</span>
 

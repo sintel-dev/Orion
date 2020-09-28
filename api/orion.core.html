@@ -387,15 +387,15 @@ visualization outputs dict.</p>
 
 <dl class="method">
 <dt id="orion.core.Orion.evaluate">
-<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">truth: pandas.core.frame.DataFrame</em>, <em class="sig-param">fit: bool = False</em>, <em class="sig-param">train_data: pandas.core.frame.DataFrame = None</em>, <em class="sig-param">metrics: List[str] = {'accuracy': &lt;function contextual_accuracy&gt;</em>, <em class="sig-param">'f1': &lt;function contextual_f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function contextual_precision&gt;</em>, <em class="sig-param">'recall': &lt;function contextual_recall&gt;}</em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="../_modules/orion/core.html#Orion.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.core.Orion.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate the performance against a ground truth.</p>
+<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">ground_truth: pandas.core.frame.DataFrame</em>, <em class="sig-param">fit: bool = False</em>, <em class="sig-param">train_data: pandas.core.frame.DataFrame = None</em>, <em class="sig-param">metrics: List[str] = {'accuracy': &lt;function contextual_accuracy&gt;</em>, <em class="sig-param">'f1': &lt;function contextual_f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function contextual_precision&gt;</em>, <em class="sig-param">'recall': &lt;function contextual_recall&gt;}</em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="../_modules/orion/core.html#Orion.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.core.Orion.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the performance against ground truth anomalies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<em>DataFrame</em>) – Input data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
 exactly two columns: timestamp and value.</p></li>
-<li><p><strong>truth</strong> (<em>DataFrame</em>) – Ground truth passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
-two columns: start and stop.</p></li>
+<li><p><strong>ground_truth</strong> (<em>DataFrame</em>) – Ground truth anomalies passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
+containing two columns: start and stop.</p></li>
 <li><p><strong>fit</strong> (<em>bool</em>) – Whether to fit the pipeline before evaluating it.
 Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>train_data</strong> (<em>DataFrame</em>) – Training data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
