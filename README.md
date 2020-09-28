@@ -53,10 +53,10 @@ BENCHMARK.md).
 Results obtained during benchmarking as well as previous releases can be found within [benchmark/results](benchmark/results) folder as CSV files. Results can also be browsed in the following Google Sheets [document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
 
 
-| pipeline                  |  # Wins | # Detected Anomalies |   Average F1 Score |
-|---------------------------|---------|----------------------|--------------------|
-| LSTM Dynamic Thresholding |    6    |         1704         |   0.6462562565     |
-| ARIMA                     |         |         1715         |   0.5999900362     |
+| pipeline                  |  # wins | # detected anomalies |   average f1  |
+|---------------------------|---------|----------------------|---------------|
+| LSTM Dynamic Thresholding |    6    |         1704         |   0.6462      |
+| ARIMA                     |         |         1715         |   0.5999      |
 
 
 ## Table of Contents
@@ -150,10 +150,10 @@ This is the list of pipelines available so far, which will grow over time:
 
 | name | location | description |
 |------|----------|-------------|
-| ARIMA | [orion/pipelines/arima](orion/pipelines/verified/arima) | ARIMA Based pipeline |
-| LSTM Dynamic Threshold | [orion/pipelines/lstm_dynamic_threshold](orion/pipelines/verified/lstm_dynamic_threshold) | LSTM Based pipeline inspired by the [Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper](https://arxiv.org/abs/1802.04431) |
-| Dummy | [orion/pipelines/dummy](orion/pipelines/sandox/dummy) | Dummy Pipeline to showcase the input and output format and the usage of sample primitives |
-| TadGAN | [orion/pipelines/tadgan](orion/pipelines/sandbox/tadgan) | GAN Based pipeline with reconstruction based errors |
+| ARIMA | [orion/pipelines/arima](orion/pipelines/verified/arima) | ARIMA based pipeline |
+| LSTM Dynamic Threshold | [orion/pipelines/lstm_dynamic_threshold](orion/pipelines/verified/lstm_dynamic_threshold) | LSTM based pipeline inspired by the [Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper](https://arxiv.org/abs/1802.04431) |
+| Dummy | [orion/pipelines/dummy](orion/pipelines/sandox/dummy) | Dummy pipeline to showcase the input and output format and the usage of sample primitives |
+| TadGAN | [orion/pipelines/tadgan](orion/pipelines/sandbox/tadgan) | GAN based pipeline with reconstruction based errors |
 | Azure | [orion/pipelines/azure](orion/pipelines/sandbox/azure) | Azure API for [Anomaly Detector](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/)
 
 # Install
