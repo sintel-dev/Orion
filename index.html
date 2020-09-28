@@ -84,6 +84,7 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Orion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html#overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#leaderboard">Leaderboard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readme.html#table-of-contents">Table of Contents</a></li>
 </ul>
 </li>
@@ -95,7 +96,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html#orion-pipelines">Orion Pipelines</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="readme.html#current-available-pipelines">Current Available Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#leaderboard">Leaderboard</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html#install">Install</a><ul>
@@ -317,6 +317,7 @@
 <a class="reference external image-reference" href="https://pypi.python.org/pypi/orion-ml"><img alt="PyPi Shield" src="https://img.shields.io/pypi/v/orion-ml.svg" /></a>
 <a class="reference external image-reference" href="https://circleci.com/gh/signals-dev/Orion"><img alt="CircleCI" src="https://circleci.com/gh/signals-dev/Orion.svg?style=shield" /></a>
 <a class="reference external image-reference" href="https://travis-ci.org/signals-dev/Orion"><img alt="Travis CI Shield" src="https://travis-ci.org/signals-dev/Orion.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://pepy.tech/project/orion-ml"><img alt="Downloads" src="https://pepy.tech/badge/orion-ml" /></a>
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/signals-dev/Orion/master?filepath=notebooks"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a>
 <div class="section" id="orion">
 <h1>Orion<a class="headerlink" href="#orion" title="Permalink to this headline">¶</a></h1>
@@ -347,6 +348,39 @@
 <li><p>model audit;</p></li>
 <li><p>scalability;</p></li>
 </ul>
+<div class="section" id="leaderboard">
+<h2>Leaderboard<a class="headerlink" href="#leaderboard" title="Permalink to this headline">¶</a></h2>
+<p>In this repository we maintain this up-to-date leaderboard with the current scoring of the
+pipelines according to the benchmarking procedure explained in the <a class="reference external" href="benchmark.html">benchmark documentation</a>.</p>
+<p>Results obtained during benchmarking as well as previous releases can be found within <a class="reference external" href="benchmark/results">benchmark/results</a> folder as CSV files. Results can also be browsed in the following Google Sheets <a class="reference external" href="https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing">document</a>.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>pipeline</p></th>
+<th class="head"><p># wins</p></th>
+<th class="head"><p># detected anomalies</p></th>
+<th class="head"><p>average f1</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LSTM Dynamic Thresholding</p></td>
+<td><p>6</p></td>
+<td><p>1704</p></td>
+<td><p>0.6462</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARIMA</p></td>
+<td></td>
+<td><p>1715</p></td>
+<td><p>0.5999</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -360,7 +394,6 @@
 <li><p><a class="reference external" href="#orion-pipelines">II. Orion Pipelines</a></p>
 <ul>
 <li><p><a class="reference external" href="#current-available-pipelines">II.1 Current Available Pipelines</a></p></li>
-<li><p><a class="reference external" href="#leaderboard">II.2 Leaderboard</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference external" href="#install">III. Install</a></p>
@@ -480,7 +513,7 @@ other required configuration options.</p></li>
 <div class="section" id="current-available-pipelines">
 <h2>Current Available Pipelines<a class="headerlink" href="#current-available-pipelines" title="Permalink to this headline">¶</a></h2>
 <p>In the <strong>Orion Project</strong>, the pipelines are included as <strong>JSON</strong> files, which can be found
-inside the <a class="reference external" href="orion/pipelines">orion/pipelines</a> folder.</p>
+in the subdirectories inside the <a class="reference external" href="orion/pipelines">orion/pipelines</a> folder.</p>
 <p>This is the list of pipelines available so far, which will grow over time:</p>
 <table class="docutils align-default">
 <colgroup>
@@ -495,109 +528,25 @@ inside the <a class="reference external" href="orion/pipelines">orion/pipelines<
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Dummy</p></td>
-<td><p><a class="reference external" href="orion/pipelines/dummy.json">orion/pipelines/dummy.json</a></p></td>
-<td><p>Dummy Pipeline to showcase the input and output format and the usage of sample primitives</p></td>
+<tr class="row-even"><td><p>ARIMA</p></td>
+<td><p><a class="reference external" href="orion/pipelines/verified/arima">orion/pipelines/arima</a></p></td>
+<td><p>ARIMA based pipeline</p></td>
 </tr>
 <tr class="row-odd"><td><p>LSTM Dynamic Threshold</p></td>
-<td><p><a class="reference external" href="orion/pipelines/lstm_dynamic_threshold.json">orion/pipelines/lstm_dynamic_threshold.json</a></p></td>
-<td><p>LSTM Based pipeline inspired by the <a class="reference external" href="https://arxiv.org/abs/1802.04431">Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper</a></p></td>
-</tr>
-<tr class="row-even"><td><p>Mean 24h LSTM</p></td>
-<td><p><a class="reference external" href="orion/pipelines/mean_24h_lstm.json">orion/pipelines/mean_24h_lstm.json</a></p></td>
-<td><p>LSTM Based pipeline with 24h mean aggregation preprocessing</p></td>
-</tr>
-<tr class="row-odd"><td><p>Median 24h LSTM</p></td>
-<td><p><a class="reference external" href="orion/pipelines/median_24h_lstm.json">orion/pipelines/median_24h_lstm.json</a></p></td>
-<td><p>LSTM Based pipeline with 24h median aggregation preprocessing</p></td>
-</tr>
-<tr class="row-even"><td><p>Sum 24h LSTM</p></td>
-<td><p><a class="reference external" href="orion/pipelines/sum_24h_lstm.json">orion/pipelines/sum_24h_lstm.json</a></p></td>
-<td><p>LSTM Based pipeline with 24h sum aggregation preprocessing</p></td>
-</tr>
-<tr class="row-odd"><td><p>Skew 24h LSTM</p></td>
-<td><p><a class="reference external" href="orion/pipelines/skew_24h_lstm.json">orion/pipelines/skew_24h_lstm.json</a></p></td>
-<td><p>LSTM Based pipeline with 24h skew aggregation preprocessing</p></td>
-</tr>
-<tr class="row-even"><td><p>TadGAN</p></td>
-<td><p><a class="reference external" href="orion/pipelines/tadgan.json">orion/pipelines/tadgan.json</a></p></td>
-<td><p>GAN Based pipeline with reconstruction based errors</p></td>
-</tr>
-<tr class="row-odd"><td><p>ARIMA</p></td>
-<td><p><a class="reference external" href="orion/pipelines/arima.json">orion/pipelines/arima.json</a></p></td>
-<td><p>ARIMA Based pipeline</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="leaderboard">
-<h2>Leaderboard<a class="headerlink" href="#leaderboard" title="Permalink to this headline">¶</a></h2>
-<p>In this repository we maintain this up-to-date leaderboard with the current scoring of the
-pipelines according to the benchmarking procedure explained in the <a class="reference external" href="benchmark.html">benchmark documentation</a>.</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>pipeline</p></th>
-<th class="head"><p>accuracy</p></th>
-<th class="head"><p>f1</p></th>
-<th class="head"><p>precision</p></th>
-<th class="head"><p>recall</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>TadGAN</p></td>
-<td><p>0.781147</p></td>
-<td><p>0.137234</p></td>
-<td><p>0.147674</p></td>
-<td><p>0.18173</p></td>
-</tr>
-<tr class="row-odd"><td><p>LSTM Dynamic Thresholding</p></td>
-<td><p>0.832052</p></td>
-<td><p>0.125999</p></td>
-<td><p>0.178968</p></td>
-<td><p>0.151298</p></td>
+<td><p><a class="reference external" href="orion/pipelines/verified/lstm_dynamic_threshold">orion/pipelines/lstm_dynamic_threshold</a></p></td>
+<td><p>LSTM based pipeline inspired by the <a class="reference external" href="https://arxiv.org/abs/1802.04431">Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Dummy</p></td>
-<td><p>0.818975</p></td>
-<td><p>0.108436</p></td>
-<td><p>0.13994</p></td>
-<td><p>0.133865</p></td>
+<td><p><a class="reference external" href="orion/pipelines/sandox/dummy">orion/pipelines/dummy</a></p></td>
+<td><p>Dummy pipeline to showcase the input and output format and the usage of sample primitives</p></td>
 </tr>
-<tr class="row-odd"><td><p>Mean 24h LSTM</p></td>
-<td><p>0.667412</p></td>
-<td><p>0.0420656</p></td>
-<td><p>0.0775713</p></td>
-<td><p>0.0456106</p></td>
+<tr class="row-odd"><td><p>TadGAN</p></td>
+<td><p><a class="reference external" href="orion/pipelines/sandbox/tadgan">orion/pipelines/tadgan</a></p></td>
+<td><p>GAN based pipeline with reconstruction based errors</p></td>
 </tr>
-<tr class="row-even"><td><p>Sum 24h LSTM</p></td>
-<td><p>0.685844</p></td>
-<td><p>0.0417817</p></td>
-<td><p>0.066248</p></td>
-<td><p>0.033882</p></td>
-</tr>
-<tr class="row-odd"><td><p>ARIMA</p></td>
-<td><p>0.510343</p></td>
-<td><p>0.038821</p></td>
-<td><p>0.0604475</p></td>
-<td><p>0.0377441</p></td>
-</tr>
-<tr class="row-even"><td><p>Median 24h LSTM</p></td>
-<td><p>0.673667</p></td>
-<td><p>0.0237867</p></td>
-<td><p>0.0604165</p></td>
-<td><p>0.0178578</p></td>
-</tr>
-<tr class="row-odd"><td><p>Skew 24h LSTM</p></td>
-<td><p>0.369548</p></td>
-<td><p>0.01142</p></td>
-<td><p>0.0213837</p></td>
-<td><p>0.00902504</p></td>
+<tr class="row-even"><td><p>Azure</p></td>
+<td><p><a class="reference external" href="orion/pipelines/sandbox/azure">orion/pipelines/azure</a></p></td>
+<td><p>Azure API for <a class="reference external" href="https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/">Anomaly Detector</a></p></td>
 </tr>
 </tbody>
 </table>

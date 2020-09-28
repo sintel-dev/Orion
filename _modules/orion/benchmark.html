@@ -83,6 +83,7 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Orion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html#overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../readme.html#leaderboard">Leaderboard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../readme.html#table-of-contents">Table of Contents</a></li>
 </ul>
 </li>
@@ -94,7 +95,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html#orion-pipelines">Orion Pipelines</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../readme.html#current-available-pipelines">Current Available Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../readme.html#leaderboard">Leaderboard</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html#install">Install</a><ul>
@@ -338,7 +338,7 @@
     <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="n">BENCHMARK_PARAMS</span> <span class="o">=</span> <span class="p">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">}</span>
 
-<span class="n">PIPELINE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;pipelines&#39;</span><span class="p">)</span>
+<span class="n">PIPELINE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;pipelines&#39;</span><span class="p">,</span> <span class="s1">&#39;verified&#39;</span><span class="p">)</span>
 
 <span class="n">VERIFIED_PIPELINES</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;arima&#39;</span><span class="p">,</span> <span class="s1">&#39;lstm_dynamic_threshold&#39;</span>
@@ -493,7 +493,7 @@
         <span class="n">hyperparameters_</span> <span class="o">=</span> <span class="n">_get_parameter</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
         <span class="n">parameters</span> <span class="o">=</span> <span class="n">_get_parameter</span><span class="p">(</span><span class="n">BENCHMARK_PARAMS</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">detrend</span><span class="p">,</span> <span class="n">holdout</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">_evaluate_pipelines</span><span class="p">(</span>
             <span class="n">pipelines</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameters_</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
