@@ -1,0 +1,3 @@
+pipeline,# Wins,# Anomalies,Average F1 Score
+lstm_dynamic_threshold,6,1704,0.6462562565318115
+arima,,1715,0.599990036244229
