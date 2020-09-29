@@ -17,6 +17,7 @@ except IOError:
 
 
 install_requires = [
+    's3fs>=0.2.2,<0.5',
     'baytune>=0.2.3,<0.3',
     'mlblocks>=0.3.0,<0.4',
     'mlprimitives>=0.2.2,<0.3',
@@ -27,7 +28,8 @@ install_requires = [
     'scikit-learn>=0.20.1,<0.21',
     'tabulate>=0.8.3,<0.9',
     'Keras>=2.1.6,<2.4',
-    'similaritymeasures>=0.4.3'
+    'similaritymeasures>=0.4.3',
+    'azure-cognitiveservices-anomalydetector>0.1,<=0.2'
 ]
 
 setup_requires = [
@@ -113,6 +115,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/D3-AI/Orion',
-    version='0.1.2',
+    version='0.1.3.dev2',
     zip_safe=False,
 )

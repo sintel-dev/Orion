@@ -1,0 +1,76 @@
+{
+    "name": "orion.primitives.azure_anomaly_detector.detect_anomalies",
+    "contributors": "Sarah Alnegheimish <smish@mit.edu>",
+    "documentation": "https://docs.microsoft.com/en-us/azure/cognitive-services/anomaly-detector/quickstarts/detect-data-anomalies-python",
+    "description": "Use Microsoft Azure's anomaly detection.",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "anomaly_detector"
+    },
+    "modalities": [
+        "timeseries"
+    ],
+    "primitive": "orion.primitives.azure_anomaly_detector.detect_anomalies",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "interval" : {
+                "type": "int",
+                "default": 21600
+            },
+            "overlap_size" : {
+                "type": "int",
+                "default": 12
+            },
+            "subscription_key": {
+                "type": "str"
+            },
+            "endpoint": {
+                "type": "str"
+            },
+            "granularity": {
+                "type": "str",
+                "default": "hourly"
+            },
+            "custom_interval": {
+                "type": "int",
+                "default": 1
+            },
+            "period": {
+                "type": "int",
+                "default": null
+            },
+            "max_anomaly_ratio": {
+                "type": "float",
+                "default": null
+            }
+        },
+        "tunable": {
+            "sensitivity": {
+                "type": "float",
+                "default": null,
+                "range": [
+                    0.01,
+                    0.99
+                ]
+            }
+        }
+    }
+}

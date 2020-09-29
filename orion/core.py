@@ -36,11 +36,13 @@ class Orion:
             Additional hyperparameters to set to the Pipeline.
     """
 
-    PIPELINES_DIR = os.path.join(os.path.dirname(__file__), 'pipelines')
-    PIPELINES = tuple(
-        filename[:-5]
-        for filename in os.listdir(PIPELINES_DIR)
+    PIPELINES_DIR = tuple(
+        dirname
+        for dirname, _, _ in os.walk(os.path.join(os.path.dirname(__file__), 'pipelines'))
+        if os.path.exists(os.path.join(dirname, os.path.basename(dirname) + '.json'))
     )
+    PIPELINES = tuple(os.path.basename(pipeline) for pipeline in PIPELINES_DIR)
+
     DEFAULT_PIPELINE = 'lstm_dynamic_threshold'
 
     def _get_mlpipeline(self):
@@ -214,17 +216,17 @@ class Orion:
 
             return orion
 
-    def evaluate(self, data: pd.DataFrame, truth: pd.DataFrame, fit: bool = False,
+    def evaluate(self, data: pd.DataFrame, ground_truth: pd.DataFrame, fit: bool = False,
                  train_data: pd.DataFrame = None, metrics: List[str] = METRICS) -> pd.Series:
-        """Evaluate the performance against a ground truth.
+        """Evaluate the performance against ground truth anomalies.
 
         Args:
             data (DataFrame):
                 Input data, passed as a ``pandas.DataFrame`` containing
                 exactly two columns: timestamp and value.
-            truth (DataFrame):
-                Ground truth passed as a ``pandas.DataFrame`` containing
-                two columns: start and stop.
+            ground_truth (DataFrame):
+                Ground truth anomalies passed as a ``pandas.DataFrame``
+                containing two columns: start and stop.
             fit (bool):
                 Whether to fit the pipeline before evaluating it.
                 Defaults to ``False``.
@@ -256,7 +258,7 @@ class Orion:
         events = self._detect(method, data)
 
         scores = {
-            metric: METRICS[metric](truth, events, data=data)
+            metric: METRICS[metric](ground_truth, events, data=data)
             for metric in metrics
         }
 

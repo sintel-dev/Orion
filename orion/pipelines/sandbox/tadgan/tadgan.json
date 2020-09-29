@@ -4,10 +4,9 @@
         "sklearn.impute.SimpleImputer",
         "sklearn.preprocessing.MinMaxScaler",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
-        "numpy.reshape",
-        "statsmodels.tsa.arima_model.Arima",
-        "mlprimitives.custom.timeseries_anomalies.regression_errors",
-        "mlprimitives.custom.timeseries_anomalies.find_anomalies"
+        "orion.primitives.tadgan.TadGAN",
+        "orion.primitives.tadgan.score_anomalies",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
         "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
@@ -23,32 +22,30 @@
         },
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "target_column": 0,
-            "window_size": 250
+            "window_size": 100,
+            "target_size": 1
         },
-        "numpy.reshape#1": {
-            "newshape": [
-                -1,
-                250
-            ]
+        "orion.primitives.tadgan.TadGAN#1": {
+            "epochs": 50
         },
-        "statsmodels.tsa.arima_model.Arima#1": {
-            "steps": 1
+        "orion.primitives.tadgan.score_anomalies#1": {
+            "rec_error_type": "dtw"
         }
     },
     "input_names": {
-        "mlprimitives.custom.timeseries_anomalies.find_anomalies#1": {
-            "index": "target_index"
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "index"
         },
-        "numpy.reshape#1": {
+        "orion.primitives.tadgan.score_anomalies#1": {
             "y": "X"
         }
     },
     "output_names": {
-        "statsmodels.tsa.arima_model.Arima#1": {
+        "orion.primitives.tadgan.TadGAN#1": {
             "y": "y_hat"
         },
-        "numpy.reshape#1": {
-            "y": "X"
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "index": "X_index"
         }
     }
 }

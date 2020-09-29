@@ -86,7 +86,7 @@ class TestOrion:
 
     def test_evaluate(self):
         self.orion.fit(self.clean)
-        scores = self.orion.evaluate(data=self.anomalous, truth=self.events)
+        scores = self.orion.evaluate(data=self.anomalous, ground_truth=self.events)
 
         expected = pd.Series({
             'accuracy': 1.0,
@@ -99,7 +99,7 @@ class TestOrion:
     def test_evaluate_fit(self):
         scores = self.orion.evaluate(
             data=self.all_data,
-            truth=self.all_events,
+            ground_truth=self.all_events,
             fit=True,
         )
 
@@ -114,7 +114,7 @@ class TestOrion:
     def test_evaluate_train_data(self):
         scores = self.orion.evaluate(
             data=self.anomalous,
-            truth=self.events,
+            ground_truth=self.events,
             fit=True,
             train_data=self.clean
         )

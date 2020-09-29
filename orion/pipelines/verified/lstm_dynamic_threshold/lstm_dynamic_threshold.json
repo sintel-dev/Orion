@@ -5,8 +5,8 @@
         "sklearn.preprocessing.MinMaxScaler",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
         "keras.Sequential.LSTMTimeSeriesRegressor",
-        "mlprimitives.custom.timeseries_anomalies.regression_errors",
-        "mlprimitives.custom.timeseries_anomalies.find_anomalies"
+        "orion.primitives.timeseries_anomalies.regression_errors",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
         "mlprimitives.custom.timeseries_preprocessing.time_segments_average#1": {
@@ -28,7 +28,7 @@
         }
     },
     "input_names": {
-        "mlprimitives.custom.timeseries_anomalies.find_anomalies#1": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "index": "target_index"
         }
     },
