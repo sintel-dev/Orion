@@ -1,6 +1,19 @@
 History
 =======
 
+## 0.1.3 - 2020-09-29
+
+New benchmark and Azure primitive.
+
+* Implement a benchmarking function new feature - [Issue #94](https://github.com/signals-dev/Orion/issues/94) by @sarahmish
+* Add azure anomaly detection as primitive new feature - [Issue #97](https://github.com/signals-dev/Orion/issues/97) by @sarahmish
+* Critic and reconstruction error combination - [Issue #99](https://github.com/signals-dev/Orion/issues/99) by @sarahmish
+* Fixed threshold for `find_anomalies` - [Issue #101](https://github.com/signals-dev/Orion/issues/101) by @sarahmish
+* Add an option to have window size and window step size as percentages of error size - [Issue #102](https://github.com/signals-dev/Orion/issues/102) by @sarahmish
+* Organize pipelines into verified and sandbox - [Issue #105](https://github.com/signals-dev/Orion/issues/105) by @sarahmish
+* Ground truth parameter name enhancement - [Issue #114](https://github.com/signals-dev/Orion/issues/114) by @sarahmish
+* Add benchmark dataset list and parameters to s3 bucket enhancement - [Issue #118](https://github.com/signals-dev/Orion/issues/118) by @sarahmish
+
 ## 0.1.2 - 2020-07-03
 
 New Evaluation sub-package and refactor TadGAN.

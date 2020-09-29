@@ -46,17 +46,19 @@ With the ready availability of *automated machine learning* tools, the focus is 
 
 ## Leaderboard
 
-In this repository we maintain this up-to-date leaderboard with the current scoring of the
+In this repository we maintain an up-to-date leaderboard with the current scoring of the
 pipelines according to the benchmarking procedure explained in the [benchmark documentation](
 BENCHMARK.md).
 
-Results obtained during benchmarking as well as previous releases can be found within [benchmark/results](benchmark/results) folder as CSV files. Results can also be browsed in the following Google Sheets [document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
+Benchmark is ran on 11 datasets and we record the number of wins each pipeline has over the
+ARIMA pipeline. Results obtained during benchmarking as well as previous releases can be 
+found within [benchmark/results](benchmark/results) folder as CSV files. Results can also 
+be browsed in the following Google Sheets [document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
 
 
-| pipeline                  |  # wins | # detected anomalies |   average f1  |
-|---------------------------|---------|----------------------|---------------|
-| LSTM Dynamic Thresholding |    6    |         1704         |   0.6462      |
-| ARIMA                     |         |         1715         |   0.5999      |
+| Pipeline                  |  Outperforms ARIMA |
+|---------------------------|--------------------|
+| LSTM Dynamic Thresholding |          6         |
 
 
 ## Table of Contents
