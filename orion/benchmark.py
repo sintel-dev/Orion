@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import ast
-import csv
 import json
 import logging
 import os
@@ -19,18 +18,18 @@ from orion.evaluation import contextual_confusion_matrix
 
 LOGGER = logging.getLogger(__name__)
 
+BUCKET = 'd3-ai-orion'
+S3_URL = 'https://{}.s3.amazonaws.com/{}'
+
 BENCHMARK_PATH = os.path.join(os.path.join(
     os.path.dirname(os.path.abspath(__file__)), '..'),
     'benchmark'
 )
 
-with open(os.path.join(BENCHMARK_PATH, 'datasets.csv'), newline='') as f:
-    reader = csv.reader(f)
-    BENCHMARK_DATA = {row[0]: ast.literal_eval(row[1]) for row in reader}
-
-with open(os.path.join(BENCHMARK_PATH, 'benchmark_parameters.csv'), newline='') as f:
-    reader = csv.reader(f)
-    BENCHMARK_PARAMS = {row[0]: ast.literal_eval(row[1]) for row in reader}
+BENCHMARK_DATA = pd.read_csv(S3_URL.format(
+    BUCKET, 'datasets.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
+BENCHMARK_PARAMS = pd.read_csv(S3_URL.format(
+    BUCKET, 'parameters.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
 
 PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
