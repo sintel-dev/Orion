@@ -11,7 +11,12 @@ within [benchmark/results](benchmark/results) folder as CSV files.
 ## Evaluating the Pipelines
 
 Using the [Evaluation sub-package](orion/evaluation), we can compute a score given a set of known 
-anomalies and another one of detected anomalies. We can then evaluate the overall performance of 
+anomalies and another one of detected anomalies. 
+The entire process can be summarized in the following diagram:
+
+![Scoring](docs/images/scoring-300.png?raw=true "Scoring")
+
+We can then evaluate the overall performance of 
 our pipelines in order to know which one has the best performance.
 
 For this we:
@@ -22,7 +27,7 @@ For this we:
 4. Average the score obtained for each metric and pipeline accross all the signals.
 5. Finally, we rank our pipelines sorting them by one of the computed scores.
 
-The output of this process is the [Leaderboard table from the README.md](README.md#leaderboard).
+The output of this process is the [leaderboard](README.md#leaderboard).
 
 ## Benchmark function
 
@@ -37,26 +42,26 @@ The complete evaluation process described above is directly available using the
 This function expects the following inputs:
 
 * pipelines (dict or list): dictionary with pipeline names as keys and their
-            JSON paths as values. If a list is given, it should be of JSON paths,
-            and the paths themselves will be used as names. If not give, all verified
-            pipelines will be used for evaluation.
-* datasets (dict or list): dictionary of dataset name as keys and list of signals as
-            values. If a list is given then it will be under a generic name ``dataset``.
-            If not given, all benchmark datasets will be used used.
+ JSON paths as values. If a list is given, it should be of JSON paths,
+ and the paths themselves will be used as names. If not given, all verified
+ pipelines will be used for evaluation.
+* datasets (dict or list): dictionary of dataset name as keys and list of signals as 
+ values. If a list is given then it will be under a generic name `dataset`.
+ If not given, all benchmark datasets will be used used.
 * hyperparameters (dict or list): dictionary with pipeline names as keys
-            and their hyperparameter JSON paths or dictionaries as values. If a list is
-            given, it should be of corresponding order to pipelines.
+ and their hyperparameter JSON paths or dictionaries as values. If a list is
+ given, it should be of corresponding order to pipelines.
 * metrics (dict or list): dictionary with metric names as keys and
-            scoring functions as values. If a list is given, it should be of scoring
-            functions, and they ``__name__`` value will be used as the metric name.
-            If not given, all the available metrics will be used.
+ scoring functions as values. If a list is given, it should be of scoring
+ functions, and they `__name__` value will be used as the metric name.
+ If not given, all the available metrics will be used.
 * rank (str): Sort and rank the pipelines based on the given metric.
-            If not given, rank using the first metric.
+ If not given, rank using the first metric.
 * distributed (bool): Whether to use dask for distributed computing. If not given,
-            use ``False``.
+ use `False`.
 * holdout (bool): Whether to use the prespecified train-test split. If not given,
-            use ``False``.
-* detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.
+ use `False`.
+* detrend (bool): Whether to use `scipy.detrend`. If not given, use `False`.
 * output_path (str): Location to save the results. If not given, results will not be saved.
 
 And returns a `pandas.DataFrame` which contains the scores obtained with each scoring function 
