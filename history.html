@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>History &mdash; Orion 0.1.3.dev1 documentation</title>
+  <title>History &mdash; Orion 0.1.4.dev0 documentation</title>
   
 
   
@@ -119,14 +119,9 @@
 <p class="caption"><span class="caption-text">Advanced Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
-<li class="toctree-l2"><a class="reference internal" href="benchmark.html#calculating-a-score">Calculating a Score</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmark.html#scoring-input">Scoring Input</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#releases">Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="benchmark.html#evaluate-function">Evaluate function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#benchmark-function">Benchmark function</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">Database Schema</a><ul>
@@ -237,9 +232,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">0.1.2 - 2020-07-03</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">0.1.1 - 2020-05-11</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">0.1.0 - 2020-04-23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">0.1.3 - 2020-09-29</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.1.2 - 2020-07-03</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">0.1.1 - 2020-05-11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">0.1.0 - 2020-04-23</a></li>
 </ul>
 </li>
 </ul>
@@ -311,7 +307,21 @@
   <div class="section" id="history">
 <h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>0.1.2 - 2020-07-03<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>0.1.3 - 2020-09-29<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>New benchmark and Azure primitive.</p>
+<ul class="simple">
+<li><p>Implement a benchmarking function new feature - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/94">Issue #94</a> by &#64;sarahmish</p></li>
+<li><p>Add azure anomaly detection as primitive new feature - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/97">Issue #97</a> by &#64;sarahmish</p></li>
+<li><p>Critic and reconstruction error combination - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/99">Issue #99</a> by &#64;sarahmish</p></li>
+<li><p>Fixed threshold for <code class="docutils literal notranslate"><span class="pre">find_anomalies</span></code> - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/101">Issue #101</a> by &#64;sarahmish</p></li>
+<li><p>Add an option to have window size and window step size as percentages of error size - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/102">Issue #102</a> by &#64;sarahmish</p></li>
+<li><p>Organize pipelines into verified and sandbox - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/105">Issue #105</a> by &#64;sarahmish</p></li>
+<li><p>Ground truth parameter name enhancement - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/114">Issue #114</a> by &#64;sarahmish</p></li>
+<li><p>Add benchmark dataset list and parameters to s3 bucket enhancement - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/118">Issue #118</a> by &#64;sarahmish</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>0.1.2 - 2020-07-03<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>New Evaluation sub-package and refactor TadGAN.</p>
 <ul class="simple">
 <li><p>Two bugs when saving signalrun if there is no event detected - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/92">Issue #92</a> by &#64;dyuliu</p></li>
@@ -322,16 +332,16 @@
 <li><p>Scoring function for intervals of size one - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/76">Issue #76</a> by &#64;sarahmish</p></li>
 </ul>
 </div>
-<div class="section" id="id2">
-<h2>0.1.1 - 2020-05-11<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2>0.1.1 - 2020-05-11<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p>New class and function based interfaces.</p>
 <ul class="simple">
 <li><p>Implement the Orion Class - <a class="reference external" href="https://github.com/D3-AI/Orion/issues/79">Issue #79</a> by &#64;csala</p></li>
 <li><p>Implement new functional interface - <a class="reference external" href="https://github.com/D3-AI/Orion/issues/80">Issue #80</a> by &#64;csala</p></li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h2>0.1.0 - 2020-04-23<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2>0.1.0 - 2020-04-23<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>First Orion release to PyPI: <a class="reference external" href="https://pypi.org/project/orion-ml/">https://pypi.org/project/orion-ml/</a></p>
 </div>
 </div>

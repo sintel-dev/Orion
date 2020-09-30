@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Orion &mdash; Orion 0.1.3.dev1 documentation</title>
+  <title>Orion &mdash; Orion 0.1.4.dev0 documentation</title>
   
 
   
@@ -120,14 +120,9 @@
 <p class="caption"><span class="caption-text">Advanced Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="benchmark.html#data-used-for-the-scoring">Data used for the scoring</a></li>
-<li class="toctree-l2"><a class="reference internal" href="benchmark.html#calculating-a-score">Calculating a Score</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmark.html#scoring-input">Scoring Input</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmark.html#scoring-process-reformat-as-labels-with-weights">Scoring process: Reformat as labels with weights</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#releases">Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="benchmark.html#evaluate-function">Evaluate function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#benchmark-function">Benchmark function</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">Database Schema</a><ul>
@@ -238,9 +233,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id1">0.1.2 - 2020-07-03</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id2">0.1.1 - 2020-05-11</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id3">0.1.0 - 2020-04-23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id1">0.1.3 - 2020-09-29</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id2">0.1.2 - 2020-07-03</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id3">0.1.1 - 2020-05-11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id4">0.1.0 - 2020-04-23</a></li>
 </ul>
 </li>
 </ul>
@@ -351,33 +347,25 @@
 </ul>
 <div class="section" id="leaderboard">
 <h2>Leaderboard<a class="headerlink" href="#leaderboard" title="Permalink to this headline">¶</a></h2>
-<p>In this repository we maintain this up-to-date leaderboard with the current scoring of the
+<p>In this repository we maintain an up-to-date leaderboard with the current scoring of the
 pipelines according to the benchmarking procedure explained in the <a class="reference external" href="benchmark.html">benchmark documentation</a>.</p>
-<p>Results obtained during benchmarking as well as previous releases can be found within <a class="reference external" href="benchmark/results">benchmark/results</a> folder as CSV files. Results can also be browsed in the following Google Sheets <a class="reference external" href="https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing">document</a>.</p>
+<p>Benchmark is ran on 11 datasets and we record the number of wins each pipeline has over the
+ARIMA pipeline. Results obtained during benchmarking as well as previous releases can be
+found within <a class="reference external" href="benchmark/results">benchmark/results</a> folder as CSV files. Results can also
+be browsed in the following Google Sheets <a class="reference external" href="https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing">document</a>.</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
+<col style="width: 50%" />
+<col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>pipeline</p></th>
-<th class="head"><p># wins</p></th>
-<th class="head"><p># detected anomalies</p></th>
-<th class="head"><p>average f1</p></th>
+<tr class="row-odd"><th class="head"><p>Pipeline</p></th>
+<th class="head"><p>Outperforms ARIMA</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>LSTM Dynamic Thresholding</p></td>
 <td><p>6</p></td>
-<td><p>1704</p></td>
-<td><p>0.6462</p></td>
-</tr>
-<tr class="row-odd"><td><p>ARIMA</p></td>
-<td></td>
-<td><p>1715</p></td>
-<td><p>0.5999</p></td>
 </tr>
 </tbody>
 </table>
