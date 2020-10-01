@@ -94,8 +94,8 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
         LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
                     name, signal, holdout)
 
-        pipeline = _load_pipeline(pipeline, hyperparameter)
         start = datetime.utcnow()
+        pipeline = _load_pipeline(pipeline, hyperparameter)
         anomalies = analyze(pipeline, train, test)
         elapsed = datetime.utcnow() - start
 
@@ -119,7 +119,7 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
         metric_ = 'confusion_matrix'
         if metric_ in metrics.keys():
             fn = len(truth)
-            scores[metric_] = (None, 0, fn, 0)
+            scores[metric_] = (None, 0, fn, 0)  # (tn, fp, fn, tp)
 
         scores['status'] = 'ERROR'
 
