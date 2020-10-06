@@ -198,7 +198,7 @@ class TestBenchmark(TestCase):
         returned = benchmark._evaluate_signal(
             self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics)
 
-        expected_return = self.set_score(0, 0, ANY)
+        expected_return = self.set_score(0, ANY, ANY)
         expected_return['status'] = 'ERROR'
         assert returned == expected_return
 

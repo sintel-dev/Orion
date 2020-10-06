@@ -1,5 +1,9 @@
+import logging
+
 import numpy as np
 from sklearn import metrics
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _overlap(expected, observed):
@@ -35,13 +39,27 @@ def _accuracy(expected, observed, data, start, end, cm):
 def _precision(expected, observed, data, start, end, cm):
     tn, fp, fn, tp = cm(expected, observed, data, start, end)
 
-    return tp / (tp + fp)
+    try:
+        return tp / (tp + fp)
+
+    except ZeroDivisionError as ex:
+        LOGGER.exception(
+            'Evaluation exception {} (tp {}/ fp {}).'.format(ex, tp, fp))
+
+        return np.nan
 
 
 def _recall(expected, observed, data, start, end, cm):
     tn, fp, fn, tp = cm(expected, observed, data, start, end)
 
-    return tp / (tp + fn)
+    try:
+        return tp / (tp + fn)
+
+    except ZeroDivisionError as ex:
+        LOGGER.exception(
+            'Evaluation exception {} (tp {}/ fn {}).'.format(ex, tp, fn))
+
+        return np.nan
 
 
 def _f1_score(expected, observed, data, start, end, cm):
@@ -52,5 +70,7 @@ def _f1_score(expected, observed, data, start, end, cm):
         return 2 * (precision * recall) / (precision + recall)
 
     except ZeroDivisionError:
-        print('Invalid value encountered for precision {}/ recall {}.'.format(precision, recall))
+        LOGGER.exception(
+            'Invalid value encountered for precision {}/ recall {}.'.format(precision, recall))
+
         return np.nan
