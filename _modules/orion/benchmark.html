@@ -396,8 +396,8 @@
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (Holdout: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
                     <span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">)</span>
 
-        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">_load_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">)</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">_load_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">)</span>
         <span class="n">anomalies</span> <span class="o">=</span> <span class="n">analyze</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
         <span class="n">elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
 
@@ -407,19 +407,25 @@
             <span class="n">name</span><span class="p">:</span> <span class="n">scorer</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">scorer</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">}</span>
-        <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
         <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;OK&#39;</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (Holdout: </span><span class="si">%s</span><span class="s2">), error </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span>
                          <span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
 
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
         <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">name</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="p">}</span>
-        <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">metric_</span> <span class="o">=</span> <span class="s1">&#39;confusion_matrix&#39;</span>
+        <span class="k">if</span> <span class="n">metric_</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">fn</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+            <span class="n">scores</span><span class="p">[</span><span class="n">metric_</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># (tn, fp, fn, tp)</span>
+
         <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ERROR&#39;</span>
 
+    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
     <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
     <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;holdout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">holdout</span>
     <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span>
