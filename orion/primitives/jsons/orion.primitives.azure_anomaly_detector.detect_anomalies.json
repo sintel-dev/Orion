@@ -61,6 +61,10 @@
                 "type": "float",
                 "default": null
             }
+            "timezone": {
+                "type": "str",
+                "default": "UTC"
+            }
         },
         "tunable": {
             "sensitivity": {
