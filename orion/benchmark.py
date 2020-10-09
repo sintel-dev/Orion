@@ -85,6 +85,7 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
                      holdout=True, detrend=False):
 
     train, test = _load_signal(signal, holdout)
+    truth = load_anomalies(signal)
 
     if detrend:
         train = _detrend_signal(train, 'value')
@@ -98,8 +99,6 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
         pipeline = _load_pipeline(pipeline, hyperparameter)
         anomalies = analyze(pipeline, train, test)
         elapsed = datetime.utcnow() - start
-
-        truth = load_anomalies(signal)
 
         scores = {
             name: scorer(truth, anomalies, test)
