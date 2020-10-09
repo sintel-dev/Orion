@@ -141,14 +141,9 @@ def detect_anomalies(X, index, interval, overlap_size, subscription_key, endpoin
                 Array containing start-index, end-index, score for each anomalous sequence.
                 Note that the API does not have an anomaly score, and so score is set to `None`.
     """
-
-    if timezone.lower() == "utc":
-        tz = pytz.utc
-    else:
-        tz = pytz.timezone(timezone)
-
     client = AnomalyDetectorClient(endpoint, CognitiveServicesCredentials(subscription_key))
 
+    tz = pytz.timezone(timezone)
     overlap = 0
     result = list()
 
@@ -162,15 +157,11 @@ def detect_anomalies(X, index, interval, overlap_size, subscription_key, endpoin
             series=series, granularity=granularity, custom_interval=custom_interval, period=period,
             max_anomaly_ratio=max_anomaly_ratio, sensitivity=sensitivity)
 
-        try:
-            response = client.entire_detect(request)
-            if response.is_anomaly:
-                anomalous = response.is_anomaly[overlap:]
-                index_ = idx[overlap:]
-                result.extend(index_[anomalous])
-
-        except Exception as ex:
-            LOGGER.exception(ex)
+        response = client.entire_detect(request)
+        if response.is_anomaly:
+            anomalous = response.is_anomaly[overlap:]
+            index_ = idx[overlap:]
+            result.extend(index_[anomalous])
 
         overlap = overlap_size
 
