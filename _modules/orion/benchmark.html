@@ -387,6 +387,7 @@
                      <span class="n">holdout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
     <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">)</span>
+    <span class="n">truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">detrend</span><span class="p">:</span>
         <span class="n">train</span> <span class="o">=</span> <span class="n">_detrend_signal</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">)</span>
@@ -400,8 +401,6 @@
         <span class="n">pipeline</span> <span class="o">=</span> <span class="n">_load_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">)</span>
         <span class="n">anomalies</span> <span class="o">=</span> <span class="n">analyze</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
         <span class="n">elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
-
-        <span class="n">truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
 
         <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">name</span><span class="p">:</span> <span class="n">scorer</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
