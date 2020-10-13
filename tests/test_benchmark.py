@@ -211,7 +211,7 @@ class TestBenchmark(TestCase):
         load_pipeline_mock.assert_called_once_with(self.pipeline, self.hyper)
         analyze_mock.assert_called_once_with(self.pipeline, train, test)
 
-        assert not load_anomalies_mock.called
+        assert load_anomalies_mock.called
 
     @patch('orion.benchmark.load_anomalies')
     @patch('orion.benchmark.analyze')
