@@ -133,8 +133,9 @@ def detect_anomalies(X, index, interval, overlap_size, subscription_key, endpoin
             the margin value will be which means less anomalies will be accepted. If not given,
             `None` is used.
         timezone (str):
-                String indicating the timezone of the timestamps. If not given, will use UTC as
-                default.
+            String indicating the timezone of the timestamps. If not given, will use UTC as
+            default. The format of the string should be complaint with ``pytz``
+            which can be found in http://pytz.sourceforge.net/.
 
         Returns:
             list:
