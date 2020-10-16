@@ -313,7 +313,7 @@
 <span id="orion-primitives-azure-anomaly-detector-module"></span><h1>orion.primitives.azure_anomaly_detector module<a class="headerlink" href="#module-orion.primitives.azure_anomaly_detector" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="orion.primitives.azure_anomaly_detector.detect_anomalies">
-<code class="sig-prename descclassname">orion.primitives.azure_anomaly_detector.</code><code class="sig-name descname">detect_anomalies</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">index</em>, <em class="sig-param">interval</em>, <em class="sig-param">overlap_size</em>, <em class="sig-param">subscription_key</em>, <em class="sig-param">endpoint</em>, <em class="sig-param">granularity</em>, <em class="sig-param">custom_interval=None</em>, <em class="sig-param">period=None</em>, <em class="sig-param">max_anomaly_ratio=None</em>, <em class="sig-param">sensitivity=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/azure_anomaly_detector.html#detect_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.azure_anomaly_detector.detect_anomalies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">orion.primitives.azure_anomaly_detector.</code><code class="sig-name descname">detect_anomalies</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">index</em>, <em class="sig-param">interval</em>, <em class="sig-param">overlap_size</em>, <em class="sig-param">subscription_key</em>, <em class="sig-param">endpoint</em>, <em class="sig-param">granularity</em>, <em class="sig-param">custom_interval=None</em>, <em class="sig-param">period=None</em>, <em class="sig-param">max_anomaly_ratio=None</em>, <em class="sig-param">sensitivity=None</em>, <em class="sig-param">timezone='UTC'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/primitives/azure_anomaly_detector.html#detect_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.azure_anomaly_detector.detect_anomalies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Microsoft’s Azure Anomaly Detection tool.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -328,7 +328,7 @@
 Granularity is used for verify whether input series is valid. Possible values
 include: ‘yearly’, ‘monthly’, ‘weekly’, ‘daily’, ‘hourly’, ‘minutely’.</p></li>
 <li><p><strong>custom_interval</strong> (<em>int</em>) – Integer used to set non-standard time interval, for example, if the series
-is 5 minutes, request can be set as {“granularity”:”minutely”, “custom_interval”:5}.
+is 5 minutes, request can be set as <cite>{“granularity”:”minutely”, “custom_interval”:5}</cite>.
 If not given, <cite>None</cite> is used.</p></li>
 <li><p><strong>period</strong> (<em>int</em>) – Periodic value of a time series. If not given, <cite>None</cite> is used, and the API
 will determine the period automatically.</p></li>
@@ -337,6 +337,9 @@ will determine the period automatically.</p></li>
 <li><p><strong>sensitivity</strong> (<em>int</em>) – Advanced model parameter, between 0-99, the lower the value is, the larger
 the margin value will be which means less anomalies will be accepted. If not given,
 <cite>None</cite> is used.</p></li>
+<li><p><strong>timezone</strong> (<em>str</em>) – String indicating the timezone of the timestamps. If not given, will use UTC as
+default. The format of the string should be complaint with <code class="docutils literal notranslate"><span class="pre">pytz</span></code>
+which can be found in <a class="reference external" href="http://pytz.sourceforge.net/">http://pytz.sourceforge.net/</a>.</p></li>
 <li><p><strong>Returns</strong> – <dl class="simple">
 <dt>list:</dt><dd><p>Array containing start-index, end-index, score for each anomalous sequence.
 Note that the API does not have an anomaly score, and so score is set to <cite>None</cite>.</p>

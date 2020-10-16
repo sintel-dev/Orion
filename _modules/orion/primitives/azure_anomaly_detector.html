@@ -303,6 +303,7 @@
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
+<span class="kn">import</span> <span class="nn">pytz</span>
 <span class="kn">from</span> <span class="nn">azure.cognitiveservices.anomalydetector</span> <span class="kn">import</span> <span class="n">AnomalyDetectorClient</span>
 <span class="kn">from</span> <span class="nn">azure.cognitiveservices.anomalydetector.models</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Request</span>
 <span class="kn">from</span> <span class="nn">msrest.authentication</span> <span class="kn">import</span> <span class="n">CognitiveServicesCredentials</span>
@@ -310,8 +311,8 @@
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_convert_date</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_convert_date</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tz</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tz</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_convert_anomalies_to_contextual</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -398,7 +399,8 @@
 
 
 <div class="viewcode-block" id="detect_anomalies"><a class="viewcode-back" href="../../../api/orion.primitives.azure_anomaly_detector.html#orion.primitives.azure_anomaly_detector.detect_anomalies">[docs]</a><span class="k">def</span> <span class="nf">detect_anomalies</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">overlap_size</span><span class="p">,</span> <span class="n">subscription_key</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">granularity</span><span class="p">,</span>
-                     <span class="n">custom_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_anomaly_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sensitivity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                     <span class="n">custom_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_anomaly_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sensitivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">timezone</span><span class="o">=</span><span class="s2">&quot;UTC&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Microsoft&#39;s Azure Anomaly Detection tool.</span>
 
 <span class="sd">    Args:</span>
@@ -420,7 +422,7 @@
 <span class="sd">            include: &#39;yearly&#39;, &#39;monthly&#39;, &#39;weekly&#39;, &#39;daily&#39;, &#39;hourly&#39;, &#39;minutely&#39;.</span>
 <span class="sd">        custom_interval (int):</span>
 <span class="sd">            Integer used to set non-standard time interval, for example, if the series</span>
-<span class="sd">            is 5 minutes, request can be set as {&quot;granularity&quot;:&quot;minutely&quot;, &quot;custom_interval&quot;:5}.</span>
+<span class="sd">            is 5 minutes, request can be set as `{&quot;granularity&quot;:&quot;minutely&quot;, &quot;custom_interval&quot;:5}`.</span>
 <span class="sd">            If not given, `None` is used.</span>
 <span class="sd">        period (int):</span>
 <span class="sd">            Periodic value of a time series. If not given, `None` is used, and the API</span>
@@ -432,6 +434,10 @@
 <span class="sd">            Advanced model parameter, between 0-99, the lower the value is, the larger</span>
 <span class="sd">            the margin value will be which means less anomalies will be accepted. If not given,</span>
 <span class="sd">            `None` is used.</span>
+<span class="sd">        timezone (str):</span>
+<span class="sd">            String indicating the timezone of the timestamps. If not given, will use UTC as</span>
+<span class="sd">            default. The format of the string should be complaint with ``pytz``</span>
+<span class="sd">            which can be found in http://pytz.sourceforge.net/.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list:</span>
@@ -440,28 +446,25 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">AnomalyDetectorClient</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">CognitiveServicesCredentials</span><span class="p">(</span><span class="n">subscription_key</span><span class="p">))</span>
 
+    <span class="n">tz</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="n">timezone</span><span class="p">)</span>
     <span class="n">overlap</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="n">series</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
-            <span class="n">idx_</span> <span class="o">=</span> <span class="n">_convert_date</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">idx_</span> <span class="o">=</span> <span class="n">_convert_date</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">tz</span><span class="p">)</span>
             <span class="n">series</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="n">idx_</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span>
             <span class="n">series</span><span class="o">=</span><span class="n">series</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="n">granularity</span><span class="p">,</span> <span class="n">custom_interval</span><span class="o">=</span><span class="n">custom_interval</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span>
             <span class="n">max_anomaly_ratio</span><span class="o">=</span><span class="n">max_anomaly_ratio</span><span class="p">,</span> <span class="n">sensitivity</span><span class="o">=</span><span class="n">sensitivity</span><span class="p">)</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">entire_detect</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">is_anomaly</span><span class="p">:</span>
-                <span class="n">anomalous</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">is_anomaly</span><span class="p">[</span><span class="n">overlap</span><span class="p">:]</span>
-                <span class="n">index_</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[</span><span class="n">overlap</span><span class="p">:]</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">index_</span><span class="p">[</span><span class="n">anomalous</span><span class="p">])</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">entire_detect</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">is_anomaly</span><span class="p">:</span>
+            <span class="n">anomalous</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">is_anomaly</span><span class="p">[</span><span class="n">overlap</span><span class="p">:]</span>
+            <span class="n">index_</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[</span><span class="n">overlap</span><span class="p">:]</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">index_</span><span class="p">[</span><span class="n">anomalous</span><span class="p">])</span>
 
         <span class="n">overlap</span> <span class="o">=</span> <span class="n">overlap_size</span>
 
