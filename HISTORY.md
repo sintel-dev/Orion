@@ -1,6 +1,15 @@
 History
 =======
 
+## 0.1.4 - 2020-10-16
+
+Minor enhancements to benchmark
+
+* Load ground truth before try-catch - [Issue #124](https://github.com/signals-dev/Orion/issues/124) by @sarahmish
+* Converting timestamp to datetime in Azure primitive - [Issue #123](https://github.com/signals-dev/Orion/issues/123) by @sarahmish
+* Benchmark exceptions - [Issue #120](https://github.com/signals-dev/Orion/issues/120) by @sarahmish
+
+
 ## 0.1.3 - 2020-09-29
 
 New benchmark and Azure primitive.
