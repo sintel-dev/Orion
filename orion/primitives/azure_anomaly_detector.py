@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 
+import pytz
 from azure.cognitiveservices.anomalydetector import AnomalyDetectorClient
 from azure.cognitiveservices.anomalydetector.models import Point, Request
 from msrest.authentication import CognitiveServicesCredentials
@@ -8,8 +9,8 @@ from msrest.authentication import CognitiveServicesCredentials
 LOGGER = logging.getLogger(__name__)
 
 
-def _convert_date(x):
-    return datetime.fromtimestamp(x).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+def _convert_date(x, tz):
+    return datetime.fromtimestamp(x, tz).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
 
 def _convert_anomalies_to_contextual(X, interval=1):
@@ -96,7 +97,8 @@ def split_sequence(X, index, target_column, sequence_size, overlap_size):
 
 
 def detect_anomalies(X, index, interval, overlap_size, subscription_key, endpoint, granularity,
-                     custom_interval=None, period=None, max_anomaly_ratio=None, sensitivity=None):
+                     custom_interval=None, period=None, max_anomaly_ratio=None, sensitivity=None,
+                     timezone="UTC"):
     """Microsoft's Azure Anomaly Detection tool.
 
     Args:
@@ -118,7 +120,7 @@ def detect_anomalies(X, index, interval, overlap_size, subscription_key, endpoin
             include: 'yearly', 'monthly', 'weekly', 'daily', 'hourly', 'minutely'.
         custom_interval (int):
             Integer used to set non-standard time interval, for example, if the series
-            is 5 minutes, request can be set as {"granularity":"minutely", "custom_interval":5}.
+            is 5 minutes, request can be set as `{"granularity":"minutely", "custom_interval":5}`.
             If not given, `None` is used.
         period (int):
             Periodic value of a time series. If not given, `None` is used, and the API
@@ -130,6 +132,10 @@ def detect_anomalies(X, index, interval, overlap_size, subscription_key, endpoin
             Advanced model parameter, between 0-99, the lower the value is, the larger
             the margin value will be which means less anomalies will be accepted. If not given,
             `None` is used.
+        timezone (str):
+            String indicating the timezone of the timestamps. If not given, will use UTC as
+            default. The format of the string should be complaint with ``pytz``
+            which can be found in http://pytz.sourceforge.net/.
 
         Returns:
             list:
@@ -138,28 +144,25 @@ def detect_anomalies(X, index, interval, overlap_size, subscription_key, endpoin
     """
     client = AnomalyDetectorClient(endpoint, CognitiveServicesCredentials(subscription_key))
 
+    tz = pytz.timezone(timezone)
     overlap = 0
     result = list()
 
     for x, idx in zip(X, index):
         series = []
         for i in range(len(x)):
-            idx_ = _convert_date(idx[i])
+            idx_ = _convert_date(idx[i], tz)
             series.append(Point(timestamp=idx_, value=x[i]))
 
         request = Request(
             series=series, granularity=granularity, custom_interval=custom_interval, period=period,
             max_anomaly_ratio=max_anomaly_ratio, sensitivity=sensitivity)
 
-        try:
-            response = client.entire_detect(request)
-            if response.is_anomaly:
-                anomalous = response.is_anomaly[overlap:]
-                index_ = idx[overlap:]
-                result.extend(index_[anomalous])
-
-        except Exception as ex:
-            LOGGER.exception(ex)
+        response = client.entire_detect(request)
+        if response.is_anomaly:
+            anomalous = response.is_anomaly[overlap:]
+            index_ = idx[overlap:]
+            result.extend(index_[anomalous])
 
         overlap = overlap_size
 
