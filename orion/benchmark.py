@@ -34,12 +34,13 @@ BENCHMARK_PARAMS = pd.read_csv(S3_URL.format(
 PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
 VERIFIED_PIPELINES = [
-    'arima', 'lstm_dynamic_threshold'
+    'arima', 'lstm_dynamic_threshold', 'azure'
 ]
 
 VERIFIED_PIPELINES_GPU = {
     'arima': 'arima',
-    'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu'
+    'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu',
+    'azure': 'azure'
 }
 
 
@@ -225,31 +226,43 @@ def _summarize_results(df, metrics):
 
         return x
 
+    def get_status(x):
+        return {
+            "OK": 0,
+            "ERROR": 1
+        }[x]
+
+    df['status'] = df['status'].apply(get_status)
+    df['confusion_matrix'] = df['confusion_matrix'].apply(ast.literal_eval)
     df['confusion_matrix'] = df['confusion_matrix'].apply(return_cm)
     df[['fp', 'fn', 'tp']] = pd.DataFrame(df['confusion_matrix'].tolist(), index=df.index)
 
     # calculate f1 score
-    df = df.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
+    df_ = df.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
 
-    precision = df['tp'] / (df['tp'] + df['fp'])
-    recall = df['tp'] / (df['tp'] + df['fn'])
-    df['f1'] = 2 * (precision * recall) / (precision + recall)
+    precision = df_['tp'] / (df_['tp'] + df_['fp'])
+    recall = df_['tp'] / (df_['tp'] + df_['fn'])
+    df_['f1'] = 2 * (precision * recall) / (precision + recall)
 
     result = dict()
 
     # number of wins over ARIMA
     arima_pipeline = 'arima'
-    intermediate = df.set_index(['pipeline', 'dataset'])['f1'].unstack().T
+    intermediate = df_.set_index(['pipeline', 'dataset'])['f1'].unstack().T
     arima = intermediate.pop(arima_pipeline)
 
     result['# Wins'] = (intermediate.T > arima).sum(axis=1)
     result['# Wins'][arima_pipeline] = None
 
     # number of anomalies detected
-    result['# Anomalies'] = df.groupby('pipeline')[['tp', 'fp']].sum().sum(axis=1).to_dict()
+    result['# Anomalies'] = df_.groupby('pipeline')[['tp', 'fp']].sum().sum(axis=1).to_dict()
 
     # average f1 score
-    result['Average F1 Score'] = df.groupby('pipeline')['f1'].mean().to_dict()
+    result['Average F1 Score'] = df_.groupby('pipeline')['f1'].mean().to_dict()
+
+    # failure rate
+    result['Failure Rate'] = df.groupby(
+        ['dataset', 'pipeline'])['status'].mean().unstack('pipeline').T.mean(axis=1)
 
     result = pd.DataFrame(result)
     result.index.name = 'pipeline'

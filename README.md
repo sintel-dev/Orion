@@ -52,14 +52,14 @@ BENCHMARK.md).
 
 Benchmark is ran on 11 datasets and we record the number of wins each pipeline has over the
 ARIMA pipeline. Results obtained during benchmarking as well as previous releases can be 
-found within [benchmark/results](benchmark/results) folder as CSV files. Results can also 
-be browsed in the following Google Sheets [document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
+found within [benchmark/results](benchmark/results) folder as CSV files. Summarized results can also 
+be browsed in the following Google Sheets [document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing) as well as the details Google Sheets [document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing).
 
 
 | Pipeline                  |  Outperforms ARIMA |
 |---------------------------|--------------------|
-| LSTM Dynamic Thresholding |          6         |
-
+| LSTM Dynamic Thresholding |          5         |
+| Azure                     |          0         |
 
 ## Table of Contents
 

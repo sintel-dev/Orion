@@ -27,7 +27,8 @@
             "subscription_key": "your-key",
             "endpoint": "your-endpoint",
             "interval": 21600,
-            "overlap_size": 2640
+            "overlap_size": 2640,
+            "sensitivity": 50
         }
     },
     "output_names": {
