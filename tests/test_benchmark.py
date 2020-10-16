@@ -198,7 +198,7 @@ class TestBenchmark(TestCase):
         returned = benchmark._evaluate_signal(
             self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics)
 
-        expected_return = self.set_score(0, 0, ANY)
+        expected_return = self.set_score(0, ANY, ANY)
         expected_return['status'] = 'ERROR'
         assert returned == expected_return
 
@@ -211,7 +211,7 @@ class TestBenchmark(TestCase):
         load_pipeline_mock.assert_called_once_with(self.pipeline, self.hyper)
         analyze_mock.assert_called_once_with(self.pipeline, train, test)
 
-        assert not load_anomalies_mock.called
+        assert load_anomalies_mock.called
 
     @patch('orion.benchmark.load_anomalies')
     @patch('orion.benchmark.analyze')

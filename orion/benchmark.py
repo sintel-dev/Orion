@@ -34,12 +34,13 @@ BENCHMARK_PARAMS = pd.read_csv(S3_URL.format(
 PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
 VERIFIED_PIPELINES = [
-    'arima', 'lstm_dynamic_threshold'
+    'arima', 'lstm_dynamic_threshold', 'azure'
 ]
 
 VERIFIED_PIPELINES_GPU = {
     'arima': 'arima',
-    'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu'
+    'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu',
+    'azure': 'azure'
 }
 
 
@@ -85,6 +86,7 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
                      holdout=True, detrend=False):
 
     train, test = _load_signal(signal, holdout)
+    truth = load_anomalies(signal)
 
     if detrend:
         train = _detrend_signal(train, 'value')
@@ -94,30 +96,34 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
         LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
                     name, signal, holdout)
 
-        pipeline = _load_pipeline(pipeline, hyperparameter)
         start = datetime.utcnow()
+        pipeline = _load_pipeline(pipeline, hyperparameter)
         anomalies = analyze(pipeline, train, test)
         elapsed = datetime.utcnow() - start
-
-        truth = load_anomalies(signal)
 
         scores = {
             name: scorer(truth, anomalies, test)
             for name, scorer in metrics.items()
         }
-        scores['elapsed'] = elapsed.total_seconds()
         scores['status'] = 'OK'
 
     except Exception as ex:
         LOGGER.exception("Exception scoring pipeline %s on signal %s (Holdout: %s), error %s.",
                          name, signal, holdout, ex)
 
+        elapsed = datetime.utcnow() - start
         scores = {
             name: 0 for name in metrics.keys()
         }
-        scores['elapsed'] = 0
+
+        metric_ = 'confusion_matrix'
+        if metric_ in metrics.keys():
+            fn = len(truth)
+            scores[metric_] = (None, 0, fn, 0)  # (tn, fp, fn, tp)
+
         scores['status'] = 'ERROR'
 
+    scores['elapsed'] = elapsed.total_seconds()
     scores['pipeline'] = name
     scores['holdout'] = holdout
     scores['dataset'] = dataset
@@ -220,31 +226,43 @@ def _summarize_results(df, metrics):
 
         return x
 
+    def get_status(x):
+        return {
+            "OK": 0,
+            "ERROR": 1
+        }[x]
+
+    df['status'] = df['status'].apply(get_status)
+    df['confusion_matrix'] = df['confusion_matrix'].apply(ast.literal_eval)
     df['confusion_matrix'] = df['confusion_matrix'].apply(return_cm)
     df[['fp', 'fn', 'tp']] = pd.DataFrame(df['confusion_matrix'].tolist(), index=df.index)
 
     # calculate f1 score
-    df = df.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
+    df_ = df.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
 
-    precision = df['tp'] / (df['tp'] + df['fp'])
-    recall = df['tp'] / (df['tp'] + df['fn'])
-    df['f1'] = 2 * (precision * recall) / (precision + recall)
+    precision = df_['tp'] / (df_['tp'] + df_['fp'])
+    recall = df_['tp'] / (df_['tp'] + df_['fn'])
+    df_['f1'] = 2 * (precision * recall) / (precision + recall)
 
     result = dict()
 
     # number of wins over ARIMA
     arima_pipeline = 'arima'
-    intermediate = df.set_index(['pipeline', 'dataset'])['f1'].unstack().T
+    intermediate = df_.set_index(['pipeline', 'dataset'])['f1'].unstack().T
     arima = intermediate.pop(arima_pipeline)
 
     result['# Wins'] = (intermediate.T > arima).sum(axis=1)
     result['# Wins'][arima_pipeline] = None
 
     # number of anomalies detected
-    result['# Anomalies'] = df.groupby('pipeline')[['tp', 'fp']].sum().sum(axis=1).to_dict()
+    result['# Anomalies'] = df_.groupby('pipeline')[['tp', 'fp']].sum().sum(axis=1).to_dict()
 
     # average f1 score
-    result['Average F1 Score'] = df.groupby('pipeline')['f1'].mean().to_dict()
+    result['Average F1 Score'] = df_.groupby('pipeline')['f1'].mean().to_dict()
+
+    # failure rate
+    result['Failure Rate'] = df.groupby(
+        ['dataset', 'pipeline'])['status'].mean().unstack('pipeline').T.mean(axis=1)
 
     result = pd.DataFrame(result)
     result.index.name = 'pipeline'
