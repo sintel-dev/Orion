@@ -44,8 +44,10 @@ VERIFIED_PIPELINES_GPU = {
 }
 
 
-def _load_signal(signal, holdout):
-    if holdout:
+def _load_signal(signal, test_split):
+    if isinstance(test_split, float):
+        train, test = load_signal(signal, test_size=test_split)
+    elif test_split:
         train = load_signal(signal + '-train')
         test = load_signal(signal + '-test')
     else:
@@ -83,9 +85,9 @@ def _sort_leaderboard(df, rank, metrics):
 
 
 def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
-                     holdout=True, detrend=False):
+                     test_split=False, detrend=False):
 
-    train, test = _load_signal(signal, holdout)
+    train, test = _load_signal(signal, test_split)
     truth = load_anomalies(signal)
 
     if detrend:
@@ -93,8 +95,8 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
         test = _detrend_signal(test, 'value')
 
     try:
-        LOGGER.info("Scoring pipeline %s on signal %s (Holdout: %s)",
-                    name, signal, holdout)
+        LOGGER.info("Scoring pipeline %s on signal %s (test split: %s)",
+                    name, signal, test_split)
 
         start = datetime.utcnow()
         pipeline = _load_pipeline(pipeline, hyperparameter)
@@ -108,8 +110,8 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
         scores['status'] = 'OK'
 
     except Exception as ex:
-        LOGGER.exception("Exception scoring pipeline %s on signal %s (Holdout: %s), error %s.",
-                         name, signal, holdout, ex)
+        LOGGER.exception("Exception scoring pipeline %s on signal %s (test split: %s), error %s.",
+                         name, signal, test_split, ex)
 
         elapsed = datetime.utcnow() - start
         scores = {
@@ -125,7 +127,7 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
 
     scores['elapsed'] = elapsed.total_seconds()
     scores['pipeline'] = name
-    scores['holdout'] = holdout
+    scores['split'] = test_split
     scores['dataset'] = dataset
     scores['signal'] = signal
 
@@ -133,11 +135,11 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
 
 
 def _evaluate_pipeline(pipeline, pipeline_name, dataset, signals, hyperparameter, metrics,
-                       distributed, holdout, detrend):
-    if holdout is None:
-        holdout = (True, False)
-    elif not isinstance(holdout, tuple):
-        holdout = (holdout, )
+                       distributed, test_split, detrend):
+    if test_split is None:
+        test_split = (True, False)
+    elif not isinstance(test_split, tuple):
+        test_split = (test_split, )
 
     # hyperparameter settings
     if hyperparameter is None:
@@ -159,9 +161,9 @@ def _evaluate_pipeline(pipeline, pipeline_name, dataset, signals, hyperparameter
     scores = list()
 
     for signal in signals:
-        for holdout_ in holdout:
+        for test_split_ in test_split:
             score = function(pipeline, pipeline_name, dataset, signal, hyperparameter,
-                             metrics, holdout_, detrend)
+                             metrics, test_split_, detrend)
 
             scores.append(score)
 
@@ -169,19 +171,19 @@ def _evaluate_pipeline(pipeline, pipeline_name, dataset, signals, hyperparameter
 
 
 def _evaluate_pipelines(pipelines, dataset, signals, hyperparameters, metrics, distributed,
-                        holdout, detrend):
+                        test_split, detrend):
 
     scores = list()
     for name, pipeline in pipelines.items():
         hyperparameter = _get_parameter(hyperparameters, name)
         score = _evaluate_pipeline(pipeline, name, dataset, signals, hyperparameter,
-                                   metrics, distributed, holdout, detrend)
+                                   metrics, distributed, test_split, detrend)
         scores.extend(score)
 
     return scores
 
 
-def _evaluate_datasets(pipelines, datasets, hyperparameters, metrics, distributed, holdout,
+def _evaluate_datasets(pipelines, datasets, hyperparameters, metrics, distributed, test_split,
                        detrend):
     delayed = []
     for dataset, signals in datasets.items():
@@ -192,10 +194,10 @@ def _evaluate_datasets(pipelines, datasets, hyperparameters, metrics, distribute
         hyperparameters_ = _get_parameter(hyperparameters, dataset)
         parameters = _get_parameter(BENCHMARK_PARAMS, dataset)
         if parameters is not None:
-            detrend, holdout = parameters.values()
+            detrend, test_split = parameters.values()
 
-        result = _evaluate_pipelines(
-            pipelines, dataset, signals, hyperparameters_, metrics, distributed, holdout, detrend)
+        result = _evaluate_pipelines(pipelines, dataset, signals, hyperparameters_,
+                                     metrics, distributed, test_split, detrend)
 
         delayed.extend(result)
 
@@ -276,7 +278,7 @@ def _summarize_results(df, metrics):
 
 
 def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
-              distributed=False, holdout=False, detrend=False, output_path=None):
+              distributed=False, test_split=False, detrend=False, output_path=None):
     """Evaluate pipelines on the given datasets and evaluate the performance.
 
     The pipelines are used to analyze the given signals and later on the
@@ -305,8 +307,9 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             If not given, rank using the first metric.
         distributed (bool): Whether to use dask for distributed computing. If not given,
             use ``False``.
-        holdout (bool): Whether to use the prespecified train-test split. If not given,
-            use ``False``.
+        test_split (bool or float): Whether to use the prespecified train-test split. If
+            float, then it should be between 0.0 and 1.0 and represent the proportion of
+            the signal to include in the test split. If not given, use ``False``.
         detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.
         output_path (str): Location to save the intermediatry results. If not given,
             intermediatry results will not be saved.
@@ -342,7 +345,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
         metrics = metrics_
 
     results = _evaluate_datasets(
-        pipelines, datasets, hyperparameters, metrics, distributed, holdout, detrend)
+        pipelines, datasets, hyperparameters, metrics, distributed, test_split, detrend)
 
     if output_path:
         LOGGER.info('Saving benchmark report to %s', output_path)
