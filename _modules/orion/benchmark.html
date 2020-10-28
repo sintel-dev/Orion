@@ -347,8 +347,10 @@
 <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">holdout</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">test_split</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_split</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_split</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">test_split</span><span class="p">:</span>
         <span class="n">train</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span> <span class="o">+</span> <span class="s1">&#39;-train&#39;</span><span class="p">)</span>
         <span class="n">test</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span> <span class="o">+</span> <span class="s1">&#39;-test&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -386,9 +388,9 @@
 
 
 <span class="k">def</span> <span class="nf">_evaluate_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span>
-                     <span class="n">holdout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                     <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
-    <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">)</span>
+    <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">test_split</span><span class="p">)</span>
     <span class="n">truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">detrend</span><span class="p">:</span>
@@ -396,8 +398,8 @@
         <span class="n">test</span> <span class="o">=</span> <span class="n">_detrend_signal</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (Holdout: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
-                    <span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (test split: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                    <span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">test_split</span><span class="p">)</span>
 
         <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
         <span class="n">pipeline</span> <span class="o">=</span> <span class="n">_load_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">)</span>
@@ -411,8 +413,8 @@
         <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;OK&#39;</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (Holdout: </span><span class="si">%s</span><span class="s2">), error </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span>
-                         <span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception scoring pipeline </span><span class="si">%s</span><span class="s2"> on signal </span><span class="si">%s</span><span class="s2"> (test split: </span><span class="si">%s</span><span class="s2">), error </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span>
+                         <span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">test_split</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
 
         <span class="n">elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
         <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
@@ -428,7 +430,7 @@
 
     <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
     <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
-    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;holdout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">holdout</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_split</span>
     <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span>
     <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;signal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">signal</span>
 
@@ -436,11 +438,11 @@
 
 
 <span class="k">def</span> <span class="nf">_evaluate_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">pipeline_name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span>
-                       <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">holdout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">holdout</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">holdout</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-        <span class="n">holdout</span> <span class="o">=</span> <span class="p">(</span><span class="n">holdout</span><span class="p">,</span> <span class="p">)</span>
+                       <span class="n">distributed</span><span class="p">,</span> <span class="n">test_split</span><span class="p">,</span> <span class="n">detrend</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">test_split</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">test_split</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_split</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">test_split</span> <span class="o">=</span> <span class="p">(</span><span class="n">test_split</span><span class="p">,</span> <span class="p">)</span>
 
     <span class="c1"># hyperparameter settings</span>
     <span class="k">if</span> <span class="n">hyperparameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -462,9 +464,9 @@
     <span class="n">scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">holdout_</span> <span class="ow">in</span> <span class="n">holdout</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">test_split_</span> <span class="ow">in</span> <span class="n">test_split</span><span class="p">:</span>
             <span class="n">score</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">pipeline_name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span>
-                             <span class="n">metrics</span><span class="p">,</span> <span class="n">holdout_</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
+                             <span class="n">metrics</span><span class="p">,</span> <span class="n">test_split_</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
 
             <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
 
@@ -472,19 +474,19 @@
 
 
 <span class="k">def</span> <span class="nf">_evaluate_pipelines</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span>
-                        <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">):</span>
+                        <span class="n">test_split</span><span class="p">,</span> <span class="n">detrend</span><span class="p">):</span>
 
     <span class="n">scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">pipelines</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">hyperparameter</span> <span class="o">=</span> <span class="n">_get_parameter</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="n">score</span> <span class="o">=</span> <span class="n">_evaluate_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span>
-                                   <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
+                                   <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">test_split</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
         <span class="n">scores</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">scores</span>
 
 
-<span class="k">def</span> <span class="nf">_evaluate_datasets</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">_evaluate_datasets</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">test_split</span><span class="p">,</span>
                        <span class="n">detrend</span><span class="p">):</span>
     <span class="n">delayed</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span> <span class="ow">in</span> <span class="n">datasets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -495,10 +497,10 @@
         <span class="n">hyperparameters_</span> <span class="o">=</span> <span class="n">_get_parameter</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
         <span class="n">parameters</span> <span class="o">=</span> <span class="n">_get_parameter</span><span class="p">(</span><span class="n">BENCHMARK_PARAMS</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">detrend</span><span class="p">,</span> <span class="n">holdout</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">detrend</span><span class="p">,</span> <span class="n">test_split</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 
-        <span class="n">result</span> <span class="o">=</span> <span class="n">_evaluate_pipelines</span><span class="p">(</span>
-            <span class="n">pipelines</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameters_</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">_evaluate_pipelines</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">hyperparameters_</span><span class="p">,</span>
+                                     <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">test_split</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
 
         <span class="n">delayed</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
@@ -579,7 +581,7 @@
 
 
 <div class="viewcode-block" id="benchmark"><a class="viewcode-back" href="../../api/orion.benchmark.html#orion.benchmark.benchmark">[docs]</a><span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">pipelines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">METRICS</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span>
-              <span class="n">distributed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">holdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+              <span class="n">distributed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Evaluate pipelines on the given datasets and evaluate the performance.</span>
 
 <span class="sd">    The pipelines are used to analyze the given signals and later on the</span>
@@ -608,8 +610,9 @@
 <span class="sd">            If not given, rank using the first metric.</span>
 <span class="sd">        distributed (bool): Whether to use dask for distributed computing. If not given,</span>
 <span class="sd">            use ``False``.</span>
-<span class="sd">        holdout (bool): Whether to use the prespecified train-test split. If not given,</span>
-<span class="sd">            use ``False``.</span>
+<span class="sd">        test_split (bool or float): Whether to use the prespecified train-test split. If</span>
+<span class="sd">            float, then it should be between 0.0 and 1.0 and represent the proportion of</span>
+<span class="sd">            the signal to include in the test split. If not given, use ``False``.</span>
 <span class="sd">        detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.</span>
 <span class="sd">        output_path (str): Location to save the intermediatry results. If not given,</span>
 <span class="sd">            intermediatry results will not be saved.</span>
@@ -645,7 +648,7 @@
         <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics_</span>
 
     <span class="n">results</span> <span class="o">=</span> <span class="n">_evaluate_datasets</span><span class="p">(</span>
-        <span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">holdout</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
+        <span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span> <span class="n">test_split</span><span class="p">,</span> <span class="n">detrend</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">output_path</span><span class="p">:</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Saving benchmark report to </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>

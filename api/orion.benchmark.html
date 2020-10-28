@@ -312,7 +312,7 @@
 <span id="orion-benchmark-module"></span><h1>orion.benchmark module<a class="headerlink" href="#module-orion.benchmark" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="orion.benchmark.benchmark">
-<code class="sig-prename descclassname">orion.benchmark.</code><code class="sig-name descname">benchmark</code><span class="sig-paren">(</span><em class="sig-param">pipelines=None</em>, <em class="sig-param">datasets=None</em>, <em class="sig-param">hyperparameters=None</em>, <em class="sig-param">metrics={'accuracy': &lt;function contextual_accuracy&gt;</em>, <em class="sig-param">'f1': &lt;function contextual_f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function contextual_precision&gt;</em>, <em class="sig-param">'recall': &lt;function contextual_recall&gt;}</em>, <em class="sig-param">rank='f1'</em>, <em class="sig-param">distributed=False</em>, <em class="sig-param">holdout=False</em>, <em class="sig-param">detrend=False</em>, <em class="sig-param">output_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/benchmark.html#benchmark"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.benchmark.benchmark" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">orion.benchmark.</code><code class="sig-name descname">benchmark</code><span class="sig-paren">(</span><em class="sig-param">pipelines=None</em>, <em class="sig-param">datasets=None</em>, <em class="sig-param">hyperparameters=None</em>, <em class="sig-param">metrics={'accuracy': &lt;function contextual_accuracy&gt;</em>, <em class="sig-param">'f1': &lt;function contextual_f1_score&gt;</em>, <em class="sig-param">'precision': &lt;function contextual_precision&gt;</em>, <em class="sig-param">'recall': &lt;function contextual_recall&gt;}</em>, <em class="sig-param">rank='f1'</em>, <em class="sig-param">distributed=False</em>, <em class="sig-param">test_split=False</em>, <em class="sig-param">detrend=False</em>, <em class="sig-param">output_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orion/benchmark.html#benchmark"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.benchmark.benchmark" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate pipelines on the given datasets and evaluate the performance.</p>
 <p>The pipelines are used to analyze the given signals and later on the
 detected anomalies are scored against the known anomalies using the
@@ -340,8 +340,9 @@ If not given, all the available metrics will be used.</p></li>
 If not given, rank using the first metric.</p></li>
 <li><p><strong>distributed</strong> (<em>bool</em>) – Whether to use dask for distributed computing. If not given,
 use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>holdout</strong> (<em>bool</em>) – Whether to use the prespecified train-test split. If not given,
-use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>test_split</strong> (<em>bool</em><em> or </em><em>float</em>) – Whether to use the prespecified train-test split. If
+float, then it should be between 0.0 and 1.0 and represent the proportion of
+the signal to include in the test split. If not given, use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>detrend</strong> (<em>bool</em>) – Whether to use <code class="docutils literal notranslate"><span class="pre">scipy.detrend</span></code>. If not given, use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>output_path</strong> (<em>str</em>) – Location to save the intermediatry results. If not given,
 intermediatry results will not be saved.</p></li>
