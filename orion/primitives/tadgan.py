@@ -349,8 +349,8 @@ def _compute_rec_score(predictions, trues, score_window, smooth_window, rec_erro
     return z_scores
 
 
-def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_window=200,
-                    error_smooth_window=200, rec_error_type="point", comb="mult", lambda_rec=0.5):
+def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_window=None,
+                    error_smooth_window=None, rec_error_type="point", comb="mult", lambda_rec=0.5):
     """Compute an array of anomaly scores.
 
     Anomaly scores are calculated using a combination of reconstruction error and critic score.
@@ -388,8 +388,8 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
             Array of anomaly scores.
     """
 
-    critic_smooth_window = min(math.trunc(y.shape[0] * 0.01), 100)
-    error_smooth_window = min(math.trunc(y.shape[0] * 0.01), 100)
+    critic_smooth_window = critic_smooth_window or math.trunc(y.shape[0] * 0.01)
+    error_smooth_window = error_smooth_window or math.trunc(y.shape[0] * 0.01)
 
     true_index = index  # no offset
 
