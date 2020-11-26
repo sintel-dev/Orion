@@ -59,12 +59,12 @@
             },
             "critic_smooth_window": {
                 "type": "int",
-                "default": 200,
+                "default": null,
                 "range": [2, 400]
             },
             "error_smooth_window": {
                 "type": "int",
-                "default": 200,
+                "default": null,
                 "range": [2, 400]
             },
             "rec_error_type": {
