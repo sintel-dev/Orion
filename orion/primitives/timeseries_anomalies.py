@@ -510,7 +510,7 @@ def find_anomalies(errors, index, z_range=(0, 10), window_size=None, window_size
             inverted_window = mean - (window - mean)
             inverted_window_sequences = _find_window_sequences(inverted_window, z_range,
                                                                anomaly_padding, min_percent,
-                                                               window_start)
+                                                               window_start, fixed_threshold)
             sequences.extend(inverted_window_sequences)
 
         window_start = window_start + window_step_size
