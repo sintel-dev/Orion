@@ -813,7 +813,7 @@
             <span class="n">inverted_window</span> <span class="o">=</span> <span class="n">mean</span> <span class="o">-</span> <span class="p">(</span><span class="n">window</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span>
             <span class="n">inverted_window_sequences</span> <span class="o">=</span> <span class="n">_find_window_sequences</span><span class="p">(</span><span class="n">inverted_window</span><span class="p">,</span> <span class="n">z_range</span><span class="p">,</span>
                                                                <span class="n">anomaly_padding</span><span class="p">,</span> <span class="n">min_percent</span><span class="p">,</span>
-                                                               <span class="n">window_start</span><span class="p">)</span>
+                                                               <span class="n">window_start</span><span class="p">,</span> <span class="n">fixed_threshold</span><span class="p">)</span>
             <span class="n">sequences</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">inverted_window_sequences</span><span class="p">)</span>
 
         <span class="n">window_start</span> <span class="o">=</span> <span class="n">window_start</span> <span class="o">+</span> <span class="n">window_step_size</span>
