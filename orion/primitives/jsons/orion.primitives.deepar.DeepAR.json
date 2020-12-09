@@ -1,0 +1,82 @@
+{
+    "name": "orion.primitives.deepar.DeepAR",
+    "contributors": [
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "documentation": "",
+    "description": "time series forecasting",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.deepar.DeepAR",
+    "fit": {
+        "method": "fit",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "freq": {
+                "type": "int",
+                "default": "1H"
+            },
+            "context_length": {
+                "type": "int",
+                "default": 100
+            },
+            "prediction_length": {
+                "type": "int",
+                "default": 1
+            },
+            "epochs": {
+                "type": "int",
+                "default": 100
+            },
+            "learning_rate": {
+                "type": "float",
+                "default": 0.001
+            },
+            "batch_size": {
+                "type": "int",
+                "default": 32
+            },
+            "num_batches_per_epoch": {
+                "type": "int",
+                "default": 50
+            },
+            "num_samples": {
+                "type": "int",
+                "default": 100
+            }
+        }
+    }
+}
