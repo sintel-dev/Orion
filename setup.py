@@ -72,7 +72,6 @@ development_requires = [
     'tox>=2.9.1,<4',
 
     # Documentation style
-    'doc8==0.8.0,<0.9',
     'pydocstyle==3.0.0,<4',
 ]
 
