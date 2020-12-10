@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 
 import numpy as np
+
 from gluonts.dataset.common import ListDataset
 from gluonts.evaluation.backtest import make_evaluation_predictions
 from gluonts.model.deepar import DeepAREstimator
