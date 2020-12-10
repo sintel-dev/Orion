@@ -218,7 +218,7 @@ def _find_sequences(errors, epsilon, anomaly_padding):
             * Maximum error value that was not considered an anomaly.
     """
     above = pd.Series(errors > epsilon)
-    index_above = np.argwhere(above)
+    index_above = np.argwhere(above.values)
 
     for idx in index_above.flatten():
         above[max(0, idx - anomaly_padding):min(idx + anomaly_padding + 1, len(above))] = True
