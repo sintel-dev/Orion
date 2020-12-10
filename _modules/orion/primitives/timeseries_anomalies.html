@@ -521,7 +521,7 @@
 <span class="sd">            * Maximum error value that was not considered an anomaly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">above</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">)</span>
-    <span class="n">index_above</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">above</span><span class="p">)</span>
+    <span class="n">index_above</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">above</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">index_above</span><span class="o">.</span><span class="n">flatten</span><span class="p">():</span>
         <span class="n">above</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span> <span class="o">-</span> <span class="n">anomaly_padding</span><span class="p">):</span><span class="nb">min</span><span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="n">anomaly_padding</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">above</span><span class="p">))]</span> <span class="o">=</span> <span class="kc">True</span>
