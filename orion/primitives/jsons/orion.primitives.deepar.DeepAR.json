@@ -76,6 +76,10 @@
             "num_samples": {
                 "type": "int",
                 "default": 100
+            },
+            "method" : {
+                "type": "str",
+                "default": "median"
             }
         }
     }

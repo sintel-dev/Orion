@@ -16,8 +16,8 @@ LOGGER = logging.getLogger(__name__)
 class DeepAR():
     """DeepAR class"""
 
-    def __init__(self, freq, context_length, prediction_length, learning_rate=0.001,
-                 epochs=100, batch_size=32, num_batches_per_epoch=50, num_samples=100):
+    def __init__(self, freq, context_length, prediction_length, learning_rate=0.001, epochs=100,
+                 batch_size=32, num_batches_per_epoch=50, num_samples=100, method='median'):
         """Initialize the DeepAR.
 
         Args:
@@ -37,6 +37,8 @@ class DeepAR():
                 Optional. Number of batches at each epoch. Defaults to 50.
             num_samples (int):
                 Number of samples to draw on the model when evaluating. Defaultss to 100.
+            method (str):
+                Aggregation method to take a value from the sample. Defaults to `median`.
         """
         self.freq = freq
         self.context_length = context_length
@@ -46,6 +48,7 @@ class DeepAR():
         self.batch_size = batch_size
         self.num_batches_per_epoch = num_batches_per_epoch
         self.num_samples = num_samples
+        self.method = method
 
     def _create_train_dataset(self, X, index):
         start = datetime.utcfromtimestamp(index[0])
@@ -101,11 +104,11 @@ class DeepAR():
         )
 
         forecasts = list(forecast_it)
-        median = list()
+        result = list()
         for f in forecasts:
-            median.append(np.median(f.samples))
+            result.append(getattr(np, self.method)(f.samples))
 
-        return np.asarray(median)
+        return np.asarray(result)
 
     def predict(self, X, index):
         """Predict values using DeepAR.
