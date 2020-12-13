@@ -131,12 +131,12 @@ We thank NASA for making this data available for public use.
 # Orion Pipelines
 
 The main component in the Orion project are the **Orion Pipelines**, which consist of
-[MLBlocks Pipelines](https://hdi-project.github.io/MLBlocks/advanced_usage/pipelines.html)
+[MLBlocks Pipelines](https://github.com/MLBazaar/MLBlocks)
 specialized in detecting anomalies in time series.
 
 As ``MLPipeline`` instances, **Orion Pipelines**:
 
-* consist of a list of one or more [MLPrimitives](https://hdi-project.github.io/MLPrimitives/)
+* consist of a list of one or more [MLPrimitives](https://github.com/MLBazaar/MLPrimitives)
 * can be *fitted* on some data and later on used to *predict* anomalies on more data
 * can be *scored* by comparing their predictions with some known anomalies
 * have *hyperparameters* that can be *tuned* to improve their anomaly detection performance
