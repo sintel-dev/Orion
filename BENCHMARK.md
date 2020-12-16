@@ -10,13 +10,7 @@ within [benchmark/results](benchmark/results) folder as CSV files.
 
 ## Evaluating the Pipelines
 
-Using the [Evaluation sub-package](orion/evaluation), we can compute a score given a set of known 
-anomalies and another one of detected anomalies. 
-The entire process can be summarized in the following diagram:
-
-![Scoring](docs/images/scoring-300.png?raw=true "Scoring")
-
-We can then evaluate the overall performance of 
+We can evaluate the overall performance of 
 our pipelines in order to know which one has the best performance.
 
 For this we:
