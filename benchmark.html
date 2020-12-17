@@ -84,38 +84,14 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Orion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="readme.html#overview">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#leaderboard">Leaderboard</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#table-of-contents">Table of Contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="readme.html#data-format">Data Format</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#input">Input</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#output">Output</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#dataset-we-use-in-this-library">Dataset we use in this library</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="readme.html#orion-pipelines">Orion Pipelines</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#current-available-pipelines">Current Available Pipelines</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="readme.html#install">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#requirements">Requirements</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="readme.html#python">Python</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme.html#mongodb">MongoDB</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#install-with-pip">Install with pip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#docker">Docker</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#overview">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html#quickstart">Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#load-the-data">1. Load the data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#detect-anomalies-using-orion">2. Detect anomalies using Orion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#evaluate-the-performance-of-your-pipeline">3. Evaluate the performance of your pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-with-pip">Install with pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#fit-an-orion-pipeline">Fit an Orion pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#detect-anomalies-using-the-fitted-pipeline">Detect anomalies using the fitted pipeline</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="readme.html#database">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#resources">Resources</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Usage</span></p>
 <ul class="current">
@@ -312,7 +288,7 @@
 a pipeline is detecting anomalies.</p>
 <div class="section" id="releases">
 <h2>Releases<a class="headerlink" href="#releases" title="Permalink to this headline">¶</a></h2>
-<p>In every release, we run Orion benchmark and maintain an upto-date <a class="reference external" href="README.md#leaderboard">leaderboard</a>.
+<p>In every release, we run Orion benchmark and maintain an upto-date leaderboard.
 Results obtained during the benchmarking process as well as previous benchmarks can be found
 within <a class="reference external" href="benchmark/results">benchmark/results</a> folder as CSV files.</p>
 </div>
@@ -321,8 +297,8 @@ within <a class="reference external" href="benchmark/results">benchmark/results<
 <p>Using the <a class="reference external" href="orion/evaluation">Evaluation sub-package</a>, we can compute a score given a set of known
 anomalies and another one of detected anomalies.
 The entire process can be summarized in the following diagram:</p>
-<a class="reference external image-reference" href="_static/scoring-300.png?raw=true"><img alt="Scoring" src="_static/scoring-300.png?raw=true" /></a>
-<p>We can then evaluate the overall performance of
+<a class="reference external image-reference" href="./_static/scoring-300.png?raw=true"><img alt="Scoring" src="./_static/scoring-300.png?raw=true" /></a>
+<p>We can evaluate the overall performance of
 our pipelines in order to know which one has the best performance.</p>
 <p>For this we:</p>
 <ol class="arabic simple">
@@ -332,7 +308,6 @@ our pipelines in order to know which one has the best performance.</p>
 <li><p>Average the score obtained for each metric and pipeline accross all the signals.</p></li>
 <li><p>Finally, we rank our pipelines sorting them by one of the computed scores.</p></li>
 </ol>
-<p>The output of this process is the <a class="reference external" href="README.md#leaderboard">leaderboard</a>.</p>
 </div>
 <div class="section" id="benchmark-function">
 <h2>Benchmark function<a class="headerlink" href="#benchmark-function" title="Permalink to this headline">¶</a></h2>
@@ -360,10 +335,8 @@ functions, and they <code class="docutils literal notranslate"><span class="pre"
 If not given, all the available metrics will be used.</p></li>
 <li><p>rank (str): Sort and rank the pipelines based on the given metric.
 If not given, rank using the first metric.</p></li>
-<li><p>distributed (bool): Whether to use dask for distributed computing. If not given,
-use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p>holdout (bool): Whether to use the prespecified train-test split. If not given,
-use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p>distributed (bool): Whether to use dask for distributed computing. If not given,</p></li>
+<li><p>test_split (bool or float): Whether to use the prespecified train-test split. If float, then it should be between 0.0 and 1.0 and represent the proportion of the signal to include in the test split. If not given, use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p>detrend (bool): Whether to use <code class="docutils literal notranslate"><span class="pre">scipy.detrend</span></code>. If not given, use <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p>output_path (str): Location to save the results. If not given, results will not be saved.</p></li>
 </ul>
