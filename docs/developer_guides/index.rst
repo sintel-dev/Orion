@@ -6,5 +6,4 @@ In the Developer Guides we discuss in depth the architecture of the Orion projec
 .. toctree::
     :maxdepth: 2
 
-    database
     contributing

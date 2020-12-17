@@ -9,5 +9,7 @@ The User Guides section covers different topics about Orion usage:
     :maxdepth: 3
 
     data
-    pipelines
-    benchmark
+    primitives_pipelines/index
+    evaluation
+    benchmarking
+    system/index

@@ -1,14 +1,14 @@
-.. highlight:: shell
+.. _pipelines:
 
 ===============
 Orion Pipelines
 ===============
 
-The main component in the Orion project are the **Orion Pipelines**, which consist of `MLBlocks Pipelines`_ specialized in detecting anomalies in time series.
+The main component in the Orion project are the **Orion Pipelines**, which consist of `MLBlocks Pipelines <https://mlbazaar.github.io/MLBlocks/advanced_usage/pipelines.html>`__ specialized in detecting anomalies in time series.
 
 As ``MLPipeline`` instances, **Orion Pipelines**:
 
-* consist of a list of one or more `MLPrimitives`_
+* consist of a list of one or more `MLPrimitives <https://mlbazaar.github.io/MLPrimitives/>`__
 * can be *fitted* on some data and later on used to *predict* anomalies on more data
 * can be *scored* by comparing their predictions with some known anomalies
 * have *hyperparameters* that can be *tuned* to improve their anomaly detection performance
@@ -66,9 +66,7 @@ In **Orion**, we organize pipelines into *verified* and *sandbox*. The distincti
 In both of these cases, the user is expected to open a new *PR* and pass tests before considering its merge and storage in sandbox.
 Next, we test the new pipeline/hyperparameters in the benchmark and verify that they perform as expected and indicated by the user. Once these checks have passed, we make the transfer.
 
-To know more about our process in contributing and testing, read our contributing guidelines and benchmark.
+To know more about our process in contributing and testing, read our :ref:`contributing` guidelines and :ref:`benchmarking`.
 
-.. _MLBlocks Pipelines: https://mlbazaar.github.io/MLBlocks/advanced_usage/pipelines.html
-.. _MLPrimitives: https://mlbazaar.github.io/MLPrimitives/
 .. _NASA: https://arxiv.org/abs/1802.04431
 .. _Anomaly Detector: https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/

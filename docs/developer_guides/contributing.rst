@@ -1,4 +1,4 @@
-.. highlight:: shell
+.. _contributing:
 
 ============
 Contributing
