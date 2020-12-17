@@ -23,11 +23,11 @@
 
 # Overview
 
-Orion is a machine learning library built for _unsupervised time series anomaly detection_. With a given time series data, we provide a number of “verified” ML pipelines (a.k.a Orion pipelines) that identify rare patterns and flag them for expert review.
+Orion is a machine learning library built for *unsupervised time series anomaly detection*. With a given time series data, we provide a number of “verified” ML pipelines (a.k.a Orion pipelines) that identify rare patterns and flag them for expert review.
 
 The library makes use of a number of **automated machine learning** tools developed under [Data to AI Lab at MIT](https://dai.lids.mit.edu/).
 
-**Recent news:** Read about using an Orion pipeline on NYC taxi dataset in a blog series [here](https://t.co/yIFVM1oRwQ?amp=1), [here](https://link.medium.com/cGsBD0Fevbb) and [here](https://link.medium.com/FqCrFXMevbb).
+**Recent news:** Read about using an Orion pipeline on NYC taxi dataset in a blog series [part 1](https://t.co/yIFVM1oRwQ?amp=1), [part 2](https://link.medium.com/cGsBD0Fevbb) and [part 3](https://link.medium.com/FqCrFXMevbb).
 
 # Quickstart
 
@@ -100,3 +100,10 @@ The output of the previous command will be a ``pandas.DataFrame`` containing a t
         start         end     score
 0  1394323200  1399701600  0.673494
 ```
+
+# Resources
+
+Additional resources that might be of interest:
+* Learn about [benchmarking pipelines](BENCHMARK.md). 
+* Read about [pipeline evaluation](orion/evaluation/README.md).
+* More about [database design](DATABASE.md).
