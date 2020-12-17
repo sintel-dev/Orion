@@ -49,11 +49,12 @@ development_requires = [
     'watchdog>=0.8.3,<0.11',
 
     # docs
-    'm2r>=0.2.0,<0.3',
+    'm2r2>=0.2.5,<0.3',
     'nbsphinx>=0.5.0,<0.7',
-    'Sphinx>=1.7.1,<3',
-    'sphinx_rtd_theme>=0.2.4,<0.5',
+    'Sphinx>=3,<3.3',
+    'pydata-sphinx-theme',
     'autodocsumm>=0.1.10,<1',
+    'ipython>=6.5,<7.5',
 
     # style check
     'flake8>=3.7.7,<3.8',
