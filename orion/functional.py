@@ -118,6 +118,7 @@ def detect_anomalies(data: Union[str, pd.DataFrame] = None,
 
     The anomalies are detected using an Orion pipeline which can
     be passed as:
+    
         * An ``Orion`` instance.
         * An ``str`` with the path to an Orion pickle file.
         * An ``str`` with a path to a JSON file.

@@ -27,3 +27,11 @@ Functional API
    fit_pipeline
    detect_anomalies
    evaluate_pipeline
+
+Benchmark
+~~~~~~~~~
+
+.. autosummary::
+   :toctree: api/
+
+   benchmark.benchmark

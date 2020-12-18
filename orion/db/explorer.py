@@ -37,6 +37,7 @@ class OrionDBExplorer:
             A dict or a path to JSON file with additional arguments can be
             passed to provide connection details different than the defaults
             for the MongoDB Database:
+                
                 * ``host``: Hostname or IP address of the MongoDB Instance.
                 * ``port``: Port to which MongoDB is listening.
                 * ``username``: username to authenticate with.
@@ -44,10 +45,10 @@ class OrionDBExplorer:
                 * ``authentication_source``: database to authenticate against.
 
     Examples:
-        Simples use case:
         >>> orex = OrionExplorer('my_username')
 
         Passing a path to a JSON file with connection details.
+
         >>> orex = OrionExplorer(
         ...      user='my_username',
         ...      database='orion',
@@ -55,6 +56,7 @@ class OrionDBExplorer:
         ... )
 
         Passing all the possible initialization arguments as a dict:
+
         >>> mongodb_config = {
         ...      'host': 'localhost',
         ...      'port': 27017,
@@ -84,6 +86,7 @@ class OrionDBExplorer:
                 A dict or a path to JSON file with additional arguments can be
                 passed to provide connection details different than the defaults
                 for the MongoDB Database:
+
                     * ``host``: Hostname or IP address of the MongoDB Instance.
                     * ``port``: Port to which MongoDB is listening.
                     * ``username``: username to authenticate with.

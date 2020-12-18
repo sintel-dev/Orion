@@ -10,8 +10,9 @@ Types of anomalies
 ------------------
 
 There are two approaches to defined anomalies:
-- *point anomalies* which are identified by a single value in the time series.
-- *contextual anomalies* which are identified by an anomalous interval, specifically the start/end timestamps.
+
+* *point anomalies* which are identified by a single value in the time series.
+* *contextual anomalies* which are identified by an anomalous interval, specifically the start/end timestamps.
 
 For example:
 
