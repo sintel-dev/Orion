@@ -37,7 +37,7 @@ class OrionDBExplorer:
             A dict or a path to JSON file with additional arguments can be
             passed to provide connection details different than the defaults
             for the MongoDB Database:
-                
+
                 * ``host``: Hostname or IP address of the MongoDB Instance.
                 * ``port``: Port to which MongoDB is listening.
                 * ``username``: username to authenticate with.
