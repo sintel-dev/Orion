@@ -17,3 +17,13 @@ Orion
    Orion.evaluate
    Orion.save
    Orion.load
+
+Functional API
+~~~~~~~~~~~~~~
+
+.. autosummary::
+   :toctree: api/
+
+   fit_pipeline
+   detect_anomalies
+   evaluate_pipeline

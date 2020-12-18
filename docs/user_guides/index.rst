@@ -10,6 +10,6 @@ The User Guides section covers different topics about Orion usage:
 
     data
     primitives_pipelines/index
-    evaluation
+    evaluation_doc
     benchmarking
     system/index

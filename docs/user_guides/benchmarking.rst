@@ -1,10 +1,10 @@
 .. _benchmarking:
 
-=========
-Benchmark
-=========
+============
+Benchmarking
+============
 
-We provide a benchmarking framework to enable users to compare multiple pipelines against each other. The evaluation metrics are documented within pipeline evaluation, please visit this page to read more about it.
+We provide a benchmarking framework to enable users to compare multiple pipelines against each other. The evaluation metrics are documented within pipeline evaluation, please visit :ref:`evaluation_doc` to read more about it.
 
 Releases
 --------
