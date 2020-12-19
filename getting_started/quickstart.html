@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quickstart &#8212; Orion 0.1.5.dev0 documentation</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Docker Usage" href="docker.html" />
+    <link rel="prev" title="Installation" href="install.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <p class="title">Orion</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Getting Started</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../user_guides/index.html">User Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../api_reference/index.html">API Reference</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../developer_guides/index.html">Developer Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../history.html">Release Notes</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/signals-dev/Orion" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+          
+            
+                <li class="">
+                    <a href="install.html">Installation</a>
+                </li>
+            
+          
+            
+                <li class="active">
+                    <a href="">Quickstart</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="docker.html">Docker Usage</a>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#load-the-data" class="nav-link">1. Load the data</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#detect-anomalies-using-orion" class="nav-link">2. Detect anomalies using Orion</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#evaluate-the-performance-of-your-pipeline" class="nav-link">3. Evaluate the performance of your pipeline</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="quickstart">
+<span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<p>In the following steps we will show a short guide about how to run one of the <strong>Orion Pipelines</strong>
+on one of the signals from the <strong>Demo Dataset</strong>.</p>
+<div class="section" id="load-the-data">
+<h2>1. Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
+<p>In the first step we will load the <strong>S-1</strong> signal from the <strong>Demo Dataset</strong>.</p>
+<p>We will do so in two parts, we will use the first part to fit the
+pipeline and the second one to detect anomalies.</p>
+<p>To do so, we need to import the <cite>orion.data.load_signal</cite> function and call it passing the <cite>‘S-1-train’</cite> as signal name.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_signal</span>
+
+<span class="gp">In [2]: </span><span class="n">train_data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1-train&#39;</span><span class="p">)</span>
+
+<span class="gp">In [3]: </span><span class="n">train_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[3]: </span><span class="go"></span>
+<span class="go">    timestamp     value</span>
+<span class="go">0  1222819200 -0.366359</span>
+<span class="go">1  1222840800 -0.394108</span>
+<span class="go">2  1222862400  0.403625</span>
+<span class="go">3  1222884000 -0.362759</span>
+<span class="go">4  1222905600 -0.370746</span>
+</pre></div>
+</div>
+<p>The output will be a table that contains two columns <cite>timestamp</cite> and <cite>value</cite>.</p>
+</div>
+<div class="section" id="detect-anomalies-using-orion">
+<h2>2. Detect anomalies using Orion<a class="headerlink" href="#detect-anomalies-using-orion" title="Permalink to this headline">¶</a></h2>
+<p>Once we have the data, let us try to use an Orion pipeline to analyze it and search for anomalies.</p>
+<p>In order to do so, we will have to create an instance of the <cite>orion.Orion</cite> class.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">orion</span> <span class="kn">import</span> <span class="n">Orion</span>
+
+<span class="gp">In [5]: </span><span class="n">orion</span> <span class="o">=</span> <span class="n">Orion</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Optionally, we might want to select a pipeline other than the default one or alter the hyperparameters by the underlying MLBlocks pipeline.</p>
+<p>For example, let’s select the <cite>lstm_dynamic_threshold</cite> pipeline and set some hyperparameters (in this case training epochs as 5).</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [6]: </span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">   ...: </span>    <span class="s1">&#39;keras.Sequential.LSTMTimeSeriesRegressor#1&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">   ...: </span>        <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="mi">5</span>
+<span class="gp">   ...: </span>    <span class="p">}</span>
+<span class="gp">   ...: </span><span class="p">}</span>
+<span class="gp">   ...: </span>
+</pre></div>
+</div>
+<p>Then, we simply pass the <code class="docutils literal notranslate"><span class="pre">hyperparameters</span></code> alongside the pipeline.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="n">orion</span> <span class="o">=</span> <span class="n">Orion</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">pipeline</span><span class="o">=</span><span class="s1">&#39;lstm_dynamic_threshold&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">hyperparameters</span><span class="o">=</span><span class="n">hyperparameters</span>
+<span class="gp">   ...: </span><span class="p">)</span>
+<span class="gp">   ...: </span>
+</pre></div>
+</div>
+<p>Once we the pipeline is ready, we can proceed to fit it to our data:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [8]: </span><span class="n">orion</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once it is fitted, we are ready to use it to detect anomalies in incoming data:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [9]: </span><span class="n">new_data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1-new&#39;</span><span class="p">)</span>
+
+<span class="gp">In [10]: </span><span class="n">anomalies</span> <span class="o">=</span> <span class="n">orion</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Depending on your system and the exact versions that you might have installed some <em>WARNINGS</em> may be printed. These can be safely ignored as they do not interfere with the proper behavior of the pipeline.</p>
+</div>
+<p>The output of the previous command will be a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing a table in the detected anomalies
+Output format described above:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="n">anomalies</span>
+<span class="gh">Out[11]: </span><span class="go"></span>
+<span class="go">        start         end  severity</span>
+<span class="go">0  1228219200  1229320800  0.018332</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="evaluate-the-performance-of-your-pipeline">
+<h2>3. Evaluate the performance of your pipeline<a class="headerlink" href="#evaluate-the-performance-of-your-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>In this next step we will load some already known anomalous intervals and evaluate how
+good our anomaly detection was by comparing those with our detected intervals.</p>
+<p>For this, we will first load the known anomalies for the signal that we are using:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [12]: </span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_anomalies</span>
+
+<span class="gp">In [13]: </span><span class="n">ground_truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="s1">&#39;S-1&#39;</span><span class="p">)</span>
+
+<span class="gp">In [14]: </span><span class="n">ground_truth</span>
+<span class="gh">Out[14]: </span><span class="go"></span>
+<span class="go">        start         end</span>
+<span class="go">0  1398168000  1407823200</span>
+</pre></div>
+</div>
+<p>The output will be a table in the same format as the <cite>anomalies</cite> one.</p>
+<p>Afterwards, we can call the <cite>Orion.evaluate</cite> method, passing both the data to detect anomalies and the ground truth:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [15]: </span><span class="n">scores</span> <span class="o">=</span> <span class="n">orion</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">)</span>
+
+<span class="gp">In [16]: </span><span class="n">scores</span>
+<span class="gh">Out[16]: </span><span class="go"></span>
+<span class="go">accuracy     0.941856</span>
+<span class="go">f1                NaN</span>
+<span class="go">recall       0.000000</span>
+<span class="go">precision    0.000000</span>
+<span class="go">dtype: float64</span>
+</pre></div>
+</div>
+<p>The output will be a <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> containing a collection of scores indicating how the predictions were.</p>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="install.html" title="previous page">Installation</a>
+    <a class='right-next' id="next-link" href="docker.html" title="next page">Docker Usage</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

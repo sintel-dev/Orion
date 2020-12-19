@@ -1,7 +1,0 @@
-orion.primitives.timeseries\_anomalies module
-=============================================
-
-.. automodule:: orion.primitives.timeseries_anomalies
-   :members:
-   :undoc-members:
-   :show-inheritance:

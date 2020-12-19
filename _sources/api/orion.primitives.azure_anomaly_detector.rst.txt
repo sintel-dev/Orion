@@ -1,7 +1,0 @@
-orion.primitives.azure\_anomaly\_detector module
-================================================
-
-.. automodule:: orion.primitives.azure_anomaly_detector
-   :members:
-   :undoc-members:
-   :show-inheritance:

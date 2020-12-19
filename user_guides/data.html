@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data &#8212; Orion 0.1.5.dev0 documentation</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Primitives and Pipelines" href="primitives_pipelines/index.html" />
+    <link rel="prev" title="User Guides" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <p class="title">Orion</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../getting_started/index.html">Getting Started</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">User Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../api_reference/index.html">API Reference</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../developer_guides/index.html">Developer Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../history.html">Release Notes</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/signals-dev/Orion" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+          
+            
+                <li class="active">
+                    <a href="">Data</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="primitives_pipelines/index.html">Primitives and Pipelines</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="evaluation_doc.html">Evaluation</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="benchmarking.html">Benchmarking</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="system/index.html">Building a System</a>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#data-format" class="nav-link">Data Format</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#input" class="nav-link">Input</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#output" class="nav-link">Output</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#dataset-we-use-in-this-library" class="nav-link">Dataset we use in this library</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="data">
+<h1>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
+<p>Orion takes a time series signal and produces an interval of expected anomalies. The input to the framework is a univariate time series and the output is a table denoting the start and end timestamp of the anomalies.</p>
+<div class="section" id="data-format">
+<h2>Data Format<a class="headerlink" href="#data-format" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="input">
+<h3>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
+<p>Orion Pipelines work on time Series that are provided as a single table of telemetry
+observations with two columns:</p>
+<p><cite>timestamp</cite>: an INTEGER or FLOAT column with the time of the observation in Unix Time Format
+<cite>value</cite>: an INTEGER or FLOAT column with the observed value at the indicated timestamp</p>
+<p>This is an example of such table:</p>
+<table class="table">
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 48%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>timestamp</p></td>
+<td><p>value</p></td>
+</tr>
+<tr class="row-even"><td><p>1222819200</p></td>
+<td><p>-0.366358</p></td>
+</tr>
+<tr class="row-odd"><td><p>1222840800</p></td>
+<td><p>-0.394107</p></td>
+</tr>
+<tr class="row-even"><td><p>1222862400</p></td>
+<td><p>0.403624</p></td>
+</tr>
+<tr class="row-odd"><td><p>1222884000</p></td>
+<td><p>-0.362759</p></td>
+</tr>
+<tr class="row-even"><td><p>1222905600</p></td>
+<td><p>-0.370746</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="output">
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<p>The output of the Orion Pipelines is another table that contains the detected anomalous
+intervals and that has at least two columns:</p>
+<p><cite>start</cite>: timestamp where the anomalous interval starts
+<cite>end</cite>: timestamp where the anomalous interval ends</p>
+<p>Optionally, a third column called <cite>score</cite> can be included with a value that represents the
+severity of the detected anomaly.</p>
+<p>An example of such a table is:</p>
+<table class="table">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 35%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>start</p></td>
+<td><p>end</p></td>
+<td><p>score</p></td>
+</tr>
+<tr class="row-even"><td><p>1222970400</p></td>
+<td><p>1222992000</p></td>
+<td><p>0.572643</p></td>
+</tr>
+<tr class="row-odd"><td><p>1223013600</p></td>
+<td><p>1223035200</p></td>
+<td><p>0.572643</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="dataset-we-use-in-this-library">
+<h2>Dataset we use in this library<a class="headerlink" href="#dataset-we-use-in-this-library" title="Permalink to this headline">¶</a></h2>
+<p>For development, evaluation of pipelines, we include a dataset which includes several signals already formatted as expected by the Orion Pipelines.</p>
+<p>This formatted dataset can be browsed and downloaded directly from the <a class="reference external" href="https://d3-ai-orion.s3.amazonaws.com/index.html">d3-ai-orion AWS S3 Bucket</a>.</p>
+<p>This dataset is adapted from the one used for the experiments in the <a class="reference external" href="https://arxiv.org/abs/1802.04431">Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper</a>. Original source data is available for download <a class="reference external" href="https://s3-us-west-2.amazonaws.com/telemanom/data.zip">here</a>.</p>
+<p>We thank NASA for making this data available for public use.</p>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">User Guides</a>
+    <a class='right-next' id="next-link" href="primitives_pipelines/index.html" title="next page">Primitives and Pipelines</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

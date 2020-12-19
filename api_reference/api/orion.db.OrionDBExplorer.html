@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>orion.db.OrionDBExplorer &#8212; Orion 0.1.5.dev0 documentation</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="orion.db.OrionDBExplorer.add_dataset" href="orion.db.OrionDBExplorer.add_dataset.html" />
+    <link rel="prev" title="orion.db" href="../db.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../index.html">
+    
+      <p class="title">Orion</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../getting_started/index.html">Getting Started</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../user_guides/index.html">User Guides</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="../index.html">API Reference</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../developer_guides/index.html">Developer Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../history.html">Release Notes</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/signals-dev/Orion" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+          
+            
+                <li class="">
+                    <a href="../orion.html">orion</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../evaluation.html">orion.evaluation</a>
+                </li>
+            
+          
+            
+  
+                <li class="active">
+                    <a href="../db.html">orion.db</a>
+                    <ul>
+                    
+                        <li class="active">
+                            <a href="">orion.db.OrionDBExplorer</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_dataset.html">orion.db.OrionDBExplorer.add_dataset</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_datasets.html">orion.db.OrionDBExplorer.get_datasets</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_dataset.html">orion.db.OrionDBExplorer.get_dataset</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_signal.html">orion.db.OrionDBExplorer.add_signal</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_signals.html">orion.db.OrionDBExplorer.add_signals</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_signals.html">orion.db.OrionDBExplorer.get_signals</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_signal.html">orion.db.OrionDBExplorer.get_signal</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_template.html">orion.db.OrionDBExplorer.add_template</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_templates.html">orion.db.OrionDBExplorer.get_templates</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_template.html">orion.db.OrionDBExplorer.get_template</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_pipeline.html">orion.db.OrionDBExplorer.add_pipeline</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_pipelines.html">orion.db.OrionDBExplorer.get_pipelines</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_pipeline.html">orion.db.OrionDBExplorer.get_pipeline</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_experiment.html">orion.db.OrionDBExplorer.add_experiment</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_experiments.html">orion.db.OrionDBExplorer.get_experiments</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_experiment.html">orion.db.OrionDBExplorer.get_experiment</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_datarun.html">orion.db.OrionDBExplorer.add_datarun</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_dataruns.html">orion.db.OrionDBExplorer.get_dataruns</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_datarun.html">orion.db.OrionDBExplorer.get_datarun</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_signalrun.html">orion.db.OrionDBExplorer.add_signalrun</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_signalruns.html">orion.db.OrionDBExplorer.get_signalruns</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_signalrun.html">orion.db.OrionDBExplorer.get_signalrun</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_event.html">orion.db.OrionDBExplorer.add_event</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_events.html">orion.db.OrionDBExplorer.get_events</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_event.html">orion.db.OrionDBExplorer.get_event</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.add_annotation.html">orion.db.OrionDBExplorer.add_annotation</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_annotations.html">orion.db.OrionDBExplorer.get_annotations</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.db.OrionDBExplorer.get_annotation.html">orion.db.OrionDBExplorer.get_annotation</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="orion-db-oriondbexplorer">
+<h1>orion.db.OrionDBExplorer<a class="headerlink" href="#orion-db-oriondbexplorer" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="orion.db.OrionDBExplorer">
+<em class="property">class </em><code class="sig-prename descclassname">orion.db.</code><code class="sig-name descname">OrionDBExplorer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span></em>, <em class="sig-param"><span class="n">database</span><span class="o">=</span><span class="default_value">'orion'</span></em>, <em class="sig-param"><span class="n">mongodb_config</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/db/explorer.html#OrionDBExplorer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.OrionDBExplorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>User interface for the Orion Database.</p>
+<p>This class provides a user-frienly programming interface to
+interact with the Orion database models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>str</em>) – Unique identifier of the user that creates this OrionExporer
+instance. This username or user ID will be used to populate
+the <code class="docutils literal notranslate"><span class="pre">created_by</span></code> field of all the objects created in the
+database during this session.</p></li>
+<li><p><strong>database</strong> (<em>str</em>) – Name of the MongoDB database to use. Defaults to <code class="docutils literal notranslate"><span class="pre">orion</span></code>.</p></li>
+<li><p><strong>mongodb_config</strong> (<em>dict</em><em> or </em><em>str</em>) – <p>A dict or a path to JSON file with additional arguments can be
+passed to provide connection details different than the defaults
+for the MongoDB Database:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">host</span></code>: Hostname or IP address of the MongoDB Instance.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">port</span></code>: Port to which MongoDB is listening.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">username</span></code>: username to authenticate with.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code>: password to authenticate with.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">authentication_source</span></code>: database to authenticate against.</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">orex</span> <span class="o">=</span> <span class="n">OrionExplorer</span><span class="p">(</span><span class="s1">&#39;my_username&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Passing a path to a JSON file with connection details.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">orex</span> <span class="o">=</span> <span class="n">OrionExplorer</span><span class="p">(</span>
+<span class="gp">... </span>     <span class="n">user</span><span class="o">=</span><span class="s1">&#39;my_username&#39;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="n">database</span><span class="o">=</span><span class="s1">&#39;orion&#39;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="n">mongodb_config</span><span class="o">=</span><span class="s1">&#39;/path/to/my/mongodb_config.json&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Passing all the possible initialization arguments as a dict:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mongodb_config</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>     <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">27017</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;orion&#39;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;secret_password&#39;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="s1">&#39;authentication_source&#39;</span><span class="p">:</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orex</span> <span class="o">=</span> <span class="n">OrionExplorer</span><span class="p">(</span>
+<span class="gp">... </span>     <span class="n">user</span><span class="o">=</span><span class="s1">&#39;my_username&#39;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="n">database</span><span class="o">=</span><span class="s1">&#39;orion&#39;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="n">mongodb_config</span><span class="o">=</span><span class="n">mongodb_config</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="orion.db.OrionDBExplorer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span></em>, <em class="sig-param"><span class="n">database</span><span class="o">=</span><span class="default_value">'orion'</span></em>, <em class="sig-param"><span class="n">mongodb_config</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/db/explorer.html#OrionDBExplorer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.db.OrionDBExplorer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiaize this OrionDBExplorer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>str</em>) – Unique identifier of the user that creates this OrionExporer
+instance. This username or user ID will be used to populate
+the <code class="docutils literal notranslate"><span class="pre">created_by</span></code> field of all the objects created in the
+database during this session.</p></li>
+<li><p><strong>database</strong> (<em>str</em>) – Name of the MongoDB database to use. Defaults to <code class="docutils literal notranslate"><span class="pre">orion</span></code>.</p></li>
+<li><p><strong>mongodb_config</strong> (<em>dict</em><em> or </em><em>str</em>) – <p>A dict or a path to JSON file with additional arguments can be
+passed to provide connection details different than the defaults
+for the MongoDB Database:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">host</span></code>: Hostname or IP address of the MongoDB Instance.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">port</span></code>: Port to which MongoDB is listening.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">username</span></code>: username to authenticate with.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code>: password to authenticate with.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">authentication_source</span></code>: database to authenticate against.</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#orion.db.OrionDBExplorer.__init__" title="orion.db.OrionDBExplorer.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(user[, database, mongodb_config])</p></td>
+<td><p>Initiaize this OrionDBExplorer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_annotation.html#orion.db.OrionDBExplorer.add_annotation" title="orion.db.OrionDBExplorer.add_annotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_annotation</span></code></a>(event[, tag, comment])</p></td>
+<td><p>Add a new Annotation object to the database.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_datarun.html#orion.db.OrionDBExplorer.add_datarun" title="orion.db.OrionDBExplorer.add_datarun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_datarun</span></code></a>(experiment, pipeline)</p></td>
+<td><p>Add a new Datarun object to the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_dataset.html#orion.db.OrionDBExplorer.add_dataset" title="orion.db.OrionDBExplorer.add_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_dataset</span></code></a>(name[, entity])</p></td>
+<td><p>Add a new Dataset object to the database.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_event.html#orion.db.OrionDBExplorer.add_event" title="orion.db.OrionDBExplorer.add_event"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_event</span></code></a>(start_time, stop_time, source[, …])</p></td>
+<td><p>Add a new Event object to the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_experiment.html#orion.db.OrionDBExplorer.add_experiment" title="orion.db.OrionDBExplorer.add_experiment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_experiment</span></code></a>(name, template, dataset[, …])</p></td>
+<td><p>Add a new Experiment object to the database.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_pipeline.html#orion.db.OrionDBExplorer.add_pipeline" title="orion.db.OrionDBExplorer.add_pipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_pipeline</span></code></a>(name, template, hyperparameters)</p></td>
+<td><p>Add a new Pipeline object to the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_signal.html#orion.db.OrionDBExplorer.add_signal" title="orion.db.OrionDBExplorer.add_signal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_signal</span></code></a>(name, dataset[, data_location, …])</p></td>
+<td><p>Add a new Signal object to the database.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_signalrun.html#orion.db.OrionDBExplorer.add_signalrun" title="orion.db.OrionDBExplorer.add_signalrun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_signalrun</span></code></a>(datarun, signal)</p></td>
+<td><p>Add a new Signalrun object to the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_signals.html#orion.db.OrionDBExplorer.add_signals" title="orion.db.OrionDBExplorer.add_signals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_signals</span></code></a>(dataset[, signals_path, …])</p></td>
+<td><p>Add a multiple Signal objects to the database.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.add_template.html#orion.db.OrionDBExplorer.add_template" title="orion.db.OrionDBExplorer.add_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_template</span></code></a>(name[, template])</p></td>
+<td><p>Add a new Template object to the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">drop_database</span></code>()</p></td>
+<td><p>Drop the database.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_annotation.html#orion.db.OrionDBExplorer.get_annotation" title="orion.db.OrionDBExplorer.get_annotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_annotation</span></code></a>([annotation, event, tag, …])</p></td>
+<td><p>Get an Event object from the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_annotations.html#orion.db.OrionDBExplorer.get_annotations" title="orion.db.OrionDBExplorer.get_annotations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_annotations</span></code></a>([event, tag, comment, …])</p></td>
+<td><p>Query the Annotations collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_datarun.html#orion.db.OrionDBExplorer.get_datarun" title="orion.db.OrionDBExplorer.get_datarun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_datarun</span></code></a>([datarun, experiment, pipeline, …])</p></td>
+<td><p>Get a Datarun object from the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_dataruns.html#orion.db.OrionDBExplorer.get_dataruns" title="orion.db.OrionDBExplorer.get_dataruns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dataruns</span></code></a>([experiment, pipeline, status])</p></td>
+<td><p>Query the Dataruns collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_dataset.html#orion.db.OrionDBExplorer.get_dataset" title="orion.db.OrionDBExplorer.get_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dataset</span></code></a>([dataset, name, entity, created_by])</p></td>
+<td><p>Get a Dataset object from the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_datasets.html#orion.db.OrionDBExplorer.get_datasets" title="orion.db.OrionDBExplorer.get_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_datasets</span></code></a>([name, entity, created_by])</p></td>
+<td><p>Query the Datasets collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_event.html#orion.db.OrionDBExplorer.get_event" title="orion.db.OrionDBExplorer.get_event"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_event</span></code></a>([event, signalrun, signal, source])</p></td>
+<td><p>Get an Event object from the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_events.html#orion.db.OrionDBExplorer.get_events" title="orion.db.OrionDBExplorer.get_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_events</span></code></a>([signalrun, signal, source])</p></td>
+<td><p>Query the Events collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_experiment.html#orion.db.OrionDBExplorer.get_experiment" title="orion.db.OrionDBExplorer.get_experiment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_experiment</span></code></a>([experiment, name, project, …])</p></td>
+<td><p>Get an Experiment object from the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_experiments.html#orion.db.OrionDBExplorer.get_experiments" title="orion.db.OrionDBExplorer.get_experiments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_experiments</span></code></a>([name, template, dataset, …])</p></td>
+<td><p>Query the Experiments collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_pipeline.html#orion.db.OrionDBExplorer.get_pipeline" title="orion.db.OrionDBExplorer.get_pipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pipeline</span></code></a>([pipeline, name, template, …])</p></td>
+<td><p>Get a Pipeline object from the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_pipelines.html#orion.db.OrionDBExplorer.get_pipelines" title="orion.db.OrionDBExplorer.get_pipelines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pipelines</span></code></a>([name, template, created_by])</p></td>
+<td><p>Query the Pipelines collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_signal.html#orion.db.OrionDBExplorer.get_signal" title="orion.db.OrionDBExplorer.get_signal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_signal</span></code></a>([signal, name, dataset, created_by])</p></td>
+<td><p>Get a Signal object from the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_signalrun.html#orion.db.OrionDBExplorer.get_signalrun" title="orion.db.OrionDBExplorer.get_signalrun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_signalrun</span></code></a>([signalrun, datarun, signal, …])</p></td>
+<td><p>Get a Signalrun object from the database.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_signalruns.html#orion.db.OrionDBExplorer.get_signalruns" title="orion.db.OrionDBExplorer.get_signalruns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_signalruns</span></code></a>([datarun, signal, status])</p></td>
+<td><p>Query the Signalruns collection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_signals.html#orion.db.OrionDBExplorer.get_signals" title="orion.db.OrionDBExplorer.get_signals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_signals</span></code></a>([name, dataset, created_by])</p></td>
+<td><p>Query the Signals collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_template.html#orion.db.OrionDBExplorer.get_template" title="orion.db.OrionDBExplorer.get_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_template</span></code></a>([template, name, created_by])</p></td>
+<td><p>Get a Template object from the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="orion.db.OrionDBExplorer.get_templates.html#orion.db.OrionDBExplorer.get_templates" title="orion.db.OrionDBExplorer.get_templates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_templates</span></code></a>([name, created_by])</p></td>
+<td><p>Query the Templates collection.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="../db.html" title="previous page">orion.db</a>
+    <a class='right-next' id="next-link" href="orion.db.OrionDBExplorer.add_dataset.html" title="next page">orion.db.OrionDBExplorer.add_dataset</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

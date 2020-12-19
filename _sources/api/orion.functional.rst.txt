@@ -1,7 +1,0 @@
-orion.functional module
-=======================
-
-.. automodule:: orion.functional
-   :members:
-   :undoc-members:
-   :show-inheritance:

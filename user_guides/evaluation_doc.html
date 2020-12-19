@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Evaluation &#8212; Orion 0.1.5.dev0 documentation</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Benchmarking" href="benchmarking.html" />
+    <link rel="prev" title="Orion Pipelines" href="primitives_pipelines/pipelines.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <p class="title">Orion</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../getting_started/index.html">Getting Started</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">User Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../api_reference/index.html">API Reference</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../developer_guides/index.html">Developer Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../history.html">Release Notes</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/signals-dev/Orion" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+          
+            
+                <li class="">
+                    <a href="data.html">Data</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="primitives_pipelines/index.html">Primitives and Pipelines</a>
+                </li>
+            
+          
+            
+                <li class="active">
+                    <a href="">Evaluation</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="benchmarking.html">Benchmarking</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="system/index.html">Building a System</a>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#types-of-anomalies" class="nav-link">Types of anomalies</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#how-do-we-score-anomalies" class="nav-link">How do we score anomalies?</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#weighted-segment" class="nav-link">Weighted segment</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#overlapping-segment" class="nav-link">Overlapping segment</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#evaluate-the-performance-of-your-pipeline" class="nav-link">Evaluate the performance of your pipeline</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="evaluation">
+<span id="evaluation-doc"></span><h1>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h1>
+<p>When evaluating a pipeline, we rely on two main arguments: <em>known anomalies</em>, and <em>detected anomalies</em>.</p>
+<div class="section" id="types-of-anomalies">
+<h2>Types of anomalies<a class="headerlink" href="#types-of-anomalies" title="Permalink to this headline">¶</a></h2>
+<p>There are two approaches to defined anomalies:</p>
+<ul class="simple">
+<li><p><em>point anomalies</em> which are identified by a single value in the time series.</p></li>
+<li><p><em>contextual anomalies</em> which are identified by an anomalous interval, specifically the start/end timestamps.</p></li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># defined by a single timestamp</span>
+<span class="n">point_anomaly</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1222819200</span><span class="p">,</span> <span class="mi">1222828100</span><span class="p">,</span> <span class="mi">1223881200</span><span class="p">]</span>
+
+<span class="c1"># defined by an interval</span>
+<span class="n">contextual_anomaly</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1222819200</span><span class="p">,</span> <span class="mi">1392768000</span><span class="p">),</span>
+                      <span class="p">(</span><span class="mi">1392768000</span><span class="p">,</span> <span class="mi">1398729600</span><span class="p">),</span>
+                      <span class="p">(</span><span class="mi">1398729600</span><span class="p">,</span> <span class="mi">1399356000</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>We have created an evaluator for both types.
+We also provide a suite of transformation functions in <code class="docutils literal notranslate"><span class="pre">utils.py</span></code> to help with converting one type to another.</p>
+<p>View the <a class="reference external" href="https://github.com/signals-dev/Orion/tree/master/orion/evaluation">Evaluation sub-package</a> to see the metrics provided in <strong>Orion</strong>.</p>
+</div>
+<div class="section" id="how-do-we-score-anomalies">
+<h2>How do we score anomalies?<a class="headerlink" href="#how-do-we-score-anomalies" title="Permalink to this headline">¶</a></h2>
+<p>We use two main approaches to compare detected anomalies with the ground truth:</p>
+<ol class="arabic simple">
+<li><p>Assessing every segment in the detected anomalies with its counterpart in the ground truth, we refer to this approach as a <strong>weighted segment</strong>.</p></li>
+<li><p>Assess the detected anomaly segment by seeing if we caught an overlap with the correct anomalies, we refer to this approach as an <strong>overlapping segment</strong>.</p></li>
+</ol>
+<p>Let us use the following example to walk through the differences between both approaches:</p>
+<p>The information that we have is:</p>
+<ul class="simple">
+<li><p>The time series start (min) and end (max) timestamps.</p></li>
+<li><p>A list of start/stop pairs of timestamps for the <em>known anomalies</em>.</p></li>
+<li><p>A list of start/stop pairs of timestamps for the <em>detected anomalies</em>.</p></li>
+</ul>
+<p>An example of this would be:</p>
+<ul class="simple">
+<li><p>timeseries start, end timestamps</p></li>
+</ul>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="n">data_span</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1222819200</span><span class="p">,</span> <span class="mi">1442016000</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>known anomalies (in this case only one)</p></li>
+</ul>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [2]: </span><span class="n">ground_truth</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">   ...: </span>    <span class="p">(</span><span class="mi">1392768000</span><span class="p">,</span> <span class="mi">1402423200</span><span class="p">)</span>
+<span class="gp">   ...: </span><span class="p">]</span>
+<span class="gp">   ...: </span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>detected anomalies (in this case only one)</p></li>
+</ul>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [3]: </span><span class="n">anomalies</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">   ...: </span>    <span class="p">(</span><span class="mi">1398729600</span><span class="p">,</span> <span class="mi">1399356000</span><span class="p">)</span>
+<span class="gp">   ...: </span><span class="p">]</span>
+<span class="gp">   ...: </span>
+</pre></div>
+</div>
+<p>So, what is the score?</p>
+<div class="section" id="weighted-segment">
+<h3>Weighted segment<a class="headerlink" href="#weighted-segment" title="Permalink to this headline">¶</a></h3>
+<p>Weighted segment based evaluation is a strict approach which weighs each segment by its actual time duration. It is valuable to use when you want to detect the exact segment of the anomaly, without any slackness. It first segments the signal into partitions based on the ground truth and detected sequences. Then it makes a segment to segment comparison and records true positive, true negative, false positive, and false negative accordingly. The overall score is weighted by the duration of each segment.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">orion.evaluation.contextual</span> <span class="kn">import</span> <span class="n">contextual_f1_score</span>
+
+<span class="gp">In [5]: </span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">data_span</span>
+
+<span class="gp">In [6]: </span><span class="n">contextual_f1_score</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">weighted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gh">Out[6]: </span><span class="go">0.12184891031572705</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="overlapping-segment">
+<h3>Overlapping segment<a class="headerlink" href="#overlapping-segment" title="Permalink to this headline">¶</a></h3>
+<p>We look for overlap between detected anomalies and ground truth anomalies.</p>
+<p>In this methodology, we are more concerned with whether or not we were able to find an anomaly; even just a part of it. It records:
+* a <em>true positive</em> if a known anomalous window overlaps any detected windows.
+* a <em>false negative</em> if a known anomalous window does not overlap any detected windows.
+* a <em>false positive</em> if a detected window does not overlap any known anomalous region.</p>
+<p>To use this objective, we pass <code class="docutils literal notranslate"><span class="pre">weighted=False</span></code> in the metric method of choice.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="n">contextual_f1_score</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">weighted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gh">Out[7]: </span><span class="go">1.0</span>
+</pre></div>
+</div>
+<p>You can read more about our step-by-step process in our evaluation by visiting the <a class="reference external" href="https://github.com/signals-dev/Orion/tree/master/orion/evaluation">Evaluation sub-package</a></p>
+</div>
+</div>
+<div class="section" id="evaluate-the-performance-of-your-pipeline">
+<h2>Evaluate the performance of your pipeline<a class="headerlink" href="#evaluate-the-performance-of-your-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>We can use the same dataset we saw in the <a class="reference internal" href="../getting_started/quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a></p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [8]: </span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_signal</span>
+
+<span class="gp">In [9]: </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We set up the pipeline (<code class="docutils literal notranslate"><span class="pre">lstm_dynamic_threshold</span></code>) as well as some hyperparameters.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="kn">from</span> <span class="nn">orion</span> <span class="kn">import</span> <span class="n">Orion</span>
+
+<span class="gp">In [11]: </span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">   ....: </span>    <span class="s1">&#39;keras.Sequential.LSTMTimeSeriesRegressor#1&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">   ....: </span>        <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="mi">5</span>
+<span class="gp">   ....: </span>    <span class="p">}</span>
+<span class="gp">   ....: </span><span class="p">}</span>
+<span class="gp">   ....: </span>
+
+<span class="gp">In [12]: </span><span class="n">orion</span> <span class="o">=</span> <span class="n">Orion</span><span class="p">(</span>
+<span class="gp">   ....: </span>    <span class="n">pipeline</span><span class="o">=</span><span class="s1">&#39;lstm_dynamic_threshold&#39;</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">hyperparameters</span><span class="o">=</span><span class="n">hyperparameters</span>
+<span class="gp">   ....: </span><span class="p">)</span>
+<span class="gp">   ....: </span>
+</pre></div>
+</div>
+<p>In this next step we will load some already known anomalous intervals and evaluate how good our anomaly detection was by comparing those with our detected intervals.</p>
+<p>For this, we will first load the known anomalies for the signal that we are using:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [13]: </span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_anomalies</span>
+
+<span class="gp">In [14]: </span><span class="n">ground_truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="s1">&#39;S-1&#39;</span><span class="p">)</span>
+
+<span class="gp">In [15]: </span><span class="n">ground_truth</span>
+<span class="gh">Out[15]: </span><span class="go"></span>
+<span class="go">        start         end</span>
+<span class="go">0  1398168000  1407823200</span>
+</pre></div>
+</div>
+<p>The output will be a table in the same format as the <code class="docutils literal notranslate"><span class="pre">anomalies</span></code> one.</p>
+<p>Afterwards, we can call the <cite>orion.evaluate</cite> method, passing both the data and the ground truth:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [16]: </span><span class="n">scores</span> <span class="o">=</span> <span class="n">orion</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>since the pipeline has not been trained yet, we set <code class="docutils literal notranslate"><span class="pre">fit=True</span></code> to fit it first before detecting anomalies.</p>
+</div>
+<p>The output will be a <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> containing a collection of scores indicating how the predictions were:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [17]: </span><span class="n">scores</span>
+<span class="gh">Out[17]: </span><span class="go"></span>
+<span class="go">accuracy     0.978616</span>
+<span class="go">f1           0.722861</span>
+<span class="go">recall       0.633110</span>
+<span class="go">precision    0.842262</span>
+<span class="go">dtype: float64</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="primitives_pipelines/pipelines.html" title="previous page">Orion Pipelines</a>
+    <a class='right-next' id="next-link" href="benchmarking.html" title="next page">Benchmarking</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

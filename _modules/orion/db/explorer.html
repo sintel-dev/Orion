@@ -1,281 +1,156 @@
 
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>orion.db.explorer &mdash; Orion 0.1.5.dev0 documentation</title>
-  
 
-  
-  
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>orion.db.explorer &#8212; Orion 0.1.5.dev0 documentation</title>
+    
+  <link rel="stylesheet" href="../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
 
-          
-            <a href="../../../index.html" class="icon icon-home"> Orion
-          
+    <a class="navbar-brand" href="../../../index.html">
+    
+      <p class="title">Orion</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-          
-            
-            <img src="../../../_static/orion-logo-white-200.png" class="logo" alt="Logo"/>
-          
-          </a>
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../getting_started/index.html">Getting Started</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../user_guides/index.html">User Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../api_reference/index.html">API Reference</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../developer_guides/index.html">Developer Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../history.html">Release Notes</a>
+        </li>
+        
+        
+      </ul>
 
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Orion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#overview">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#quickstart">Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#install-with-pip">Install with pip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#fit-an-orion-pipeline">Fit an Orion pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../readme.html#detect-anomalies-using-the-fitted-pipeline">Detect anomalies using the fitted pipeline</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#resources">Resources</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Advanced Usage</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../benchmark.html">Benchmark</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#releases">Releases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#evaluating-the-pipelines">Evaluating the Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../benchmark.html#benchmark-function">Benchmark function</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../database.html">Database Schema</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#dataset">Dataset</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#fields">Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#signal">Signal</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id1">Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#template">Template</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id2">Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#pipeline">Pipeline</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id3">Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#experiment">Experiment</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id4">Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#datarun">Datarun</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id5">Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#signalrun">Signalrun</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id6">Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#event">Event</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id7">Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#event-interaction">Event Interaction</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id8">Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../database.html#annotation">Annotation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../database.html#id9">Fields</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../docker.html">Docker Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../docker.html#docker-requirements">Docker Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../docker.html#building-the-orion-docker-image">Building the Orion Docker Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../docker.html#distributing-the-orion-docker-image">Distributing the Orion Docker Image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../docker.html#distributing-using-a-docker-registry">Distributing using a Docker registry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../docker.html#distributing-as-a-file">Distributing as a file</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../docker.html#running-the-orion-jupyter-image">Running the orion-jupyter image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../docker.html#running-orion-jupyter-with-the-code">Running orion-jupyter with the code</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../docker.html#running-orion-jupyter-without-the-orion-code">Running orion-jupyter without the orion code</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p class="caption"><span class="caption-text">Resources</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/orion.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/orion.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.db.html">orion.db package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/orion.db.html#submodules">Submodules</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.evaluation.html">orion.evaluation package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/orion.evaluation.html#submodules">Submodules</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.primitives.html">orion.primitives package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/orion.primitives.html#submodules">Submodules</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/orion.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.analysis.html">orion.analysis module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.benchmark.html">orion.benchmark module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.cli.html">orion.cli module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.core.html">orion.core module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.data.html">orion.data module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.functional.html">orion.functional module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.runner.html">orion.runner module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/orion.utils.html">orion.utils module</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#types-of-contributions">Types of Contributions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#report-bugs">Report Bugs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#fix-bugs">Fix Bugs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#implement-features">Implement Features</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#write-documentation">Write Documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#submit-feedback">Submit Feedback</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#unit-testing-guidelines">Unit Testing Guidelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#tips">Tips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-workflow">Release Workflow</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../history.html#id1">0.1.4 - 2020-10-16</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../history.html#id2">0.1.3 - 2020-09-29</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../history.html#id3">0.1.2 - 2020-07-03</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../history.html#id4">0.1.1 - 2020-05-11</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../history.html#id5">0.1.0 - 2020-04-23</a></li>
-</ul>
-</li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">Orion</a>
-        
-      </nav>
 
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/signals-dev/Orion" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
 
-      <div class="wy-nav-content">
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
         
-        <div class="rst-content">
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
           
 
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>orion.db.explorer</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-      </li>
-    
-  </ul>
+    </ul>
+</nav>
 
-  
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <h1>Source code for orion.db.explorer</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Orion DB Explorer model.</span>
 
@@ -298,7 +173,7 @@
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="OrionDBExplorer"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer">[docs]</a><span class="k">class</span> <span class="nc">OrionDBExplorer</span><span class="p">:</span>
+<div class="viewcode-block" id="OrionDBExplorer"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.html#orion.db.OrionDBExplorer">[docs]</a><span class="k">class</span> <span class="nc">OrionDBExplorer</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;User interface for the Orion Database.</span>
 
 <span class="sd">    This class provides a user-frienly programming interface to</span>
@@ -316,6 +191,7 @@
 <span class="sd">            A dict or a path to JSON file with additional arguments can be</span>
 <span class="sd">            passed to provide connection details different than the defaults</span>
 <span class="sd">            for the MongoDB Database:</span>
+
 <span class="sd">                * ``host``: Hostname or IP address of the MongoDB Instance.</span>
 <span class="sd">                * ``port``: Port to which MongoDB is listening.</span>
 <span class="sd">                * ``username``: username to authenticate with.</span>
@@ -323,10 +199,10 @@
 <span class="sd">                * ``authentication_source``: database to authenticate against.</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        Simples use case:</span>
 <span class="sd">        &gt;&gt;&gt; orex = OrionExplorer(&#39;my_username&#39;)</span>
 
 <span class="sd">        Passing a path to a JSON file with connection details.</span>
+
 <span class="sd">        &gt;&gt;&gt; orex = OrionExplorer(</span>
 <span class="sd">        ...      user=&#39;my_username&#39;,</span>
 <span class="sd">        ...      database=&#39;orion&#39;,</span>
@@ -334,6 +210,7 @@
 <span class="sd">        ... )</span>
 
 <span class="sd">        Passing all the possible initialization arguments as a dict:</span>
+
 <span class="sd">        &gt;&gt;&gt; mongodb_config = {</span>
 <span class="sd">        ...      &#39;host&#39;: &#39;localhost&#39;,</span>
 <span class="sd">        ...      &#39;port&#39;: 27017,</span>
@@ -348,7 +225,7 @@
 <span class="sd">        ... )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;orion&#39;</span><span class="p">,</span> <span class="n">mongodb_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.__init__"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.html#orion.db.OrionDBExplorer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;orion&#39;</span><span class="p">,</span> <span class="n">mongodb_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initiaize this OrionDBExplorer.</span>
 
 <span class="sd">        Args:</span>
@@ -363,6 +240,7 @@
 <span class="sd">                A dict or a path to JSON file with additional arguments can be</span>
 <span class="sd">                passed to provide connection details different than the defaults</span>
 <span class="sd">                for the MongoDB Database:</span>
+
 <span class="sd">                    * ``host``: Hostname or IP address of the MongoDB Instance.</span>
 <span class="sd">                    * ``port``: Port to which MongoDB is listening.</span>
 <span class="sd">                    * ``username``: username to authenticate with.</span>
@@ -380,21 +258,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">mongodb_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;database&#39;</span><span class="p">,</span> <span class="n">database</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="o">**</span><span class="n">mongodb_config</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fs</span> <span class="o">=</span> <span class="n">GridFS</span><span class="p">(</span><span class="n">Database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fs</span> <span class="o">=</span> <span class="n">GridFS</span><span class="p">(</span><span class="n">Database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.drop_database"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.drop_database">[docs]</a>    <span class="k">def</span> <span class="nf">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Drop the database.</span>
 
 <span class="sd">        This method is used for development purposes and will</span>
 <span class="sd">        most likely be removed in the future.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">)</span>
 
     <span class="c1"># ####### #</span>
     <span class="c1"># Dataset #</span>
     <span class="c1"># ####### #</span>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_dataset"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">add_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_dataset"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_dataset.html#orion.db.OrionDBExplorer.add_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">add_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Dataset object to the database.</span>
 
 <span class="sd">        The Dataset needs to be given a name and, optionally, an identitifier,</span>
@@ -420,7 +298,7 @@
             <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_datasets"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">get_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_datasets"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_datasets.html#orion.db.OrionDBExplorer.get_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">get_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query the Datasets collection.</span>
 
 <span class="sd">        All the details about the matching Datasets will be returned in</span>
@@ -448,7 +326,7 @@
             <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_dataset"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_dataset"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_dataset.html#orion.db.OrionDBExplorer.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a Dataset object from the database.</span>
 
 <span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
@@ -484,7 +362,7 @@
     <span class="c1"># Signal #</span>
     <span class="c1"># ###### #</span>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_signal"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_signal">[docs]</a>    <span class="k">def</span> <span class="nf">add_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">data_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_signal"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_signal.html#orion.db.OrionDBExplorer.add_signal">[docs]</a>    <span class="k">def</span> <span class="nf">add_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">data_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Signal object to the database.</span>
 
@@ -540,7 +418,7 @@
             <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_signals"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_signals">[docs]</a>    <span class="k">def</span> <span class="nf">add_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_signals"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_signals.html#orion.db.OrionDBExplorer.add_signals">[docs]</a>    <span class="k">def</span> <span class="nf">add_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a multiple Signal objects to the database.</span>
 
@@ -581,7 +459,7 @@
                 <span class="k">except</span> <span class="n">NotUniqueError</span><span class="p">:</span>
                     <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_signals"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_signals">[docs]</a>    <span class="k">def</span> <span class="nf">get_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_signals"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_signals.html#orion.db.OrionDBExplorer.get_signals">[docs]</a>    <span class="k">def</span> <span class="nf">get_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query the Signals collection.</span>
 
 <span class="sd">        All the details about the matching Signals will be returned in</span>
@@ -609,7 +487,7 @@
             <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_signal"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_signal">[docs]</a>    <span class="k">def</span> <span class="nf">get_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_signal"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_signal.html#orion.db.OrionDBExplorer.get_signal">[docs]</a>    <span class="k">def</span> <span class="nf">get_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a Signal object from the database.</span>
 
 <span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
@@ -646,7 +524,7 @@
     <span class="c1"># Template #</span>
     <span class="c1"># ######## #</span>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_template"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_template">[docs]</a>    <span class="k">def</span> <span class="nf">add_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_template"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_template.html#orion.db.OrionDBExplorer.add_template">[docs]</a>    <span class="k">def</span> <span class="nf">add_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Template object to the database.</span>
 
 <span class="sd">        The template can be passed as a name of a registered MLPipeline,</span>
@@ -697,7 +575,7 @@
 
         <span class="k">return</span> <span class="n">template</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_templates"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_templates">[docs]</a>    <span class="k">def</span> <span class="nf">get_templates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_templates"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_templates.html#orion.db.OrionDBExplorer.get_templates">[docs]</a>    <span class="k">def</span> <span class="nf">get_templates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query the Templates collection.</span>
 
 <span class="sd">        All the details about the matching Templates will be returned in</span>
@@ -726,7 +604,7 @@
             <span class="n">exclude_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_template"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_template">[docs]</a>    <span class="k">def</span> <span class="nf">get_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_template"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_template.html#orion.db.OrionDBExplorer.get_template">[docs]</a>    <span class="k">def</span> <span class="nf">get_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a Template object from the database.</span>
 
 <span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
@@ -759,7 +637,7 @@
     <span class="c1"># Pipeline #</span>
     <span class="c1"># ######## #</span>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_pipeline"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">add_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_pipeline"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_pipeline.html#orion.db.OrionDBExplorer.add_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">add_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Pipeline object to the database.</span>
 
 <span class="sd">        The Pipeline will consist on a copy of the given Template using</span>
@@ -801,7 +679,7 @@
             <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_pipelines"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_pipelines">[docs]</a>    <span class="k">def</span> <span class="nf">get_pipelines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_pipelines"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_pipelines.html#orion.db.OrionDBExplorer.get_pipelines">[docs]</a>    <span class="k">def</span> <span class="nf">get_pipelines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query the Pipelines collection.</span>
 
 <span class="sd">        All the details about the matching Pipelines will be returned in</span>
@@ -834,7 +712,7 @@
             <span class="n">exclude_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_pipeline"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">get_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_pipeline"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_pipeline.html#orion.db.OrionDBExplorer.get_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">get_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a Pipeline object from the database.</span>
 
 <span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
@@ -871,7 +749,7 @@
     <span class="c1"># Experiment #</span>
     <span class="c1"># ########## #</span>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_experiment"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">add_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_experiment"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_experiment.html#orion.db.OrionDBExplorer.add_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">add_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Experiment object to the database.</span>
 
 <span class="sd">        The Experiment will have to be associated to a Template and a Dataset.</span>
@@ -926,7 +804,7 @@
             <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_experiments"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_experiments">[docs]</a>    <span class="k">def</span> <span class="nf">get_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_experiments"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_experiments.html#orion.db.OrionDBExplorer.get_experiments">[docs]</a>    <span class="k">def</span> <span class="nf">get_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query the Experiments collection.</span>
 
@@ -963,7 +841,7 @@
             <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_experiment"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">get_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_experiment"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_experiment.html#orion.db.OrionDBExplorer.get_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">get_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get an Experiment object from the database.</span>
 
@@ -1009,7 +887,7 @@
     <span class="c1"># Datarun #</span>
     <span class="c1"># ####### #</span>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_datarun"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_datarun">[docs]</a>    <span class="k">def</span> <span class="nf">add_datarun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_datarun"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_datarun.html#orion.db.OrionDBExplorer.add_datarun">[docs]</a>    <span class="k">def</span> <span class="nf">add_datarun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Datarun object to the database.</span>
 
 <span class="sd">        The Datarun needs to be associated to an Experiment and a Pipeline.</span>
@@ -1030,7 +908,7 @@
             <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_dataruns"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_dataruns">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataruns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_dataruns"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_dataruns.html#orion.db.OrionDBExplorer.get_dataruns">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataruns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query the Dataruns collection.</span>
 
 <span class="sd">        All the details about the matching Dataruns will be returned in</span>
@@ -1058,7 +936,7 @@
             <span class="n">exclude_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;software_versions&#39;</span><span class="p">],</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_datarun"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_datarun">[docs]</a>    <span class="k">def</span> <span class="nf">get_datarun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_datarun"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_datarun.html#orion.db.OrionDBExplorer.get_datarun">[docs]</a>    <span class="k">def</span> <span class="nf">get_datarun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a Datarun object from the database.</span>
 
 <span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
@@ -1093,7 +971,7 @@
     <span class="c1"># Signalrun #</span>
     <span class="c1"># ######### #</span>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_signalrun"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_signalrun">[docs]</a>    <span class="k">def</span> <span class="nf">add_signalrun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_signalrun"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_signalrun.html#orion.db.OrionDBExplorer.add_signalrun">[docs]</a>    <span class="k">def</span> <span class="nf">add_signalrun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Signalrun object to the database.</span>
 
 <span class="sd">        The Signalrun needs to be associated to a Datarun and a Signal.</span>
@@ -1114,7 +992,7 @@
             <span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_signalruns"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_signalruns">[docs]</a>    <span class="k">def</span> <span class="nf">get_signalruns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_signalruns"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_signalruns.html#orion.db.OrionDBExplorer.get_signalruns">[docs]</a>    <span class="k">def</span> <span class="nf">get_signalruns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datarun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query the Signalruns collection.</span>
 
 <span class="sd">        All the details about the matching Signalruns will be returned in</span>
@@ -1141,7 +1019,7 @@
             <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_signalrun"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_signalrun">[docs]</a>    <span class="k">def</span> <span class="nf">get_signalrun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datarun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_signalrun"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_signalrun.html#orion.db.OrionDBExplorer.get_signalrun">[docs]</a>    <span class="k">def</span> <span class="nf">get_signalrun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datarun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a Signalrun object from the database.</span>
 
 <span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
@@ -1177,7 +1055,7 @@
     <span class="c1"># Event #</span>
     <span class="c1"># ##### #</span>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_event"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_event">[docs]</a>    <span class="k">def</span> <span class="nf">add_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">stop_time</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_event"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_event.html#orion.db.OrionDBExplorer.add_event">[docs]</a>    <span class="k">def</span> <span class="nf">add_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">stop_time</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Event object to the database.</span>
 
@@ -1230,7 +1108,7 @@
             <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_events"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_events">[docs]</a>    <span class="k">def</span> <span class="nf">get_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_events"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_events.html#orion.db.OrionDBExplorer.get_events">[docs]</a>    <span class="k">def</span> <span class="nf">get_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query the Events collection.</span>
 
 <span class="sd">        All the details about the matching Signalruns will be returned in</span>
@@ -1257,7 +1135,7 @@
             <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_event"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_event">[docs]</a>    <span class="k">def</span> <span class="nf">get_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_event"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_event.html#orion.db.OrionDBExplorer.get_event">[docs]</a>    <span class="k">def</span> <span class="nf">get_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signalrun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get an Event object from the database.</span>
 
 <span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
@@ -1293,7 +1171,7 @@
     <span class="c1"># Annotation #</span>
     <span class="c1"># ########## #</span>
 
-<div class="viewcode-block" id="OrionDBExplorer.add_annotation"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.add_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.add_annotation"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_annotation.html#orion.db.OrionDBExplorer.add_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Annotation object to the database.</span>
 
 <span class="sd">        The Event needs to be associated with an Event, and can be given a</span>
@@ -1317,7 +1195,7 @@
             <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_annotations"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">get_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_annotations"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_annotations.html#orion.db.OrionDBExplorer.get_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">get_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query the Annotations collection.</span>
 
 <span class="sd">        All the details about the matching Annotations will be returned in</span>
@@ -1346,7 +1224,7 @@
             <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OrionDBExplorer.get_annotation"><a class="viewcode-back" href="../../../api/orion.db.explorer.html#orion.db.OrionDBExplorer.get_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">get_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="OrionDBExplorer.get_annotation"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.get_annotation.html#orion.db.OrionDBExplorer.get_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">get_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get an Event object from the database.</span>
 
 <span class="sd">        All the arguments are optional but empty queries are not allowed, so at</span>
@@ -1381,43 +1259,31 @@
         <span class="p">)</span></div></div>
 </pre></div>
 
-           </div>
-           
-          </div>
-          <footer>
-  
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
 
-  <hr/>
+              </div>
+              
+          </main>
+          
 
-  <div role="contentinfo">
+      </div>
+    </div>
+
+    
+  <script src="../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     <p>
-        &copy; Copyright 2018, MIT Data To AI Lab
-
+          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
 </footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
-    
-   
-
-</body>
+  </body>
 </html>

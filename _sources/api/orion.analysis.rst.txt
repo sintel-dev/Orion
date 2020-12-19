@@ -1,7 +1,0 @@
-orion.analysis module
-=====================
-
-.. automodule:: orion.analysis
-   :members:
-   :undoc-members:
-   :show-inheritance:

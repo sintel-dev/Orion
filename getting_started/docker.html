@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Docker Usage &#8212; Orion 0.1.5.dev0 documentation</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="User Guides" href="../user_guides/index.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <p class="title">Orion</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Getting Started</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../user_guides/index.html">User Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../api_reference/index.html">API Reference</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../developer_guides/index.html">Developer Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../history.html">Release Notes</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/signals-dev/Orion" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+          
+            
+                <li class="">
+                    <a href="install.html">Installation</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="quickstart.html">Quickstart</a>
+                </li>
+            
+          
+            
+                <li class="active">
+                    <a href="">Docker Usage</a>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#docker-requirements" class="nav-link">Docker Requirements</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#building-the-orion-docker-image" class="nav-link">Building the Orion Docker Image</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#distributing-the-orion-docker-image" class="nav-link">Distributing the Orion Docker Image</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#distributing-using-a-docker-registry" class="nav-link">Distributing using a Docker registry</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#distributing-as-a-file" class="nav-link">Distributing as a file</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#running-the-orion-jupyter-image" class="nav-link">Running the orion-jupyter image</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#running-orion-jupyter-with-the-code" class="nav-link">Running orion-jupyter with the code</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#running-orion-jupyter-without-the-orion-code" class="nav-link">Running orion-jupyter without the orion code</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="docker-usage">
+<h1>Docker Usage<a class="headerlink" href="#docker-usage" title="Permalink to this headline">¶</a></h1>
+<p><strong>Orion</strong> comes configured and ready to be distributed and run as a docker image which starts
+a jupyter notebook already configured to use orion, with all the required dependencies already
+installed.</p>
+<div class="section" id="docker-requirements">
+<h2>Docker Requirements<a class="headerlink" href="#docker-requirements" title="Permalink to this headline">¶</a></h2>
+<p>The only requirement in order to run the Orion Docker image is to have Docker installed and
+that the user has enough permissions to run it.</p>
+<p>Installation instructions for any possible system compatible can be found <a class="reference external" href="https://docs.docker.com/install/">here</a></p>
+<p>Additionally, the system that builds the Orion Docker image will also need to have a working
+internet connection that allows downloading the base image and the additional python depenedencies.</p>
+</div>
+<div class="section" id="building-the-orion-docker-image">
+<h2>Building the Orion Docker Image<a class="headerlink" href="#building-the-orion-docker-image" title="Permalink to this headline">¶</a></h2>
+<p>After having cloned the <strong>Orion</strong> repository, all you have to do in order to build the Orion Docker
+Image is running this command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make docker-jupyter-build
+</pre></div>
+</div>
+<p>After a few minutes, the new image, called <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code>, will have been built into the system
+and will be ready to be used or distributed.</p>
+</div>
+<div class="section" id="distributing-the-orion-docker-image">
+<h2>Distributing the Orion Docker Image<a class="headerlink" href="#distributing-the-orion-docker-image" title="Permalink to this headline">¶</a></h2>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code> image is built, it can be distributed in several ways.</p>
+<div class="section" id="distributing-using-a-docker-registry">
+<h3>Distributing using a Docker registry<a class="headerlink" href="#distributing-using-a-docker-registry" title="Permalink to this headline">¶</a></h3>
+<p>The simplest way to distribute the recently created image is <a class="reference external" href="https://docs.docker.com/registry/">using a registry</a>.</p>
+<p>In order to do so, we will need to have write access to a public or private registry (remember to
+<a class="reference external" href="https://docs.docker.com/engine/reference/commandline/login/">login</a>!) and execute these commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker tag orion-jupyter:latest your-registry-name:some-tag
+docker push your-registry-name:some-tag
+</pre></div>
+</div>
+<p>Afterwards, in the receiving machine:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker pull your-registry-name:some-tag
+docker tag your-registry-name:some-tag orion-jupyter:latest
+</pre></div>
+</div>
+</div>
+<div class="section" id="distributing-as-a-file">
+<h3>Distributing as a file<a class="headerlink" href="#distributing-as-a-file" title="Permalink to this headline">¶</a></h3>
+<p>If the distribution of the image has to be done offline for any reason, it can be achieved
+using the following command.</p>
+<p>In the system that already has the image:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker save --output orion-jupyter.tar orion-jupyter
+</pre></div>
+</div>
+<p>Then copy over the file <code class="docutils literal notranslate"><span class="pre">orion-jupyter.tar</span></code> to the new system and there, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker load --input orion-jupyter.tar
+</pre></div>
+</div>
+<p>After these commands, the <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code> image should be available and ready to be used in the
+new system.</p>
+</div>
+</div>
+<div class="section" id="running-the-orion-jupyter-image">
+<h2>Running the orion-jupyter image<a class="headerlink" href="#running-the-orion-jupyter-image" title="Permalink to this headline">¶</a></h2>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code> image has been built, pulled or loaded, it is ready to be run.</p>
+<p>This can be done in two ways:</p>
+<div class="section" id="running-orion-jupyter-with-the-code">
+<h3>Running orion-jupyter with the code<a class="headerlink" href="#running-orion-jupyter-with-the-code" title="Permalink to this headline">¶</a></h3>
+<p>If the Orion source code is available in the system, running the image is as simple as running
+this command from within the root of the project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make docker-jupyter-run
+</pre></div>
+</div>
+<p>This will start a jupyter notebook using the docker image, which you can access by pointing your
+browser at <a class="reference external" href="http://127.0.0.1:8888">http://127.0.0.1:8888</a></p>
+<p>In this case, the local version of the project will also mounted within the Docker container,
+which means that any changes that you do in your local code will immediately be available
+within your notebooks, and that any notebook that you create within jupyter will also show
+up in your <code class="docutils literal notranslate"><span class="pre">notebooks</span></code> folder!</p>
+</div>
+<div class="section" id="running-orion-jupyter-without-the-orion-code">
+<h3>Running orion-jupyter without the orion code<a class="headerlink" href="#running-orion-jupyter-without-the-orion-code" title="Permalink to this headline">¶</a></h3>
+<p>If the Orion source code is not available in the system and only the Docker Image is, you can
+still run the image by using this command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run -ti -p8888:8888 orion-jupyter
+</pre></div>
+</div>
+<p>In this case, the code changes and the notebooks that you create within jupyter will stay
+inside the container and you will only be able to access and download them through the
+jupyter interface.</p>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="quickstart.html" title="previous page">Quickstart</a>
+    <a class='right-next' id="next-link" href="../user_guides/index.html" title="next page">User Guides</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

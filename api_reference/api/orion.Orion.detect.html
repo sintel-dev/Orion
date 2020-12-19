@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>orion.Orion.detect &#8212; Orion 0.1.5.dev0 documentation</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="orion.Orion.evaluate" href="orion.Orion.evaluate.html" />
+    <link rel="prev" title="orion.Orion.fit" href="orion.Orion.fit.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../index.html">
+    
+      <p class="title">Orion</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../getting_started/index.html">Getting Started</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../user_guides/index.html">User Guides</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="../index.html">API Reference</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../developer_guides/index.html">Developer Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../history.html">Release Notes</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/signals-dev/Orion" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+          
+            
+  
+                <li class="active">
+                    <a href="../orion.html">orion</a>
+                    <ul>
+                    
+                        <li class="">
+                            <a href="orion.Orion.html">orion.Orion</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.Orion.fit.html">orion.Orion.fit</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="">orion.Orion.detect</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.Orion.evaluate.html">orion.Orion.evaluate</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.Orion.save.html">orion.Orion.save</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.Orion.load.html">orion.Orion.load</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.fit_pipeline.html">orion.fit_pipeline</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.detect_anomalies.html">orion.detect_anomalies</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.evaluate_pipeline.html">orion.evaluate_pipeline</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.benchmark.benchmark.html">orion.benchmark.benchmark</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../evaluation.html">orion.evaluation</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../db.html">orion.db</a>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="orion-orion-detect">
+<h1>orion.Orion.detect<a class="headerlink" href="#orion-orion-detect" title="Permalink to this headline">¶</a></h1>
+<dl class="py method">
+<dt id="orion.Orion.detect">
+<code class="sig-prename descclassname">Orion.</code><code class="sig-name descname">detect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">visualization</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/core.html#Orion.detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.Orion.detect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect anomalies in the given data..</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">visualization=True</span></code>, also return the visualization
+outputs from the MLPipeline object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>DataFrame</em>) – Input data, passed as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing
+exactly two columns: timestamp and value.</p></li>
+<li><p><strong>visualization</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, also capture the <code class="docutils literal notranslate"><span class="pre">visualization</span></code> named
+output from the <code class="docutils literal notranslate"><span class="pre">MLPipeline</span></code> and return it as a second
+output.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If visualization is <code class="docutils literal notranslate"><span class="pre">False</span></code>, it returns the events
+DataFrame. If visualization is <code class="docutils literal notranslate"><span class="pre">True</span></code>, it returns a
+tuple containing the events DataFrame followed by the
+visualization outputs dict.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame or tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="orion.Orion.fit.html" title="previous page">orion.Orion.fit</a>
+    <a class='right-next' id="next-link" href="orion.Orion.evaluate.html" title="next page">orion.Orion.evaluate</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,7 +1,0 @@
-orion.primitives.tadgan module
-==============================
-
-.. automodule:: orion.primitives.tadgan
-   :members:
-   :undoc-members:
-   :show-inheritance:

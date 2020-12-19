@@ -1,7 +1,0 @@
-orion.evaluation.point module
-=============================
-
-.. automodule:: orion.evaluation.point
-   :members:
-   :undoc-members:
-   :show-inheritance:

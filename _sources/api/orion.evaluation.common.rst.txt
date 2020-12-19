@@ -1,7 +1,0 @@
-orion.evaluation.common module
-==============================
-
-.. automodule:: orion.evaluation.common
-   :members:
-   :undoc-members:
-   :show-inheritance:

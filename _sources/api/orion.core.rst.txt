@@ -1,7 +1,0 @@
-orion.core module
-=================
-
-.. automodule:: orion.core
-   :members:
-   :undoc-members:
-   :show-inheritance:
