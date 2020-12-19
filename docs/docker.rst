@@ -1,1 +1,0 @@
-.. mdinclude:: ../DOCKER.md

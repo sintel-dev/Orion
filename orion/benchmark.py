@@ -315,9 +315,8 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             intermediatry results will not be saved.
 
     Returns:
-        pandas.DataFrame: Table containing the average of the scores obtained with
-            each scoring function accross all the signals for each pipeline, ranked
-            by the indicated metric.
+        pandas.DataFrame: Table containing the scores obtained with
+            each scoring function accross all the signals for each pipeline.
     """
     pipelines = pipelines or VERIFIED_PIPELINES
     datasets = datasets or BENCHMARK_DATA
