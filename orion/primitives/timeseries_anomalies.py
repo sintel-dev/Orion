@@ -218,7 +218,7 @@ def _find_sequences(errors, epsilon, anomaly_padding):
             * Maximum error value that was not considered an anomaly.
     """
     above = pd.Series(errors > epsilon)
-    index_above = np.argwhere(above)
+    index_above = np.argwhere(above.values)
 
     for idx in index_above.flatten():
         above[max(0, idx - anomaly_padding):min(idx + anomaly_padding + 1, len(above))] = True
@@ -510,7 +510,7 @@ def find_anomalies(errors, index, z_range=(0, 10), window_size=None, window_size
             inverted_window = mean - (window - mean)
             inverted_window_sequences = _find_window_sequences(inverted_window, z_range,
                                                                anomaly_padding, min_percent,
-                                                               window_start)
+                                                               window_start, fixed_threshold)
             sequences.extend(inverted_window_sequences)
 
         window_start = window_start + window_step_size
