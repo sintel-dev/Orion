@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 
@@ -9,7 +10,7 @@ def fillna(X, method=["ffill"], **kwargs):
     filled with the same next/previous known value.
 
     Args:
-        X (ndarray):
+        X (ndarray or pandas.DataFrame):
             Array of input sequence.
         method (str or list):
             Optional. String describing whether to use forward or backward fill. pad / ffill:
@@ -23,7 +24,10 @@ def fillna(X, method=["ffill"], **kwargs):
     if isinstance(method, str):
         method = [method]
 
-    X_ = pd.Series(X)
+    if isinstance(X, np.ndarray):
+        X_ = pd.DataFrame(X)
+    else:
+        X_ = X.copy()
 
     for fill in method:
         X_ = X_.fillna(method=fill, **kwargs)
