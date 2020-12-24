@@ -34,13 +34,14 @@ BENCHMARK_PARAMS = pd.read_csv(S3_URL.format(
 PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
 VERIFIED_PIPELINES = [
-    'arima', 'lstm_dynamic_threshold', 'azure'
+    'arima', 'lstm_dynamic_threshold', 'azure', 'tadgan'
 ]
 
 VERIFIED_PIPELINES_GPU = {
     'arima': 'arima',
     'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu',
-    'azure': 'azure'
+    'azure': 'azure',
+    'tadgan': 'tadgan_gpu'
 }
 
 

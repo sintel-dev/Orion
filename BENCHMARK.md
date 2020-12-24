@@ -5,6 +5,16 @@ a pipeline is detecting anomalies.
 
 ## Releases
 In every release, we run Orion benchmark and maintain an upto-date leaderboard.
+
+We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline.
+
+| Pipeline                  |  Outperforms ARIMA |
+|---------------------------|--------------------|
+| TadGAN					|		   7		 |
+| LSTM Dynamic Thresholding |          5         |
+| Azure                     |          0         |
+
+
 Results obtained during the benchmarking process as well as previous benchmarks can be found 
 within [benchmark/results](benchmark/results) folder as CSV files. 
 
