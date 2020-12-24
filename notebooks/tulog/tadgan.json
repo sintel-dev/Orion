@@ -26,7 +26,7 @@
             "target_size": 1
         },
         "orion.primitives.tadgan.TadGAN#1": {
-            "epochs": 100
+            "epochs": 35
         },
         "orion.primitives.tadgan.score_anomalies#1": {
             "error_smooth_window": 200,
