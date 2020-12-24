@@ -242,7 +242,7 @@ criticZ = [
 ]
 
 hyperparameters = {
-    "epochs": 100,
+    "epochs": 35,
     "shape": (100, 1),
     "optimizer": "keras.optimizers.Adam",
     "learning_rate": 0.0005,
