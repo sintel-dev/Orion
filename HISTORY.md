@@ -1,6 +1,19 @@
 History
 =======
 
+## 0.1.5 - 2020-12-25
+
+This version includes the new style of documentation and a revamp of the `README.md`. In addition to some minor improvements
+in the benchmark code and primitives. This release includes the transfer of `tadgan` pipeline to `verified`.
+
+### Issues resolved
+* Link with google colab - [Issue #144](https://github.com/signals-dev/Orion/issues/144) by @sarahmish
+* Add `timeseries_anomalies` unittests - [Issue #136](https://github.com/signals-dev/Orion/issues/136) by @sarahmish
+* Update `find_sequences` in converting series to arrays - [Issue #135](https://github.com/signals-dev/Orion/issues/135) by @sarahmish
+* Definition of error/critic smooth window in score anomalies primitive - [Issue #132](https://github.com/signals-dev/Orion/issues/132) by @sarahmish
+* Train-test split in benchmark enhancement - [Issue #130](https://github.com/signals-dev/Orion/issues/130) by @sarahmish
+
+
 ## 0.1.4 - 2020-10-16
 
 Minor enhancements to benchmark
