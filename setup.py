@@ -49,11 +49,12 @@ development_requires = [
     'watchdog>=0.8.3,<0.11',
 
     # docs
-    'm2r>=0.2.0,<0.3',
+    'm2r2>=0.2.5,<0.3',
     'nbsphinx>=0.5.0,<0.7',
-    'Sphinx>=1.7.1,<3',
-    'sphinx_rtd_theme>=0.2.4,<0.5',
+    'Sphinx>=3,<3.3',
+    'pydata-sphinx-theme',
     'autodocsumm>=0.1.10,<1',
+    'ipython>=6.5,<7.5',
 
     # style check
     'flake8>=3.7.7,<3.8',
@@ -72,7 +73,6 @@ development_requires = [
     'tox>=2.9.1,<4',
 
     # Documentation style
-    'doc8==0.8.0,<0.9',
     'pydocstyle==3.0.0,<4',
 ]
 
@@ -115,6 +115,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/D3-AI/Orion',
-    version='0.1.4',
+    version='0.1.5.dev1',
     zip_safe=False,
 )
