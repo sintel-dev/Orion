@@ -46,22 +46,22 @@ signals = [
 
 # or defined by a dataset name
 datasets = {
-	'demo': signals
+    'demo': signals
 }
 ```
 
 ### Hyperparameters
-In most cases, pipelines need to be modified based on the dataset currently being evaluated. To provide this functionality, use can use hyperparameters, which are nested dictionaries, to change a particular hyperparameter setting within the pipeline.
+In most cases, pipelines need to be modified based on the dataset currently being evaluated. To provide this functionality, you can use hyperparameters, which are nested dictionaries, to change a particular hyperparameter setting within the pipeline.
 For example, to consider changing the number of ``epochs``  within ``lstm_dynamic_threshold`` pipeline for the ``demo`` dataset, we use:
 ```python3
 hyperparameters = {
-	'demo': {
-		'lstm_dynamic_threshold': {
-			'keras.Sequential.LSTMTimeSeriesRegressor#1': {
-				'epochs': 5
-			}
-		}
-	}
+    'demo': {
+        'lstm_dynamic_threshold': {
+            'keras.Sequential.LSTMTimeSeriesRegressor#1': {
+                'epochs': 5
+            }
+        }
+    }
 }
 ```
 
@@ -126,7 +126,7 @@ We run the benchmark on **11** datasets with their known grounth truth. We recor
 Results obtained during the benchmarking process as well as previous benchmarks can be found 
 within [benchmark/results](benchmark/results) folder as CSV files. In addition, you can find it in the [details Google Sheets document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing).
 
-## Leaderboard
+### Leaderboard
 We summarize the results in the [leaderboard](benchmark/leaderboard.md) table. We showcase the number of wins each pipeline has over the ARIMA pipeline.
 
 The summarized results can also be browsed in the following [summary Google Sheets document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
