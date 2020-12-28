@@ -110,7 +110,7 @@ metrics = ['f1', 'accuracy', 'recall', 'precision']
 scores = benchmark(pipelines=pipelines, datasets=signals, metrics=metrics, rank='f1')
 
 ```
-> :warning: a long time might be required to benchmark.
+> :warning: Benchmarking might require a long time to compute.
 
 The output of the benchmark will be a ``pandas.DataFrame`` containing the results obtained by each pipeline on evaluating each signal.
 ```
@@ -119,16 +119,14 @@ The output of the benchmark will be a ``pandas.DataFrame`` containing the result
 1                   arima     2  0.962160  319.968949  0.382637   0.680000     0.266219 
 ```
 
-## Leaderboard
-
-When we run the benchmark and obtain the results, we can also summarize these results to showcase a better interpretation of the scores we arrived to.
-
-### Releases
+## Releases
 In every release, we run Orion benchmark. We maintain an up-to-date leaderboard with the current scoring of the verified pipelines according to the benchmarking procedure explained above.
 
-We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each dataset. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline.
-
-@@include[leaderboard.md](benchmark/leaderboard.md)
-
+We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each dataset. 
 Results obtained during the benchmarking process as well as previous benchmarks can be found 
-within [benchmark/results](benchmark/results) folder as CSV files. In addition, summarized results can also be browsed in the following [summary Google Sheets document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing) as well as the [details Google Sheets document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing).
+within [benchmark/results](benchmark/results) folder as CSV files. In addition, you can find it in the [details Google Sheets document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing).
+
+## Leaderboard
+We summarize the results in the [leaderboard](benchmark/leaderboard.md) table. We showcase the number of wins each pipeline has over the ARIMA pipeline.
+
+The summarized results can also be browsed in the following [summary Google Sheets document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
