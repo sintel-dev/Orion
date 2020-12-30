@@ -19,13 +19,7 @@ Leaderboard
 
 We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline. 
 
-+----------+-------------------+
-| Pipeline | Outperforms ARIMA |
-+----------+-------------------+
-| LSTM     | 5                 |
-+----------+-------------------+
-| Azure    | 0                 |
-+----------+-------------------+
+.. mdinclude:: ../../benchmark/leaderboard.md
 
 To view a list of all available pipelines, visit :ref:`pipelines` page.
 
@@ -44,7 +38,7 @@ Benchmark function
 ~~~~~~~~~~~~~~~~~~
 
 The complete evaluation process is directly available using the
-``orion.benchmark`` function.
+``orion.benchmark.benchmark`` function.
 
 .. code-block:: python
 
@@ -61,6 +55,8 @@ The complete evaluation process is directly available using the
 
     scores = benchmark(pipelines=pipelines, datasets=datasets, metrics=metrics, rank='f1')
 
+For further details about all the arguments and possibilities that the ``benchmark`` function offers please refer to the `Orion benchmark
+documentation <https://github.com/signals-dev/Orion/blob/master/BENCHMARK.md>`__
 
 .. _benchmark/results: https://github.com/signals-dev/Orion/tree/master/benchmark/results
 .. _summary Google Sheets document: https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing

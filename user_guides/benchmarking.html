@@ -220,17 +220,22 @@
 <p>We run the benchmark on <strong>11</strong> datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline.</p>
 <table class="table">
 <colgroup>
-<col style="width: 34%" />
-<col style="width: 66%" />
+<col style="width: 50%" />
+<col style="width: 50%" />
 </colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Pipeline</p></td>
-<td><p>Outperforms ARIMA</p></td>
+<thead>
+<tr class="row-odd"><th class="head"><p>Pipeline</p></th>
+<th class="head"><p>Outperforms ARIMA</p></th>
 </tr>
-<tr class="row-even"><td><p>LSTM</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TadGAN</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td><p>LSTM Dynamic Thresholding</p></td>
 <td><p>5</p></td>
 </tr>
-<tr class="row-odd"><td><p>Azure</p></td>
+<tr class="row-even"><td><p>Azure</p></td>
 <td><p>0</p></td>
 </tr>
 </tbody>
@@ -251,7 +256,7 @@
 <div class="section" id="benchmark-function">
 <h3>Benchmark function<a class="headerlink" href="#benchmark-function" title="Permalink to this headline">¶</a></h3>
 <p>The complete evaluation process is directly available using the
-<code class="docutils literal notranslate"><span class="pre">orion.benchmark</span></code> function.</p>
+<code class="docutils literal notranslate"><span class="pre">orion.benchmark.benchmark</span></code> function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orion.benchmark</span> <span class="kn">import</span> <span class="n">benchmark</span>
 
 <span class="n">pipelines</span> <span class="o">=</span> <span class="p">[</span>
@@ -266,6 +271,8 @@
 <span class="n">scores</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span><span class="n">pipelines</span><span class="o">=</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="n">datasets</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>For further details about all the arguments and possibilities that the <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> function offers please refer to the <a class="reference external" href="https://github.com/signals-dev/Orion/blob/master/BENCHMARK.md">Orion benchmark
+documentation</a></p>
 </div>
 </div>
 </div>
