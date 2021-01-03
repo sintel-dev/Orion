@@ -1,0 +1,88 @@
+{
+    "primitives": [
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_average",
+        "sklearn.impute.SimpleImputer",
+        "sklearn.preprocessing.MinMaxScaler",
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
+        "keras.Sequential.LSTMSeq2Seq",
+        "orion.primitives.timeseries_anomalies.reconstruction_errors",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
+    ],
+    "init_params": {
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_average#1": {
+            "time_column": "timestamp",
+            "interval": 21600
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [-1, 1]
+        },
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 100            
+        },
+        "orion.primitives.timeseries_anomalies.reconstruction_errors#1": {
+            "smoothing_window": 200
+        },
+        "keras.Sequential.LSTMSeq2Seq#1": {
+            "epochs": 35,
+            "verbose": false,
+            "input_shape": [100, 1],
+            "target_shape": [100],
+            "layers": [
+                {
+                    "class": "keras.layers.CuDNNLSTM",
+                    "parameters": {
+                        "input_shape": "input_shape",
+                        "units": 60
+                    }
+                },
+                {
+                    "class": "keras.layers.RepeatVector",
+                    "parameters": {
+                        "n": 100
+                    }
+                },
+                {
+                    "class": "keras.layers.CuDNNLSTM",
+                    "parameters": {
+                        "units": 60,
+                        "return_sequences": true
+                    }
+                },
+                {
+                    "class": "keras.layers.TimeDistributed",
+                    "parameters": {
+                        "layer": {
+                            "class": "keras.layers.Dense",
+                            "parameters": {
+                                "units": 1
+                            }
+                        }
+                    }
+                },
+                {
+                    "class": "keras.layers.Reshape",
+                    "parameters": {
+                        "target_shape": "target_shape"
+                    }
+                }
+            ]
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size": 2000,
+            "window_step_size": 100,
+            "min_percent": 0.13,
+            "z_range": [0, 12]
+        }
+    },
+    "output_names": {
+        "keras.Sequential.LSTMSeq2Seq#1": {
+            "y": "y_hat"
+        }
+    },
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "true_index"
+        }
+    }
+}

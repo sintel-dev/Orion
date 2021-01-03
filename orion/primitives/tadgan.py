@@ -7,14 +7,15 @@ from functools import partial
 import keras
 import numpy as np
 import pandas as pd
-import similaritymeasures as sm
 from keras import backend as K
 from keras.layers import Input
 from keras.layers.merge import _Merge
 from keras.models import Model
 from mlprimitives.adapters.keras import build_layer
 from mlprimitives.utils import import_object
-from scipy import integrate, stats
+from scipy import stats
+
+from orion.primitives.timeseries_anomalies import reconstruction_errors
 
 LOGGER = logging.getLogger(__name__)
 
@@ -270,87 +271,9 @@ def _compute_critic_score(critics, smooth_window):
     return z_scores
 
 
-def _compute_rec_score(predictions, trues, score_window, smooth_window, rec_error_type):
-    """Compute an array of anomaly scores.
-
-    Args:
-        predictions (ndarray):
-            Predicted values.
-        trues (ndarray):
-            Ground truth.
-        score_window (int):
-            Size of the window over which the scores are calculated.
-        smooth_window (int):
-            Smooth window that will be applied to compute smooth errors.
-        rec_error_type (str):
-            Reconstruction error types.
-
-    Returns:
-        ndarray:
-            Array of anomaly scores.
-    """
-    if (rec_error_type == "point"):
-        errors = [abs(y_h - y) for y_h, y in zip(predictions, trues)]
-        errors_smoothed = pd.Series(errors).rolling(
-            smooth_window, center=True, min_periods=smooth_window // 2).mean().values
-        z_scores = stats.zscore(errors_smoothed)
-        z_scores = np.clip(z_scores, a_min=0, a_max=None) + 1
-
-    elif (rec_error_type == "area"):
-        pd_true = pd.Series(np.asarray(trues).flatten())
-        pd_pred = pd.Series(np.asarray(predictions).flatten())
-        score_measure_true = pd_true.rolling(score_window, center=True,
-                                             min_periods=score_window // 2).apply(integrate.trapz)
-        score_measure_pred = pd_pred.rolling(score_window, center=True,
-                                             min_periods=score_window // 2).apply(integrate.trapz)
-        errors = abs(score_measure_true - score_measure_pred)
-        errors_smoothed = pd.Series(errors).rolling(smooth_window, center=True,
-                                                    win_type='triang',
-                                                    min_periods=smooth_window // 2).mean().values
-        z_scores = stats.zscore(errors_smoothed)
-        z_scores = np.clip(z_scores, a_min=0, a_max=None) + 1
-
-    elif (rec_error_type == "dtw"):
-        # DTW
-        i = 0
-        similarity_dtw = list()
-        length_dtw = (score_window // 2) * 2 + 1
-        hafl_length_dtw = length_dtw // 2
-        # add padding
-        true_pad = np.pad(trues, (hafl_length_dtw, hafl_length_dtw),
-                          'constant', constant_values=(0, 0))
-        predictions_pad = np.pad(
-            predictions,
-            (hafl_length_dtw,
-             hafl_length_dtw),
-            'constant',
-            constant_values=(
-                0,
-                0))
-
-        while i < len(trues) - length_dtw:
-            true_data = np.zeros((length_dtw, 2))
-            true_data[:, 0] = np.arange(length_dtw)
-            true_data[:, 1] = true_pad[i:i + length_dtw]
-            preds_data = np.zeros((length_dtw, 2))
-            preds_data[:, 0] = np.arange(length_dtw)
-            preds_data[:, 1] = predictions_pad[i:i + length_dtw]
-            dtw, _ = sm.dtw(true_data, preds_data)
-            similarity_dtw = similarity_dtw + [dtw]
-            i += 1
-        similarity_dtw = [0] * int(length_dtw / 2) + similarity_dtw + [0] * (
-            len(trues) - len(similarity_dtw) - int(length_dtw / 2))
-        errors = similarity_dtw
-        errors_smoothed = pd.Series(errors).rolling(smooth_window, center=True,
-                                                    min_periods=smooth_window // 2).mean().values
-        z_scores = stats.zscore(errors_smoothed)
-        z_scores = np.clip(z_scores, a_min=0, a_max=None) + 1
-
-    return z_scores
-
-
 def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_window=None,
-                    error_smooth_window=None, rec_error_type="point", comb="mult", lambda_rec=0.5):
+                    error_smooth_window=None, smooth=True, rec_error_type="point", comb="mult", 
+                    lambda_rec=0.5):
     """Compute an array of anomaly scores.
 
     Anomaly scores are calculated using a combination of reconstruction error and critic score.
@@ -373,6 +296,9 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
         error_smooth_window (int):
             Optional. Size of window over which smoothing is applied to error.
             If not given, 200 is used.
+        smooth (bool):
+            Optional. Indicates whether errors should be smoothed.
+            If not given, `True` is used.
         rec_error_type (str):
             Optional. The method to compute reconstruction error. Can be one of
             `["point", "area", "dtw"]`. If not given, 'point' is used.
@@ -391,6 +317,8 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
     critic_smooth_window = critic_smooth_window or math.trunc(y.shape[0] * 0.01)
     error_smooth_window = error_smooth_window or math.trunc(y.shape[0] * 0.01)
 
+    step_size = 1 # expected to be 1
+
     true_index = index  # no offset
 
     true = [item[0] for item in y.reshape((y.shape[0], -1))]
@@ -404,55 +332,35 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
 
     critic_extended = np.asarray(critic_extended).reshape((-1, y_hat.shape[1]))
 
-    predictions_md = []
-    predictions = []
-
     critic_kde_max = []
     pred_length = y_hat.shape[1]
-    num_errors = y_hat.shape[1] + (y_hat.shape[0] - 1)
-    y_hat = np.asarray(y_hat)
+    num_errors = y_hat.shape[1] + step_size * (y_hat.shape[0] - 1)
 
     for i in range(num_errors):
-        intermediate = []
         critic_intermediate = []
 
         for j in range(max(0, i - num_errors + pred_length), min(i + 1, pred_length)):
-            intermediate.append(y_hat[i - j, j])
             critic_intermediate.append(critic_extended[i - j, j])
 
-        if intermediate:
-            predictions_md.append(np.median(np.asarray(intermediate)))
-
-            predictions.append([[
-                np.min(np.asarray(intermediate)),
-                np.percentile(np.asarray(intermediate), 25),
-                np.percentile(np.asarray(intermediate), 50),
-                np.percentile(np.asarray(intermediate), 75),
-                np.max(np.asarray(intermediate))
-            ]])
-
-            if len(critic_intermediate) > 1:
-                discr_intermediate = np.asarray(critic_intermediate)
-                try:
-                    critic_kde_max.append(discr_intermediate[np.argmax(
-                        stats.gaussian_kde(discr_intermediate)(critic_intermediate))])
-                except np.linalg.LinAlgError:
-                    critic_kde_max.append(np.median(discr_intermediate))
-            else:
-                critic_kde_max.append(np.median(np.asarray(critic_intermediate)))
-
-    predictions_md = np.asarray(predictions_md)
+        if len(critic_intermediate) > 1:
+            discr_intermediate = np.asarray(critic_intermediate)
+            try:
+                critic_kde_max.append(discr_intermediate[np.argmax(
+                    stats.gaussian_kde(discr_intermediate)(critic_intermediate))])
+            except np.linalg.LinAlgError:
+                critic_kde_max.append(np.median(discr_intermediate))
+        else:
+            critic_kde_max.append(np.median(np.asarray(critic_intermediate)))
 
     # Compute critic scores
     critic_scores = _compute_critic_score(critic_kde_max, critic_smooth_window)
 
     # Compute reconstruction scores
-    rec_scores = _compute_rec_score(
-        predictions_md,
-        true,
-        score_window,
-        error_smooth_window,
-        rec_error_type)
+    rec_scores, predictions = reconstruction_errors(
+        y, y_hat, step_size, score_window, error_smooth_window, smooth, rec_error_type)
+
+    rec_scores = stats.zscore(rec_scores)
+    rec_scores = np.clip(rec_scores, a_min=0, a_max=None) + 1
 
     # Combine the two scores
     if comb == "mult":
