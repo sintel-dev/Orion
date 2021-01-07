@@ -123,50 +123,50 @@ We can use the same dataset we saw in the :ref:`quickstart`
 
 We set up the pipeline (``lstm_dynamic_threshold``) as well as some hyperparameters.
 
-.. ipython:: python
-    :okwarning:
+.. .. ipython:: python
+..     :okwarning:
 
-    from orion import Orion
+..     from orion import Orion
 
-    hyperparameters = {
-        'keras.Sequential.LSTMTimeSeriesRegressor#1': {
-            'epochs': 5
-        }
-    }
+..     hyperparameters = {
+..         'keras.Sequential.LSTMTimeSeriesRegressor#1': {
+..             'epochs': 5
+..         }
+..     }
 
-    orion = Orion(
-        pipeline='lstm_dynamic_threshold',
-        hyperparameters=hyperparameters
-    )
+..     orion = Orion(
+..         pipeline='lstm_dynamic_threshold',
+..         hyperparameters=hyperparameters
+..     )
 
-In this next step we will load some already known anomalous intervals and evaluate how good our anomaly detection was by comparing those with our detected intervals.
+.. In this next step we will load some already known anomalous intervals and evaluate how good our anomaly detection was by comparing those with our detected intervals.
 
-For this, we will first load the known anomalies for the signal that we are using:
+.. For this, we will first load the known anomalies for the signal that we are using:
 
-.. ipython:: python
-    :okwarning:
+.. .. ipython:: python
+..     :okwarning:
 
-    from orion.data import load_anomalies
+..     from orion.data import load_anomalies
 
-    ground_truth = load_anomalies('S-1')
-    ground_truth
+..     ground_truth = load_anomalies('S-1')
+..     ground_truth
 
-The output will be a table in the same format as the ``anomalies`` one.
+.. The output will be a table in the same format as the ``anomalies`` one.
 
-Afterwards, we can call the `orion.evaluate` method, passing both the data and the ground truth:
+.. Afterwards, we can call the `orion.evaluate` method, passing both the data and the ground truth:
 
-.. ipython:: python
-    :okwarning:
+.. .. ipython:: python
+..     :okwarning:
 
-    scores = orion.evaluate(data, ground_truth, fit=True)
+..     scores = orion.evaluate(data, ground_truth, fit=True)
 
-.. note::
+.. .. note::
 
-    since the pipeline has not been trained yet, we set ``fit=True`` to fit it first before detecting anomalies.
+..     since the pipeline has not been trained yet, we set ``fit=True`` to fit it first before detecting anomalies.
 
-The output will be a ``pandas.Series`` containing a collection of scores indicating how the predictions were:
+.. The output will be a ``pandas.Series`` containing a collection of scores indicating how the predictions were:
 
-.. ipython:: python
-    :okwarning:
+.. .. ipython:: python
+..     :okwarning:
 
-    scores
+..     scores
