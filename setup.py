@@ -29,7 +29,10 @@ install_requires = [
     'tabulate>=0.8.3,<0.9',
     'Keras>=2.1.6,<2.4',
     'similaritymeasures>=0.4.3',
-    'azure-cognitiveservices-anomalydetector>0.2,<=0.3'
+    'azure-cognitiveservices-anomalydetector>0.2,<=0.3',
+
+    # fix conflict
+    'h5py<2.11.0,>=2.10.0',
 ]
 
 setup_requires = [
