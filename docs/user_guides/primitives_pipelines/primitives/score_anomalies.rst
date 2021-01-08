@@ -5,7 +5,7 @@ score anomalies
 
 **path**  ``orion.primitives.tadgan.score_anomalies``
 
-**description** compute an array of anomaly scores based on a combination of reconstruction error and critic output.
+**description** this primitive computes an array of anomaly scores based on a combination of reconstruction error and critic output.
 
 ========================== =================== =================================================================================================
 argument                    type                description  

@@ -5,7 +5,7 @@ rolling window sequence
 
 **path**  ``mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences``
 
-**description** create rolling window sequences out of time series data.
+**description** this primitive generates many sub-sequences of the original sequence. it uses a rolling window approach to create the sub-sequences out of time series data.
 
 ==================== ============================================================== ==================================================================
  argument             type                                                           description  

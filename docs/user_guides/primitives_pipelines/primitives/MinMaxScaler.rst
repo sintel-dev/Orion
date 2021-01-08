@@ -5,7 +5,7 @@ MinMaxScaler
 
 **path**  ``sklearn.preprocessing.MinMaxScaler``
 
-**description** transforms features by scaling each feature to a given range.
+**description** this primitive transforms features by scaling each feature to a given range.
 
 ==================== =================== =============================================================================================================
 argument              type                description  

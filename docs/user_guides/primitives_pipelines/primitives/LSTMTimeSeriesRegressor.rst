@@ -5,7 +5,7 @@ LSTM
 
 **path**  ``keras.Sequential.LSTMTimeSeriesRegressor``
 
-**description** Double Stacked LSTM Time Series Regressor similar to the one described in the `related paper <https://arxiv.org/pdf/1802.04431.pdf>`__.
+**description** this is a prediction model with double stacked LSTM layers used as a time series regressor. you can read more about it in the `related paper <https://arxiv.org/pdf/1802.04431.pdf>`__.
 
 ====================== =================== ===========================================================================================================================================
 argument                type                description  

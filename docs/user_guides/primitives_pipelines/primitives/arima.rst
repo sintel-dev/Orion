@@ -5,7 +5,7 @@ ARIMA
 
 **path**  ``statsmodels.tsa.arima_model.Arima``
 
-**description** Autoregressive Integrated Moving Average ARIMA Model.
+**description** this is an Autoregressive Integrated Moving Average (ARIMA) prediction model.
 
 ==================== =================== ==================================================================
 argument              type                description  
@@ -39,5 +39,4 @@ argument              type                description
     primitive = load_primitive('statsmodels.tsa.arima_model.Arima', 
         arguments={"X": X, "steps": 1, })
 
-    primitive.fit()
     primitive.produce(X=X)

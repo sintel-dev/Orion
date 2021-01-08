@@ -5,7 +5,7 @@ regression errors
 
 **path**  ``orion.primitives.timeseries_anomalies.regression_errors``
 
-**description** compute an array of absolute errors comparing predictions and expected output. Optionally smooth them using EWMA.
+**description** this primitive computes an array of absolute errors comparing predictions and expected output. Optionally smooth them using EWMA.
 
 ========================== =================== ======================================================================
 argument                    type                description  

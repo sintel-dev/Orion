@@ -5,7 +5,7 @@ time segments aggregate
 
 **path**  ``mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate``
 
-**description** aggregate values over fixed length time segments.
+**description** this primitive creates an equi-spaced time series by aggregating values over fixed specified interval.
 
 ==================== =========================================== =============================================================================================================================
 argument              type                                        description  

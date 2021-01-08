@@ -5,7 +5,7 @@ SimpleImputer
 
 **path**  ``sklearn.impute.SimpleImputer``
 
-**description** imputation transformer for completing missing values.
+**description** this primitive is an imputation transformer for filling missing values.
 
 ==================== ========================================================= ==========================================
 argument              type                                                      description  
