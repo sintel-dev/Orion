@@ -45,13 +45,13 @@ argument                    type                description
     from mlprimitives import load_primitive
 
     primitive = load_primitive('orion.primitives.tadgan.score_anomalies', 
-        arguments={"error_smooth_window": 10,
-                   "critic_smooth_window": 10,
-                   "score_window": 10})
+        arguments={"error_smooth_window": 10, "critic_smooth_window": 10,
+                   "score_window": 10, "comb": "rec"})
 
     y = np.array([1] * 100).reshape(1, -1, 1)
-    y_hat = np.array([.99] * 100).reshape(1, -1, 1)
-    critic = np.array([[0.1]])
+    y_hat = [0.9] * 40 + [0.5] * 10 + [1.1] * 10 + [0.99] * 40
+    y_hat = np.array(y_hat).reshape(1, -1, 1)
+    critic = np.array([[0.5]])
     index = np.array([[1]])
 
     errors, true_index, true, predictions = primitive.produce(
