@@ -25,9 +25,25 @@
     },
     "hyperparameters": {
         "fixed": {
+            "value": {
+                "type": "int",
+                "default": null
+            },
             "method": {
                 "type": "str",
-                "default": "ffill"
+                "default": null
+            },
+            "axis": {
+                "type": "int",
+                "default": null
+            },
+            "limit": {
+                "type": "int",
+                "default": null
+            },
+            "downcast": {
+                "type": "dict",
+                "default": null
             }
         }
     }
