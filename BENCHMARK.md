@@ -1,20 +1,10 @@
 # Benchmark
 
-This document explains the benchmarking procedure we develop in Orion in order to evaluate how good
-a pipeline is detecting anomalies.
-
-## Releases
-In every release, we run Orion benchmark and maintain an upto-date leaderboard.
-Results obtained during the benchmarking process as well as previous benchmarks can be found 
-within [benchmark/results](benchmark/results) folder as CSV files. 
+This document explains the benchmarking procedure we develop in Orion in order to evaluate how good a pipeline is detecting anomalies.
 
 ## Evaluating the Pipelines
 
-Using the [Evaluation sub-package](orion/evaluation), we can compute a score given a set of known 
-anomalies and another one of detected anomalies. 
-The entire process can be summarized in the following diagram:
-
-![Scoring](./docs/images/scoring-300.png?raw=true "Scoring")
+Using the [Evaluation sub-package](orion/evaluation), we can compute a score given a set of known anomalies and another one of detected anomalies. 
 
 We can evaluate the overall performance of 
 our pipelines in order to know which one has the best performance.
@@ -27,17 +17,56 @@ For this we:
 4. Average the score obtained for each metric and pipeline accross all the signals.
 5. Finally, we rank our pipelines sorting them by one of the computed scores.
 
-## Benchmark function
+## Benchmark Function
 
-For the scoring, we will be using the demo signals and a list of their known anomalies, obtained from
-the [telemanom repository](https://github.com/khundman/telemanom/blob/master/labeled_anomalies.csv)
-and computing how similar the anomalies detected by the pipeline are with these prevoiusly known
+### Pipelines
+The first item required to benchmark is the set of pipelines you want to evaluate, this can be done by supplying a list of pipelines or a dictionary of pipelines.
+
+```python3
+pipelines = [ 
+    'arima',
+    'lstm_dynamic_threshold'
+]
+```
+You can use pipelines from the suite of existing pipelines in Orion or, alternatively, you can use your own implemented pipeline. 
+
+### Datasets
+An important item in benchmarking is the requirement to know the ground truth anomalies for proper comparison. 
+An example of such dataset is the demo signals and a list of their known anomalies, obtained from
+the [telemanom repository](https://github.com/khundman/telemanom/blob/master/labeled_anomalies.csv).
+Using these signals, we can compute how similar the anomalies detected by the pipeline are with the prevoiusly known
 anomalies.
 
-The complete evaluation process described above is directly available using the
-``orion.benchmark.benchmark`` function.
+Similarly, we define the datasets as either a single dataset compose of a list of signals, or a dictionary of datasets.
+```python3
+signals = [
+    'S-1',
+    'P-1'
+]
 
-This function expects the following inputs:
+# or defined by a dataset name
+datasets = {
+    'demo': signals
+}
+```
+
+### Hyperparameters
+In most cases, pipelines need to be modified based on the dataset currently being evaluated. To provide this functionality, you can use hyperparameters, which are nested dictionaries, to change a particular hyperparameter setting within the pipeline.
+For example, to consider changing the number of ``epochs``  within ``lstm_dynamic_threshold`` pipeline for the ``demo`` dataset, we use:
+```python3
+hyperparameters = {
+    'demo': {
+        'lstm_dynamic_threshold': {
+            'keras.Sequential.LSTMTimeSeriesRegressor#1': {
+                'epochs': 5
+            }
+        }
+    }
+}
+```
+
+### Arguments
+To use ``orion.benchmark.benchmark`` function, it expects the following inputs:
 
 * pipelines (dict or list): dictionary with pipeline names as keys and their
  JSON paths as values. If a list is given, it should be of JSON paths,
@@ -66,23 +95,38 @@ accross all the signals for each pipeline, optionally, you can follow that outpu
 
 This is an example of how to call this function:
 
+```python3
+from orion.benchmark import benchmark
+
+pipelines = [
+    'arima',
+    'lstm_dynamic_threshold'
+]
+
+signals = ['S-1', 'P-1']
+
+metrics = ['f1', 'accuracy', 'recall', 'precision']
+
+scores = benchmark(pipelines=pipelines, datasets=signals, metrics=metrics, rank='f1')
+
 ```
-In [1]: from orion.benchmark import benchmark
+> :warning: Benchmarking might require a long time to compute.
 
-In [2]: pipelines = [
-   ...:     'arima',
-   ...:     'lstm_dynamic_threshold'
-   ...: ]
-
-In [3]: metrics = ['f1', 'accuracy', 'recall', 'precision']
-
-In [4]: signals = ['S-1', 'P-1']
-
-In [5]: scores = benchmark(pipelines=pipelines, datasets=signals, metrics=metrics, rank='f1')
-
-In [6]: scores
-Out[6]:
+The output of the benchmark will be a ``pandas.DataFrame`` containing the results obtained by each pipeline on evaluating each signal.
+```
                  pipeline  rank  accuracy  elapsed     f1         precision   recall   
 0  lstm_dynamic_threshold     1  0.986993  915.958132  0.846868   0.879518     0.816555
 1                   arima     2  0.962160  319.968949  0.382637   0.680000     0.266219 
 ```
+
+## Releases
+In every release, we run Orion benchmark. We maintain an up-to-date leaderboard with the current scoring of the verified pipelines according to the benchmarking procedure explained above.
+
+We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each dataset. 
+Results obtained during the benchmarking process as well as previous benchmarks can be found 
+within [benchmark/results](benchmark/results) folder as CSV files. In addition, you can find it in the [details Google Sheets document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing).
+
+### Leaderboard
+We summarize the results in the [leaderboard](benchmark/leaderboard.md) table. We showcase the number of wins each pipeline has over the ARIMA pipeline.
+
+The summarized results can also be browsed in the following [summary Google Sheets document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).

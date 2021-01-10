@@ -27,7 +27,13 @@ Orion is a machine learning library built for *unsupervised time series anomaly 
 
 The library makes use of a number of **automated machine learning** tools developed under [Data to AI Lab at MIT](https://dai.lids.mit.edu/).
 
-**Recent news:** Read about using an Orion pipeline on NYC taxi dataset in a blog series [part 1](https://t.co/yIFVM1oRwQ?amp=1), [part 2](https://link.medium.com/cGsBD0Fevbb) and [part 3](https://link.medium.com/FqCrFXMevbb).
+**Recent news:** Read about using an Orion pipeline on NYC taxi dataset in a blog series:
+
+[Part 1: Learn about unsupervised time series anomaly detection](https://t.co/yIFVM1oRwQ?amp=1) | [Part 2: Learn how we use GANs to solving the problem? ](https://link.medium.com/cGsBD0Fevbb) | [Part 3: How does one evaluate anomaly detection pipelines?](https://link.medium.com/FqCrFXMevbb)
+:--------------------------------------:|:---------------------------------------------:|:--------------------------------------------:
+![](docs/images/tulog-part-1.png)       |  ![](docs/images/tulog-part-2.png)            | ![](docs/images/tulog-part-3.png)
+
+**Notebooks:** Discover *Orion* through colab by launching our [notebooks](https://drive.google.com/drive/folders/1FAcCEiE1JDsqaMjGcmiw5a5XuGh13c9Q?usp=sharing)!
 
 # Quickstart
 
