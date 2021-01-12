@@ -3,9 +3,11 @@
 find anomalies
 ~~~~~~~~~~~~~~
 
-**path**  ``orion.primitives.timeseries_anomalies.find_anomalies``
+**path**: ``orion.primitives.timeseries_anomalies.find_anomalies``
 
-**description** this primitive extracts anomalies from sequences of errors following the approach explained in the `related paper <https://arxiv.org/pdf/1802.04431.pdf>`__.
+**description**: this primitive extracts anomalies from sequences of errors following the approach explained in the `related paper <https://arxiv.org/pdf/1802.04431.pdf>`__.
+
+see `json <https://github.com/signals-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.timeseries_anomalies.find_anomalies.json>`__.
 
 ========================== ==================== ===================================================================================================================================
 argument                    type                 description  

@@ -3,9 +3,11 @@
 TadGAN
 ~~~~~~
 
-**path**  ``orion.primitives.tadgan.TadGAN``
+**path**: ``orion.primitives.tadgan.TadGAN``
 
-**description** this is a reconstruction model, namely Generative Adversarial Networks (GAN), containing multiple neural networks and cycle consistency loss. the proposed model is described in the `related paper <https://arxiv.org/pdf/2009.07769.pdf>`__.
+**description**: this is a reconstruction model, namely Generative Adversarial Networks (GAN), containing multiple neural networks and cycle consistency loss. the proposed model is described in the `related paper <https://arxiv.org/pdf/2009.07769.pdf>`__.
+
+see `json <https://github.com/signals-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.tadgan.TadGAN.json>`__.
 
 ========================== =================== =================================================================================================
 argument                    type                description  

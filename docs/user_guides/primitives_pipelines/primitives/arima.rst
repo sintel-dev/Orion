@@ -3,9 +3,11 @@
 ARIMA
 ~~~~~
 
-**path**  ``statsmodels.tsa.arima_model.Arima``
+**path**: ``statsmodels.tsa.arima_model.Arima``
 
-**description** this is an Autoregressive Integrated Moving Average (ARIMA) prediction model.
+**description**: this is an Autoregressive Integrated Moving Average (ARIMA) prediction model.
+
+see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/statsmodels.tsa.arima_model.Arima.json>`__.
 
 ==================== =================== ==================================================================
 argument              type                description  

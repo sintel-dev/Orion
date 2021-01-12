@@ -3,9 +3,11 @@
 LSTM
 ~~~~
 
-**path**  ``keras.Sequential.LSTMTimeSeriesRegressor``
+**path**: ``keras.Sequential.LSTMTimeSeriesRegressor``
 
-**description** this is a prediction model with double stacked LSTM layers used as a time series regressor. you can read more about it in the `related paper <https://arxiv.org/pdf/1802.04431.pdf>`__.
+**description**: this is a prediction model with double stacked LSTM layers used as a time series regressor. you can read more about it in the `related paper <https://arxiv.org/pdf/1802.04431.pdf>`__.
+
+see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/keras.Sequential.LSTMTimeSeriesRegressor.json>`__.
 
 ====================== =================== ===========================================================================================================================================
 argument                type                description  

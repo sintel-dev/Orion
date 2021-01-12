@@ -3,9 +3,11 @@
 time segments aggregate
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**path**  ``mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate``
+**path**: ``mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate``
 
-**description** this primitive creates an equi-spaced time series by aggregating values over fixed specified interval.
+**description**: this primitive creates an equi-spaced time series by aggregating values over fixed specified interval.
+
+see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate.json>`__.
 
 ==================== =========================================== =============================================================================================================================
 argument              type                                        description  

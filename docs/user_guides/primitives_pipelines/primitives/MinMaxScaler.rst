@@ -3,9 +3,11 @@
 MinMaxScaler
 ~~~~~~~~~~~~
 
-**path**  ``sklearn.preprocessing.MinMaxScaler``
+**path**: ``sklearn.preprocessing.MinMaxScaler``
 
-**description** this primitive transforms features by scaling each feature to a given range.
+**description**: this primitive transforms features by scaling each feature to a given range.
+
+see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/sklearn.preprocessing.MinMaxScaler.json>`__.
 
 ==================== =================== =============================================================================================================
 argument              type                description  

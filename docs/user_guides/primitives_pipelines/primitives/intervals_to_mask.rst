@@ -3,9 +3,11 @@
 intervals to mask
 ~~~~~~~~~~~~~~~~~
 
-**path**  ``mlprimitives.custom.timeseries_preprocessing.intervals_to_mask``
+**path**: ``mlprimitives.custom.timeseries_preprocessing.intervals_to_mask``
 
-**description** this primitive creates boolean mask from given intervals.
+**description**: this primitive creates boolean mask from given intervals.
+
+see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/mlprimitives.custom.timeseries_preprocessing.intervals_to_mask.json>`__.
 
 ==================== =============================== =================================================================================================================================
 argument              type                            description  

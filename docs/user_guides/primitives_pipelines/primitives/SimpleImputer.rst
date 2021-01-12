@@ -3,9 +3,11 @@
 SimpleImputer
 ~~~~~~~~~~~~~
 
-**path**  ``sklearn.impute.SimpleImputer``
+**path**: ``sklearn.impute.SimpleImputer``
 
-**description** this primitive is an imputation transformer for filling missing values.
+**description**: this primitive is an imputation transformer for filling missing values.
+
+see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/sklearn.impute.SimpleImputer.json>`__.
 
 ==================== ========================================================= ==========================================
 argument              type                                                      description  

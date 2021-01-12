@@ -3,9 +3,11 @@
 rolling window sequence
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**path**  ``mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences``
+**path**: ``mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences``
 
-**description** this primitive generates many sub-sequences of the original sequence. it uses a rolling window approach to create the sub-sequences out of time series data.
+**description**: this primitive generates many sub-sequences of the original sequence. it uses a rolling window approach to create the sub-sequences out of time series data.
+
+see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences.json>`__.
 
 ==================== ============================================================== ==================================================================
  argument             type                                                           description  
@@ -50,5 +52,3 @@ rolling window sequence
     X, y, index, target_index = primitive.produce(X=X, index=index)
     print("X shape = {}\ny shape = {}\nindex shape = {}\ntarget index shape = {}".format(
         X.shape, y.shape, index.shape, target_index.shape))
-
-    
