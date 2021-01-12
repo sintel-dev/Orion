@@ -31,7 +31,43 @@ class RandomWeightedAverage(_Merge):
 
 
 class TadGAN():
-    """TadGAN class"""
+    """TadGAN model for time series reconstruction.
+
+    Args:
+        shape (tuple):
+            Tuple denoting the shape of an input sample.
+        encoder_input_shape (tuple):
+            Shape of encoder input.
+        generator_input_shape (tuple):
+            Shape of generator input.
+        critic_x_input_shape (tuple):
+            Shape of critic_x input.
+        critic_z_input_shape (tuple):
+            Shape of critic_z input.
+        layers_encoder (list):
+            List containing layers of encoder.
+        layers_generator (list):
+            List containing layers of generator.
+        layers_critic_x (list):
+            List containing layers of critic_x.
+        layers_critic_z (list):
+            List containing layers of critic_z.
+        optimizer (str):
+            String denoting the keras optimizer.
+        learning_rate (float):
+            Optional. Float denoting the learning rate of the optimizer. Default 0.005.
+        epochs (int):
+            Optional. Integer denoting the number of epochs. Default 2000.
+        latent_dim (int):
+            Optional. Integer denoting dimension of latent space. Default 20.
+        batch_size (int):
+            Integer denoting the batch size. Default 64.
+        iterations_critic (int):
+            Optional. Integer denoting the number of critic training steps per one
+            Generator/Encoder training step. Default 5.
+        hyperparameters (dictionary):
+            Optional. Dictionary containing any additional inputs.
+    """
 
     def _build_model(self, hyperparameters, layers, input_shape):
         x = Input(shape=input_shape)
@@ -58,42 +94,6 @@ class TadGAN():
                  critic_z_input_shape, layers_encoder, layers_generator, layers_critic_x,
                  layers_critic_z, optimizer, learning_rate=0.0005, epochs=2000, latent_dim=20,
                  batch_size=64, iterations_critic=5, **hyperparameters):
-        """Initialize the TadGAN object.
-        Args:
-            shape (tuple):
-                Tuple denoting the shape of an input sample.
-            encoder_input_shape (tuple):
-                Shape of encoder input.
-            generator_input_shape (tuple):
-                Shape of generator input.
-            critic_x_input_shape (tuple):
-                Shape of critic_x input.
-            critic_z_input_shape (tuple):
-                Shape of critic_z input.
-            layers_encoder (list):
-                List containing layers of encoder.
-            layers_generator (list):
-                List containing layers of generator.
-            layers_critic_x (list):
-                List containing layers of critic_x.
-            layers_critic_z (list):
-                List containing layers of critic_z.
-            optimizer (str):
-                String denoting the keras optimizer.
-            learning_rate (float):
-                Optional. Float denoting the learning rate of the optimizer. Default 0.005.
-            epochs (int):
-                Optional. Integer denoting the number of epochs. Default 2000.
-            latent_dim (int):
-                Optional. Integer denoting dimension of latent space. Default 20.
-            batch_size (int):
-                Integer denoting the batch size. Default 64.
-            iterations_critic (int):
-                Optional. Integer denoting the number of critic training steps per one
-                Generator/Encoder training step. Default 5.
-            hyperparameters (dictionary):
-                Optional. Dictionary containing any additional inputs.
-        """
 
         self.shape = shape
         self.latent_dim = latent_dim
