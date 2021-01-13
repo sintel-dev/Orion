@@ -113,6 +113,7 @@ test-all: ## run tests on every Python version with tox
 .PHONY: test-readme
 test-readme: ## run the readme snippets
 	rundoc run --single-session python3 -t python3 README.md
+	rundoc run --single-session python3 -t python3 orion/evaluation/README.md
 
 .PHONY: coverage
 coverage: ## check code coverage quickly with the default Python
