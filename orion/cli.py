@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import warnings   # noqa isort:skip
-warnings.filterwarnings("ignore")  # noqa isort:skip
-
 import argparse
 import getpass
 import logging
@@ -17,6 +14,9 @@ from orion import PIPELINES
 from orion.benchmark import benchmark
 from orion.data import load_signal
 from orion.db.explorer import OrionDBExplorer
+
+import warnings   # noqa isort:skip
+warnings.filterwarnings("ignore")  # noqa isort:skip
 
 
 def _reset(explorer, args):
