@@ -29,7 +29,7 @@ install_requires = [
     'tabulate>=0.8.3,<0.9',
     'Keras>=2.1.6,<2.4',
     'similaritymeasures>=0.4.3',
-    'azure-cognitiveservices-anomalydetector>0.2,<=0.3',
+    'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
@@ -60,7 +60,7 @@ development_requires = [
     'ipython>=6.5,<7.5',
 
     # style check
-    'flake8>=3.7.7,<3.8',
+    'flake8>=3.7.7,<4',
     'isort>=4.3.4,<5',
 
     # fix style issues
