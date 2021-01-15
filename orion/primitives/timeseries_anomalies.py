@@ -5,11 +5,14 @@ Some of the implementation is inspired by the paper https://arxiv.org/pdf/1802.0
 
 import numpy as np
 import pandas as pd
-import math
-from scipy.optimize import fmin
-from scipy import integrate
-
 import similaritymeasures as sm
+from scipy import integrate
+from scipy.optimize import fmin
+
+
+def copy_and_reshape(X):
+    X_ = X.copy()
+    return X_.reshape(-1, X.shape[1])
 
 
 def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True):
@@ -42,10 +45,11 @@ def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True):
 
     return pd.Series(errors).ewm(span=smoothing_window).mean().values
 
+
 def _point_wise_error(y, y_hat, smoothing_window=200):
     """Compute point-wise error between predicted and expected values.
 
-    The computed error is calculated as the difference between predicted 
+    The computed error is calculated as the difference between predicted
     and expected values with a rolling smoothing factor.
 
     Args:
@@ -64,7 +68,7 @@ def _point_wise_error(y, y_hat, smoothing_window=200):
 def _area_error(y, y_hat, score_window=10):
     """Compute area error between predicted and expected values.
 
-    The computed error is calculated as the area difference between predicted 
+    The computed error is calculated as the area difference between predicted
     and expected values with a smoothing factor.
 
     Args:
@@ -81,19 +85,19 @@ def _area_error(y, y_hat, score_window=10):
             An array of area error.
     """
     smooth_y = pd.Series(y).rolling(
-        score_window, center=True,min_periods=score_window // 2).apply(integrate.trapz)
+        score_window, center=True, min_periods=score_window // 2).apply(integrate.trapz)
     smooth_y_hat = pd.Series(y_hat).rolling(
-        score_window, center=True,min_periods=score_window // 2).apply(integrate.trapz)
-    
+        score_window, center=True, min_periods=score_window // 2).apply(integrate.trapz)
+
     errors = abs(smooth_y - smooth_y_hat)
-    
+
     return errors
 
 
 def _dtw_error(y, y_hat, score_window=10):
     """Compute dtw error between predicted and expected values.
 
-    The computed error is calculated as the dynamic time warping distance 
+    The computed error is calculated as the dynamic time warping distance
     between predicted and expected values with a smoothing factor.
 
     Args:
@@ -111,12 +115,12 @@ def _dtw_error(y, y_hat, score_window=10):
     """
     length_dtw = (score_window // 2) * 2 + 1
     half_length_dtw = length_dtw // 2
-    
+
     # add padding
     y_pad = np.pad(y, (half_length_dtw, half_length_dtw),
-        'constant', constant_values=(0, 0))
+                   'constant', constant_values=(0, 0))
     y_hat_pad = np.pad(y_hat, (half_length_dtw, half_length_dtw),
-        'constant', constant_values=(0, 0))
+                       'constant', constant_values=(0, 0))
 
     i = 0
     similarity_dtw = list()
@@ -124,35 +128,35 @@ def _dtw_error(y, y_hat, score_window=10):
         true_data = np.zeros((length_dtw, 2))
         true_data[:, 0] = np.arange(length_dtw)
         true_data[:, 1] = y_pad[i:i + length_dtw]
-        
+
         pred_data = np.zeros((length_dtw, 2))
         pred_data[:, 0] = np.arange(length_dtw)
         pred_data[:, 1] = y_hat_pad[i:i + length_dtw]
-        
+
         dtw, _ = sm.dtw(true_data, pred_data)
         similarity_dtw.append(dtw)
         i += 1
-    
-    errors = ([0] * half_length_dtw + similarity_dtw + \
+
+    errors = ([0] * half_length_dtw + similarity_dtw +
               [0] * (len(y) - len(similarity_dtw) - half_length_dtw))
 
     return errors
 
 
-def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_window=0.01, 
+def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_window=0.01,
                           smooth=True, rec_error_type='point'):
     """Compute an array of reconstruction errors.
 
     Compute the discrepancies between the expected and the
-    predicted values according to the reconstruction error type. 
-    
+    predicted values according to the reconstruction error type.
+
     Args:
         y (ndarray):
             Ground truth.
         y_hat (ndarray):
             Predicted values. Each timestamp has multiple predictions.
         step_size (int):
-            Optional. Indicating the number of steps between windows in the predicted values. 
+            Optional. Indicating the number of steps between windows in the predicted values.
             If not given, 1 is used.
         score_window (int):
             Optional. Size of the window over which the scores are calculated.
@@ -164,9 +168,9 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
             Optional. Indicates whether the returned errors should be smoothed.
             If not given, `True` is used.
         rec_error_type (str):
-            Optional. Reconstruction error types ``["point", "area", "dtw"]``. 
+            Optional. Reconstruction error types ``["point", "area", "dtw"]``.
             If not given, "point" is used.
-    
+
     Returns:
         ndarray:
             Array of reconstruction errors.
@@ -184,7 +188,7 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
 
     pred_length = y_hat.shape[1]
     num_errors = y_hat.shape[1] + step_size * (y_hat.shape[0] - 1)
-    
+
     y_hat = np.asarray(y_hat)
 
     for i in range(num_errors):
@@ -192,7 +196,7 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
 
         for j in range(max(0, i - num_errors + pred_length), min(i + 1, pred_length)):
             intermediate.append(y_hat[i - j, j])
-        
+
         if intermediate:
             predictions_md.append(np.median(np.asarray(intermediate)))
 

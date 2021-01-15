@@ -4,6 +4,7 @@
         "sklearn.impute.SimpleImputer",
         "sklearn.preprocessing.MinMaxScaler",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
+        "orion.primitives.timeseries_anomalies.copy_and_reshape",
         "keras.Sequential.LSTMSeq2Seq",
         "orion.primitives.timeseries_anomalies.reconstruction_errors",
         "orion.primitives.timeseries_anomalies.find_anomalies"
@@ -30,7 +31,7 @@
             "target_shape": [100],
             "layers": [
                 {
-                    "class": "keras.layers.CuDNNLSTM",
+                    "class": "keras.layers.LSTM",
                     "parameters": {
                         "input_shape": "input_shape",
                         "units": 60
@@ -43,7 +44,7 @@
                     }
                 },
                 {
-                    "class": "keras.layers.CuDNNLSTM",
+                    "class": "keras.layers.LSTM",
                     "parameters": {
                         "units": 60,
                         "return_sequences": true
@@ -78,11 +79,14 @@
     "output_names": {
         "keras.Sequential.LSTMSeq2Seq#1": {
             "y": "y_hat"
+        },
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "index": "X_index"
         }
     },
     "input_names": {
-        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
-            "index": "true_index"
+        "orion.primitives.timeseries_anomalies.reconstruction_errors#1": {
+            "y": "X"
         }
     }
 }

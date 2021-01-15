@@ -6,9 +6,9 @@ from numpy.testing import assert_allclose
 from pandas.testing import assert_frame_equal
 
 from orion.primitives.timeseries_anomalies import (
-    regression_errors,
-    _point_wise_error, _area_error, _dtw_error, reconstruction_errors,
-    _find_sequences, _get_max_errors, _merge_sequences, _prune_anomalies, find_anomalies)
+    _area_error, _dtw_error, _find_sequences, _get_max_errors, _merge_sequences, _point_wise_error,
+    _prune_anomalies, find_anomalies, reconstruction_errors, regression_errors)
+
 
 def test__point_wise_error():
     y = np.array([0.0, 0.1, 1.0, 0.5, 0.1, 0.1, 0.0, 0.5])
@@ -70,6 +70,7 @@ class RegressionErrorsTest(TestCase):
         expected = np.array([0.1, 1.45, 0.792, 0.595, 2.138, 0.71, 3.571, 1.19])
         self._run(smoothing_window, smooth, expected)
 
+
 class ReconstructionErrorsTest(TestCase):
 
     y = np.array([
@@ -89,8 +90,9 @@ class ReconstructionErrorsTest(TestCase):
     STEP_SIZE = 1
 
     def _run(self, score_window, smoothing_window, smooth, rec_error_type, expected):
-        sequences, _ = reconstruction_errors(self.y, self.y_hat, self.STEP_SIZE, 
-            score_window, smoothing_window, smooth, rec_error_type)
+        sequences, _ = reconstruction_errors(
+            self.y, self.y_hat, self.STEP_SIZE, score_window, smoothing_window,
+            smooth, rec_error_type)
 
         assert_allclose(sequences, expected)
 
@@ -125,7 +127,7 @@ class ReconstructionErrorsTest(TestCase):
         rec_error_type = 'dtw'
         expected = np.array([0.0, 0.35, 1.75, 0.0, 0.0])
         self._run(score_window, smoothing_window, smooth, rec_error_type, expected)
-              
+
 
 class GetMaxErrorsTest(TestCase):
 

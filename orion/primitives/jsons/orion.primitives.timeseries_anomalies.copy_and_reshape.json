@@ -1,0 +1,25 @@
+{
+    "name": "orion.primitives.timeseries_anomalies.copy_and_reshape",    
+    "classifiers": {
+        "type": "preprocessor",
+        "subtype": "feature_extractor"
+    },
+    "modalities": [
+        "timeseries"
+    ],
+    "primitive": "orion.primitives.timeseries_anomalies.copy_and_reshape",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    }
+}
