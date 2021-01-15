@@ -272,7 +272,7 @@ def _compute_critic_score(critics, smooth_window):
 
 
 def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_window=None,
-                    error_smooth_window=None, smooth=True, rec_error_type="point", comb="mult", 
+                    error_smooth_window=None, smooth=True, rec_error_type="point", comb="mult",
                     lambda_rec=0.5):
     """Compute an array of anomaly scores.
 
@@ -317,7 +317,7 @@ def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_wind
     critic_smooth_window = critic_smooth_window or math.trunc(y.shape[0] * 0.01)
     error_smooth_window = error_smooth_window or math.trunc(y.shape[0] * 0.01)
 
-    step_size = 1 # expected to be 1
+    step_size = 1  # expected to be 1
 
     true_index = index  # no offset
 
