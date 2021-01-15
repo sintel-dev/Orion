@@ -8,19 +8,21 @@ import keras
 import numpy as np
 import pandas as pd
 import similaritymeasures as sm
+import tensorflow as tf
 from keras import backend as K
-from keras.layers import Input
-from keras.layers.merge import _Merge
+from keras.layers import Input, Layer
 from keras.models import Model
 from mlprimitives.adapters.keras import build_layer
 from mlprimitives.utils import import_object
 from scipy import integrate, stats
 
+tf.compat.v1.disable_eager_execution()
+
 LOGGER = logging.getLogger(__name__)
 
 
-class RandomWeightedAverage(_Merge):
-    def _merge_function(self, inputs):
+class RandomWeightedAverage(Layer):
+    def call(self, inputs):
         """
         Args:
             inputs[0] x     original input
