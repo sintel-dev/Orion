@@ -10,11 +10,6 @@ from scipy import integrate
 from scipy.optimize import fmin
 
 
-def copy_and_reshape(X):
-    X_ = X.copy()
-    return X_.reshape(-1, X.shape[1])
-
-
 def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True):
     """Compute an array of absolute errors comparing predictions and expected output.
 

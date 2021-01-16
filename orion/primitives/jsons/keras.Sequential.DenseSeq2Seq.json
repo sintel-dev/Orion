@@ -1,10 +1,10 @@
 {
-    "name": "keras.Sequential.LSTMSeq2Seq",
+    "name": "keras.Sequential.DenseSeq2Seq",
     "contributors": [
         "Dongyu Liu <dongyu@mit.edu>",
         "Sarah Alnegheimish <smish@mit.edu>"
     ],
-    "description": "LSTM autoencoder.",
+    "description": "Dense autoencoder.",
     "classifiers": {
         "type": "estimator",
         "subtype": "regressor"
@@ -108,34 +108,55 @@
                 "type": "list",
                 "default": [
                     {
-                        "class": "keras.layers.LSTM",
+                        "class": "keras.layers.Flatten",
                         "parameters": {
-                            "input_shape": "input_shape",
-                            "units": 60
+                            "input_shape": "input_shape"
                         }
                     },
                     {
-                        "class": "keras.layers.RepeatVector",
-                        "parameters": {
-                            "n": 100
-                        }
-                    },
-                    {
-                        "class": "keras.layers.LSTM",
+                        "class": "keras.layers.Dense",
                         "parameters": {
                             "units": 60,
-                            "return_sequences": true
+                            "activation": "relu"
                         }
                     },
                     {
-                        "class": "keras.layers.TimeDistributed",
+                        "class": "keras.layers.Dropout",
                         "parameters": {
-                            "layer": {
-                                "class": "keras.layers.Dense",
-                                "parameters": {
-                                    "units": 1
-                                }
-                            }
+                            "rate": "dropout_1_rate"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dense",
+                        "parameters": {
+                            "units": 20,
+                            "activation": "relu"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dropout",
+                        "parameters": {
+                            "rate": "dropout_1_rate"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dense",
+                        "parameters": {
+                            "units": 60,
+                            "activation": "relu"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dropout",
+                        "parameters": {
+                            "rate": "dropout_2_rate"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dense",
+                        "parameters": {
+                            "units": 100,
+                            "activation": "linear"
                         }
                     },
                     {
@@ -144,6 +165,24 @@
                             "target_shape": "target_shape"
                         }
                     }
+                ]
+            }
+        },
+        "tunable": {
+            "dropout_1_rate": {
+                "type": "float",
+                "default": 0.3,
+                "range": [
+                    0.01,
+                    0.75
+                ]
+            },
+            "dropout_2_rate": {
+                "type": "float",
+                "default": 0.3,
+                "range": [
+                    0.01,
+                    0.75
                 ]
             }
         }
