@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orion Primitives &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>Primitives &#8212; Orion 0.1.6.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -39,7 +39,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Orion Pipelines" href="pipelines.html" />
+    <link rel="next" title="Pipelines" href="pipelines.html" />
     <link rel="prev" title="Primitives and Pipelines" href="index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -134,11 +134,11 @@
                     <ul>
                     
                         <li class="active">
-                            <a href="">Orion Primitives</a>
+                            <a href="">Primitives</a>
                         </li>
                     
                         <li class="">
-                            <a href="pipelines.html">Orion Pipelines</a>
+                            <a href="pipelines.html">Pipelines</a>
                         </li>
                     
                     </ul>
@@ -180,9 +180,74 @@
           
           <div class="d-none d-xl-block col-xl-2 bd-toc">
               
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
     <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#preprocessing" class="nav-link">Preprocessing</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#time-segments-aggregate" class="nav-link">time segments aggregate</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#intervals-to-mask" class="nav-link">intervals to mask</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#rolling-window-sequence" class="nav-link">rolling window sequence</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#simpleimputer" class="nav-link">SimpleImputer</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#minmaxscaler" class="nav-link">MinMaxScaler</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#modeling" class="nav-link">Modeling</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#arima" class="nav-link">ARIMA</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#lstm" class="nav-link">LSTM</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#tadgan" class="nav-link">TadGAN</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#postprocessing" class="nav-link">Postprocessing</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#score-anomalies" class="nav-link">score anomalies</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#regression-errors" class="nav-link">regression errors</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#find-anomalies" class="nav-link">find anomalies</a>
+        </li>
+    
+            </ul>
+        </li>
     
     </ul>
 </nav>
@@ -197,9 +262,931 @@
               
               <div>
                 
-  <div class="section" id="orion-primitives">
-<span id="primitives"></span><h1>Orion Primitives<a class="headerlink" href="#orion-primitives" title="Permalink to this headline">¶</a></h1>
-<p>Coming soon!</p>
+  <div class="section" id="primitives">
+<span id="id1"></span><h1>Primitives<a class="headerlink" href="#primitives" title="Permalink to this headline">¶</a></h1>
+<p>Primitives are data processing units. They are defined by the code that performs the actual processing and an annotated <code class="docutils literal notranslate"><span class="pre">json</span></code> file. To read more about primitives and their composition, visit <a class="reference external" href="https://mlbazaar.github.io/MLPrimitives/">MLPrimitives</a>.</p>
+<div class="section" id="preprocessing">
+<h2>Preprocessing<a class="headerlink" href="#preprocessing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="time-segments-aggregate">
+<h3>time segments aggregate<a class="headerlink" href="#time-segments-aggregate" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate</span></code></p>
+<p><strong>description</strong>: this primitive creates an equi-spaced time series by aggregating values over fixed specified interval.</p>
+<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 23%" />
+<col style="width: 66%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></p></td>
+<td><p>n-dimensional sequence of values</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">time_column</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>column of <code class="docutils literal notranslate"><span class="pre">X</span></code> that contains time values</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">interval</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>integer denoting time span to compute aggregation of</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">method</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>string describing aggregation method or list of strings describing multiple aggregation methods. If not given, mean is used</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>sequence of aggregated values, one column for each aggregation method</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">index</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>sequence of index values (first index of each aggregated segment)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [2]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time_column&quot;</span><span class="p">:</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;interval&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">:</span><span class="s1">&#39;mean&#39;</span><span class="p">})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [3]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+<span class="gp">   ...: </span>    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)),</span>
+<span class="gp">   ...: </span>    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">50</span><span class="p">})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [4]: </span><span class="n">X</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+
+<span class="gp">In [5]: </span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]})</span>
+<span class="gh">Out[5]: </span><span class="go"></span>
+<span class="go">   timestamp  value</span>
+<span class="go">0          0    1.0</span>
+<span class="go">1         10    1.0</span>
+<span class="go">2         20    1.0</span>
+<span class="go">3         30    1.0</span>
+<span class="go">4         40    1.0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="intervals-to-mask">
+<h3>intervals to mask<a class="headerlink" href="#intervals-to-mask" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">mlprimitives.custom.timeseries_preprocessing.intervals_to_mask</span></code></p>
+<p><strong>description</strong>: this primitive creates boolean mask from given intervals.</p>
+<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/mlprimitives.custom.timeseries_preprocessing.intervals_to_mask.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 17%" />
+<col style="width: 72%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">index</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>array containing the index values</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">intervals</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>list or array of intervals, consisting of start-index and end-index for each interval</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mask</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>array of boolean values, with one boolean value for each index value (True if the index value is contained in a given interval)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;mlprimitives.custom.timeseries_preprocessing.intervals_to_mask&#39;</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="gp">In [5]: </span><span class="n">intervals</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">)]</span>
+
+<span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">intervals</span><span class="o">=</span><span class="n">intervals</span><span class="p">)</span>
+<span class="gh">Out[6]: </span><span class="go"></span>
+<span class="go">array([False,  True,  True,  True, False, False, False,  True, False,</span>
+<span class="go">       False])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="rolling-window-sequence">
+<h3>rolling window sequence<a class="headerlink" href="#rolling-window-sequence" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences</span></code></p>
+<p><strong>description</strong>: this primitive generates many sub-sequences of the original sequence. it uses a rolling window approach to create the sub-sequences out of time series data.</p>
+<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 42%" />
+<col style="width: 45%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional sequence to iterate over</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">index</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>array containing the index values of X</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">drop</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">bool</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>array of boolean values indicating which value should be dropped</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">window_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>length of the input sequences</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">target_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>length of the target sequences</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">step_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>length of the target sequences</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">target_column</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>indicating which column of <code class="docutils literal notranslate"><span class="pre">X</span></code> is the target</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">drop_windows</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>indicates whether the dropping functionality should be enabled</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>input sequences</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>target sequences</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">index</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>first index value of each input sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">target_index</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>first index value of each target sequence</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;window_size&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;target_size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;step_size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;target_column&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [4]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="gp">In [5]: </span><span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="gp">In [6]: </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">target_index</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+
+<span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X shape = </span><span class="si">{}</span><span class="se">\n</span><span class="s2">y shape = </span><span class="si">{}</span><span class="se">\n</span><span class="s2">index shape = </span><span class="si">{}</span><span class="se">\n</span><span class="s2">target index shape = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">target_index</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="gp">   ...: </span>
+<span class="go">X shape = (40, 10, 1)</span>
+<span class="go">y shape = (40, 1)</span>
+<span class="go">index shape = (40, 1)</span>
+<span class="go">target index shape = (40, 1)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simpleimputer">
+<h3>SimpleImputer<a class="headerlink" href="#simpleimputer" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">sklearn.impute.SimpleImputer</span></code></p>
+<p><strong>description</strong>: this primitive is an imputation transformer for filling missing values.</p>
+<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/sklearn.impute.SimpleImputer.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 10%" />
+<col style="width: 86%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional sequence of values</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">missing_values</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">numpy.nan</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>the placeholder for the missing values. All occurrences of <code class="docutils literal notranslate"><span class="pre">missing_values</span></code> will be imputed</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">strategy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>the imputation strategy. If <code class="docutils literal notranslate"><span class="pre">mean</span></code>, then replace missing values using the mean along each column. Can only be used with numeric data. If <code class="docutils literal notranslate"><span class="pre">median</span></code>, then replace missing values using the median along each column. Can only be used with numeric data. If <code class="docutils literal notranslate"><span class="pre">most_frequent</span></code>, then replace missing using the most frequent value along each column. Can be used with strings or numeric data. If <code class="docutils literal notranslate"><span class="pre">constant</span></code>, then replace missing values with <code class="docutils literal notranslate"><span class="pre">fill_value</span></code>. Can be used with strings or numeric data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fill_value</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>when <code class="docutils literal notranslate"><span class="pre">strategy</span> <span class="pre">==</span> <span class="pre">&quot;constant&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">fill_value</span></code> is used to replace all occurrences of <code class="docutils literal notranslate"><span class="pre">missing_values</span></code>. If left to the default, <code class="docutils literal notranslate"><span class="pre">fill_value</span></code> will be 0 when imputing numerical data and “missing_value” for strings or object data types</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>controls the verbosity of the imputer</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">copy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>if True, a copy of X will be created</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>a transformed version of X</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;sklearn.impute.SimpleImputer&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+<span class="gh">Out[6]: </span><span class="go"></span>
+<span class="go">array([[1.],</span>
+<span class="go">       [1.],</span>
+<span class="go">       [1.],</span>
+<span class="go">       [1.],</span>
+<span class="go">       [1.]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="minmaxscaler">
+<h3>MinMaxScaler<a class="headerlink" href="#minmaxscaler" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">sklearn.preprocessing.MinMaxScaler</span></code></p>
+<p><strong>description</strong>: this primitive transforms features by scaling each feature to a given range.</p>
+<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/sklearn.preprocessing.MinMaxScaler.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>the data used to compute the per-feature minimum and maximum used for later scaling along the features axis</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">feature_range</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>desired range of transformed data. Default set to <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">copy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>if True, a copy of X will be created</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>a transformed version of X</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;sklearn.preprocessing.MinMaxScaler&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;feature_range&quot;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+<span class="gh">Out[6]: </span><span class="go"></span>
+<span class="go">array([[0.  ],</span>
+<span class="go">       [0.25],</span>
+<span class="go">       [0.5 ],</span>
+<span class="go">       [0.75],</span>
+<span class="go">       [1.  ]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="modeling">
+<h2>Modeling<a class="headerlink" href="#modeling" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="arima">
+<h3>ARIMA<a class="headerlink" href="#arima" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">statsmodels.tsa.arima_model.Arima</span></code></p>
+<p><strong>description</strong>: this is an Autoregressive Integrated Moving Average (ARIMA) prediction model.</p>
+<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/statsmodels.tsa.arima_model.Arima.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 18%" />
+<col style="width: 63%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional array containing the input sequences for the model</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">steps</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of forward steps to predict</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">p</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>the number of autoregressive parameters to use</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">d</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>the number of differences to use</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">q</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>the number of moving average (MA) parameters to use</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>predicted values</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;statsmodels.tsa.arima_model.Arima&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="p">})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+<span class="gh">Out[5]: </span><span class="go">array([[98.9897614]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lstm">
+<h3>LSTM<a class="headerlink" href="#lstm" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">keras.Sequential.LSTMTimeSeriesRegressor</span></code></p>
+<p><strong>description</strong>: this is a prediction model with double stacked LSTM layers used as a time series regressor. you can read more about it in the <a class="reference external" href="https://arxiv.org/pdf/1802.04431.pdf">related paper</a>.</p>
+<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/keras.Sequential.LSTMTimeSeriesRegressor.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 11%" />
+<col style="width: 77%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional array containing the input sequences for the model</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional array containing the target sequences for the model</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">classification</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>indicator of whether this is a classification or regression model. Default is False</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">epochs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of epochs to train the model. An epoch is an iteration over the entire X and y data provided. Default is 35</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">callbacks</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list of callbacks to apply during training</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">validation_split</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>float between 0 and 1. Fraction of the training data to be used as validation data. Default is 0.2</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">batch_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of samples per gradient update. Default is 64</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>tuple denoting the shape of an input sample</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dense_units</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of values ahead to predict (target size). Default is 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>string (name of optimizer) or optimizer instance. Default is <code class="docutils literal notranslate"><span class="pre">keras.optimizers.Adam</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">loss</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>string (name of the objective function) or an objective function instance. Default is <code class="docutils literal notranslate"><span class="pre">keras.losses.mean_squared_error</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">metrics</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list of metrics to be evaluated by the model during training and testing. Default is [“mse”]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">return_seqeunces</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>whether to return the last output in the output sequence, or the full sequence. Default is False</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">layers</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list of keras layers which are the basic building blocks of a neural network</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>verbosity mode. Default is False</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lstm_1_unit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>dimensionality of the output space for the first LSTM layer. Default is 80</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dropout_1_rate</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>float between 0 and 1. Fraction of the units to drop for the linear transformation of the inputs for the first LSTM layer. Default: 0.3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lstm_2_unit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>dimensionality of the output space for the second LSTM layer. Default is 80</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dropout_2_rate</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>float between 0 and 1. Fraction of the units to drop for the linear transformation of the inputs for the second LSTM layer. Default: 0.3</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>predicted values</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="gp">In [5]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;keras.Sequential.LSTMTimeSeriesRegressor&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;input_shape&quot;</span><span class="p">:(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;validation_split&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="gp">In [7]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+<span class="gh">Out[7]: </span><span class="go">array([[0.9874293]], dtype=float32)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tadgan">
+<h3>TadGAN<a class="headerlink" href="#tadgan" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">orion.primitives.tadgan.TadGAN</span></code></p>
+<p><strong>description</strong>: this is a reconstruction model, namely Generative Adversarial Networks (GAN), containing multiple neural networks and cycle consistency loss. the proposed model is described in the <a class="reference external" href="https://arxiv.org/pdf/2009.07769.pdf">related paper</a>.</p>
+<p>see <a class="reference external" href="https://github.com/signals-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.tadgan.TadGAN.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 13%" />
+<col style="width: 68%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional array containing the input sequences for the model</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">epochs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of epochs to train the model. An epoch is an iteration over the entire X data provided</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>tuple denoting the shape of an input sample</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>string (name of optimizer) or optimizer instance. Default is <code class="docutils literal notranslate"><span class="pre">keras.optimizers.Adam</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>float denoting the learning rate of the optimizer. Default is 0.005</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">latent_dim</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>integer denoting dimension of latent space. Default is 20</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">batch_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of samples per gradient update. Default is 64</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">iterations_critic</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of critic training steps per generator/encoder training steps. Default is 5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">encoder_input_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>shape of encoder input</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generator_input_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>shape of generator input</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">critic_x_input_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>shape of <code class="docutils literal notranslate"><span class="pre">critic_x</span></code> input</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">critic_z_input_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>shape of <code class="docutils literal notranslate"><span class="pre">critic_z</span></code> input</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">layers_encoder</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list containing layers of encoder</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">layers_generator</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list containing layers of generator</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">layers_critic_x</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list containing layers of <code class="docutils literal notranslate"><span class="pre">critic_x</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">layers_critic_z</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list containing layers of <code class="docutils literal notranslate"><span class="pre">critic_z</span></code></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional array containing the reconstructions for each input sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">critic</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional array containing the critic score for each input sequence</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.tadgan.TadGAN&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">   ...: </span>               <span class="s2">&quot;iterations_critic&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="go">Epoch: 1/5, [Dx loss: [ 8.0367374e+00  1.0266601e-01 -6.0208293e-04  7.9346734e-01]] [Dz loss: [ 3.4580095   0.2625967  -0.01865104  0.3214064 ]] [G loss: [ 9.9311447e+00  2.4724816e-04 -7.3071562e-02  1.0003970e+00]]</span>
+<span class="go">Epoch: 2/5, [Dx loss: [ 7.7033930e+00 -7.3139608e-02  5.3803971e-05  7.7764785e-01]] [Dz loss: [ 1.6461868  -0.28015974  0.3966775   0.1529669 ]] [G loss: [ 9.3422832e+00 -9.2773689e-03 -5.1074076e-01  9.8623013e-01]]</span>
+<span class="go">Epoch: 3/5, [Dx loss: [ 7.3376722e+00 -2.7696195e-01  1.7149360e-03  7.6129192e-01]] [Dz loss: [ 1.193222   -0.39114118  0.6441703   0.09401929]] [G loss: [ 8.5247936e+00 -2.2716315e-03 -1.2384084e+00  9.7654730e-01]]</span>
+<span class="go">Epoch: 4/5, [Dx loss: [ 7.1937561e+00 -1.8784466e-01  5.9974347e-03  7.3756033e-01]] [Dz loss: [3.8680353  0.62692285 2.001081   0.12400316]] [G loss: [ 8.625597   -0.00985017 -1.0153992   0.9650847 ]]</span>
+<span class="go">Epoch: 5/5, [Dx loss: [ 6.79915    -0.4027044   0.02584871  0.7176006 ]] [Dz loss: [ 5.3503685  -0.04145321  3.1647391   0.22270828]] [G loss: [ 5.879497   -0.02158069 -3.4109664   0.9312044 ]]</span>
+
+<span class="gp">In [6]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+
+<span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+<span class="gp">   ...: </span>
+<span class="go">average reconstructed value: 0.05, critic score 0.36</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="postprocessing">
+<h2>Postprocessing<a class="headerlink" href="#postprocessing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="score-anomalies">
+<h3>score anomalies<a class="headerlink" href="#score-anomalies" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">orion.primitives.tadgan.score_anomalies</span></code></p>
+<p><strong>description</strong>: this primitive computes an array of anomaly scores based on a combination of reconstruction error and critic output.</p>
+<p>see <a class="reference external" href="https://github.com/signals-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.tadgan.score_anomalies.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 13%" />
+<col style="width: 68%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>ground truth</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y_hat</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>predicted values. Each timestamp has multiple predictions</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">critic</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>critic score. Each timestamp has multiple critic scores</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">index</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>time index for each y (start position of the window)</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">score_window</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>size of the window over which the scores are calculated. If not given, 10 is used</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">critic_smooth_window</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>size of window over which smoothing is applied to critic. If not given, 200 is used</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">error_smooth_window</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>size of window over which smoothing is applied to error. If not given, 200 is used.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rec_error_type</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>the method to compute reconstruction error. Can be one of <cite>[“point”, “area”, “dtw”]</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">comb</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>how to combine critic and reconstruction error. Can be one of <cite>[“mult”, “sum”, “rec”]</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lambda_rec</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>used if <cite>comb=”sum”</cite> as a lambda weighted sum to combine scores. If not given, 0.5 is used.</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">errors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>array of anomaly scores</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">true_index</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>time index of errors</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>ground truth</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">predictions</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>predicted sequence</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.tadgan.score_anomalies&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;error_smooth_window&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;critic_smooth_window&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="gp">   ...: </span>               <span class="s2">&quot;score_window&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;comb&quot;</span><span class="p">:</span> <span class="s2">&quot;rec&quot;</span><span class="p">})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [4]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="gp">In [5]: </span><span class="n">y_hat</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">]</span> <span class="o">*</span> <span class="mi">40</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">[</span><span class="mf">1.1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.99</span><span class="p">]</span> <span class="o">*</span> <span class="mi">40</span>
+
+<span class="gp">In [6]: </span><span class="n">y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_hat</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="gp">In [7]: </span><span class="n">critic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">]])</span>
+
+<span class="gp">In [8]: </span><span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">]])</span>
+
+<span class="gp">In [9]: </span><span class="n">errors</span><span class="p">,</span> <span class="n">true_index</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">predictions</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">=</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">critic</span><span class="o">=</span><span class="n">critic</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [10]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average error value: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+<span class="go">average error value: 1.33</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="regression-errors">
+<h3>regression errors<a class="headerlink" href="#regression-errors" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>  <code class="docutils literal notranslate"><span class="pre">orion.primitives.timeseries_anomalies.regression_errors</span></code></p>
+<p><strong>description</strong> this primitive computes an array of absolute errors comparing predictions and expected output. Optionally smooth them using EWMA.</p>
+<table class="table">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 17%" />
+<col style="width: 61%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>ground truth</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y_hat</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>predicted values</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">smooth</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>indicates whether the returned errors should be smoothed with EWMA</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">smoothing_window</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>size of the smoothing window, expressed as a proportion of the total</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">errors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>array of errors</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.timeseries_anomalies.regression_errors&#39;</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="gp">In [5]: </span><span class="n">y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">.</span><span class="mi">99</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="gp">In [6]: </span><span class="n">errors</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">=</span><span class="n">y_hat</span><span class="p">)</span>
+
+<span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average error value: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+<span class="go">average error value: 0.01</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="find-anomalies">
+<h3>find anomalies<a class="headerlink" href="#find-anomalies" title="Permalink to this headline">¶</a></h3>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">orion.primitives.timeseries_anomalies.find_anomalies</span></code></p>
+<p><strong>description</strong>: this primitive extracts anomalies from sequences of errors following the approach explained in the <a class="reference external" href="https://arxiv.org/pdf/1802.04431.pdf">related paper</a>.</p>
+<p>see <a class="reference external" href="https://github.com/signals-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.timeseries_anomalies.find_anomalies.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 11%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">errors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>array of errors</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">index</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>array of indices of errors</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">z_range</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>list of two values denoting the range out of which the start points for the <code class="docutils literal notranslate"><span class="pre">scipy.fmin</span></code> function are chosen</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">window_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>size of the window for which a threshold is calculated</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">window_step_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of steps the window is moved before another threshold is calculated for the new window</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lower_threshold</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>indicates whether to apply a lower threshold to find unusually low errors</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fixes_threshold</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>indicates whether to use fixed or dynamic thresholding</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">min_percent</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>percentage of separation the anomalies need to meet between themselves and the highest non-anomalous error in the window sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">anomaly_padding</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of errors before and after a found anomaly that are added to the anomalous sequence</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>array containing start-index, end-index, score for each anomalous sequence that was found</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+
+<span class="gp">In [3]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.timeseries_anomalies.find_anomalies&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;anomaly_padding&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [4]: </span><span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.01</span><span class="p">]</span> <span class="o">*</span> <span class="mi">45</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">]</span> <span class="o">*</span> <span class="mi">45</span><span class="p">)</span>
+
+<span class="gp">In [5]: </span><span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+
+<span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+<span class="gh">Out[6]: </span><span class="go">array([[4.40000000e+01, 5.50000000e+01, 5.46907894e-16]])</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -209,7 +1196,7 @@
               <div class='prev-next-bottom'>
                 
     <a class='left-prev' id="prev-link" href="index.html" title="previous page">Primitives and Pipelines</a>
-    <a class='right-next' id="next-link" href="pipelines.html" title="next page">Orion Pipelines</a>
+    <a class='right-next' id="next-link" href="pipelines.html" title="next page">Pipelines</a>
 
               </div>
               

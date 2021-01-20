@@ -1,8 +1,8 @@
 .. _pipelines:
 
-===============
-Orion Pipelines
-===============
+=========
+Pipelines
+=========
 
 The main component in the Orion project are the **Orion Pipelines**, which consist of `MLBlocks Pipelines <https://mlbazaar.github.io/MLBlocks/advanced_usage/pipelines.html>`__ specialized in detecting anomalies in time series.
 

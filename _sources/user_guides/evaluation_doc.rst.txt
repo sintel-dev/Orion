@@ -96,6 +96,7 @@ Overlapping segment
 We look for overlap between detected anomalies and ground truth anomalies.
 
 In this methodology, we are more concerned with whether or not we were able to find an anomaly; even just a part of it. It records:
+
 * a *true positive* if a known anomalous window overlaps any detected windows.
 * a *false negative* if a known anomalous window does not overlap any detected windows.
 * a *false positive* if a detected window does not overlap any known anomalous region.
