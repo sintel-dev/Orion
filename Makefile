@@ -264,7 +264,10 @@ docker-jupyter-load: ## Load the orion-jupyter image from orion-jupyter.tar
 
 .PHONY: docker-jupyter-run
 docker-jupyter-run: ## Run the orion-jupyter image in editable mode
-	docker run --rm -v $(shell pwd):/app -ti -p8888:8888 --name orion-jupyter orion-jupyter
+	docker run --rm \
+		-v $(shell pwd)/orion:/app/orion \
+		-v $(shell pwd)/notebooks:/app/notebooks \
+		-ti -p8888:8888 --name orion-jupyter orion-jupyter
 
 .PHONY: docker-jupyter-start
 docker-jupyter-start: ## Start the orion-jupyter image as a daemon
