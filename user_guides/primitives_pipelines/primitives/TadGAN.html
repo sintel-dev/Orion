@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TadGAN &#8212; Orion 0.1.6.dev0 documentation</title>
     
-  <link rel="stylesheet" href="../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
     
   <link rel="stylesheet"
@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../../../_static/js/index.d3f166471bb80abb5163.js">
 
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -259,18 +259,18 @@
 <span class="gp">   ...: </span>
 
 <span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, [Dx loss: [ 7.5723295  -0.09359959 -0.01309752  0.7679027 ]] [Dz loss: [ 0.4543449  -0.10614426 -0.04948678  0.06099759]] [G loss: [ 1.0038098e+01 -1.6137640e-03  4.3692626e-02  9.9960196e-01]]</span>
-<span class="go">Epoch: 2/5, [Dx loss: [7.5636964e+00 7.4114993e-02 3.8901358e-03 7.4856913e-01]] [Dz loss: [2.8626502  0.9644525  0.42227623 0.14759214]] [G loss: [ 9.4941397e+00  5.9205666e-03 -4.1689450e-01  9.9051130e-01]]</span>
-<span class="go">Epoch: 3/5, [Dx loss: [ 7.196407   -0.09907386  0.00966654  0.7285814 ]] [Dz loss: [3.1199265  0.6003182  0.78280634 0.17368019]] [G loss: [ 8.8741016e+00 -4.1238558e-03 -1.0263441e+00  9.9045694e-01]]</span>
-<span class="go">Epoch: 4/5, [Dx loss: [ 6.8599896  -0.19659708  0.008514    0.7048073 ]] [Dz loss: [2.7667153  0.24924234 0.56906843 0.19484046]] [G loss: [ 8.4024096e+00  1.2925605e-04 -1.2683194e+00  9.6706003e-01]]</span>
-<span class="go">Epoch: 5/5, [Dx loss: [ 6.452669   -0.2091793   0.02271665  0.6639132 ]] [Dz loss: [ 3.115981   -0.7055532   2.5002735   0.13212606]] [G loss: [ 7.2142944  -0.00932193 -1.7241164   0.8947733 ]]</span>
+<span class="go">Epoch: 1/5, [Dx loss: [ 8.1566305e+00 -1.2997190e-02  3.2995595e-03  8.1663281e-01]] [Dz loss: [ 2.3387258   0.10557848 -0.03131095  0.22644582]] [G loss: [ 1.0036865e+01 -1.6890141e-03  2.1525649e-02  1.0017029e+00]]</span>
+<span class="go">Epoch: 2/5, [Dx loss: [ 8.0440245e+00 -5.7472992e-03 -3.8973472e-04  8.0501616e-01]] [Dz loss: [ 1.8615187  -0.6706184   0.38771626  0.21444209]] [G loss: [ 9.5975227e+00 -2.4877444e-03 -3.5141167e-01  9.9514222e-01]]</span>
+<span class="go">Epoch: 3/5, [Dx loss: [ 7.7735868e+00 -7.9257332e-02  2.8075285e-03  7.8500366e-01]] [Dz loss: [2.8383808  0.23295204 0.79832464 0.1807104 ]] [G loss: [ 8.6672201e+00 -2.7691247e-03 -1.1311257e+00  9.8011154e-01]]</span>
+<span class="go">Epoch: 4/5, [Dx loss: [ 7.617584   -0.06084956  0.00887589  0.7669558 ]] [Dz loss: [3.651555   0.2638976  1.7803551  0.16073024]] [G loss: [ 7.5921574  -0.01068175 -1.6613381   0.92641777]]</span>
+<span class="go">Epoch: 5/5, [Dx loss: [ 7.1162915  -0.301968    0.01346433  0.7404795 ]] [Dz loss: [ 3.9299526  -0.32401356  3.1082242   0.11457419]] [G loss: [ 5.842956   -0.01339271 -3.0614893   0.8917838 ]]</span>
 
 <span class="gp">In [6]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
 <span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.08, critic score 0.39</span>
+<span class="go">average reconstructed value: 0.10, critic score 0.24</span>
 </pre></div>
 </div>
 </div>
@@ -291,7 +291,7 @@
     </div>
 
     
-  <script src="../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../../../_static/js/index.d3f166471bb80abb5163.js"></script>
 
 
     <footer class="footer mt-5 mt-md-0">
