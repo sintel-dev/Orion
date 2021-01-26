@@ -9,22 +9,32 @@ Primitives are data processing units. They are defined by the code that performs
 Preprocessing
 -------------
 
-.. include:: primitives/time_segments_aggregate.rst
-.. include:: primitives/intervals_to_mask.rst
-.. include:: primitives/rolling_window_sequences.rst
-.. include:: primitives/SimpleImputer.rst
-.. include:: primitives/MinMaxScaler.rst
+.. toctree::
+    :maxdepth: 1
+    
+    primitives/time_segments_aggregate.rst
+    primitives/intervals_to_mask.rst
+    primitives/rolling_window_sequences.rst
+    primitives/fillna.rst
+    primitives/SimpleImputer.rst
+    primitives/MinMaxScaler.rst
 
 Modeling
 --------
 
-.. include:: primitives/arima.rst
-.. include:: primitives/LSTMTimeSeriesRegressor.rst
-.. include:: primitives/TadGAN.rst
+.. toctree::
+    :maxdepth: 1
+
+    primitives/arima.rst
+    primitives/LSTMTimeSeriesRegressor.rst
+    primitives/TadGAN.rst
 
 Postprocessing
 --------------
 
-.. include:: primitives/score_anomalies.rst
-.. include:: primitives/regression_errors.rst
-.. include:: primitives/find_anomalies.rst
+.. toctree::
+    :maxdepth: 1
+    
+    primitives/score_anomalies.rst
+    primitives/regression_errors.rst
+    primitives/find_anomalies.rst

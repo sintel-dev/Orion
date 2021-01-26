@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>regression errors &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>fillna &#8212; Orion 0.1.6.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="find anomalies" href="find_anomalies.html" />
-    <link rel="prev" title="score anomalies" href="score_anomalies.html" />
+    <link rel="next" title="SimpleImputer" href="SimpleImputer.html" />
+    <link rel="prev" title="rolling window sequence" href="rolling_window_sequences.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -197,15 +197,16 @@
               
               <div>
                 
-  <div class="section" id="regression-errors">
-<h1>regression errors<a class="headerlink" href="#regression-errors" title="Permalink to this headline">¶</a></h1>
-<p><strong>path</strong>  <code class="docutils literal notranslate"><span class="pre">orion.primitives.timeseries_anomalies.regression_errors</span></code></p>
-<p><strong>description</strong> this primitive computes an array of absolute errors comparing predictions and expected output. Optionally smooth them using EWMA.</p>
+  <div class="section" id="fillna">
+<h1>fillna<a class="headerlink" href="#fillna" title="Permalink to this headline">¶</a></h1>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">orion.primitives.timeseries_preprocessing.fillna</span></code></p>
+<p><strong>description</strong>: this primitive is an iterative imputation transformer for filling missing values using <code class="docutils literal notranslate"><span class="pre">pandas.fillna</span></code>.</p>
+<p>see <a class="reference external" href="https://github.com/signals-dev/Orion/blob/master/orion/primitives/jsons/orion.primitives.timeseries_preprocessing.fillna.json">json</a>.</p>
 <table class="table">
 <colgroup>
-<col style="width: 23%" />
-<col style="width: 17%" />
-<col style="width: 61%" />
+<col style="width: 4%" />
+<col style="width: 14%" />
+<col style="width: 82%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>argument</p></td>
@@ -214,29 +215,37 @@
 </tr>
 <tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
-<td><p>ground truth</p></td>
+<td><p>n-dimensional sequence of values</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y_hat</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
-<td><p>predicted values</p></td>
+<tr class="row-even"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">value</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code>, or <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></p></td>
+<td><p>Value to use to fill holes (e.g. 0), alternately a dict/Series/DataFrame of values specifying which value to use for each index (for a Series) or column (for a DataFrame). Values not in the dict/Series/DataFrame will not be filled. This value cannot be a list</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">smooth</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td><p>indicates whether the returned errors should be smoothed with EWMA</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">method</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code>, or <code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>String or list of strings describing whether to use forward or backward fill. pad / ffill: propagate last valid observation forward to next valid. backfill / bfill: use next valid observation to fill gap. Otherwise use <code class="docutils literal notranslate"><span class="pre">None</span></code> to fill with desired value. Possible values include <code class="docutils literal notranslate"><span class="pre">['backfill',</span> <span class="pre">'bfill',</span> <span class="pre">'pad',</span> <span class="pre">'ffill',</span> <span class="pre">None]</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">smoothing_window</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td><p>size of the smoothing window, expressed as a proportion of the total</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">axis</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code>, or <code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>Axis along which to fill missing value. Possible values include 0 or “index”, 1 or “columns”</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">limit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>If method is specified, this is the maximum number of consecutive NaN values to forward/backward fill. In other words, if there is a gap with more than this number of consecutive NaNs, it will only be partially filled. If method is not specified, this is the maximum number of entries along the entire axis where NaNs will be filled. Must be greater than 0 if not <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">downcast</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td><p>A dict of item-&gt;dtype of what to downcast if possible, or the string “infer” which will try to downcast to an appropriate equal type (e.g. float64 to int64 if possible)</p></td>
 </tr>
 <tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">errors</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
-<td><p>array of errors</p></td>
+<td><p>Array of input sequence with imputed values</p></td>
 </tr>
 </tbody>
 </table>
@@ -244,16 +253,21 @@
 
 <span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
 
-<span class="gp">In [3]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.timeseries_anomalies.regression_errors&#39;</span><span class="p">)</span>
+<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="gp">In [4]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">In [4]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.timeseries_preprocessing.fillna&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="gp">   ...: </span>
 
-<span class="gp">In [5]: </span><span class="n">y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">.</span><span class="mi">99</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 
-<span class="gp">In [6]: </span><span class="n">errors</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">=</span><span class="n">y_hat</span><span class="p">)</span>
-
-<span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average error value: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
-<span class="go">average error value: 0.01</span>
+<span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+<span class="gh">Out[6]: </span><span class="go"></span>
+<span class="go">array([[1.],</span>
+<span class="go">       [1.],</span>
+<span class="go">       [1.],</span>
+<span class="go">       [1.],</span>
+<span class="go">       [0.]])</span>
 </pre></div>
 </div>
 </div>
@@ -264,8 +278,8 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="score_anomalies.html" title="previous page">score anomalies</a>
-    <a class='right-next' id="next-link" href="find_anomalies.html" title="next page">find anomalies</a>
+    <a class='left-prev' id="prev-link" href="rolling_window_sequences.html" title="previous page">rolling window sequence</a>
+    <a class='right-next' id="next-link" href="SimpleImputer.html" title="next page">SimpleImputer</a>
 
               </div>
               

@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Evaluation" href="../evaluation_doc.html" />
-    <link rel="prev" title="Primitives" href="primitives.html" />
+    <link rel="prev" title="find anomalies" href="primitives/find_anomalies.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -188,6 +188,10 @@
     <ul class="nav section-nav flex-column">
     
         <li class="nav-item toc-entry toc-h2">
+            <a href="#pipeline-representation" class="nav-link">Pipeline Representation</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
             <a href="#current-available-pipelines" class="nav-link">Current Available Pipelines</a>
         </li>
     
@@ -196,7 +200,7 @@
         </li>
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#verified-pipelines" class="nav-link">Verified pipelines</a>
+            <a href="#verified-pipelines" class="nav-link">Verified Pipelines</a>
         </li>
     
     </ul>
@@ -223,6 +227,54 @@
 <li><p>have <em>hyperparameters</em> that can be <em>tuned</em> to improve their anomaly detection performance</p></li>
 <li><p>can be stored as a JSON file that includes all the primitives that compose them, as well as other required configuration options.</p></li>
 </ul>
+<div class="section" id="pipeline-representation">
+<h2>Pipeline Representation<a class="headerlink" href="#pipeline-representation" title="Permalink to this headline">¶</a></h2>
+<p>As previously mentioned, a pipeline is composed of a sequence of <a class="reference internal" href="primitives.html#primitives"><span class="std std-ref">Primitives</span></a>. In Orion, we store pipelines as annotated <strong>JSON</strong> files.
+Let’s view the structure of a pipeline JSON for anomaly detection in <a class="reference external" href="https://github.com/signals-dev/Orion/tree/master/orion/pipelines">orion/pipelines</a>. For example let’s consider the <a class="reference external" href="https://github.com/signals-dev/Orion/blob/master/orion/pipelines/verified/arima/arima.json">ARIMA</a> pipeline. There are four main categories defined in the JSON:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;primitives&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">...</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;init_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">...</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;input_names&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">...</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;output_names&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>primitives</strong>: this is where we list the necessary primitives for the pipeline, where we can notice a series of preprocessing, modeling, and postprocessing primitives.</p></li>
+<li><p><strong>init_params</strong>: this is where we initialize our pipeline parameters. If the parameters are not specified, then they will use default values. Notice how to change a value, we first specify the primitive as key then we change the parameter value.</p></li>
+<li><p><strong>input_names</strong>: this is where we map the input name of a parameter in a primitive to a variable within the <a class="reference external" href="https://mlbazaar.github.io/MLBlocks/advanced_usage/pipelines.html#context">Context</a>.</p></li>
+<li><p><strong>output_names</strong>: this is where we assign the output of the primitive a variable name other than the default one within the primitive JSON.</p></li>
+</ul>
+<p>Optionally there is an addition category <cite>outputs</cite>. In the case where you would like to view <em>intermediatry</em> outputs from the pipeline we can use this category to define it. Continuing on the previous example, ARIMA. To view the output of <code class="docutils literal notranslate"><span class="pre">orion.primitives.timeseries_anomalies.regression_errors</span></code> primitive, we include an additional <code class="docutils literal notranslate"><span class="pre">visualization</span></code> key with the output of interest:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;events&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="s2">&quot;orion.primitives.timeseries_anomalies.find_anomalies#1.y&quot;</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;visualization&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;errors&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="s2">&quot;orion.primitives.timeseries_anomalies.regression_errors#1.errors&quot;</span>
+            <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then <code class="docutils literal notranslate"><span class="pre">orion.detect(..,</span> <span class="pre">visualization=True)</span></code> will return two outputs: the first output being the detected anomalies, and the second output is a dictionary containing the specified outputs in <code class="docutils literal notranslate"><span class="pre">visualization</span></code>. You can read more about the specifications of <a class="reference internal" href="../../api_reference/orion.html#orion"><span class="std std-ref">orion</span></a> API.</p>
+<p>To read more about the intricacies of composing a pipeline, please refer to <a class="reference external" href="https://mlbazaar.github.io/MLBlocks/advanced_usage/pipelines.html">MLBlocks Pipelines</a>.</p>
+</div>
 <div class="section" id="current-available-pipelines">
 <h2>Current Available Pipelines<a class="headerlink" href="#current-available-pipelines" title="Permalink to this headline">¶</a></h2>
 <p>In the <strong>Orion Project</strong>, the pipelines are included as <strong>JSON</strong> files, which can be found
@@ -275,7 +327,7 @@ in the subdirectories inside the <code class="docutils literal notranslate"><spa
 </div>
 </div>
 <div class="section" id="verified-pipelines">
-<h2>Verified pipelines<a class="headerlink" href="#verified-pipelines" title="Permalink to this headline">¶</a></h2>
+<h2>Verified Pipelines<a class="headerlink" href="#verified-pipelines" title="Permalink to this headline">¶</a></h2>
 <p>In <strong>Orion</strong>, we organize pipelines into <em>verified</em> and <em>sandbox</em>. The distinction between verified and sandbox is kept until several tests and verifications are made. We consider two cases when pipelines are inspected before transferring:</p>
 <ul class="simple">
 <li><p>When a new pipeline is proposed.</p></li>
@@ -293,7 +345,7 @@ Next, we test the new pipeline/hyperparameters in the benchmark and verify that 
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="primitives.html" title="previous page">Primitives</a>
+    <a class='left-prev' id="prev-link" href="primitives/find_anomalies.html" title="previous page">find anomalies</a>
     <a class='right-next' id="next-link" href="../evaluation_doc.html" title="next page">Evaluation</a>
 
               </div>

@@ -39,6 +39,8 @@
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="score anomalies" href="score_anomalies.html" />
+    <link rel="prev" title="LSTM" href="LSTMTimeSeriesRegressor.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -64,7 +66,7 @@
             <a class="nav-link" href="../../../getting_started/index.html">Getting Started</a>
         </li>
         
-        <li class="nav-item ">
+        <li class="nav-item active">
             <a class="nav-link" href="../../index.html">User Guides</a>
         </li>
         
@@ -117,6 +119,50 @@
         
         
         
+        
+          
+            
+                <li class="">
+                    <a href="../../data.html">Data</a>
+                </li>
+            
+          
+            
+  
+                <li class="active">
+                    <a href="../index.html">Primitives and Pipelines</a>
+                    <ul>
+                    
+                        <li class="active">
+                            <a href="../primitives.html">Primitives</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="../pipelines.html">Pipelines</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../../evaluation_doc.html">Evaluation</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../../benchmarking.html">Benchmarking</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../../system/index.html">Building a System</a>
+                </li>
+            
+          
         
         
         
@@ -259,18 +305,18 @@
 <span class="gp">   ...: </span>
 
 <span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, [Dx loss: [ 8.1566305e+00 -1.2997190e-02  3.2995595e-03  8.1663281e-01]] [Dz loss: [ 2.3387258   0.10557848 -0.03131095  0.22644582]] [G loss: [ 1.0036865e+01 -1.6890141e-03  2.1525649e-02  1.0017029e+00]]</span>
-<span class="go">Epoch: 2/5, [Dx loss: [ 8.0440245e+00 -5.7472992e-03 -3.8973472e-04  8.0501616e-01]] [Dz loss: [ 1.8615187  -0.6706184   0.38771626  0.21444209]] [G loss: [ 9.5975227e+00 -2.4877444e-03 -3.5141167e-01  9.9514222e-01]]</span>
-<span class="go">Epoch: 3/5, [Dx loss: [ 7.7735868e+00 -7.9257332e-02  2.8075285e-03  7.8500366e-01]] [Dz loss: [2.8383808  0.23295204 0.79832464 0.1807104 ]] [G loss: [ 8.6672201e+00 -2.7691247e-03 -1.1311257e+00  9.8011154e-01]]</span>
-<span class="go">Epoch: 4/5, [Dx loss: [ 7.617584   -0.06084956  0.00887589  0.7669558 ]] [Dz loss: [3.651555   0.2638976  1.7803551  0.16073024]] [G loss: [ 7.5921574  -0.01068175 -1.6613381   0.92641777]]</span>
-<span class="go">Epoch: 5/5, [Dx loss: [ 7.1162915  -0.301968    0.01346433  0.7404795 ]] [Dz loss: [ 3.9299526  -0.32401356  3.1082242   0.11457419]] [G loss: [ 5.842956   -0.01339271 -3.0614893   0.8917838 ]]</span>
+<span class="go">Epoch: 1/5, [Dx loss: [ 7.864457e+00 -6.605792e-02 -1.175469e-03  7.931691e-01]] [Dz loss: [2.8976529  0.7975751  0.10088531 0.19991925]] [G loss: [ 9.9654455e+00 -2.6698497e-03 -5.3261551e-03  9.9734408e-01]]</span>
+<span class="go">Epoch: 2/5, [Dx loss: [ 7.8223372e+00  5.2690733e-02 -2.2249392e-03  7.7718717e-01]] [Dz loss: [2.3382318  0.260435   0.12464672 0.195315  ]] [G loss: [ 9.3213053e+00 -4.1726842e-03 -4.8754758e-01  9.8130256e-01]]</span>
+<span class="go">Epoch: 3/5, [Dx loss: [7.6897035e+00 1.2638755e-01 8.5990434e-04 7.5624561e-01]] [Dz loss: [4.1782637  0.7617288  0.9003721  0.25161627]] [G loss: [ 8.210148e+00  1.624378e-05 -1.198547e+00  9.408679e-01]]</span>
+<span class="go">Epoch: 4/5, [Dx loss: [ 7.005388   -0.31369394 -0.01003318  0.73291147]] [Dz loss: [ 3.1701496  -0.64513856  1.6271414   0.21881469]] [G loss: [ 8.091349   -0.01203322 -0.852535    0.89559174]]</span>
+<span class="go">Epoch: 5/5, [Dx loss: [ 6.7679734  -0.3005216   0.01250903  0.7055986 ]] [Dz loss: [ 4.7203836  -0.05742148  2.8605294   0.19172755]] [G loss: [ 6.112451   -0.00901265 -2.1632023   0.82846665]]</span>
 
 <span class="gp">In [6]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
 <span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.10, critic score 0.24</span>
+<span class="go">average reconstructed value: 0.12, critic score 0.39</span>
 </pre></div>
 </div>
 </div>
@@ -281,6 +327,8 @@
               
               <div class='prev-next-bottom'>
                 
+    <a class='left-prev' id="prev-link" href="LSTMTimeSeriesRegressor.html" title="previous page">LSTM</a>
+    <a class='right-next' id="next-link" href="score_anomalies.html" title="next page">score anomalies</a>
 
               </div>
               

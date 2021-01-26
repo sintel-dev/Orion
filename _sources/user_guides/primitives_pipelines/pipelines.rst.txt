@@ -14,6 +14,62 @@ As ``MLPipeline`` instances, **Orion Pipelines**:
 * have *hyperparameters* that can be *tuned* to improve their anomaly detection performance
 * can be stored as a JSON file that includes all the primitives that compose them, as well as other required configuration options.
 
+Pipeline Representation
+-----------------------
+
+As previously mentioned, a pipeline is composed of a sequence of :ref:`primitives`. In Orion, we store pipelines as annotated **JSON** files.
+Let's view the structure of a pipeline JSON for anomaly detection in `orion/pipelines <https://github.com/signals-dev/Orion/tree/master/orion/pipelines>`__. For example let's consider the `ARIMA <https://github.com/signals-dev/Orion/blob/master/orion/pipelines/verified/arima/arima.json>`__ pipeline. There are four main categories defined in the JSON:
+
+.. code-block:: python
+
+    {
+        "primitives": [
+            ...
+        ],
+        "init_params": {
+            ...
+        },
+        "input_names": {
+            ...
+        },
+        "output_names": {
+            ...
+        }
+    }
+
+* **primitives**: this is where we list the necessary primitives for the pipeline, where we can notice a series of preprocessing, modeling, and postprocessing primitives.
+* **init_params**: this is where we initialize our pipeline parameters. If the parameters are not specified, then they will use default values. Notice how to change a value, we first specify the primitive as key then we change the parameter value.
+* **input_names**: this is where we map the input name of a parameter in a primitive to a variable within the `Context <https://mlbazaar.github.io/MLBlocks/advanced_usage/pipelines.html#context>`__.
+* **output_names**: this is where we assign the output of the primitive a variable name other than the default one within the primitive JSON.
+
+
+Optionally there is an addition category `outputs`. In the case where you would like to view *intermediatry* outputs from the pipeline we can use this category to define it. Continuing on the previous example, ARIMA. To view the output of ``orion.primitives.timeseries_anomalies.regression_errors`` primitive, we include an additional ``visualization`` key with the output of interest:
+
+
+.. code-block:: python
+
+    {
+        "outputs": {
+    	    "default": [
+                {
+                    "name": "events",
+                    "variable": "orion.primitives.timeseries_anomalies.find_anomalies#1.y"
+                }
+            ],
+            "visualization": [
+                {
+                    "name": "errors",
+                    "variable": "orion.primitives.timeseries_anomalies.regression_errors#1.errors"
+                },
+            ]
+        }
+    }
+
+Then ``orion.detect(.., visualization=True)`` will return two outputs: the first output being the detected anomalies, and the second output is a dictionary containing the specified outputs in ``visualization``. You can read more about the specifications of :ref:`orion` API.
+
+To read more about the intricacies of composing a pipeline, please refer to `MLBlocks Pipelines <https://mlbazaar.github.io/MLBlocks/advanced_usage/pipelines.html>`__.
+
+
 Current Available Pipelines
 ---------------------------
 
@@ -55,7 +111,7 @@ We store a pipeline ``json`` within the pipeline subfolder. In addition, the hyp
 .. note:: 
 	the pipeline name must follow the subfolder name.
 
-Verified pipelines
+Verified Pipelines
 ------------------
 
 In **Orion**, we organize pipelines into *verified* and *sandbox*. The distinction between verified and sandbox is kept until several tests and verifications are made. We consider two cases when pipelines are inspected before transferring:
