@@ -599,7 +599,7 @@ class TestBenchmark(TestCase):
         returned = benchmark._evaluate_datasets(
             pipelines, datasets, self.hyper, self.metrics, self.distributed, test_split, detrend)
 
-        pd.testing.assert_frame_equal(returned, expected_return)
+        pd.testing.assert_frame_equal(returned[order], expected_return)
 
         evaluate_pipelines_mock.assert_called_once_with(
             pipelines, self.dataset, signals, self.hyper, self.metrics,
@@ -638,7 +638,7 @@ class TestBenchmark(TestCase):
         returned = benchmark.benchmark(
             pipelines, datasets, self.hyper, self.metrics, self.rank, self.distributed)
 
-        pd.testing.assert_frame_equal(returned, expected_return)
+        pd.testing.assert_frame_equal(returned[order], expected_return)
 
         evaluate_datasets_mock.assert_called_once_with(
             pipelines, datasets, self.hyper, self.metrics, self.distributed, False, False)
@@ -685,7 +685,7 @@ class TestBenchmark(TestCase):
         returned = benchmark.benchmark(pipelines, datasets, self.hyper, metrics, self.rank,
                                        self.distributed, test_split, detrend)
 
-        pd.testing.assert_frame_equal(returned, expected_return)
+        pd.testing.assert_frame_equal(returned[order], expected_return)
 
         evaluate_datasets_mock.assert_called_once_with(
             pipelines, datasets, self.hyper, metrics_, self.distributed, test_split, detrend)
@@ -749,7 +749,7 @@ class TestBenchmark(TestCase):
         returned = benchmark.benchmark(pipelines, datasets, self.hyper, self.metrics, self.rank,
                                        self.distributed, test_split, detrend)
 
-        pd.testing.assert_frame_equal(returned, expected_return)
+        pd.testing.assert_frame_equal(returned[order], expected_return)
 
         evaluate_datasets_mock.assert_called_once_with(
             pipelines_, datasets, self.hyper, self.metrics, self.distributed, test_split, detrend)
