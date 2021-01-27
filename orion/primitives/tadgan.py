@@ -16,12 +16,17 @@ from mlprimitives.adapters.keras import build_layer
 from mlprimitives.utils import import_object
 from scipy import integrate, stats
 
-tf.compat.v1.disable_eager_execution()
+tf.compat.v1.disable_v2_behavior()
+# tf.compat.v1.disable_eager_execution()
+# tf.compat.v1.experimental.output_all_intermediates(True)
 
 LOGGER = logging.getLogger(__name__)
 
 
 class RandomWeightedAverage(Layer):
+    def __init__(self):
+        super(RandomWeightedAverage, self).__init__()
+
     def call(self, inputs):
         """
         Args:
