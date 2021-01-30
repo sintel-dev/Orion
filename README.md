@@ -20,6 +20,8 @@
 * Development Status: [Pre-Alpha](https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha)
 * Homepage: https://github.com/signals-dev/Orion
 * Documentation: https://signals-dev.github.io/Orion
+* Paper: [TadGAN--Time Series Anomaly Detection Using
+Generative Adversarial Networks](https://arxiv.org/pdf/2009.07769v3.pdf)
 
 # Overview
 
