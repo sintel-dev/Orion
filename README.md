@@ -138,7 +138,7 @@ Alexander Geiger, Dongyu Liu, Sarah Alnegheimish, Alfredo Cuesta-Infante, Kalyan
 @inproceedings{geiger2020tadgan,
   title={TadGAN: Time Series Anomaly Detection Using Generative Adversarial Networks},
   author={Geiger, Alexander and Liu, Dongyu and Alnegheimish, Sarah and Cuesta-Infante, Alfredo and Veeramachaneni, Kalyan},
-  booktitle={2020 IEEE International Conference on Big Data (Big Data)},
+  booktitle={2020 IEEE International Conference on Big Data (IEEE BigData)},
   organization={IEEE},
   year={2020}
 }
