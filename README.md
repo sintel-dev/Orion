@@ -35,19 +35,6 @@ The library makes use of a number of **automated machine learning** tools develo
 
 **Notebooks:** Discover *Orion* through colab by launching our [notebooks](https://drive.google.com/drive/folders/1FAcCEiE1JDsqaMjGcmiw5a5XuGh13c9Q?usp=sharing)!
 
-# Leaderboard
-In every release, we run Orion benchmark. We maintain an up-to-date leaderboard with the current scoring of the verified pipelines according to the benchmarking procedure.
-
-We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline.
-
-| Pipeline                  |  Outperforms ARIMA |
-|---------------------------|--------------------|
-| TadGAN					|		   7		 |
-| LSTM Dynamic Thresholding |          5         |
-| Azure                     |          0         |
-
-You can find the scores of each pipeline on every signal recorded in the [details Google Sheets document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing). The summarized results can also be browsed in the following [summary Google Sheets document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
-
 # Quickstart
 
 ## Install with pip
@@ -120,12 +107,26 @@ The output of the previous command will be a ``pandas.DataFrame`` containing a t
 0  1394323200  1399701600  0.673494
 ```
 
+# Leaderboard
+In every release, we run Orion benchmark. We maintain an up-to-date leaderboard with the current scoring of the verified pipelines according to the benchmarking procedure.
+
+We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline.
+
+| Pipeline                  |  Outperforms ARIMA |
+|---------------------------|--------------------|
+| TadGAN           |      7     |
+| LSTM Dynamic Thresholding |          5         |
+| Azure                     |          0         |
+
+You can find the scores of each pipeline on every signal recorded in the [details Google Sheets document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing). The summarized results can also be browsed in the following [summary Google Sheets document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
+
 # Resources
 
 Additional resources that might be of interest:
 * Learn about [benchmarking pipelines](BENCHMARK.md). 
 * Read about [pipeline evaluation](orion/evaluation/README.md).
 * More about [database design](DATABASE.md).
+* Find out more about [TadGAN](https://arxiv.org/pdf/2009.07769v3.pdf).
 
 # Citation
 
@@ -134,10 +135,11 @@ If you use **Orion** for your research, please consider citing the following pap
 Alexander Geiger, Dongyu Liu, Sarah Alnegheimish, Alfredo Cuesta-Infante, Kalyan Veeramachaneni. [TadGAN - Time Series Anomaly Detection Using Generative Adversarial Networks](https://arxiv.org/pdf/2009.07769v3.pdf).
 
 ```
-@article{geiger2020tadgan,
+@inproceedings{geiger2020tadgan,
   title={TadGAN: Time Series Anomaly Detection Using Generative Adversarial Networks},
   author={Geiger, Alexander and Liu, Dongyu and Alnegheimish, Sarah and Cuesta-Infante, Alfredo and Veeramachaneni, Kalyan},
-  journal={arXiv preprint arXiv:2009.07769},
+  booktitle={2020 IEEE International Conference on Big Data (Big Data)},
+  organization={IEEE},
   year={2020}
 }
 ```
