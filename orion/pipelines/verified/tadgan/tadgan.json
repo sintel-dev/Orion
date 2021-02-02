@@ -26,10 +26,15 @@
             "target_size": 1
         },
         "orion.primitives.tadgan.TadGAN#1": {
-            "epochs": 50
+            "epochs": 35
         },
         "orion.primitives.tadgan.score_anomalies#1": {
             "rec_error_type": "dtw"
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size_portion": 0.33,
+            "window_step_size_portion": 0.1,
+            "fixed_threshold": true
         }
     },
     "input_names": {

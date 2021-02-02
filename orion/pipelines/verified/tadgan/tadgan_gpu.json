@@ -40,7 +40,7 @@
                     "class": "keras.layers.Bidirectional",
                     "parameters": {
                         "layer": {
-                            "class": "keras.layers.CuDNNLSTM",
+                            "class": "tf.compat.v1.keras.layers.LSTM",
                             "parameters": {
                                 "units": 100,
                                 "return_sequences": true
@@ -86,7 +86,7 @@
                         "class": "keras.layers.Bidirectional",
                         "parameters": {
                             "layer": {
-                                "class": "keras.layers.CuDNNLSTM",
+                                "class": "tf.compat.v1.keras.layers.CuDNNLSTM",
                                 "parameters": {
                                     "units": 64,
                                     "return_sequences": true
@@ -105,7 +105,7 @@
                         "class": "keras.layers.Bidirectional",
                         "parameters": {
                             "layer": {
-                                "class": "keras.layers.CuDNNLSTM",
+                                "class": "tf.compat.v1.keras.layers.CuDNNLSTM",
                                 "parameters": {
                                     "units": 64,
                                     "return_sequences": true

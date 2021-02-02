@@ -29,7 +29,7 @@
             "layers":
                 [
                     {
-                        "class": "keras.layers.CuDNNLSTM",
+                        "class": "tf.compat.v1.keras.layers.CuDNNLSTM",
                         "parameters": {
                             "input_shape": "input_shape",
                             "units": "lstm_1_units",
@@ -43,7 +43,7 @@
                         }
                     },
                     {
-                        "class": "keras.layers.CuDNNLSTM",
+                        "class": "tf.compat.v1.keras.layers.CuDNNLSTM",
                         "parameters": {
                             "units": "lstm_2_units",
                             "return_sequences": false

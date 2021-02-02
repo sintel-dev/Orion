@@ -16,6 +16,9 @@ from orion.data import load_anomalies, load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 from orion.evaluation import contextual_confusion_matrix
 
+import tensorflow as tf
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+
 LOGGER = logging.getLogger(__name__)
 
 BUCKET = 'd3-ai-orion'
@@ -26,22 +29,25 @@ BENCHMARK_PATH = os.path.join(os.path.join(
     'benchmark'
 )
 
-BENCHMARK_DATA = pd.read_csv(S3_URL.format(
-    BUCKET, 'datasets.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
-BENCHMARK_PARAMS = pd.read_csv(S3_URL.format(
-    BUCKET, 'parameters.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
+DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+
+BENCHMARK_DATA = pd.read_csv(os.path.join(DATA_PATH,
+    'datasets.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
+BENCHMARK_PARAMS = pd.read_csv(os.path.join(DATA_PATH,
+    'parameters.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
 
 PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
 VERIFIED_PIPELINES = [
-    'arima', 'lstm_dynamic_threshold', 'azure', 'tadgan'
+    'arima', 
+    'lstm_dynamic_threshold', 
+    'tadgan', 
 ]
 
 VERIFIED_PIPELINES_GPU = {
-    'arima': 'arima',
-    'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu',
-    'azure': 'azure',
-    'tadgan': 'tadgan_gpu'
+#    'arima': 'arima',
+#    'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu',
+    'tadgan': 'tadgan_gpu',
 }
 
 
@@ -378,4 +384,4 @@ def main(cuda=False, distributed=False):
 
 
 if __name__ == "__main__":
-    main()
+    main(cuda=False, distributed=True)
