@@ -41,7 +41,7 @@ def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True):
     return pd.Series(errors).ewm(span=smoothing_window).mean().values
 
 
-def _point_wise_error(y, y_hat, smoothing_window=200):
+def _point_wise_error(y, y_hat):
     """Compute point-wise error between predicted and expected values.
 
     The computed error is calculated as the difference between predicted
@@ -171,7 +171,7 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
             Array of reconstruction errors.
     """
     if isinstance(smoothing_window, float):
-        smoothing_window = int(smoothing_window * len(y))
+        smoothing_window = min(int(smoothing_window * len(y)), 200)
 
     true = [item[0] for item in y.reshape((y.shape[0], -1))]
 
@@ -183,8 +183,6 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
 
     pred_length = y_hat.shape[1]
     num_errors = y_hat.shape[1] + step_size * (y_hat.shape[0] - 1)
-
-    y_hat = np.asarray(y_hat)
 
     for i in range(num_errors):
         intermediate = []
