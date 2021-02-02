@@ -26,8 +26,8 @@ install_requires = [
     'similaritymeasures>=0.4.3',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     # tensorflow installation
-    'tensorflow>=2.3,<2.4',
-    'tensorflow-gpu>=2.3,<2.4'
+    # 'tensorflow>=2.3,<2.4',
+    # 'tensorflow-gpu>=2.3,<2.4'
 ]
 
 setup_requires = [
