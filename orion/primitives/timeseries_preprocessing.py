@@ -57,3 +57,37 @@ def fillna(X, value=None, method=None, axis=None, limit=None, downcast=None):
         X_ = X_.fillna(value=value, method=fill, axis=axis, limit=limit, downcast=downcast)
 
     return X_.values
+
+def rolling_window_sequences_autoencoder(X, index, window_size, step_size, target_size, 
+                                         target_column=0, drop=None, drop_windows=False):
+    """Create rolling window sequences for autoencoder"""
+
+    out_X = list()
+    X_index = list()
+
+    if drop_windows:
+        if hasattr(drop, '__len__') and (not isinstance(drop, str)):
+            if len(drop) != len(X):
+                raise Exception('Arrays `drop` and `X` must be of the same length.')
+        else:
+            if isinstance(drop, float) and np.isnan(drop):
+                drop = np.isnan(X)
+            else:
+                drop = X == drop
+
+    start = 0
+    while start < len(X) - window_size + 1:
+        end = start + window_size
+
+        if drop_windows:
+            drop_window = drop[start:end + target_size]
+            to_drop = np.where(drop_window)[0]
+            if to_drop.size:
+                start += to_drop[-1] + 1
+                continue
+
+        out_X.append(X[start:end])
+        X_index.append(index[start:end])
+        start = start + step_size
+
+    return np.asarray(out_X), np.asarray(X_index).flatten()
