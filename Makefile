@@ -113,6 +113,7 @@ test-all: ## run tests on every Python version with tox
 .PHONY: test-readme
 test-readme: ## run the readme snippets
 	rundoc run --single-session python3 -t python3 README.md
+	rundoc run --single-session python3 -t python3 orion/evaluation/README.md
 
 .PHONY: coverage
 coverage: ## check code coverage quickly with the default Python
@@ -263,7 +264,10 @@ docker-jupyter-load: ## Load the orion-jupyter image from orion-jupyter.tar
 
 .PHONY: docker-jupyter-run
 docker-jupyter-run: ## Run the orion-jupyter image in editable mode
-	docker run --rm -v $(shell pwd):/app -ti -p8888:8888 --name orion-jupyter orion-jupyter
+	docker run --rm \
+		-v $(shell pwd)/orion:/app/orion \
+		-v $(shell pwd)/notebooks:/app/notebooks \
+		-ti -p8888:8888 --name orion-jupyter orion-jupyter
 
 .PHONY: docker-jupyter-start
 docker-jupyter-start: ## Start the orion-jupyter image as a daemon

@@ -6,6 +6,7 @@ import getpass
 import logging
 import os
 import sys
+import warnings
 from urllib.error import HTTPError
 
 import tabulate
@@ -15,8 +16,7 @@ from orion.benchmark import benchmark
 from orion.data import load_signal
 from orion.db.explorer import OrionDBExplorer
 
-import warnings   # noqa isort:skip
-warnings.filterwarnings("ignore")  # noqa isort:skip
+warnings.filterwarnings("ignore")
 
 
 def _reset(explorer, args):
