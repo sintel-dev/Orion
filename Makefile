@@ -123,6 +123,14 @@ coverage: ## check code coverage quickly with the default Python
 	$(BROWSER) htmlcov/index.html
 
 
+.PHONY: check-dependencies
+check-dependencies: ## test if there are any broken dependencies
+	pip check
+
+.PHONY: test-devel
+test-devel: check-dependencies lint docs ## test everything that needs development dependencies
+
+
 # DOCS TARGETS
 
 .PHONY: docs
