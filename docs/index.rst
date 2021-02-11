@@ -9,7 +9,7 @@
    <img width=20% src="https://dai.lids.mit.edu/wp-content/uploads/2018/08/orion.png" alt=“Orion” />
    </p>
 
-|Development Status| |PyPi Shield| |Run Tests|
+|Development Status| |PyPi Shield| |Run Tests Shield|
 |Downloads| |Binder|
 
 Orion
@@ -78,7 +78,7 @@ Explore Orion
    :target: https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha
 .. |PyPi Shield| image:: https://img.shields.io/pypi/v/orion-ml.svg
    :target: https://pypi.python.org/pypi/orion-ml
-.. |Run Tests| image:: https://github.com/signals-dev/Orion/workflows/Run%20Tests/badge.svg
+.. |Run Tests Shield| image:: https://github.com/signals-dev/Orion/workflows/Run%20Tests/badge.svg
    :target: https://github.com/signals-dev/Orion/actions?query=workflow%3A%22Run+Tests%22+branch%3Amaster
 .. |Downloads| image:: https://pepy.tech/badge/orion-ml
    :target: https://pepy.tech/project/orion-ml
