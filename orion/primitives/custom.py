@@ -1,6 +1,8 @@
+import math
+
 import numpy as np
 import pandas as pd
-import math
+
 
 def regression_errors_nd(y, y_hat, smoothing_window):
     y = y.reshape(y_hat.shape)
@@ -25,12 +27,15 @@ def regression_errors_nd(y, y_hat, smoothing_window):
 
     predictions = np.asarray(predictions)
 
-    errors = abs(pd.Series(np.array(true).flatten()) -  pd.Series(np.array(predictions).flatten()))
+    errors = abs(pd.Series(np.array(true).flatten()) - pd.Series(np.array(predictions).flatten()))
     # dyu added smooth
     smoothing_window = min(math.trunc(errors.shape[0] * 0.01), 200)
     print(errors.shape[0], smoothing_window)
-    
-    errors = pd.Series(errors).rolling(smoothing_window, center=True, min_periods=smoothing_window // 2).mean().values
-#     errors = pd.Series(errors).rolling(smoothing_window, center=True, min_periods=smoothing_window // 2, win_type='triang').mean().values
+
+    errors = pd.Series(errors).rolling(
+        smoothing_window,
+        center=True,
+        min_periods=smoothing_window //
+        2).mean().values
 
     return errors
