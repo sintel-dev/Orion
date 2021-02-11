@@ -5,7 +5,7 @@
         "sklearn.preprocessing.MinMaxScaler",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
         "keras.Sequential.DenseSeq2Seq",
-        "orion.primitives.custom.regression_errors_nd",
+        "orion.primitives.timeseries_anomalies.reconstruction_errors",
         "orion.primitives.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
@@ -45,7 +45,7 @@
         "keras.Sequential.DenseSeq2Seq#1": {
             "y": "X"
         },
-        "orion.primitives.custom.regression_errors_nd#1": {
+        "orion.primitives.timeseries_anomalies.reconstruction_errors#1": {
             "y": "X"
         }
     }

@@ -2,6 +2,7 @@
 Time Series anomaly detection functions.
 Some of the implementation is inspired by the paper https://arxiv.org/pdf/1802.04431.pdf
 """
+import math
 
 import numpy as np
 import pandas as pd
@@ -57,7 +58,8 @@ def _point_wise_error(y, y_hat):
         ndarray:
             An array of smoothed point-wise error.
     """
-    return np.abs(y - y_hat)
+    # return abs(y - y_hat)
+    return abs(pd.Series(np.array(y).flatten()) - pd.Series(np.array(y_hat).flatten()))
 
 
 def _area_error(y, y_hat, score_window=10):
@@ -156,7 +158,7 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
         score_window (int):
             Optional. Size of the window over which the scores are calculated.
             If not given, 10 is used.
-        smoothing_window (int):
+        smoothing_window (float or int):
             Optional. Size of the smoothing window, expressed as a proportion of the total
             length of y. If not given, 0.01 is used.
         smooth (bool):
@@ -170,9 +172,6 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
         ndarray:
             Array of reconstruction errors.
     """
-    if isinstance(smoothing_window, float):
-        smoothing_window = min(int(smoothing_window * len(y)), 200)
-
     true = [item[0] for item in y.reshape((y.shape[0], -1))]
 
     for item in y[-1][1:]:
@@ -215,6 +214,9 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
         errors = _dtw_error(true, predictions_md, score_window)
 
     # Apply smoothing
+    if isinstance(smoothing_window, float):
+        smoothing_window = min(math.trunc(smoothing_window * len(errors)), 200)
+
     if smooth:
         errors = pd.Series(errors).rolling(
             smoothing_window, center=True, min_periods=smoothing_window // 2).mean().values
