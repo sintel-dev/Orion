@@ -58,8 +58,7 @@ def _point_wise_error(y, y_hat):
         ndarray:
             An array of smoothed point-wise error.
     """
-    # return abs(y - y_hat)
-    return abs(pd.Series(np.array(y).flatten()) - pd.Series(np.array(y_hat).flatten()))
+    return abs(y - y_hat)
 
 
 def _area_error(y, y_hat, score_window=10):
@@ -172,7 +171,10 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
         ndarray:
             Array of reconstruction errors.
     """
-    true = [item[0] for item in y.reshape((y.shape[0], -1))]
+    y = y.reshape(y_hat.shape)
+    y = y.reshape(y.shape[0], y.shape[1], 1)
+
+    true = [item[0] for item in y.reshape((y_hat.shape[0], -1))]
 
     for item in y[-1][1:]:
         true.extend(item)
@@ -182,6 +184,7 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
 
     pred_length = y_hat.shape[1]
     num_errors = y_hat.shape[1] + step_size * (y_hat.shape[0] - 1)
+    y_hat = np.asarray(y_hat)
 
     for i in range(num_errors):
         intermediate = []
@@ -200,7 +203,7 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
                 np.max(np.asarray(intermediate))
             ]])
 
-    true = np.asarray(true)
+    # true = np.asarray(true)
     predictions_md = np.asarray(predictions_md)
 
     # Compute reconstruction errors
@@ -215,7 +218,8 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
 
     # Apply smoothing
     if isinstance(smoothing_window, float):
-        smoothing_window = min(math.trunc(smoothing_window * len(errors)), 200)
+        smoothing_window = min(math.trunc(smoothing_window * errors.shape[0]), 200)
+    print(errors.shape[0], smoothing_window)
 
     if smooth:
         errors = pd.Series(errors).rolling(
