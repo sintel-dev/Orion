@@ -4,7 +4,22 @@ import os
 import pandas as pd
 from mlblocks import MLPipeline
 
+from orion import MLBLOCKS_PIPELINES
+
 LOGGER = logging.getLogger(__name__)
+
+def get_available_templates(category=None):
+    if isinstance(category, str):
+        category = [category]
+
+    category = category or ['verified', 'sandbox']
+    templates = list()
+
+    for filename in MLBLOCKS_PIPELINES:
+        if os.path.basename(os.path.dirname(filename)) in category:
+            templates.append(os.path.basename(filename))
+
+    return templates
 
 
 def _load_pipeline(pipeline, hyperparams=None):
