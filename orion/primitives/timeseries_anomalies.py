@@ -175,12 +175,11 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
     for item in y[-1][1:]:
         true.extend(item)
 
-    predictions_md = []
     predictions = []
+    predictions_vs = []
 
     pred_length = y_hat.shape[1]
     num_errors = y_hat.shape[1] + step_size * (y_hat.shape[0] - 1)
-    y_hat = np.asarray(y_hat)
 
     for i in range(num_errors):
         intermediate = []
@@ -189,9 +188,19 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
         if intermediate:
             predictions.append(np.median(np.asarray(intermediate)))
 
-    predictions = np.asarray(predictions)
+            predictions_vs.append([[
+                np.min(np.asarray(intermediate)),
+                np.percentile(np.asarray(intermediate), 25),
+                np.percentile(np.asarray(intermediate), 50),
+                np.percentile(np.asarray(intermediate), 75),
+                np.max(np.asarray(intermediate))
+            ]])
 
-    errors = abs(pd.Series(np.array(true).flatten()) - pd.Series(np.array(predictions).flatten()))
+    true = np.asarray(true)
+    predictions = np.asarray(predictions)
+    predictions_vs = np.asarray(predictions_vs)
+
+    errors = _point_wise_error(true, predictions)
     # dyu added smooth
     smoothing_window = min(math.trunc(errors.shape[0] * 0.01), 200)
     print(errors.shape[0], smoothing_window)
