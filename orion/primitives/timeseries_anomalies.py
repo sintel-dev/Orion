@@ -171,6 +171,10 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
         ndarray:
             Array of reconstruction errors.
     """
+    print("smoothing_window: ", (smoothing_window, min(int(len(y) * smoothing_window), 200)))
+    smoothing_window = min(math.trunc(len(y) * 0.01), 200)
+    print("using 0.01: ", smoothing_window)
+
     true = [item[0] for item in y.reshape((y.shape[0], -1))]
     for item in y[-1][1:]:
         true.extend(item)
@@ -209,8 +213,6 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
 
     elif rec_error_type.lower() == "dtw":
         errors = _dtw_error(true, predictions, score_window)
-
-    smoothing_window = min(math.trunc(len(errors) * smoothing_window), 200)
 
     if smooth:
         errors = pd.Series(errors).rolling(

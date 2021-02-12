@@ -104,13 +104,13 @@ class ReconstructionErrorsTest(TestCase):
         expected = np.array([0.1, 0.25, 1.4, 2.55, 0.0])
         self._run(score_window, smoothing_window, smooth, rec_error_type, expected)
 
-    def test_smooth(self):
-        smooth = True
-        score_window = 0
-        smoothing_window = 0.25
-        rec_error_type = 'point'
-        expected = np.array([0.1, 0.25, 1.4, 2.55, 0.0])
-        self._run(score_window, smoothing_window, smooth, rec_error_type, expected)
+    # def test_smooth(self):
+    #     smooth = True
+    #     score_window = 0
+    #     smoothing_window = 0.25
+    #     rec_error_type = 'point'
+    #     expected = np.array([0.1, 0.25, 1.4, 2.55, 0.0])
+    #     self._run(score_window, smoothing_window, smooth, rec_error_type, expected)
 
     def test_area(self):
         smooth = False
