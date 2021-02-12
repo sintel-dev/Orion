@@ -171,11 +171,7 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
         ndarray:
             Array of reconstruction errors.
     """
-    y = y.reshape(y_hat.shape)
-    y = y.reshape(y.shape[0], y.shape[1], 1)
-
-    true = [item[0] for item in y.reshape((y_hat.shape[0], -1))]
-
+    true = [item[0] for item in y.reshape((y.shape[0], -1))]
     for item in y[-1][1:]:
         true.extend(item)
 
@@ -188,44 +184,25 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
 
     for i in range(num_errors):
         intermediate = []
-
         for j in range(max(0, i - num_errors + pred_length), min(i + 1, pred_length)):
             intermediate.append(y_hat[i - j, j])
-
         if intermediate:
-            predictions_md.append(np.median(np.asarray(intermediate)))
+            predictions.append(np.median(np.asarray(intermediate)))
 
-            predictions.append([[
-                np.min(np.asarray(intermediate)),
-                np.percentile(np.asarray(intermediate), 25),
-                np.percentile(np.asarray(intermediate), 50),
-                np.percentile(np.asarray(intermediate), 75),
-                np.max(np.asarray(intermediate))
-            ]])
+    predictions = np.asarray(predictions)
 
-    # true = np.asarray(true)
-    predictions_md = np.asarray(predictions_md)
-
-    # Compute reconstruction errors
-    if rec_error_type.lower() == "point":
-        errors = _point_wise_error(true, predictions_md)
-
-    elif rec_error_type.lower() == "area":
-        errors = _area_error(true, predictions_md, score_window)
-
-    elif rec_error_type.lower() == "dtw":
-        errors = _dtw_error(true, predictions_md, score_window)
-
-    # Apply smoothing
-    if isinstance(smoothing_window, float):
-        smoothing_window = min(math.trunc(smoothing_window * errors.shape[0]), 200)
+    errors = abs(pd.Series(np.array(true).flatten()) - pd.Series(np.array(predictions).flatten()))
+    # dyu added smooth
+    smoothing_window = min(math.trunc(errors.shape[0] * 0.01), 200)
     print(errors.shape[0], smoothing_window)
 
-    if smooth:
-        errors = pd.Series(errors).rolling(
-            smoothing_window, center=True, min_periods=smoothing_window // 2).mean().values
+    errors = pd.Series(errors).rolling(
+        smoothing_window,
+        center=True,
+        min_periods=smoothing_window //
+        2).mean().values
 
-    return errors, predictions
+    return errors
 
 
 def deltas(errors, epsilon, mean, std):
