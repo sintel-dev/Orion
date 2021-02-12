@@ -8,6 +8,7 @@ from orion import MLBLOCKS_PIPELINES
 
 LOGGER = logging.getLogger(__name__)
 
+
 def get_available_templates(category=None):
     if isinstance(category, str):
         category = [category]
