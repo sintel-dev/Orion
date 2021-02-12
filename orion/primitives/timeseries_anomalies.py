@@ -200,18 +200,23 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
     predictions = np.asarray(predictions)
     predictions_vs = np.asarray(predictions_vs)
 
-    errors = _point_wise_error(true, predictions)
-    # dyu added smooth
-    smoothing_window = min(math.trunc(errors.shape[0] * 0.01), 200)
-    print(errors.shape[0], smoothing_window)
+    # Compute reconstruction errors
+    if rec_error_type.lower() == "point":
+        errors = _point_wise_error(true, predictions)
 
-    errors = pd.Series(errors).rolling(
-        smoothing_window,
-        center=True,
-        min_periods=smoothing_window //
-        2).mean().values
+    elif rec_error_type.lower() == "area":
+        errors = _area_error(true, predictions, score_window)
 
-    return errors
+    elif rec_error_type.lower() == "dtw":
+        errors = _dtw_error(true, predictions, score_window)
+
+    smoothing_window = min(math.trunc(len(errors) * smoothing_window), 200)
+
+    if smooth:
+        errors = pd.Series(errors).rolling(
+            smoothing_window, center=True, min_periods=smoothing_window // 2).mean().values
+
+    return errors, predictions_vs
 
 
 def deltas(errors, epsilon, mean, std):
