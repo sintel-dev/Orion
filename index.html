@@ -184,7 +184,7 @@
 <a class="reference external" href="https://pepy.tech/project/orion-ml"><img alt="Downloads" src="https://pepy.tech/badge/orion-ml" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/signals-dev/Orion/master?filepath=notebooks"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
 <div class="section" id="orion">
 <h1>Orion<a class="headerlink" href="#orion" title="Permalink to this headline">¶</a></h1>
-<p><strong>Date</strong>: Feb 11, 2021 <strong>Version</strong>: 0.1.6.dev0</p>
+<p><strong>Date</strong>: Feb 15, 2021 <strong>Version</strong>: 0.1.6.dev0</p>
 <ul class="simple">
 <li><p>License: <a class="reference external" href="https://github.com/signals-dev/Orion/blob/master/LICENSE">MIT</a></p></li>
 <li><p>Development Status:
@@ -205,12 +205,12 @@
 <p>The library makes use of a number of <strong>automated machine learning</strong> tools developed under <a class="reference external" href="https://dai.lids.mit.edu/">Data to AI Lab at MIT</a>.</p>
 <div class="section" id="unsupervised-time-series-anomaly-detection-utsad">
 <h3>Unsupervised time series anomaly detection (UTSAD)<a class="headerlink" href="#unsupervised-time-series-anomaly-detection-utsad" title="Permalink to this headline">¶</a></h3>
-<p>A time series anomaly is defined as a time point or period where a system behaves unusually. Broadly speaking, there are two types of anomalies:
-‌
-* <em>point anomaly</em>: a single data point that has reached an unusual value.
-* <em>collective anomaly</em>: a continuous sequence of data points that are considered anomalous as a whole, even if the individual data points may not be unusual.
-‌
-Time series anomaly detection aims to isolate anomalous subsequences of varied lengths within time series. One of the simplest detection techniques is thresholding, which detects data points that exceed a normal range. However, many anomalies do not exceed any boundaries – for example, they may have values that are purportedly normal, but are unusual at the specific time that they occur (i.e., contextual anomalies). These anomalies are harder to identify because the context of a signal is often unclear.</p>
+<p>A time series anomaly is defined as a time point or period where a system behaves unusually. Broadly speaking, there are two types of anomalies:</p>
+<ul class="simple">
+<li><p><em>point anomaly</em>: a single data point that has reached an unusual value.</p></li>
+<li><p><em>collective anomaly</em>: a continuous sequence of data points that are considered anomalous as a whole, even if the individual data points may not be unusual.</p></li>
+</ul>
+<p>Time series anomaly detection aims to isolate anomalous subsequences of varied lengths within time series. One of the simplest detection techniques is thresholding, which detects data points that exceed a normal range. However, many anomalies do not exceed any boundaries – for example, they may have values that are purportedly normal, but are unusual at the specific time that they occur (i.e., contextual anomalies). These anomalies are harder to identify because the context of a signal is often unclear.</p>
 </div>
 <div class="section" id="machine-learning-for-utsad">
 <h3>Machine learning for UTSAD<a class="headerlink" href="#machine-learning-for-utsad" title="Permalink to this headline">¶</a></h3>
