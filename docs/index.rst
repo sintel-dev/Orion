@@ -41,10 +41,10 @@ Unsupervised time series anomaly detection (UTSAD)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A time series anomaly is defined as a time point or period where a system behaves unusually. Broadly speaking, there are two types of anomalies:
-‌
+
 * *point anomaly*: a single data point that has reached an unusual value.
 * *collective anomaly*: a continuous sequence of data points that are considered anomalous as a whole, even if the individual data points may not be unusual.
-‌
+
 Time series anomaly detection aims to isolate anomalous subsequences of varied lengths within time series. One of the simplest detection techniques is thresholding, which detects data points that exceed a normal range. However, many anomalies do not exceed any boundaries – for example, they may have values that are purportedly normal, but are unusual at the specific time that they occur (i.e., contextual anomalies). These anomalies are harder to identify because the context of a signal is often unclear.
 
 Machine learning for UTSAD
