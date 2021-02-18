@@ -51,7 +51,7 @@ In the following example we show how to use one of the **Orion Pipelines**.
 
 ## Fit an Orion pipeline
 
-We will load a demo data for this example: 
+We will load a demo data for this example:
 
 ```python3
 from orion.data import load_signal
@@ -90,7 +90,7 @@ orion = Orion(
 orion.fit(train_data)
 ```
 
-## Detect anomalies using the fitted pipeline 
+## Detect anomalies using the fitted pipeline
 Once it is fitted, we are ready to use it to detect anomalies in our incoming time series:
 
 ```python3
@@ -102,7 +102,7 @@ anomalies = orion.detect(new_data)
 The output of the previous command will be a ``pandas.DataFrame`` containing a table of detected anomalies:
 
 ```
-        start         end     score
+        start         end     severity
 0  1394323200  1399701600  0.673494
 ```
 
@@ -122,7 +122,7 @@ You can find the scores of each pipeline on every signal recorded in the [detail
 # Resources
 
 Additional resources that might be of interest:
-* Learn about [benchmarking pipelines](BENCHMARK.md). 
+* Learn about [benchmarking pipelines](BENCHMARK.md).
 * Read about [pipeline evaluation](orion/evaluation/README.md).
 * More about [database design](DATABASE.md).
 * Find out more about [TadGAN](https://arxiv.org/pdf/2009.07769v3.pdf).
