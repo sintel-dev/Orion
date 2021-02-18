@@ -158,7 +158,7 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
             Optional. Size of the window over which the scores are calculated.
             If not given, 10 is used.
         smoothing_window (float or int):
-            Optional. Size of the smoothing window, when float it is expressed as a proportion 
+            Optional. Size of the smoothing window, when float it is expressed as a proportion
             of the total length of y. If not given, 0.01 is used.
         smooth (bool):
             Optional. Indicates whether the returned errors should be smoothed.
