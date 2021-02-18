@@ -158,8 +158,8 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
             Optional. Size of the window over which the scores are calculated.
             If not given, 10 is used.
         smoothing_window (float or int):
-            Optional. Size of the smoothing window, expressed as a proportion of the total
-            length of y. If not given, 0.01 is used.
+            Optional. Size of the smoothing window, when float it is expressed as a proportion 
+            of the total length of y. If not given, 0.01 is used.
         smooth (bool):
             Optional. Indicates whether the returned errors should be smoothed.
             If not given, `True` is used.
@@ -171,9 +171,8 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
         ndarray:
             Array of reconstruction errors.
     """
-    print("smoothing_window: ", (smoothing_window, min(int(len(y) * smoothing_window), 200)))
-    smoothing_window = min(math.trunc(len(y) * 0.01), 200)
-    print("using 0.01: ", smoothing_window)
+    if isinstance(smoothing_window, float):
+        smoothing_window = min(math.trunc(len(y) * smoothing_window), 200)
 
     true = [item[0] for item in y.reshape((y.shape[0], -1))]
     for item in y[-1][1:]:
@@ -214,6 +213,7 @@ def reconstruction_errors(y, y_hat, step_size=1, score_window=10, smoothing_wind
     elif rec_error_type.lower() == "dtw":
         errors = _dtw_error(true, predictions, score_window)
 
+    # Apply smoothing
     if smooth:
         errors = pd.Series(errors).rolling(
             smoothing_window, center=True, min_periods=smoothing_window // 2).mean().values
