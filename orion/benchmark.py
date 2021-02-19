@@ -307,6 +307,8 @@ def main(cuda=False, distributed=False):
     results = benchmark(
         pipelines=pipelines, metrics=metrics, output_path=output_path, distributed=distributed)
 
+    return results
+
 
 if __name__ == "__main__":
     main()
