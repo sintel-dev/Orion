@@ -307,10 +307,6 @@ def main(cuda=False, distributed=False):
     results = benchmark(
         pipelines=pipelines, metrics=metrics, output_path=output_path, distributed=distributed)
 
-    leaderboard = _summarize_results(results, metrics)
-    output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
-    leaderboard.to_csv(output_path)
-
 
 if __name__ == "__main__":
     main()
