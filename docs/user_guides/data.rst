@@ -15,8 +15,8 @@ Input
 Orion Pipelines work on time Series that are provided as a single table of telemetry
 observations with two columns:
 
-`timestamp`: an INTEGER or FLOAT column with the time of the observation in Unix Time Format
-`value`: an INTEGER or FLOAT column with the observed value at the indicated timestamp
+* ``timestamp``: an INTEGER or FLOAT column with the time of the observation in Unix Time Format
+* ``value``: an INTEGER or FLOAT column with the observed value at the indicated timestamp
 
 This is an example of such table:
 
@@ -40,16 +40,16 @@ Output
 The output of the Orion Pipelines is another table that contains the detected anomalous
 intervals and that has at least two columns:
 
-`start`: timestamp where the anomalous interval starts
-`end`: timestamp where the anomalous interval ends
+* ``start``: timestamp where the anomalous interval starts
+* ``end``: timestamp where the anomalous interval ends
 
-Optionally, a third column called `score` can be included with a value that represents the
+Optionally, a third column called ``severity`` can be included with a value that represents the
 severity of the detected anomaly.
 
 An example of such a table is:
 
 +------------+------------+----------+
-|      start |        end |    score |
+|      start |        end | severity |
 +------------+------------+----------+
 | 1222970400 | 1222992000 | 0.572643 |
 +------------+------------+----------+
