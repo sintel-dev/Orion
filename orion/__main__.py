@@ -13,9 +13,9 @@ import tabulate
 
 from orion import MLBLOCKS_PIPELINES
 from orion.benchmark import benchmark
-from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 from orion.data import load_signal
 from orion.db.explorer import OrionDBExplorer
+from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 
 warnings.filterwarnings("ignore")
 
@@ -152,7 +152,7 @@ def _process(explorer, args):
 
 def _evaluate(args):
     if args.all:
-        pipelines = PIPELINES
+        pipelines = MLBLOCKS_PIPELINES
     else:
         pipelines = args.pipeline
 
@@ -313,7 +313,7 @@ def get_parser():
                           help='Do not holdout test data curing training.')
     group = evaluate.add_mutually_exclusive_group(required=True)
     group.add_argument('-p', '--pipeline', default=[], action='append',
-                   help='Name of the pipeline JSONs to evaluate.')
+                       help='Name of the pipeline JSONs to evaluate.')
     group.add_argument('-a', '--all', action='store_true', help='Evaluate all known pipelines.')
 
     return parser
