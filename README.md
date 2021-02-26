@@ -102,7 +102,7 @@ anomalies = orion.detect(new_data)
 The output of the previous command will be a ``pandas.DataFrame`` containing a table of detected anomalies:
 
 ```
-        start         end     severity
+        start         end  severity
 0  1394323200  1399701600  0.673494
 ```
 

@@ -84,13 +84,13 @@ To use ``orion.benchmark.benchmark`` function, it expects the following inputs:
  If not given, all the available metrics will be used.
 * rank (str): Sort and rank the pipelines based on the given metric.
  If not given, rank using the first metric.
-* distributed (bool): Whether to use dask for distributed computing. If not given,
-* test_split (bool or float): Whether to use the prespecified train-test split. If float, then it should be between 0.0 and 1.0 and represent the proportion of the signal to include in the test split. If not given, use ``False``.
+* distributed (bool): Whether to use dask for distributed computing. If not given, use ``False``.
+* test_split (bool or float): if bool, it indicates whether to use the prespecified train-test split. If float, then it should be between 0.0 and 1.0 and represent the proportion of the signal to include in the test split. If not given, use ``False``.
 * detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.
 * output_path (str): Location to save the results. If not given, results will not be saved.
 
-And returns a ``pandas.DataFrame`` which contains the scores obtained with each scoring function 
-accross all the signals for each pipeline, optionally, you can follow that output with a 
+And returns a ``pandas.DataFrame`` which contains the scores obtained with each scoring function accross all the signals for each pipeline. 
+Optionally, you can feed the result to 
 ``summarize_results`` to average the scores and produce the leaderboard.
 
 This is an example of how to call this function:

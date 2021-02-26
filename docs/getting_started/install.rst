@@ -18,7 +18,7 @@ order to avoid having conflicts with other software installed in the system wher
 MongoDB
 ~~~~~~~
 
-In order to be fully operational, Orion requires having access to a MongoDB database running version 3.6 or higher.
+Part of Orion is the ``OrionExplorer``, which allows you to record your anomalies into a local database. For this feature to be available, Orion requires having access to a `MongoDB`_ database running version 3.6 or higher.
 
 Install using pip
 -----------------
@@ -56,6 +56,7 @@ order to be able to run the tests and build the documentation. Instructions abou
 can be found in the :ref:`contributing` guide.
 
 .. _Python 3.6, and 3.7: https://docs.python-guide.org/starting/installation/
+.. _MongoDB: https://www.mongodb.com/
 .. _virtualenv: https://virtualenv.pypa.io/en/latest/
 .. _pip: https://pip.pypa.io
 .. _PyPI: https://pypi.org/
