@@ -224,7 +224,7 @@ pipeline and the second one to detect anomalies.</p>
 </pre></div>
 </div>
 <p>Optionally, we might want to select a pipeline other than the default one or alter the hyperparameters by the underlying MLBlocks pipeline.</p>
-<p>For example, let’s select the <cite>lstm_dynamic_threshold</cite> pipeline and set some hyperparameters (in this case training epochs as 5).</p>
+<p>For example, let’s select the <code class="docutils literal notranslate"><span class="pre">lstm_dynamic_threshold</span></code> pipeline and set some hyperparameters (in this case training epochs as 5).</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [6]: </span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
 <span class="gp">   ...: </span>    <span class="s1">&#39;keras.Sequential.LSTMTimeSeriesRegressor#1&#39;</span><span class="p">:</span> <span class="p">{</span>
 <span class="gp">   ...: </span>        <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="mi">5</span>
@@ -260,7 +260,7 @@ Output format described above:</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="n">anomalies</span>
 <span class="gh">Out[11]: </span><span class="go"></span>
 <span class="go">        start         end  severity</span>
-<span class="go">0  1398578400  1406332800  0.478154</span>
+<span class="go">0  1398556800  1406332800  0.503155</span>
 </pre></div>
 </div>
 </div>
@@ -280,14 +280,14 @@ good our anomaly detection was by comparing those with our detected intervals.</
 </pre></div>
 </div>
 <p>The output will be a table in the same format as the <cite>anomalies</cite> one.</p>
-<p>Afterwards, we can call the <cite>Orion.evaluate</cite> method, passing both the data to detect anomalies and the ground truth:</p>
+<p>Afterwards, we can call the <code class="docutils literal notranslate"><span class="pre">orion.evaluate</span></code> method, passing both the data to detect anomalies and the ground truth:</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [15]: </span><span class="n">scores</span> <span class="o">=</span> <span class="n">orion</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">)</span>
 
 <span class="gp">In [16]: </span><span class="n">scores</span>
 <span class="gh">Out[16]: </span><span class="go"></span>
-<span class="go">accuracy     0.987995</span>
-<span class="go">f1           0.890819</span>
-<span class="go">recall       0.803132</span>
+<span class="go">accuracy     0.988131</span>
+<span class="go">f1           0.892193</span>
+<span class="go">recall       0.805369</span>
 <span class="go">precision    1.000000</span>
 <span class="go">dtype: float64</span>
 </pre></div>

@@ -215,8 +215,10 @@
 <h3>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
 <p>Orion Pipelines work on time Series that are provided as a single table of telemetry
 observations with two columns:</p>
-<p><cite>timestamp</cite>: an INTEGER or FLOAT column with the time of the observation in Unix Time Format
-<cite>value</cite>: an INTEGER or FLOAT column with the observed value at the indicated timestamp</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code>: an INTEGER or FLOAT column with the time of the observation in Unix Time Format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: an INTEGER or FLOAT column with the observed value at the indicated timestamp</p></li>
+</ul>
 <p>This is an example of such table:</p>
 <table class="table">
 <colgroup>
@@ -249,9 +251,11 @@ observations with two columns:</p>
 <h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
 <p>The output of the Orion Pipelines is another table that contains the detected anomalous
 intervals and that has at least two columns:</p>
-<p><cite>start</cite>: timestamp where the anomalous interval starts
-<cite>end</cite>: timestamp where the anomalous interval ends</p>
-<p>Optionally, a third column called <cite>score</cite> can be included with a value that represents the
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: timestamp where the anomalous interval starts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">end</span></code>: timestamp where the anomalous interval ends</p></li>
+</ul>
+<p>Optionally, a third column called <code class="docutils literal notranslate"><span class="pre">severity</span></code> can be included with a value that represents the
 severity of the detected anomaly.</p>
 <p>An example of such a table is:</p>
 <table class="table">
@@ -263,7 +267,7 @@ severity of the detected anomaly.</p>
 <tbody>
 <tr class="row-odd"><td><p>start</p></td>
 <td><p>end</p></td>
-<td><p>score</p></td>
+<td><p>severity</p></td>
 </tr>
 <tr class="row-even"><td><p>1222970400</p></td>
 <td><p>1222992000</p></td>

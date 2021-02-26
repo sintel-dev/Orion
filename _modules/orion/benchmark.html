@@ -367,7 +367,7 @@
     <span class="k">return</span> <span class="n">df</span>
 
 
-<span class="k">def</span> <span class="nf">_summarize_results</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">summarize_results</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Summarize the result of benchmark.</span>
 
 <span class="sd">    The table is summarized for according to the number of wins each pipeline</span>
@@ -526,7 +526,7 @@
     <span class="n">results</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span>
         <span class="n">pipelines</span><span class="o">=</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span> <span class="n">distributed</span><span class="o">=</span><span class="n">distributed</span><span class="p">)</span>
 
-    <span class="n">leaderboard</span> <span class="o">=</span> <span class="n">_summarize_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
+    <span class="n">leaderboard</span> <span class="o">=</span> <span class="n">summarize_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
     <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BENCHMARK_PATH</span><span class="p">,</span> <span class="s1">&#39;leaderboard.csv&#39;</span><span class="p">)</span>
     <span class="n">leaderboard</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
 
