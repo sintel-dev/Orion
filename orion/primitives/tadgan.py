@@ -2,6 +2,7 @@
 
 import logging
 import math
+import tempfile
 from functools import partial
 
 import keras
@@ -30,7 +31,7 @@ class RandomWeightedAverage(_Merge):
         return (alpha * inputs[0]) + ((1 - alpha) * inputs[1])
 
 
-class TadGAN():
+class TadGAN(object):
     """TadGAN model for time series reconstruction.
 
     Args:
@@ -68,6 +69,34 @@ class TadGAN():
         hyperparameters (dictionary):
             Optional. Dictionary containing any additional inputs.
     """
+
+    def __getstate__(self):
+        networks = ['critic_x', 'critic_z', 'encoder', 'generator']
+        modules = ['optimizer', 'critic_x_model', 'critic_z_model', 'encoder_generator_model']
+
+        state = self.__dict__.copy()
+
+        for module in modules:
+            del state[module]
+
+        for network in networks:
+            with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=True) as fd:
+                keras.models.save_model(state.pop(network), fd.name, overwrite=True)
+
+                state[network + '_str'] = fd.read()
+
+        return state
+
+    def __setstate__(self, state):
+        networks = ['critic_x', 'critic_z', 'encoder', 'generator']
+        for network in networks:
+            with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=True) as fd:
+                fd.write(state.pop(network + '_str'))
+                fd.flush()
+
+                state[network] = keras.models.load_model(fd.name)
+
+        self.__dict__ = state
 
     def _build_model(self, hyperparameters, layers, input_shape):
         x = Input(shape=input_shape)
