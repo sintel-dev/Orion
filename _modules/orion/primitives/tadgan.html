@@ -156,6 +156,7 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
 <span class="kn">import</span> <span class="nn">keras</span>
@@ -184,7 +185,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 
-<div class="viewcode-block" id="TadGAN"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.tadgan.TadGAN.html#orion.primitives.tadgan.TadGAN">[docs]</a><span class="k">class</span> <span class="nc">TadGAN</span><span class="p">():</span>
+<div class="viewcode-block" id="TadGAN"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.tadgan.TadGAN.html#orion.primitives.tadgan.TadGAN">[docs]</a><span class="k">class</span> <span class="nc">TadGAN</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;TadGAN model for time series reconstruction.</span>
 
 <span class="sd">    Args:</span>
@@ -222,6 +223,34 @@
 <span class="sd">        hyperparameters (dictionary):</span>
 <span class="sd">            Optional. Dictionary containing any additional inputs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">networks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;critic_x&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_z&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder&#39;</span><span class="p">,</span> <span class="s1">&#39;generator&#39;</span><span class="p">]</span>
+        <span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_x_model&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_z_model&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder_generator_model&#39;</span><span class="p">]</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">state</span><span class="p">[</span><span class="n">module</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+                <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">network</span><span class="p">),</span> <span class="n">fd</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                <span class="n">state</span><span class="p">[</span><span class="n">network</span> <span class="o">+</span> <span class="s1">&#39;_str&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">state</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">networks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;critic_x&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_z&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder&#39;</span><span class="p">,</span> <span class="s1">&#39;generator&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+                <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">network</span> <span class="o">+</span> <span class="s1">&#39;_str&#39;</span><span class="p">))</span>
+                <span class="n">fd</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+                <span class="n">state</span><span class="p">[</span><span class="n">network</span><span class="p">]</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">state</span>
 
     <span class="k">def</span> <span class="nf">_build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">)</span>
