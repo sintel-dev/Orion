@@ -18,7 +18,7 @@ from scipy import integrate, stats
 
 LOGGER = logging.getLogger(__name__)
 
-class GAN(tf.keras.Model):
+class TadGAN(tf.keras.Model):
     """GAN class"""
 
     def _build_model(self, hyperparameters, layers, input_shape, name):
@@ -34,9 +34,10 @@ class GAN(tf.keras.Model):
     def _wasserstein_loss(self, y_true, y_pred):
         return K.mean(y_true * y_pred)
 
-    def __init__(self, encoder_input_shape, generator_input_shape, critic_x_input_shape,
+    def __init__(self, shape, encoder_input_shape, generator_input_shape, critic_x_input_shape,
                  critic_z_input_shape, layers_encoder, layers_generator, layers_critic_x,
-                 layers_critic_z, latent_dim=20, iterations_critic=5, **hyperparameters):
+                 layers_critic_z, optimizer, learning_rate=0.0005, epochs=2000, latent_dim=20,
+                 batch_size=64, iterations_critic=5, **hyperparameters):
         
         """Initialize the TadGAN object.
         
@@ -75,16 +76,20 @@ class GAN(tf.keras.Model):
             hyperparameters (dictionary):
                 Optional. Dictionary containing any additional inputs.
         """
-        super(GAN, self).__init__()
-        print("I'm here ")
+        super(TadGAN, self).__init__()
+        self.shape = shape
+        self.batch_size = batch_size
         self.latent_dim = latent_dim
         self.iterations_critic = iterations_critic
+        self.epochs = epochs
         self.hyperparameters = hyperparameters
 
-        self.encoder_input_shape = (100, 1) # encoder_input_shape
-        self.generator_input_shape = (20, 1) # generator_input_shape
-        self.critic_x_input_shape = (100, 1) # critic_x_input_shape
-        self.critic_z_input_shape = (20, 1) # critic_z_input_shape
+        self.optimizer = import_object(optimizer)(learning_rate)
+
+        self.encoder_input_shape = encoder_input_shape
+        self.generator_input_shape = generator_input_shape
+        self.critic_x_input_shape = critic_x_input_shape
+        self.critic_z_input_shape = critic_z_input_shape
 
         self.layers_encoder, self.layers_generator = layers_encoder, layers_generator
         self.layers_critic_x, self.layers_critic_z = layers_critic_x, layers_critic_z
@@ -98,26 +103,18 @@ class GAN(tf.keras.Model):
         self.critic_z = self._build_model(hyperparameters, self.layers_critic_z,
                                           self.critic_z_input_shape, name='critic_z')
 
-        # print(self.encoder.summary())
-        # print(self.generator.summary())
-        # print(self.critic_x.summary())
-        # print(self.critic_z.summary())
+        print(self.encoder.summary())
+        print(self.generator.summary())
+        print(self.critic_x.summary())
+        print(self.critic_z.summary())
 
         self.gp_weight = 10
         self.cycle_weight = 10
 
 
-    def compile(self, cx_optimizer, cz_optimizer, encoder_generator_optimizer,
-                encoder_generator_loss_fn, critic_x_loss_fn, 
+    def compile(self, encoder_generator_loss_fn, critic_x_loss_fn, 
                 critic_z_loss_fn, cycle_loss_fn, **kwargs):
-        super(GAN, self).compile(**kwargs)
-
-        # optimizers
-        self.cx_optimizer = cx_optimizer
-        self.cz_optimizer = cz_optimizer
-        self.encoder_generator_optimizer = encoder_generator_optimizer
-
-        print(self.cx_optimizer)
+        super(TadGAN, self).compile(**kwargs)
 
         # losses
         self.encoder_generator_loss_fn = encoder_generator_loss_fn
@@ -126,7 +123,7 @@ class GAN(tf.keras.Model):
         self.cycle_loss_fn = cycle_loss_fn
 
     @tf.function
-    def critic_x_gradient_penalty(self, batch_size, inputs):
+    def gradient_penalty(self, critic, batch_size, inputs):
         """ Calculates the gradient penalty.
 
         This loss is calculated on an interpolated image
@@ -143,35 +140,7 @@ class GAN(tf.keras.Model):
         with tf.GradientTape() as gp_tape:
             gp_tape.watch(interpolated)
             # 1. Get the discriminator output for this interpolated image.
-            pred = self.critic_x(interpolated, training=True)
-
-        # 2. Calculate the gradients w.r.t to this interpolated image.
-        grads = gp_tape.gradient(pred, [interpolated])[0]
-        # 3. Calculate the norm of the gradients.
-        norm = tf.sqrt(tf.reduce_sum(tf.square(grads), axis=np.arange(1, len(grads.shape))))
-        gp = tf.reduce_mean((norm - 1.0) ** 2)
-        return gp
-
-
-    @tf.function
-    def critic_z_gradient_penalty(self, batch_size, inputs):
-        """ Calculates the gradient penalty.
-
-        This loss is calculated on an interpolated image
-        and added to the discriminator loss.
-
-        Args:
-            inputs[0] x     original input
-            inputs[1] x_    predicted input
-        """
-        # Get the interpolated image
-        alpha = tf.random.uniform([batch_size, 1, 1])
-        interpolated = (alpha * inputs[0]) + ((1 - alpha) * inputs[1])
-
-        with tf.GradientTape() as gp_tape:
-            gp_tape.watch(interpolated)
-            # 1. Get the discriminator output for this interpolated image.
-            pred = self.critic_z(interpolated, training=True)
+            pred = critic(interpolated, training=True)
 
         # 2. Calculate the gradients w.r.t to this interpolated image.
         grads = gp_tape.gradient(pred, [interpolated])[0]
@@ -229,8 +198,8 @@ class GAN(tf.keras.Model):
 
                 # Calculate the gradient penalty
                 print("STEP 6")
-                cx_gp = self.critic_x_gradient_penalty(mini_batch_size, (x, x_))
-                cz_gp = self.critic_z_gradient_penalty(mini_batch_size, (z, z_))
+                cx_gp = self.gradient_penalty(self.critic_x, mini_batch_size, (x, x_))
+                cz_gp = self.gradient_penalty(self.critic_z, mini_batch_size, (z, z_))
 
                 # Add the gradient penalty to the original loss
                 print("STEP 7")
@@ -244,8 +213,8 @@ class GAN(tf.keras.Model):
 
             # Update the weights of the discriminators
             print("STEP 9")
-            self.cx_optimizer.apply_gradients(zip(cx_grads, self.critic_x.trainable_weights))
-            self.cz_optimizer.apply_gradients(zip(cz_grads, self.critic_z.trainable_weights))
+            self.optimizer.apply_gradients(zip(cx_grads, self.critic_x.trainable_weights))
+            self.optimizer.apply_gradients(zip(cz_grads, self.critic_z.trainable_weights))
 
             # Record loss
             print("STEP 10")
@@ -282,7 +251,7 @@ class GAN(tf.keras.Model):
 
         # Update the weights of the generators
         print("STEP 17")
-        self.encoder_generator_optimizer.apply_gradients(
+        self.optimizer.apply_gradients(
             zip(encoder_generator_grads, self.encoder.trainable_variables + self.generator.trainable_variables))
 
         batch_eg_loss = (eg_loss, x_cost, z_cost, cycle_loss)
@@ -324,8 +293,8 @@ class GAN(tf.keras.Model):
         cx_fake_cost = self.critic_x_loss_fn(fake, cx_fake)
         cz_fake_cost = self.critic_z_loss_fn(fake, cz_fake)
 
-        cx_gp = self.critic_x_gradient_penalty(batch_size, (x, x_))
-        cz_gp = self.critic_z_gradient_penalty(batch_size, (z, z_))
+        cx_gp = self.gradient_penalty(self.critic_x, batch_size, (x, x_))
+        cz_gp = self.gradient_penalty(self.critic_z, batch_size, (z, z_))
 
         g_cost = self.generator_loss_fn(valid, cx_fake)
         e_cost = self.encoder_loss_fn(valid, cz_fake)
@@ -364,36 +333,9 @@ class GAN(tf.keras.Model):
         return y_hat, critic
 
 
-class TadGAN():
-    """TadGAN class."""
-
-    def _wasserstein_loss(self, y_true, y_pred):
-        return K.mean(y_true * y_pred)
-
-    def __init__(self, shape, optimizer, batch_size=64, learning_rate=0.0005, epochs=35, verbose=False, **kwargs):
-        
-        """Initialize the TadGAN object.
-        """
-        self.model = GAN(**kwargs)
-        print(self.model)
-
-        self.shape = shape
-        self.batch_size = batch_size
-        self.epochs = epochs
-        self.verbose = verbose
-
-        self.critic_x_optimizer = import_object(optimizer)(learning_rate)
-        self.critic_z_optimizer = import_object(optimizer)(learning_rate)
-        self.encoder_decoder_optimizer = import_object(optimizer)(learning_rate)
-
-        self.encoder_generator_loss_fn = self._wasserstein_loss
-        self.critic_x_loss_fn = self._wasserstein_loss
-        self.critic_z_loss_fn = self._wasserstein_loss
-        self.cycle_loss_fn = tf.keras.losses.MeanSquaredError()
-
-
     def fit(self, X, **kwargs):
         """Fit the TadGAN.
+
         Args:
             X (ndarray):
                 N-dimensional array containing the input training sequences for the model.
@@ -403,11 +345,15 @@ class TadGAN():
         train = tf.data.Dataset.from_tensor_slices(train).shuffle(train.shape[0])
         train = train.batch(self.batch_size, drop_remainder=True)
 
-        self.model.compile(self.critic_x_optimizer, self.critic_z_optimizer, 
-            self.encoder_decoder_optimizer, self.encoder_generator_loss_fn,
-            self.critic_x_loss_fn, self.critic_z_loss_fn, self.cycle_loss_fn, **kwargs)
+        encoder_generator_loss_fn = self._wasserstein_loss
+        critic_x_loss_fn = self._wasserstein_loss
+        critic_z_loss_fn = self._wasserstein_loss
+        cycle_loss_fn = tf.keras.losses.MeanSquaredError()
 
-        self.model.fit(train, batch_size=self.batch_size, verbose=True, epochs=2)      
+        self.compile(encoder_generator_loss_fn,
+            critic_x_loss_fn, critic_z_loss_fn, cycle_loss_fn)
+
+        super().fit(train, batch_size=self.batch_size, verbose=True, epochs=2, **kwargs)      
 
 
     def predict(self, X):
