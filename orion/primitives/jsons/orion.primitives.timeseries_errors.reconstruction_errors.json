@@ -1,5 +1,5 @@
 {
-    "name": "orion.primitives.timeseries_anomalies.reconstruction_errors",
+    "name": "orion.primitives.timeseries_errors.reconstruction_errors",
     "contributors": [
         "Alexander Geiger <geigera@mit.edu>",
         "Dongyu Liu <dongyu@mit.edu>",
@@ -13,7 +13,7 @@
     "modalities": [
         "timeseries"
     ],
-    "primitive": "orion.primitives.timeseries_anomalies.reconstruction_errors",
+    "primitive": "orion.primitives.timeseries_errors.reconstruction_errors",
     "produce": {
         "args": [
             {

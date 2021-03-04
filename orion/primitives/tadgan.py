@@ -15,7 +15,7 @@ from mlprimitives.adapters.keras import build_layer
 from mlprimitives.utils import import_object
 from scipy import stats
 
-from orion.primitives.timeseries_anomalies import reconstruction_errors
+from orion.primitives.timeseries_errors import reconstruction_errors
 
 LOGGER = logging.getLogger(__name__)
 
