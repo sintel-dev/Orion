@@ -28,6 +28,7 @@ install_requires = [
     'scikit-learn>=0.20.1,<0.21',
     'tabulate>=0.8.3,<0.9',
     'Keras>=2.1.6,<2.4',
+    'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
 
