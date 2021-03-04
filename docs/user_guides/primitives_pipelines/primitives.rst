@@ -27,6 +27,8 @@ Modeling
 
     primitives/arima.rst
     primitives/LSTMTimeSeriesRegressor.rst
+    primitives/LSTMSeq2Seq.rst
+    primitives/DenseSeq2Seq.rst
     primitives/TadGAN.rst
 
 Postprocessing
@@ -36,5 +38,6 @@ Postprocessing
     :maxdepth: 1
     
     primitives/score_anomalies.rst
+    primitives/reconstruction_errors.rst
     primitives/regression_errors.rst
     primitives/find_anomalies.rst
