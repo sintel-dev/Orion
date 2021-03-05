@@ -1,5 +1,5 @@
 {
-    "name": "orion.primitives.timeseries_anomalies.regression_errors",
+    "name": "orion.primitives.timeseries_errors.regression_errors",
     "contributors": [
         "Carles Sala <csala@csail.mit.edu>"
     ],
@@ -11,7 +11,7 @@
     "modalities": [
         "timeseries"
     ],
-    "primitive": "orion.primitives.timeseries_anomalies.regression_errors",
+    "primitive": "orion.primitives.timeseries_errors.regression_errors",
     "produce": {
         "args": [
             {
