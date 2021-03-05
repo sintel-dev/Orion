@@ -2,24 +2,23 @@
 
 import logging
 import math
-from functools import partial
-
-import tensorflow as tf
 
 import numpy as np
 import pandas as pd
 import similaritymeasures as sm
-from tensorflow.keras import backend as K
-from tensorflow.keras.layers import Input, Layer
-from tensorflow.keras.models import Model, Sequential
+import tensorflow as tf
 from mlprimitives.adapters.keras import build_layer
 from mlprimitives.utils import import_object
 from scipy import integrate, stats
+from tensorflow.keras import backend as K
+from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Sequential
 
 LOGGER = logging.getLogger(__name__)
 
+
 class TadGAN(tf.keras.Model):
-    """GAN class"""
+    """TadGAN class"""
 
     def _build_model(self, hyperparameters, layers, input_shape, name):
         x = Input(shape=input_shape)
@@ -38,9 +37,8 @@ class TadGAN(tf.keras.Model):
                  critic_z_input_shape, layers_encoder, layers_generator, layers_critic_x,
                  layers_critic_z, optimizer, learning_rate=0.0005, epochs=2000, latent_dim=20,
                  batch_size=64, iterations_critic=5, **hyperparameters):
-        
         """Initialize the TadGAN object.
-        
+
         Args:
             shape (tuple):
                 Tuple denoting the shape of an input sample.
@@ -111,16 +109,16 @@ class TadGAN(tf.keras.Model):
         self.gp_weight = 10
         self.cycle_weight = 10
 
+        self.compile()
 
-    def compile(self, encoder_generator_loss_fn, critic_x_loss_fn, 
-                critic_z_loss_fn, cycle_loss_fn, **kwargs):
+    def compile(self, **kwargs):
         super(TadGAN, self).compile(**kwargs)
 
         # losses
-        self.encoder_generator_loss_fn = encoder_generator_loss_fn
-        self.critic_x_loss_fn = critic_x_loss_fn
-        self.critic_z_loss_fn = critic_z_loss_fn
-        self.cycle_loss_fn = cycle_loss_fn
+        self.encoder_generator_loss_fn = self._wasserstein_loss
+        self.critic_x_loss_fn = self._wasserstein_loss
+        self.critic_z_loss_fn = self._wasserstein_loss
+        self.cycle_loss_fn = tf.keras.losses.MeanSquaredError()
 
     @tf.function
     def gradient_penalty(self, critic, batch_size, inputs):
@@ -149,7 +147,6 @@ class TadGAN(tf.keras.Model):
         gp = tf.reduce_mean((norm - 1.0) ** 2)
         return gp
 
-
     @tf.function
     def train_step(self, batch):
         if isinstance(batch, tuple):
@@ -175,8 +172,8 @@ class TadGAN(tf.keras.Model):
 
             print("STEP 1")
             with tf.GradientTape(persistent=True) as tape:
-                x_ = self.generator(z, training=True) # z -> x
-                z_ = self.encoder(x, training=True) # x -> z
+                x_ = self.generator(z, training=True)  # z -> x
+                z_ = self.encoder(x, training=True)  # x -> z
 
                 print("STEP 2")
                 cx_real = self.critic_x(x, training=True)
@@ -220,12 +217,12 @@ class TadGAN(tf.keras.Model):
             print("STEP 10")
             batch_cx_loss.append([cx_loss, cx_real_cost, cx_fake_cost, cx_gp])
             batch_cz_loss.append([cz_loss, cz_real_cost, cz_fake_cost, cz_gp])
-            
+
         with tf.GradientTape() as tape:
             print("STEP 11")
-            x_ = self.generator(z, training=True) # z -> x
-            z_ = self.encoder(x, training=True) # x -> z
-            cycled_x = self.generator(z_, training=True) # x -> z -> x
+            x_ = self.generator(z, training=True)  # z -> x
+            z_ = self.encoder(x, training=True)  # x -> z
+            cycled_x = self.generator(z_, training=True)  # x -> z -> x
 
             print("STEP 12")
             cx_fake = self.critic_x(x_, training=True)
@@ -246,8 +243,8 @@ class TadGAN(tf.keras.Model):
 
         # Get the gradients for the generators
         print("STEP 16")
-        encoder_generator_grads = tape.gradient((eg_loss, x_cost, z_cost, cycle_loss), 
-            self.encoder.trainable_variables + self.generator.trainable_variables)
+        encoder_generator_grads = tape.gradient((eg_loss, x_cost, z_cost, cycle_loss),
+                                                self.encoder.trainable_variables + self.generator.trainable_variables)
 
         # Update the weights of the generators
         print("STEP 17")
@@ -257,11 +254,10 @@ class TadGAN(tf.keras.Model):
         batch_eg_loss = (eg_loss, x_cost, z_cost, cycle_loss)
 
         return {
-            # "Dx loss": tf.reduce_mean(batch_cx_loss, axis=0)[0], 
-            # "Dz loss": tf.reduce_mean(batch_cz_loss, axis=0)[0], 
+            # "Dx loss": tf.reduce_mean(batch_cx_loss, axis=0)[0],
+            # "Dz loss": tf.reduce_mean(batch_cz_loss, axis=0)[0],
             "EG loss": batch_eg_loss[0]
         }
-
 
     @tf.function
     def test_step(self, X):
@@ -276,9 +272,9 @@ class TadGAN(tf.keras.Model):
 
         z = tf.random.normal(shape=(batch_size, self.latent_dim, 1))
 
-        x_ = self.generator(z) # z -> x
-        z_ = self.encoder(x) # x -> z
-        cycled_x = self.generator(z_) # x -> z -> x
+        x_ = self.generator(z)  # z -> x
+        z_ = self.encoder(x)  # x -> z
+        cycled_x = self.generator(z_)  # x -> z -> x
 
         cx_real = self.critic_x(x)
         cx_fake = self.critic_x(x_)
@@ -305,10 +301,10 @@ class TadGAN(tf.keras.Model):
         cx_loss = cx_real_cost + cx_fake_cost + cx_gp * self.gp_weight
         cz_loss = cz_real_cost + cz_fake_cost + cz_gp * self.gp_weight
         eg_loss = g_cost + e_cost + self.cycle_weight * cycle_loss
-        
+
         return {
-            "Dx loss": cx_loss, 
-            "Dz loss": cz_loss, 
+            "Dx loss": cx_loss,
+            "Dz loss": cz_loss,
             "EG loss": eg_loss
         }
 
@@ -332,7 +328,6 @@ class TadGAN(tf.keras.Model):
 
         return y_hat, critic
 
-
     def fit(self, X, **kwargs):
         """Fit the TadGAN.
 
@@ -345,16 +340,7 @@ class TadGAN(tf.keras.Model):
         train = tf.data.Dataset.from_tensor_slices(train).shuffle(train.shape[0])
         train = train.batch(self.batch_size, drop_remainder=True)
 
-        encoder_generator_loss_fn = self._wasserstein_loss
-        critic_x_loss_fn = self._wasserstein_loss
-        critic_z_loss_fn = self._wasserstein_loss
-        cycle_loss_fn = tf.keras.losses.MeanSquaredError()
-
-        self.compile(encoder_generator_loss_fn,
-            critic_x_loss_fn, critic_z_loss_fn, cycle_loss_fn)
-
-        super().fit(train, batch_size=self.batch_size, verbose=True, epochs=2, **kwargs)      
-
+        super().fit(train, batch_size=self.batch_size, verbose=True, epochs=2, **kwargs)
 
     def predict(self, X):
         """Predict values using the initialized object.
