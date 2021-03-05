@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>regression errors &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>reconstuction errors &#8212; Orion 0.1.6.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="find anomalies" href="find_anomalies.html" />
-    <link rel="prev" title="reconstuction errors" href="reconstruction_errors.html" />
+    <link rel="next" title="regression errors" href="regression_errors.html" />
+    <link rel="prev" title="score anomalies" href="score_anomalies.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -197,10 +197,10 @@
               
               <div>
                 
-  <div class="section" id="regression-errors">
-<h1>regression errors<a class="headerlink" href="#regression-errors" title="Permalink to this headline">¶</a></h1>
-<p><strong>path</strong>  <code class="docutils literal notranslate"><span class="pre">orion.primitives.timeseries_errors.regression_errors</span></code></p>
-<p><strong>description</strong> this primitive computes an array of absolute errors comparing predictions and expected output. Optionally smooth them using EWMA.</p>
+  <div class="section" id="reconstuction-errors">
+<h1>reconstuction errors<a class="headerlink" href="#reconstuction-errors" title="Permalink to this headline">¶</a></h1>
+<p><strong>path</strong>  <code class="docutils literal notranslate"><span class="pre">orion.primitives.timeseries_errors.reconstruction_errors</span></code></p>
+<p><strong>description</strong> this primitive computes an array of errors comparing reconstructed and expected output. There are three main approaches for computing the discrepancies: point-wise, area, and dtw.</p>
 <table class="table">
 <colgroup>
 <col style="width: 23%" />
@@ -224,17 +224,29 @@
 </tr>
 <tr class="row-odd"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">smooth</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td><p>indicates whether the returned errors should be smoothed with EWMA</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">step_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>indicates the number of steps between windows in the predicted values</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">smoothing_window</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">score_window</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>indicates the size of the window over which the scores are calculated</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rec_error_type</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>reconstruction error types, can be one of <code class="docutils literal notranslate"><span class="pre">[&quot;point&quot;,</span> <span class="pre">&quot;area&quot;,</span> <span class="pre">&quot;dtw&quot;]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">smooth</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>indicates whether the returned errors should be smoothed</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">smoothing_window</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
 <td><p>size of the smoothing window, expressed as a proportion of the total</p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
+<tr class="row-odd"><td colspan="3"><p><strong>output</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">errors</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">errors</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
 <td><p>array of errors</p></td>
 </tr>
@@ -244,13 +256,13 @@
 
 <span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
 
-<span class="gp">In [3]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.timeseries_errors.regression_errors&#39;</span><span class="p">)</span>
+<span class="gp">In [3]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.timeseries_errors.reconstruction_errors&#39;</span><span class="p">)</span>
 
 <span class="gp">In [4]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
 
 <span class="gp">In [5]: </span><span class="n">y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">.</span><span class="mi">99</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
 
-<span class="gp">In [6]: </span><span class="n">errors</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">=</span><span class="n">y_hat</span><span class="p">)</span>
+<span class="gp">In [6]: </span><span class="n">errors</span><span class="p">,</span> <span class="n">predictions</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">=</span><span class="n">y_hat</span><span class="p">)</span>
 
 <span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average error value: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
 <span class="go">average error value: 0.01</span>
@@ -264,8 +276,8 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="reconstruction_errors.html" title="previous page">reconstuction errors</a>
-    <a class='right-next' id="next-link" href="find_anomalies.html" title="next page">find anomalies</a>
+    <a class='left-prev' id="prev-link" href="score_anomalies.html" title="previous page">score anomalies</a>
+    <a class='right-next' id="next-link" href="regression_errors.html" title="next page">regression errors</a>
 
               </div>
               

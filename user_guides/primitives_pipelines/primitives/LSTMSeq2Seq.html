@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LSTM &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>Dense AE &#8212; Orion 0.1.6.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Dense AE" href="LSTMSeq2Seq.html" />
-    <link rel="prev" title="ARIMA" href="arima.html" />
+    <link rel="next" title="Dense AE" href="DenseSeq2Seq.html" />
+    <link rel="prev" title="LSTM" href="LSTMTimeSeriesRegressor.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -197,11 +197,11 @@
               
               <div>
                 
-  <div class="section" id="lstm">
-<h1>LSTM<a class="headerlink" href="#lstm" title="Permalink to this headline">¶</a></h1>
-<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">keras.Sequential.LSTMTimeSeriesRegressor</span></code></p>
-<p><strong>description</strong>: this is a prediction model with double stacked LSTM layers used as a time series regressor. you can read more about it in the <a class="reference external" href="https://arxiv.org/pdf/1802.04431.pdf">related paper</a>.</p>
-<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/keras.Sequential.LSTMTimeSeriesRegressor.json">json</a>.</p>
+  <div class="section" id="dense-ae">
+<h1>Dense AE<a class="headerlink" href="#dense-ae" title="Permalink to this headline">¶</a></h1>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">keras.Sequential.LSTMSeq2Seq</span></code></p>
+<p><strong>description</strong>: this is a reconstruction model autoencoder using LSTM layers.</p>
+<p>see <a class="reference external" href="https://github.com/signals-dev/Orion/blob/master/orion/primitives/jsons/keras.Sequential.LSTMSeq2Seq.json">json</a>.</p>
 <table class="table">
 <colgroup>
 <col style="width: 12%" />
@@ -249,9 +249,9 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
 <td><p>tuple denoting the shape of an input sample</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dense_units</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td><p>number of values ahead to predict (target size). Default is 1.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">target_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>tuple denoting the shape of an output sample</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
@@ -301,24 +301,226 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<pre class="literal-block">In [1]: import numpy as np
 
-<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+In [2]: from mlprimitives import load_primitive
 
-<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+In [3]: X = np.array([1] * 100).reshape(1, -1, 1)
 
-<span class="gp">In [4]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+In [4]: primitive = load_primitive('keras.Sequential.LSTMSeq2Seq',
+   ...:     arguments={&quot;X&quot;: X, &quot;y&quot;: X, &quot;input_shape&quot;:(100, 1), &quot;target_shape&quot;:(100, 1), &quot;batch_size&quot;: 1, &quot;validation_split&quot;: 0})
+   ...: 
 
-<span class="gp">In [5]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;keras.Sequential.LSTMTimeSeriesRegressor&#39;</span><span class="p">,</span>
-<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;input_shape&quot;</span><span class="p">:(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;validation_split&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
-<span class="gp">   ...: </span>
+In [5]: primitive.fit()
+Epoch 1/35
 
-<span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+1/1 [==============================] - 0s 495ms/step - loss: 1.0020 - mse: 1.0020
+Epoch 2/35
 
-<span class="gp">In [7]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
-<span class="gh">Out[7]: </span><span class="go">array([[0.9941771]], dtype=float32)</span>
-</pre></div>
-</div>
+1/1 [==============================] - 0s 36ms/step - loss: 0.7269 - mse: 0.7269
+Epoch 3/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.4863 - mse: 0.4863
+Epoch 4/35
+
+1/1 [==============================] - 0s 37ms/step - loss: 0.2786 - mse: 0.2786
+Epoch 5/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.1154 - mse: 0.1154
+Epoch 6/35
+
+1/1 [==============================] - 0s 38ms/step - loss: 0.0297 - mse: 0.0297
+Epoch 7/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.0678 - mse: 0.0678
+Epoch 8/35
+
+1/1 [==============================] - 0s 34ms/step - loss: 0.1437 - mse: 0.1437
+Epoch 9/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.1402 - mse: 0.1402
+Epoch 10/35
+
+1/1 [==============================] - 0s 37ms/step - loss: 0.0921 - mse: 0.0921
+Epoch 11/35
+
+1/1 [==============================] - 0s 37ms/step - loss: 0.0472 - mse: 0.0472
+Epoch 12/35
+
+1/1 [==============================] - 0s 37ms/step - loss: 0.0241 - mse: 0.0241
+Epoch 13/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.0209 - mse: 0.0209
+Epoch 14/35
+
+1/1 [==============================] - 0s 49ms/step - loss: 0.0287 - mse: 0.0287
+Epoch 15/35
+
+1/1 [==============================] - 0s 38ms/step - loss: 0.0394 - mse: 0.0394
+Epoch 16/35
+
+1/1 [==============================] - 0s 33ms/step - loss: 0.0479 - mse: 0.0479
+Epoch 17/35
+
+1/1 [==============================] - 0s 34ms/step - loss: 0.0521 - mse: 0.0521
+Epoch 18/35
+
+1/1 [==============================] - 0s 35ms/step - loss: 0.0515 - mse: 0.0515
+Epoch 19/35
+
+1/1 [==============================] - 0s 34ms/step - loss: 0.0470 - mse: 0.0470
+Epoch 20/35
+
+1/1 [==============================] - 0s 35ms/step - loss: 0.0400 - mse: 0.0400
+Epoch 21/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.0320 - mse: 0.0320
+Epoch 22/35
+
+1/1 [==============================] - 0s 34ms/step - loss: 0.0245 - mse: 0.0245
+Epoch 23/35
+
+1/1 [==============================] - 0s 33ms/step - loss: 0.0190 - mse: 0.0190
+Epoch 24/35
+
+1/1 [==============================] - 0s 35ms/step - loss: 0.0161 - mse: 0.0161
+Epoch 25/35
+
+1/1 [==============================] - 0s 37ms/step - loss: 0.0161 - mse: 0.0161
+Epoch 26/35
+
+1/1 [==============================] - 0s 35ms/step - loss: 0.0182 - mse: 0.0182
+Epoch 27/35
+
+1/1 [==============================] - 0s 38ms/step - loss: 0.0212 - mse: 0.0212
+Epoch 28/35
+
+1/1 [==============================] - 0s 38ms/step - loss: 0.0238 - mse: 0.0238
+Epoch 29/35
+
+1/1 [==============================] - 0s 38ms/step - loss: 0.0248 - mse: 0.0248
+Epoch 30/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.0239 - mse: 0.0239
+Epoch 31/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.0217 - mse: 0.0217
+Epoch 32/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.0189 - mse: 0.0189
+Epoch 33/35
+
+1/1 [==============================] - 0s 37ms/step - loss: 0.0164 - mse: 0.0164
+Epoch 34/35
+
+1/1 [==============================] - 0s 36ms/step - loss: 0.0148 - mse: 0.0148
+Epoch 35/35
+
+1/1 [==============================] - 0s 37ms/step - loss: 0.0141 - mse: 0.0141
+
+In [6]: primitive.produce(X=X)
+1/1 [==============================] - 0s 295ms/step
+Out[6]: 
+array([[[0.23079862],
+        [0.4062438 ],
+        [0.5448055 ],
+        [0.6530598 ],
+        [0.7369197 ],
+        [0.80141985],
+        [0.850719  ],
+        [0.8881845 ],
+        [0.9165038 ],
+        [0.93779826],
+        [0.95372665],
+        [0.96557724],
+        [0.97434443],
+        [0.98079133],
+        [0.985501  ],
+        [0.9889167 ],
+        [0.99137354],
+        [0.99312496],
+        [0.99436015],
+        [0.9952202 ],
+        [0.9958101 ],
+        [0.99620724],
+        [0.996468  ],
+        [0.99663347],
+        [0.9967339 ],
+        [0.99678946],
+        [0.9968163 ],
+        [0.9968237 ],
+        [0.9968202 ],
+        [0.9968096 ],
+        [0.99679595],
+        [0.9967808 ],
+        [0.9967656 ],
+        [0.9967513 ],
+        [0.996738  ],
+        [0.99672633],
+        [0.99671555],
+        [0.9967065 ],
+        [0.9966983 ],
+        [0.9966913 ],
+        [0.9966854 ],
+        [0.9966802 ],
+        [0.9966755 ],
+        [0.99667156],
+        [0.9966684 ],
+        [0.99666554],
+        [0.996663  ],
+        [0.99666077],
+        [0.9966589 ],
+        [0.99665725],
+        [0.9966559 ],
+        [0.9966546 ],
+        [0.99665374],
+        [0.99665254],
+        [0.99665165],
+        [0.99665135],
+        [0.99665064],
+        [0.99665016],
+        [0.9966496 ],
+        [0.9966493 ],
+        [0.99664915],
+        [0.99664885],
+        [0.99664843],
+        [0.99664825],
+        [0.9966481 ],
+        [0.99664795],
+        [0.99664795],
+        [0.9966478 ],
+        [0.99664766],
+        [0.99664766],
+        [0.99664766],
+        [0.99664766],
+        [0.99664754],
+        [0.9966475 ],
+        [0.9966474 ],
+        [0.9966474 ],
+        [0.9966472 ],
+        [0.99664724],
+        [0.99664724],
+        [0.99664724],
+        [0.99664724],
+        [0.99664724],
+        [0.99664724],
+        [0.9966473 ],
+        [0.99664736],
+        [0.9966473 ],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736],
+        [0.99664736]]], dtype=float32)</pre>
 </div>
 
 
@@ -327,8 +529,8 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="arima.html" title="previous page">ARIMA</a>
-    <a class='right-next' id="next-link" href="LSTMSeq2Seq.html" title="next page">Dense AE</a>
+    <a class='left-prev' id="prev-link" href="LSTMTimeSeriesRegressor.html" title="previous page">LSTM</a>
+    <a class='right-next' id="next-link" href="DenseSeq2Seq.html" title="next page">Dense AE</a>
 
               </div>
               

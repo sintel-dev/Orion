@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>orion.primitives.tadgan.TadGAN &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>orion.primitives.timeseries_errors.regression_errors &#8212; Orion 0.1.6.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="orion.primitives.tadgan.score_anomalies" href="orion.primitives.tadgan.score_anomalies.html" />
-    <link rel="prev" title="orion.primitives" href="../prim.html" />
+    <link rel="next" title="orion.primitives.timeseries_errors.reconstruction_errors" href="orion.primitives.timeseries_errors.reconstruction_errors.html" />
+    <link rel="prev" title="orion.primitives.timeseries_preprocessing.fillna" href="orion.primitives.timeseries_preprocessing.fillna.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -147,8 +147,8 @@
                     <a href="../prim.html">orion.primitives</a>
                     <ul>
                     
-                        <li class="active">
-                            <a href="">orion.primitives.tadgan.TadGAN</a>
+                        <li class="">
+                            <a href="orion.primitives.tadgan.TadGAN.html">orion.primitives.tadgan.TadGAN</a>
                         </li>
                     
                         <li class="">
@@ -159,8 +159,8 @@
                             <a href="orion.primitives.timeseries_preprocessing.fillna.html">orion.primitives.timeseries_preprocessing.fillna</a>
                         </li>
                     
-                        <li class="">
-                            <a href="orion.primitives.timeseries_errors.regression_errors.html">orion.primitives.timeseries_errors.regression_errors</a>
+                        <li class="active">
+                            <a href="">orion.primitives.timeseries_errors.regression_errors</a>
                         </li>
                     
                         <li class="">
@@ -215,59 +215,31 @@
               
               <div>
                 
-  <div class="section" id="orion-primitives-tadgan-tadgan">
-<h1>orion.primitives.tadgan.TadGAN<a class="headerlink" href="#orion-primitives-tadgan-tadgan" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="orion.primitives.tadgan.TadGAN">
-<em class="property">class </em><code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">TadGAN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">encoder_input_shape</span></em>, <em class="sig-param"><span class="n">generator_input_shape</span></em>, <em class="sig-param"><span class="n">critic_x_input_shape</span></em>, <em class="sig-param"><span class="n">critic_z_input_shape</span></em>, <em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.0005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">2000</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN" title="Permalink to this definition">¶</a></dt>
-<dd><p>TadGAN model for time series reconstruction.</p>
+  <div class="section" id="orion-primitives-timeseries-errors-regression-errors">
+<h1>orion.primitives.timeseries_errors.regression_errors<a class="headerlink" href="#orion-primitives-timeseries-errors-regression-errors" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="orion.primitives.timeseries_errors.regression_errors">
+<code class="sig-prename descclassname">orion.primitives.timeseries_errors.</code><code class="sig-name descname">regression_errors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">y_hat</span></em>, <em class="sig-param"><span class="n">smoothing_window</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">smooth</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/timeseries_errors.html#regression_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_errors.regression_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an array of absolute errors comparing predictions and expected output.</p>
+<p>If smooth is True, apply EWMA to the resulting array of errors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> (<em>tuple</em>) – Tuple denoting the shape of an input sample.</p></li>
-<li><p><strong>encoder_input_shape</strong> (<em>tuple</em>) – Shape of encoder input.</p></li>
-<li><p><strong>generator_input_shape</strong> (<em>tuple</em>) – Shape of generator input.</p></li>
-<li><p><strong>critic_x_input_shape</strong> (<em>tuple</em>) – Shape of critic_x input.</p></li>
-<li><p><strong>critic_z_input_shape</strong> (<em>tuple</em>) – Shape of critic_z input.</p></li>
-<li><p><strong>layers_encoder</strong> (<em>list</em>) – List containing layers of encoder.</p></li>
-<li><p><strong>layers_generator</strong> (<em>list</em>) – List containing layers of generator.</p></li>
-<li><p><strong>layers_critic_x</strong> (<em>list</em>) – List containing layers of critic_x.</p></li>
-<li><p><strong>layers_critic_z</strong> (<em>list</em>) – List containing layers of critic_z.</p></li>
-<li><p><strong>optimizer</strong> (<em>str</em>) – String denoting the keras optimizer.</p></li>
-<li><p><strong>learning_rate</strong> (<em>float</em>) – Optional. Float denoting the learning rate of the optimizer. Default 0.005.</p></li>
-<li><p><strong>epochs</strong> (<em>int</em>) – Optional. Integer denoting the number of epochs. Default 2000.</p></li>
-<li><p><strong>latent_dim</strong> (<em>int</em>) – Optional. Integer denoting dimension of latent space. Default 20.</p></li>
-<li><p><strong>batch_size</strong> (<em>int</em>) – Integer denoting the batch size. Default 64.</p></li>
-<li><p><strong>iterations_critic</strong> (<em>int</em>) – Optional. Integer denoting the number of critic training steps per one
-Generator/Encoder training step. Default 5.</p></li>
-<li><p><strong>hyperparameters</strong> (<em>dictionary</em>) – Optional. Dictionary containing any additional inputs.</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Ground truth.</p></li>
+<li><p><strong>y_hat</strong> (<em>ndarray</em>) – Predicted values.</p></li>
+<li><p><strong>smoothing_window</strong> (<em>float</em>) – Optional. Size of the smoothing window, expressed as a proportion of the total
+length of y. If not given, 0.01 is used.</p></li>
+<li><p><strong>smooth</strong> (<em>bool</em>) – Optional. Indicates whether the returned errors should be smoothed with EWMA.
+If not given, <cite>True</cite> is used.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of errors.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
 </dl>
-<dl class="py method">
-<dt id="orion.primitives.tadgan.TadGAN.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">encoder_input_shape</span></em>, <em class="sig-param"><span class="n">generator_input_shape</span></em>, <em class="sig-param"><span class="n">critic_x_input_shape</span></em>, <em class="sig-param"><span class="n">critic_z_input_shape</span></em>, <em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.0005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">2000</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
-<p class="rubric">Methods</p>
-<table class="longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#orion.primitives.tadgan.TadGAN.__init__" title="orion.primitives.tadgan.TadGAN.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(shape, encoder_input_shape, …[, …])</p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, **kwargs)</p></td>
-<td><p>Fit the TadGAN.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</p></td>
-<td><p>Predict values using the initialized object.</p></td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </div>
@@ -278,8 +250,8 @@ Generator/Encoder training step. Default 5.</p></li>
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="../prim.html" title="previous page">orion.primitives</a>
-    <a class='right-next' id="next-link" href="orion.primitives.tadgan.score_anomalies.html" title="next page">orion.primitives.tadgan.score_anomalies</a>
+    <a class='left-prev' id="prev-link" href="orion.primitives.timeseries_preprocessing.fillna.html" title="previous page">orion.primitives.timeseries_preprocessing.fillna</a>
+    <a class='right-next' id="next-link" href="orion.primitives.timeseries_errors.reconstruction_errors.html" title="next page">orion.primitives.timeseries_errors.reconstruction_errors</a>
 
               </div>
               

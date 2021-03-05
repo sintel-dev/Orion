@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>orion.primitives.timeseries_anomalies.regression_errors &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>orion.primitives.timeseries_preprocessing.fillna &#8212; Orion 0.1.6.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -39,7 +39,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="orion.primitives.timeseries_anomalies.find_anomalies" href="orion.primitives.timeseries_anomalies.find_anomalies.html" />
+    <link rel="next" title="orion.primitives.timeseries_errors.regression_errors" href="orion.primitives.timeseries_errors.regression_errors.html" />
     <link rel="prev" title="orion.primitives.tadgan.score_anomalies" href="orion.primitives.tadgan.score_anomalies.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -156,7 +156,15 @@
                         </li>
                     
                         <li class="active">
-                            <a href="">orion.primitives.timeseries_anomalies.regression_errors</a>
+                            <a href="">orion.primitives.timeseries_preprocessing.fillna</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.primitives.timeseries_errors.regression_errors.html">orion.primitives.timeseries_errors.regression_errors</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.primitives.timeseries_errors.reconstruction_errors.html">orion.primitives.timeseries_errors.reconstruction_errors</a>
                         </li>
                     
                         <li class="">
@@ -207,26 +215,42 @@
               
               <div>
                 
-  <div class="section" id="orion-primitives-timeseries-anomalies-regression-errors">
-<h1>orion.primitives.timeseries_anomalies.regression_errors<a class="headerlink" href="#orion-primitives-timeseries-anomalies-regression-errors" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="orion-primitives-timeseries-preprocessing-fillna">
+<h1>orion.primitives.timeseries_preprocessing.fillna<a class="headerlink" href="#orion-primitives-timeseries-preprocessing-fillna" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="orion.primitives.timeseries_anomalies.regression_errors">
-<code class="sig-prename descclassname">orion.primitives.timeseries_anomalies.</code><code class="sig-name descname">regression_errors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">y_hat</span></em>, <em class="sig-param"><span class="n">smoothing_window</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">smooth</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/timeseries_anomalies.html#regression_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_anomalies.regression_errors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute an array of absolute errors comparing predictions and expected output.</p>
-<p>If smooth is True, apply EWMA to the resulting array of errors.</p>
+<dt id="orion.primitives.timeseries_preprocessing.fillna">
+<code class="sig-prename descclassname">orion.primitives.timeseries_preprocessing.</code><code class="sig-name descname">fillna</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">value</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">limit</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">downcast</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/timeseries_preprocessing.html#fillna"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_preprocessing.fillna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Impute missing values.</p>
+<p>This function fills the missing values of the input sequence with the next/
+previous known value. If there are contigous NaN values, they will all be
+filled with the same next/previous known value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> (<em>ndarray</em>) – Ground truth.</p></li>
-<li><p><strong>y_hat</strong> (<em>ndarray</em>) – Predicted values.</p></li>
-<li><p><strong>smoothing_window</strong> (<em>float</em>) – Optional. Size of the smoothing window, expressed as a proportion of the total
-length of y. If not given, 0.01 is used.</p></li>
-<li><p><strong>smooth</strong> (<em>bool</em>) – Optional. Indicates whether the returned errors should be smoothed with EWMA.
-If not given, <cite>True</cite> is used.</p></li>
+<li><p><strong>X</strong> (<em>ndarray</em><em> or </em><em>pandas.DataFrame</em>) – Array of input sequence.</p></li>
+<li><p><strong>value</strong> – Optional. Value to use to fill holes (e.g. 0), alternately a dict/Series/DataFrame of
+values specifying which value to use for each index (for a Series) or column
+(for a DataFrame). Values not in the dict/Series/DataFrame will not be filled.
+This value cannot be a list. Default is None.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em> or </em><em>list</em>) – Optional. String or list of strings describing whether to use forward or backward
+fill. pad / ffill: propagate last valid observation forward to next valid.
+backfill / bfill: use next valid observation to fill gap. Otherwise use <code class="docutils literal notranslate"><span class="pre">None</span></code> to
+fill with desired value. Possible values include
+<code class="docutils literal notranslate"><span class="pre">[‘backfill’,</span> <span class="pre">‘bfill’,</span> <span class="pre">‘pad’,</span> <span class="pre">‘ffill’,</span> <span class="pre">None]</span></code>. Default is None.</p></li>
+<li><p><strong>axis</strong> (<em>int</em><em> or </em><em>str</em>) – Optional. Axis along which to fill missing value. Possible values include 0 or
+“index”, 1 or “columns”. Default is None.</p></li>
+<li><p><strong>limit</strong> (<em>int</em>) – Optional. If method is specified, this is the maximum number of consecutive NaN values
+to forward/backward fill. In other words, if there is a gap with more than this number
+of consecutive NaNs, it will only be partially filled. If method is not specified,
+this is the maximum number of entries along the entire axis where NaNs will be filled.
+Must be greater than 0 if not None. Default is None.</p></li>
+<li><p><strong>downcast</strong> (<em>dict</em>) – Optional. A dict of item-&gt;dtype of what to downcast if possible, or the string “infer”
+which will try to downcast to an appropriate equal type (e.g. float64 to int64 if
+possible). Default is None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array of errors.</p>
+<dd class="field-even"><p>Array of input sequence with imputed values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ndarray</p>
@@ -243,7 +267,7 @@ If not given, <cite>True</cite> is used.</p></li>
               <div class='prev-next-bottom'>
                 
     <a class='left-prev' id="prev-link" href="orion.primitives.tadgan.score_anomalies.html" title="previous page">orion.primitives.tadgan.score_anomalies</a>
-    <a class='right-next' id="next-link" href="orion.primitives.timeseries_anomalies.find_anomalies.html" title="next page">orion.primitives.timeseries_anomalies.find_anomalies</a>
+    <a class='right-next' id="next-link" href="orion.primitives.timeseries_errors.regression_errors.html" title="next page">orion.primitives.timeseries_errors.regression_errors</a>
 
               </div>
               

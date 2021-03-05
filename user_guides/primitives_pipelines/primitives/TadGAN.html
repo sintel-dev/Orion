@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="score anomalies" href="score_anomalies.html" />
-    <link rel="prev" title="LSTM" href="LSTMTimeSeriesRegressor.html" />
+    <link rel="prev" title="Dense AE" href="DenseSeq2Seq.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -305,18 +305,18 @@
 <span class="gp">   ...: </span>
 
 <span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, [Dx loss: [ 7.7769413e+00 -1.0798150e-01  2.8594041e-03  7.8820634e-01]] [Dz loss: [ 0.8416617  -1.1267127   0.04367272  0.19247016]] [G loss: [ 1.0021769e+01 -3.0677533e-04  5.5708955e-03  1.0016505e+00]]</span>
-<span class="go">Epoch: 2/5, [Dx loss: [ 7.5996995e+00 -1.9677596e-02 -1.8733678e-03  7.6212507e-01]] [Dz loss: [ 2.4583662  -0.27027377  0.10782804  0.2620812 ]] [G loss: [ 9.9121399e+00 -2.2796206e-03  1.0368043e-01  9.8107392e-01]]</span>
-<span class="go">Epoch: 3/5, [Dx loss: [ 7.0737457e+00 -4.2066824e-01  5.9064543e-03  7.4885070e-01]] [Dz loss: [ 2.569198   -0.52862537  0.282771    0.28150523]] [G loss: [ 9.1750851e+00 -6.7601632e-03 -2.0840229e-01  9.3902469e-01]]</span>
-<span class="go">Epoch: 4/5, [Dx loss: [ 7.2150455e+00 -5.9086539e-02  2.9060373e-03  7.2712260e-01]] [Dz loss: [ 2.8146374  -0.1983027   0.7502265   0.22627138]] [G loss: [ 8.859079   -0.01444258 -0.80582464  0.9679347 ]]</span>
-<span class="go">Epoch: 5/5, [Dx loss: [ 6.7772202  -0.3073209   0.01362381  0.7070917 ]] [Dz loss: [ 2.2528126  -0.5340653   0.7174221   0.20694558]] [G loss: [ 7.294916   -0.02625643 -1.39493     0.8716103 ]]</span>
+<span class="go">Epoch: 1/5, [Dx loss: [ 7.9698143e+00  1.2381281e-01 -8.1190970e-05  7.8460824e-01]] [Dz loss: [3.8314712  0.3876965  0.01681231 0.34269625]] [G loss: [ 1.0077161e+01 -4.1648219e-03  3.9160363e-03  1.0077410e+00]]</span>
+<span class="go">Epoch: 2/5, [Dx loss: [7.6993508e+00 1.7387053e-02 1.8887229e-03 7.6800752e-01]] [Dz loss: [3.737727   0.30061275 0.15002239 0.3287092 ]] [G loss: [ 9.801046   -0.01139848 -0.04390444  0.9856349 ]]</span>
+<span class="go">Epoch: 3/5, [Dx loss: [ 7.2601786e+00 -2.4304548e-01  4.4135880e-03  7.4988103e-01]] [Dz loss: [ 2.308426   -0.52214456  0.5038415   0.2326729 ]] [G loss: [ 9.1354952e+00 -8.4435474e-03 -3.1479391e-01  9.4587326e-01]]</span>
+<span class="go">Epoch: 4/5, [Dx loss: [ 6.7926035  -0.44929954  0.01551675  0.7226386 ]] [Dz loss: [3.1379075  0.2666599  0.5581024  0.23131451]] [G loss: [ 8.4252558e+00 -7.4240817e-03 -9.0947407e-01  9.3421537e-01]]</span>
+<span class="go">Epoch: 5/5, [Dx loss: [ 6.5304356  -0.4536519   0.02935621  0.69547313]] [Dz loss: [ 3.3717778  -0.20345122  1.5615836   0.20136455]] [G loss: [ 7.204895   -0.02436613 -1.7878841   0.90171456]]</span>
 
 <span class="gp">In [6]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
 <span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.09, critic score 0.43</span>
+<span class="go">average reconstructed value: 0.09, critic score 0.70</span>
 </pre></div>
 </div>
 </div>
@@ -327,7 +327,7 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="LSTMTimeSeriesRegressor.html" title="previous page">LSTM</a>
+    <a class='left-prev' id="prev-link" href="DenseSeq2Seq.html" title="previous page">Dense AE</a>
     <a class='right-next' id="next-link" href="score_anomalies.html" title="next page">score anomalies</a>
 
               </div>

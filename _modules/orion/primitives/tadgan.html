@@ -162,14 +162,15 @@
 <span class="kn">import</span> <span class="nn">keras</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">similaritymeasures</span> <span class="k">as</span> <span class="nn">sm</span>
 <span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">K</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Input</span>
 <span class="kn">from</span> <span class="nn">keras.layers.merge</span> <span class="kn">import</span> <span class="n">_Merge</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">mlprimitives.adapters.keras</span> <span class="kn">import</span> <span class="n">build_layer</span>
 <span class="kn">from</span> <span class="nn">mlprimitives.utils</span> <span class="kn">import</span> <span class="n">import_object</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">integrate</span><span class="p">,</span> <span class="n">stats</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+<span class="kn">from</span> <span class="nn">orion.primitives.timeseries_errors</span> <span class="kn">import</span> <span class="n">reconstruction_errors</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -453,87 +454,9 @@
     <span class="k">return</span> <span class="n">z_scores</span>
 
 
-<span class="k">def</span> <span class="nf">_compute_rec_score</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">trues</span><span class="p">,</span> <span class="n">score_window</span><span class="p">,</span> <span class="n">smooth_window</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        predictions (ndarray):</span>
-<span class="sd">            Predicted values.</span>
-<span class="sd">        trues (ndarray):</span>
-<span class="sd">            Ground truth.</span>
-<span class="sd">        score_window (int):</span>
-<span class="sd">            Size of the window over which the scores are calculated.</span>
-<span class="sd">        smooth_window (int):</span>
-<span class="sd">            Smooth window that will be applied to compute smooth errors.</span>
-<span class="sd">        rec_error_type (str):</span>
-<span class="sd">            Reconstruction error types.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        ndarray:</span>
-<span class="sd">            Array of anomaly scores.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">rec_error_type</span> <span class="o">==</span> <span class="s2">&quot;point&quot;</span><span class="p">):</span>
-        <span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">y_h</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y_h</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">trues</span><span class="p">)]</span>
-        <span class="n">errors_smoothed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span>
-            <span class="n">smooth_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="n">smooth_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
-        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">errors_smoothed</span><span class="p">)</span>
-        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">z_scores</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-
-    <span class="k">elif</span> <span class="p">(</span><span class="n">rec_error_type</span> <span class="o">==</span> <span class="s2">&quot;area&quot;</span><span class="p">):</span>
-        <span class="n">pd_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">trues</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
-        <span class="n">pd_pred</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
-        <span class="n">score_measure_true</span> <span class="o">=</span> <span class="n">pd_true</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">score_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                             <span class="n">min_periods</span><span class="o">=</span><span class="n">score_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">)</span>
-        <span class="n">score_measure_pred</span> <span class="o">=</span> <span class="n">pd_pred</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">score_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                             <span class="n">min_periods</span><span class="o">=</span><span class="n">score_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">)</span>
-        <span class="n">errors</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">score_measure_true</span> <span class="o">-</span> <span class="n">score_measure_pred</span><span class="p">)</span>
-        <span class="n">errors_smoothed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">smooth_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                    <span class="n">win_type</span><span class="o">=</span><span class="s1">&#39;triang&#39;</span><span class="p">,</span>
-                                                    <span class="n">min_periods</span><span class="o">=</span><span class="n">smooth_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
-        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">errors_smoothed</span><span class="p">)</span>
-        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">z_scores</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-
-    <span class="k">elif</span> <span class="p">(</span><span class="n">rec_error_type</span> <span class="o">==</span> <span class="s2">&quot;dtw&quot;</span><span class="p">):</span>
-        <span class="c1"># DTW</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">similarity_dtw</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="n">length_dtw</span> <span class="o">=</span> <span class="p">(</span><span class="n">score_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">hafl_length_dtw</span> <span class="o">=</span> <span class="n">length_dtw</span> <span class="o">//</span> <span class="mi">2</span>
-        <span class="c1"># add padding</span>
-        <span class="n">true_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">trues</span><span class="p">,</span> <span class="p">(</span><span class="n">hafl_length_dtw</span><span class="p">,</span> <span class="n">hafl_length_dtw</span><span class="p">),</span>
-                          <span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">constant_values</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="n">predictions_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
-            <span class="n">predictions</span><span class="p">,</span>
-            <span class="p">(</span><span class="n">hafl_length_dtw</span><span class="p">,</span>
-             <span class="n">hafl_length_dtw</span><span class="p">),</span>
-            <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
-            <span class="n">constant_values</span><span class="o">=</span><span class="p">(</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="mi">0</span><span class="p">))</span>
-
-        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">trues</span><span class="p">)</span> <span class="o">-</span> <span class="n">length_dtw</span><span class="p">:</span>
-            <span class="n">true_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length_dtw</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-            <span class="n">true_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">length_dtw</span><span class="p">)</span>
-            <span class="n">true_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">true_pad</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">length_dtw</span><span class="p">]</span>
-            <span class="n">preds_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length_dtw</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-            <span class="n">preds_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">length_dtw</span><span class="p">)</span>
-            <span class="n">preds_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions_pad</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">length_dtw</span><span class="p">]</span>
-            <span class="n">dtw</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">dtw</span><span class="p">(</span><span class="n">true_data</span><span class="p">,</span> <span class="n">preds_data</span><span class="p">)</span>
-            <span class="n">similarity_dtw</span> <span class="o">=</span> <span class="n">similarity_dtw</span> <span class="o">+</span> <span class="p">[</span><span class="n">dtw</span><span class="p">]</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">similarity_dtw</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">length_dtw</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">similarity_dtw</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">trues</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">similarity_dtw</span><span class="p">)</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">length_dtw</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
-        <span class="n">errors</span> <span class="o">=</span> <span class="n">similarity_dtw</span>
-        <span class="n">errors_smoothed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">smooth_window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                    <span class="n">min_periods</span><span class="o">=</span><span class="n">smooth_window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
-        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">errors_smoothed</span><span class="p">)</span>
-        <span class="n">z_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">z_scores</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-
-    <span class="k">return</span> <span class="n">z_scores</span>
-
-
 <div class="viewcode-block" id="score_anomalies"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.tadgan.score_anomalies.html#orion.primitives.tadgan.score_anomalies">[docs]</a><span class="k">def</span> <span class="nf">score_anomalies</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">critic</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">score_window</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">critic_smooth_window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">error_smooth_window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="o">=</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="n">comb</span><span class="o">=</span><span class="s2">&quot;mult&quot;</span><span class="p">,</span> <span class="n">lambda_rec</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+                    <span class="n">error_smooth_window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="o">=</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="n">comb</span><span class="o">=</span><span class="s2">&quot;mult&quot;</span><span class="p">,</span>
+                    <span class="n">lambda_rec</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
 
 <span class="sd">    Anomaly scores are calculated using a combination of reconstruction error and critic score.</span>
@@ -556,6 +479,9 @@
 <span class="sd">        error_smooth_window (int):</span>
 <span class="sd">            Optional. Size of window over which smoothing is applied to error.</span>
 <span class="sd">            If not given, 200 is used.</span>
+<span class="sd">        smooth (bool):</span>
+<span class="sd">            Optional. Indicates whether errors should be smoothed.</span>
+<span class="sd">            If not given, `True` is used.</span>
 <span class="sd">        rec_error_type (str):</span>
 <span class="sd">            Optional. The method to compute reconstruction error. Can be one of</span>
 <span class="sd">            `[&quot;point&quot;, &quot;area&quot;, &quot;dtw&quot;]`. If not given, &#39;point&#39; is used.</span>
@@ -574,6 +500,8 @@
     <span class="n">critic_smooth_window</span> <span class="o">=</span> <span class="n">critic_smooth_window</span> <span class="ow">or</span> <span class="n">math</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span>
     <span class="n">error_smooth_window</span> <span class="o">=</span> <span class="n">error_smooth_window</span> <span class="ow">or</span> <span class="n">math</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span>
 
+    <span class="n">step_size</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># expected to be 1</span>
+
     <span class="n">true_index</span> <span class="o">=</span> <span class="n">index</span>  <span class="c1"># no offset</span>
 
     <span class="n">true</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))]</span>
@@ -587,55 +515,35 @@
 
     <span class="n">critic_extended</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critic_extended</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
-    <span class="n">predictions_md</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
-
     <span class="n">critic_kde_max</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">pred_length</span> <span class="o">=</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">num_errors</span> <span class="o">=</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_hat</span><span class="p">)</span>
+    <span class="n">num_errors</span> <span class="o">=</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">step_size</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_errors</span><span class="p">):</span>
-        <span class="n">intermediate</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">critic_intermediate</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">num_errors</span> <span class="o">+</span> <span class="n">pred_length</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pred_length</span><span class="p">)):</span>
-            <span class="n">intermediate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_hat</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
             <span class="n">critic_intermediate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">critic_extended</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
 
-        <span class="k">if</span> <span class="n">intermediate</span><span class="p">:</span>
-            <span class="n">predictions_md</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">)))</span>
-
-            <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">([[</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">)),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">),</span> <span class="mi">25</span><span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">),</span> <span class="mi">50</span><span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">),</span> <span class="mi">75</span><span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intermediate</span><span class="p">))</span>
-            <span class="p">]])</span>
-
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">critic_intermediate</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">discr_intermediate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critic_intermediate</span><span class="p">)</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">critic_kde_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">discr_intermediate</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
-                        <span class="n">stats</span><span class="o">.</span><span class="n">gaussian_kde</span><span class="p">(</span><span class="n">discr_intermediate</span><span class="p">)(</span><span class="n">critic_intermediate</span><span class="p">))])</span>
-                <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
-                    <span class="n">critic_kde_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">discr_intermediate</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">critic_kde_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critic_intermediate</span><span class="p">)))</span>
-
-    <span class="n">predictions_md</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">predictions_md</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">critic_intermediate</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">discr_intermediate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critic_intermediate</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">critic_kde_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">discr_intermediate</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
+                    <span class="n">stats</span><span class="o">.</span><span class="n">gaussian_kde</span><span class="p">(</span><span class="n">discr_intermediate</span><span class="p">)(</span><span class="n">critic_intermediate</span><span class="p">))])</span>
+            <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+                <span class="n">critic_kde_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">discr_intermediate</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">critic_kde_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">critic_intermediate</span><span class="p">)))</span>
 
     <span class="c1"># Compute critic scores</span>
     <span class="n">critic_scores</span> <span class="o">=</span> <span class="n">_compute_critic_score</span><span class="p">(</span><span class="n">critic_kde_max</span><span class="p">,</span> <span class="n">critic_smooth_window</span><span class="p">)</span>
 
     <span class="c1"># Compute reconstruction scores</span>
-    <span class="n">rec_scores</span> <span class="o">=</span> <span class="n">_compute_rec_score</span><span class="p">(</span>
-        <span class="n">predictions_md</span><span class="p">,</span>
-        <span class="n">true</span><span class="p">,</span>
-        <span class="n">score_window</span><span class="p">,</span>
-        <span class="n">error_smooth_window</span><span class="p">,</span>
-        <span class="n">rec_error_type</span><span class="p">)</span>
+    <span class="n">rec_scores</span><span class="p">,</span> <span class="n">predictions</span> <span class="o">=</span> <span class="n">reconstruction_errors</span><span class="p">(</span>
+        <span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">score_window</span><span class="p">,</span> <span class="n">error_smooth_window</span><span class="p">,</span> <span class="n">smooth</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="p">)</span>
+
+    <span class="n">rec_scores</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">rec_scores</span><span class="p">)</span>
+    <span class="n">rec_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">rec_scores</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="c1"># Combine the two scores</span>
     <span class="k">if</span> <span class="n">comb</span> <span class="o">==</span> <span class="s2">&quot;mult&quot;</span><span class="p">:</span>

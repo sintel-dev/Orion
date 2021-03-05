@@ -1,6 +1,0 @@
-﻿orion.primitives.timeseries\_anomalies.regression\_errors
-=========================================================
-
-.. currentmodule:: orion.primitives.timeseries_anomalies
-
-.. autofunction:: regression_errors

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LSTM &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>Dense AE &#8212; Orion 0.1.6.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Dense AE" href="LSTMSeq2Seq.html" />
-    <link rel="prev" title="ARIMA" href="arima.html" />
+    <link rel="next" title="TadGAN" href="TadGAN.html" />
+    <link rel="prev" title="Dense AE" href="LSTMSeq2Seq.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -197,11 +197,11 @@
               
               <div>
                 
-  <div class="section" id="lstm">
-<h1>LSTM<a class="headerlink" href="#lstm" title="Permalink to this headline">¶</a></h1>
-<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">keras.Sequential.LSTMTimeSeriesRegressor</span></code></p>
-<p><strong>description</strong>: this is a prediction model with double stacked LSTM layers used as a time series regressor. you can read more about it in the <a class="reference external" href="https://arxiv.org/pdf/1802.04431.pdf">related paper</a>.</p>
-<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/keras.Sequential.LSTMTimeSeriesRegressor.json">json</a>.</p>
+  <div class="section" id="dense-ae">
+<h1>Dense AE<a class="headerlink" href="#dense-ae" title="Permalink to this headline">¶</a></h1>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">keras.Sequential.DenseSeq2Seq</span></code></p>
+<p><strong>description</strong>: this is a reconstruction model autoencoder using dense layers.</p>
+<p>see <a class="reference external" href="https://github.com/signals-dev/Orion/blob/master/orion/primitives/jsons/keras.Sequential.DenseSeq2Seq.json">json</a>.</p>
 <table class="table">
 <colgroup>
 <col style="width: 12%" />
@@ -249,9 +249,9 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
 <td><p>tuple denoting the shape of an input sample</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dense_units</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td><p>number of values ahead to predict (target size). Default is 1.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">target_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>tuple denoting the shape of an output sample</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
@@ -277,21 +277,13 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
 <td><p>verbosity mode. Default is False</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lstm_1_unit</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td><p>dimensionality of the output space for the first LSTM layer. Default is 80</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dropout_1_rate</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dropout_1_rate</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td><p>float between 0 and 1. Fraction of the units to drop for the linear transformation of the inputs for the first LSTM layer. Default: 0.3</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lstm_2_unit</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td><p>dimensionality of the output space for the second LSTM layer. Default is 80</p></td>
+<td><p>float between 0 and 1. Fraction of the units to drop for the linear transformation of the inputs for the first dense layer. Default: 0.3</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dropout_2_rate</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td><p>float between 0 and 1. Fraction of the units to drop for the linear transformation of the inputs for the second LSTM layer. Default: 0.3</p></td>
+<td><p>float between 0 and 1. Fraction of the units to drop for the linear transformation of the inputs for the second dense layer. Default: 0.3</p></td>
 </tr>
 <tr class="row-odd"><td colspan="3"><p><strong>output</strong></p></td>
 </tr>
@@ -301,24 +293,128 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<pre class="literal-block">In [1]: import numpy as np
 
-<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+In [2]: from mlprimitives import load_primitive
 
-<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+In [3]: X = np.array([1] * 100).reshape(1, -1, 1)
 
-<span class="gp">In [4]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+In [4]: primitive = load_primitive('keras.Sequential.DenseSeq2Seq',
+   ...:     arguments={&quot;X&quot;: X, &quot;y&quot;: X, &quot;input_shape&quot;:(100, 1), &quot;target_shape&quot;:(100, 1), &quot;batch_size&quot;: 1, &quot;validation_split&quot;: 0})
+   ...: 
 
-<span class="gp">In [5]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;keras.Sequential.LSTMTimeSeriesRegressor&#39;</span><span class="p">,</span>
-<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;input_shape&quot;</span><span class="p">:(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;validation_split&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
-<span class="gp">   ...: </span>
+In [5]: primitive.fit()
+Epoch 1/35
 
-<span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+1/1 [==============================] - 0s 191ms/step - loss: 1.1013 - mse: 1.1013
+Epoch 2/35
 
-<span class="gp">In [7]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
-<span class="gh">Out[7]: </span><span class="go">array([[0.9941771]], dtype=float32)</span>
-</pre></div>
-</div>
+1/1 [==============================] - 0s 2ms/step - loss: 1.1179 - mse: 1.1179
+Epoch 3/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 1.0433 - mse: 1.0433
+Epoch 4/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.9743 - mse: 0.9743
+Epoch 5/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 1.1059 - mse: 1.1059
+Epoch 6/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 1.0812 - mse: 1.0812
+Epoch 7/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.9515 - mse: 0.9515
+Epoch 8/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.9364 - mse: 0.9364
+Epoch 9/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.8956 - mse: 0.8956
+Epoch 10/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.9315 - mse: 0.9315
+Epoch 11/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.9561 - mse: 0.9561
+Epoch 12/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.9437 - mse: 0.9437
+Epoch 13/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.9596 - mse: 0.9596
+Epoch 14/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.9239 - mse: 0.9239
+Epoch 15/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.8986 - mse: 0.8986
+Epoch 16/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.8959 - mse: 0.8959
+Epoch 17/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.8716 - mse: 0.8716
+Epoch 18/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.7979 - mse: 0.7979
+Epoch 19/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.8423 - mse: 0.8423
+Epoch 20/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.7714 - mse: 0.7714
+Epoch 21/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.9185 - mse: 0.9185
+Epoch 22/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.8369 - mse: 0.8369
+Epoch 23/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.8039 - mse: 0.8039
+Epoch 24/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.7507 - mse: 0.7507
+Epoch 25/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.7887 - mse: 0.7887
+Epoch 26/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.7306 - mse: 0.7306
+Epoch 27/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.7061 - mse: 0.7061
+Epoch 28/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.7019 - mse: 0.7019
+Epoch 29/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.6982 - mse: 0.6982
+Epoch 30/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.7103 - mse: 0.7103
+Epoch 31/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.7281 - mse: 0.7281
+Epoch 32/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.5426 - mse: 0.5426
+Epoch 33/35
+
+1/1 [==============================] - 0s 3ms/step - loss: 0.6375 - mse: 0.6375
+Epoch 34/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.6094 - mse: 0.6094
+Epoch 35/35
+
+1/1 [==============================] - 0s 1ms/step - loss: 0.5691 - mse: 0.5691
+
+In [6]: y_hat = primitive.produce(X=X)
+1/1 [==============================] - 0s 159ms/step
+
+In [7]: np.mean(y_hat)
+Out[7]: 0.36499435</pre>
 </div>
 
 
@@ -327,8 +423,8 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="arima.html" title="previous page">ARIMA</a>
-    <a class='right-next' id="next-link" href="LSTMSeq2Seq.html" title="next page">Dense AE</a>
+    <a class='left-prev' id="prev-link" href="LSTMSeq2Seq.html" title="previous page">Dense AE</a>
+    <a class='right-next' id="next-link" href="TadGAN.html" title="next page">TadGAN</a>
 
               </div>
               

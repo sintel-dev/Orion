@@ -39,7 +39,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="orion.primitives.timeseries_anomalies.regression_errors" href="orion.primitives.timeseries_anomalies.regression_errors.html" />
+    <link rel="next" title="orion.primitives.timeseries_preprocessing.fillna" href="orion.primitives.timeseries_preprocessing.fillna.html" />
     <link rel="prev" title="orion.primitives.tadgan.TadGAN" href="orion.primitives.tadgan.TadGAN.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -156,7 +156,15 @@
                         </li>
                     
                         <li class="">
-                            <a href="orion.primitives.timeseries_anomalies.regression_errors.html">orion.primitives.timeseries_anomalies.regression_errors</a>
+                            <a href="orion.primitives.timeseries_preprocessing.fillna.html">orion.primitives.timeseries_preprocessing.fillna</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.primitives.timeseries_errors.regression_errors.html">orion.primitives.timeseries_errors.regression_errors</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="orion.primitives.timeseries_errors.reconstruction_errors.html">orion.primitives.timeseries_errors.reconstruction_errors</a>
                         </li>
                     
                         <li class="">
@@ -211,7 +219,7 @@
 <h1>orion.primitives.tadgan.score_anomalies<a class="headerlink" href="#orion-primitives-tadgan-score-anomalies" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="orion.primitives.tadgan.score_anomalies">
-<code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">score_anomalies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">y_hat</span></em>, <em class="sig-param"><span class="n">critic</span></em>, <em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">score_window</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">critic_smooth_window</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">error_smooth_window</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rec_error_type</span><span class="o">=</span><span class="default_value">'point'</span></em>, <em class="sig-param"><span class="n">comb</span><span class="o">=</span><span class="default_value">'mult'</span></em>, <em class="sig-param"><span class="n">lambda_rec</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#score_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.score_anomalies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">score_anomalies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">y_hat</span></em>, <em class="sig-param"><span class="n">critic</span></em>, <em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">score_window</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">critic_smooth_window</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">error_smooth_window</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">smooth</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">rec_error_type</span><span class="o">=</span><span class="default_value">'point'</span></em>, <em class="sig-param"><span class="n">comb</span><span class="o">=</span><span class="default_value">'mult'</span></em>, <em class="sig-param"><span class="n">lambda_rec</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#score_anomalies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.score_anomalies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute an array of anomaly scores.</p>
 <p>Anomaly scores are calculated using a combination of reconstruction error and critic score.</p>
 <dl class="field-list simple">
@@ -227,6 +235,8 @@ If not given, 10 is used.</p></li>
 If not given, 200 is used.</p></li>
 <li><p><strong>error_smooth_window</strong> (<em>int</em>) – Optional. Size of window over which smoothing is applied to error.
 If not given, 200 is used.</p></li>
+<li><p><strong>smooth</strong> (<em>bool</em>) – Optional. Indicates whether errors should be smoothed.
+If not given, <cite>True</cite> is used.</p></li>
 <li><p><strong>rec_error_type</strong> (<em>str</em>) – Optional. The method to compute reconstruction error. Can be one of
 <cite>[“point”, “area”, “dtw”]</cite>. If not given, ‘point’ is used.</p></li>
 <li><p><strong>comb</strong> (<em>str</em>) – Optional. How to combine critic and reconstruction error. Can be one
@@ -253,7 +263,7 @@ scores. If not given, 0.5 is used.</p></li>
               <div class='prev-next-bottom'>
                 
     <a class='left-prev' id="prev-link" href="orion.primitives.tadgan.TadGAN.html" title="previous page">orion.primitives.tadgan.TadGAN</a>
-    <a class='right-next' id="next-link" href="orion.primitives.timeseries_anomalies.regression_errors.html" title="next page">orion.primitives.timeseries_anomalies.regression_errors</a>
+    <a class='right-next' id="next-link" href="orion.primitives.timeseries_preprocessing.fillna.html" title="next page">orion.primitives.timeseries_preprocessing.fillna</a>
 
               </div>
               
