@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TadGAN &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>TadGAN &#8212; Orion 0.1.7.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -305,18 +305,18 @@
 <span class="gp">   ...: </span>
 
 <span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, [Dx loss: [ 7.9698143e+00  1.2381281e-01 -8.1190970e-05  7.8460824e-01]] [Dz loss: [3.8314712  0.3876965  0.01681231 0.34269625]] [G loss: [ 1.0077161e+01 -4.1648219e-03  3.9160363e-03  1.0077410e+00]]</span>
-<span class="go">Epoch: 2/5, [Dx loss: [7.6993508e+00 1.7387053e-02 1.8887229e-03 7.6800752e-01]] [Dz loss: [3.737727   0.30061275 0.15002239 0.3287092 ]] [G loss: [ 9.801046   -0.01139848 -0.04390444  0.9856349 ]]</span>
-<span class="go">Epoch: 3/5, [Dx loss: [ 7.2601786e+00 -2.4304548e-01  4.4135880e-03  7.4988103e-01]] [Dz loss: [ 2.308426   -0.52214456  0.5038415   0.2326729 ]] [G loss: [ 9.1354952e+00 -8.4435474e-03 -3.1479391e-01  9.4587326e-01]]</span>
-<span class="go">Epoch: 4/5, [Dx loss: [ 6.7926035  -0.44929954  0.01551675  0.7226386 ]] [Dz loss: [3.1379075  0.2666599  0.5581024  0.23131451]] [G loss: [ 8.4252558e+00 -7.4240817e-03 -9.0947407e-01  9.3421537e-01]]</span>
-<span class="go">Epoch: 5/5, [Dx loss: [ 6.5304356  -0.4536519   0.02935621  0.69547313]] [Dz loss: [ 3.3717778  -0.20345122  1.5615836   0.20136455]] [G loss: [ 7.204895   -0.02436613 -1.7878841   0.90171456]]</span>
+<span class="go">Epoch: 1/5, [Dx loss: [ 7.7937112e+00  1.4225668e-01 -1.6590742e-03  7.6531136e-01]] [Dz loss: [ 1.9275064   0.20698489 -0.12399185  0.18445134]] [G loss: [1.0179558e+01 1.0471015e-03 1.8341982e-01 9.9950910e-01]]</span>
+<span class="go">Epoch: 2/5, [Dx loss: [ 7.3736377e+00 -1.4594772e-01  1.8161257e-03  7.5177693e-01]] [Dz loss: [3.449656   0.21201792 0.0849166  0.31527215]] [G loss: [ 9.8115244e+00  5.1300740e-04 -1.3529135e-01  9.9463022e-01]]</span>
+<span class="go">Epoch: 3/5, [Dx loss: [ 7.1474142e+00 -1.7246062e-01 -7.0176378e-04  7.3205769e-01]] [Dz loss: [3.3600805  0.06406344 0.3400014  0.29560155]] [G loss: [ 9.5255299e+00 -4.0855287e-03 -2.5052789e-01  9.7801435e-01]]</span>
+<span class="go">Epoch: 4/5, [Dx loss: [ 6.8488665  -0.27749172  0.01194067  0.71144176]] [Dz loss: [3.5027466  0.25340122 0.45061597 0.27987295]] [G loss: [ 8.63016    -0.00916648 -0.74439734  0.93837243]]</span>
+<span class="go">Epoch: 5/5, [Dx loss: [ 6.3910961e+00 -3.4357288e-01  2.4739439e-03  6.7321950e-01]] [Dz loss: [4.4265914  1.1664313  1.3238056  0.19363545]] [G loss: [ 7.962926   -0.02020803 -1.7235866   0.9706721 ]]</span>
 
 <span class="gp">In [6]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
 <span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.09, critic score 0.70</span>
+<span class="go">average reconstructed value: 0.07, critic score 0.58</span>
 </pre></div>
 </div>
 </div>

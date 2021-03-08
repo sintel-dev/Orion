@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>History &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>History &#8212; Orion 0.1.7.dev0 documentation</title>
     
   <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -145,7 +145,7 @@
     <ul class="nav section-nav flex-column">
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#id1" class="nav-link">0.1.5 - 2020-12-25</a><ul class="nav section-nav flex-column">
+            <a href="#id1" class="nav-link">0.1.6 - 2021-02-08</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h3">
             <a href="#issues-resolved" class="nav-link">Issues resolved</a>
@@ -155,23 +155,33 @@
         </li>
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#id2" class="nav-link">0.1.4 - 2020-10-16</a>
+            <a href="#id2" class="nav-link">0.1.5 - 2020-12-25</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#id3" class="nav-link">Issues resolved</a>
+        </li>
+    
+            </ul>
         </li>
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#id3" class="nav-link">0.1.3 - 2020-09-29</a>
+            <a href="#id4" class="nav-link">0.1.4 - 2020-10-16</a>
         </li>
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#id4" class="nav-link">0.1.2 - 2020-07-03</a>
+            <a href="#id5" class="nav-link">0.1.3 - 2020-09-29</a>
         </li>
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#id5" class="nav-link">0.1.1 - 2020-05-11</a>
+            <a href="#id6" class="nav-link">0.1.2 - 2020-07-03</a>
         </li>
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#id6" class="nav-link">0.1.0 - 2020-04-23</a>
+            <a href="#id7" class="nav-link">0.1.1 - 2020-05-11</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#id8" class="nav-link">0.1.0 - 2020-04-23</a>
         </li>
     
     </ul>
@@ -190,11 +200,34 @@
   <div class="section" id="history">
 <h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>0.1.5 - 2020-12-25<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>This version includes the new style of documentation and a revamp of the <code class="docutils literal notranslate"><span class="pre">README.md</span></code>. In addition to some minor improvements
-in the benchmark code and primitives. This release includes the transfer of <code class="docutils literal notranslate"><span class="pre">tadgan</span></code> pipeline to <code class="docutils literal notranslate"><span class="pre">verified</span></code>.</p>
+<h2>0.1.6 - 2021-02-08<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>This version introduces two new pipelines: LSTM AE and Dense AE.
+In addition to minor improvements, a bit of code refactoring took place to introduce
+a new primtive: <code class="docutils literal notranslate"><span class="pre">reconstruction_errors</span></code>.</p>
 <div class="section" id="issues-resolved">
 <h3>Issues resolved<a class="headerlink" href="#issues-resolved" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Comparison of DTW library performance - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/205">Issue #205</a> by &#64;sarahmish</p></li>
+<li><p>Not able to pickle dump tadgan pipeline - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/200">Issue #200</a> by &#64;sarahmish</p></li>
+<li><p>New pipeline LSTM and Dense autoencoders - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/194">Issue #194</a> by &#64;sarahmish</p></li>
+<li><p>Readme - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/192">Issue #192</a> by &#64;pvk-developer</p></li>
+<li><p>Unable to launch cli - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/186">Issue #186</a> by &#64;sarahmish</p></li>
+<li><p>bullet points not formatted correctly in index.rst - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/178">Issue #178</a> by &#64;micahjsmith</p></li>
+<li><p>Update notebooks - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/176">Issue #176</a> by &#64;sarahmish</p></li>
+<li><p>Inaccuracy in README.md file in orion/evaluation/ - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/157">Issue #157</a> by &#64;sarahmish</p></li>
+<li><p>Dockerfile – docker does not find orion primitives automatically - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/155">Issue #155</a> by &#64;sarahmish</p></li>
+<li><p>Primitive documentation - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/151">Issue #151</a> by &#64;sarahmish</p></li>
+<li><p>Variable name inconsistency in tadgan - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/150">Issue #150</a> by &#64;sarahmish</p></li>
+<li><p>Sync leaderboard tables between <code class="docutils literal notranslate"><span class="pre">BENCHMARK.md</span></code> and the docs - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/148">Issue #148</a> by &#64;sarahmish</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>0.1.5 - 2020-12-25<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>This version includes the new style of documentation and a revamp of the <code class="docutils literal notranslate"><span class="pre">README.md</span></code>. In addition to some minor improvements
+in the benchmark code and primitives. This release includes the transfer of <code class="docutils literal notranslate"><span class="pre">tadgan</span></code> pipeline to <code class="docutils literal notranslate"><span class="pre">verified</span></code>.</p>
+<div class="section" id="id3">
+<h3>Issues resolved<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Link with google colab - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/144">Issue #144</a> by &#64;sarahmish</p></li>
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">timeseries_anomalies</span></code> unittests - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/136">Issue #136</a> by &#64;sarahmish</p></li>
@@ -204,8 +237,8 @@ in the benchmark code and primitives. This release includes the transfer of <cod
 </ul>
 </div>
 </div>
-<div class="section" id="id2">
-<h2>0.1.4 - 2020-10-16<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2>0.1.4 - 2020-10-16<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>Minor enhancements to benchmark</p>
 <ul class="simple">
 <li><p>Load ground truth before try-catch - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/124">Issue #124</a> by &#64;sarahmish</p></li>
@@ -213,8 +246,8 @@ in the benchmark code and primitives. This release includes the transfer of <cod
 <li><p>Benchmark exceptions - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/120">Issue #120</a> by &#64;sarahmish</p></li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h2>0.1.3 - 2020-09-29<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h2>0.1.3 - 2020-09-29<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p>New benchmark and Azure primitive.</p>
 <ul class="simple">
 <li><p>Implement a benchmarking function new feature - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/94">Issue #94</a> by &#64;sarahmish</p></li>
@@ -227,8 +260,8 @@ in the benchmark code and primitives. This release includes the transfer of <cod
 <li><p>Add benchmark dataset list and parameters to s3 bucket enhancement - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/118">Issue #118</a> by &#64;sarahmish</p></li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h2>0.1.2 - 2020-07-03<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h2>0.1.2 - 2020-07-03<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <p>New Evaluation sub-package and refactor TadGAN.</p>
 <ul class="simple">
 <li><p>Two bugs when saving signalrun if there is no event detected - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/92">Issue #92</a> by &#64;dyuliu</p></li>
@@ -239,16 +272,16 @@ in the benchmark code and primitives. This release includes the transfer of <cod
 <li><p>Scoring function for intervals of size one - <a class="reference external" href="https://github.com/signals-dev/Orion/issues/76">Issue #76</a> by &#64;sarahmish</p></li>
 </ul>
 </div>
-<div class="section" id="id5">
-<h2>0.1.1 - 2020-05-11<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h2>0.1.1 - 2020-05-11<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <p>New class and function based interfaces.</p>
 <ul class="simple">
 <li><p>Implement the Orion Class - <a class="reference external" href="https://github.com/D3-AI/Orion/issues/79">Issue #79</a> by &#64;csala</p></li>
 <li><p>Implement new functional interface - <a class="reference external" href="https://github.com/D3-AI/Orion/issues/80">Issue #80</a> by &#64;csala</p></li>
 </ul>
 </div>
-<div class="section" id="id6">
-<h2>0.1.0 - 2020-04-23<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h2>0.1.0 - 2020-04-23<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <p>First Orion release to PyPI: <a class="reference external" href="https://pypi.org/project/orion-ml/">https://pypi.org/project/orion-ml/</a></p>
 </div>
 </div>

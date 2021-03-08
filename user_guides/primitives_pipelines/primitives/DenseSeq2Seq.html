@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dense AE &#8212; Orion 0.1.6.dev0 documentation</title>
+    <title>Dense AE &#8212; Orion 0.1.7.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="TadGAN" href="TadGAN.html" />
-    <link rel="prev" title="Dense AE" href="LSTMSeq2Seq.html" />
+    <link rel="prev" title="LSTM AE" href="LSTMSeq2Seq.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -300,121 +300,32 @@ In [2]: from mlprimitives import load_primitive
 In [3]: X = np.array([1] * 100).reshape(1, -1, 1)
 
 In [4]: primitive = load_primitive('keras.Sequential.DenseSeq2Seq',
-   ...:     arguments={&quot;X&quot;: X, &quot;y&quot;: X, &quot;input_shape&quot;:(100, 1), &quot;target_shape&quot;:(100, 1), &quot;batch_size&quot;: 1, &quot;validation_split&quot;: 0})
+   ...:     arguments={&quot;X&quot;: X, &quot;y&quot;: X, &quot;input_shape&quot;:(100, 1), &quot;target_shape&quot;:(100, 1),
+   ...:                &quot;batch_size&quot;: 1, &quot;validation_split&quot;: 0, &quot;epochs&quot;: 5})
    ...: 
 
 In [5]: primitive.fit()
-Epoch 1/35
+Epoch 1/5
 
-1/1 [==============================] - 0s 191ms/step - loss: 1.1013 - mse: 1.1013
-Epoch 2/35
+1/1 [==============================] - 0s 201ms/step - loss: 1.0677 - mse: 1.0677
+Epoch 2/5
 
-1/1 [==============================] - 0s 2ms/step - loss: 1.1179 - mse: 1.1179
-Epoch 3/35
+1/1 [==============================] - 0s 2ms/step - loss: 0.9790 - mse: 0.9790
+Epoch 3/5
 
-1/1 [==============================] - 0s 1ms/step - loss: 1.0433 - mse: 1.0433
-Epoch 4/35
+1/1 [==============================] - 0s 1ms/step - loss: 1.1946 - mse: 1.1946
+Epoch 4/5
 
-1/1 [==============================] - 0s 1ms/step - loss: 0.9743 - mse: 0.9743
-Epoch 5/35
+1/1 [==============================] - 0s 1ms/step - loss: 1.0855 - mse: 1.0855
+Epoch 5/5
 
-1/1 [==============================] - 0s 1ms/step - loss: 1.1059 - mse: 1.1059
-Epoch 6/35
+1/1 [==============================] - 0s 1ms/step - loss: 0.9996 - mse: 0.9996
 
-1/1 [==============================] - 0s 1ms/step - loss: 1.0812 - mse: 1.0812
-Epoch 7/35
+In [6]: pred = primitive.produce(X=X)
+1/1 [==============================] - 0s 169ms/step
 
-1/1 [==============================] - 0s 1ms/step - loss: 0.9515 - mse: 0.9515
-Epoch 8/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.9364 - mse: 0.9364
-Epoch 9/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.8956 - mse: 0.8956
-Epoch 10/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.9315 - mse: 0.9315
-Epoch 11/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.9561 - mse: 0.9561
-Epoch 12/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.9437 - mse: 0.9437
-Epoch 13/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.9596 - mse: 0.9596
-Epoch 14/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.9239 - mse: 0.9239
-Epoch 15/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.8986 - mse: 0.8986
-Epoch 16/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.8959 - mse: 0.8959
-Epoch 17/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.8716 - mse: 0.8716
-Epoch 18/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.7979 - mse: 0.7979
-Epoch 19/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.8423 - mse: 0.8423
-Epoch 20/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.7714 - mse: 0.7714
-Epoch 21/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.9185 - mse: 0.9185
-Epoch 22/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.8369 - mse: 0.8369
-Epoch 23/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.8039 - mse: 0.8039
-Epoch 24/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.7507 - mse: 0.7507
-Epoch 25/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.7887 - mse: 0.7887
-Epoch 26/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.7306 - mse: 0.7306
-Epoch 27/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.7061 - mse: 0.7061
-Epoch 28/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.7019 - mse: 0.7019
-Epoch 29/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.6982 - mse: 0.6982
-Epoch 30/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.7103 - mse: 0.7103
-Epoch 31/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.7281 - mse: 0.7281
-Epoch 32/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.5426 - mse: 0.5426
-Epoch 33/35
-
-1/1 [==============================] - 0s 3ms/step - loss: 0.6375 - mse: 0.6375
-Epoch 34/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.6094 - mse: 0.6094
-Epoch 35/35
-
-1/1 [==============================] - 0s 1ms/step - loss: 0.5691 - mse: 0.5691
-
-In [6]: y_hat = primitive.produce(X=X)
-1/1 [==============================] - 0s 159ms/step
-
-In [7]: np.mean(y_hat)
-Out[7]: 0.36499435</pre>
+In [7]: pred.mean()
+Out[7]: 0.03795156</pre>
 </div>
 
 
@@ -423,7 +334,7 @@ Out[7]: 0.36499435</pre>
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="LSTMSeq2Seq.html" title="previous page">Dense AE</a>
+    <a class='left-prev' id="prev-link" href="LSTMSeq2Seq.html" title="previous page">LSTM AE</a>
     <a class='right-next' id="next-link" href="TadGAN.html" title="next page">TadGAN</a>
 
               </div>

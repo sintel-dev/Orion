@@ -78,19 +78,23 @@ in the subdirectories inside the ``orion/pipelines`` folder.
 
 This is the list of pipelines available so far, which will grow over time:
 
-+--------+------------------------------------------------------+
-| name   | description                                          |
-+--------+------------------------------------------------------+
-| ARIMA  | ARIMA based pipeline                                 |
-+--------+------------------------------------------------------+
-| LSTM   | LSTM based pipeline inspired by the `NASA`_          |
-+--------+------------------------------------------------------+
-| Dummy  | Dummy pipeline for testing                           |
-+--------+------------------------------------------------------+
-| TadGAN | GAN based pipeline with reconstruction based errors  |
-+--------+------------------------------------------------------+
-| Azure  | Azure API for `Anomaly Detector`_                    |
-+--------+------------------------------------------------------+
++----------+------------------------------------------------------+
+| name     | description                                          |
++----------+------------------------------------------------------+
+| ARIMA    | ARIMA based pipeline                                 |
++----------+------------------------------------------------------+
+| LSTM     | LSTM based pipeline inspired by the `NASA`_          |
++----------+------------------------------------------------------+
+| Dummy    | Dummy pipeline for testing                           |
++----------+------------------------------------------------------+
+| TadGAN   | GAN based pipeline with reconstruction based errors  |
++----------+------------------------------------------------------+
+| LSTM AE  | Autoencoder based pipeline with LSTM layers          |
++----------+------------------------------------------------------+
+| Dense AE | Autoencoder based pipeline with Dense layers         |
++----------+------------------------------------------------------+
+| Azure    | Azure API for `Anomaly Detector`_                    |
++----------+------------------------------------------------------+
 
 Pipeline Storage
 ----------------
