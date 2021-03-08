@@ -83,6 +83,8 @@ detected = [0, 1, 1, 1, 0, 0]
 This results with the following true negative (tn), false positive (fp), false negative (fn), true positive (tp):
 
 ```python3
+from sklearn.metrics import confusion_matrix
+
 tn, fp, fn, tp = confusion_matrix(truth, detected).ravel()
 ```
 
@@ -90,7 +92,7 @@ Since we have the result of the confusion matrix, we can now compute the accurac
 
 ```python3
 # accuracy score
-tn + tp / (tn + fp + fn + tp) = 0.667
+tn + tp / (tn + fp + fn + tp) # 0.667
 ```
 
 This entire process is implemented within the point metrics
@@ -99,8 +101,8 @@ from orion.evaluation.point import point_accuracy, point_f1_score
 
 start, end = data_span
 
-point_accuracy(ground_truth, anomalies, start, end) = 0.667
-point_f1_score(ground_truth, anomalies, start, end) = 0.667
+point_accuracy(ground_truth, anomalies, start=start, end=end) # 0.667
+point_f1_score(ground_truth, anomalies, start=start, end=end) # 0.667
 ```
 
 ### Contextual Scoring
@@ -151,7 +153,7 @@ Continuing on the previous example, we do the following:
 intervals = [
     (1222819200, 1392768000),
     (1392768000, 1398729600),
-    (1398729600, 1399356001)
+    (1398729600, 1399356001),
     (1399356001, 1402423201),
     (1402423201, 1442016000)
 ]
@@ -173,41 +175,42 @@ weights = [169948800, 5961600, 626401, 3067200, 39592799]
 4. Compute the confusion matrix using labels and weights:
 
 ```python3
+from sklearn.metrics import confusion_matrix
+
 tn, fp, fn, tp = confusion_matrix(
-  truth, detected, sample_weight=weights).ravel()
+  truth, detected, sample_weight=weights, labels=[0, 1]).ravel()
 ```
 
 5. Compute a score:
 
 ```python3
 # accuracy score
-tn + tp / (tn + fp + fn + tp) = 0.959
+tn + tp / (tn + fp + fn + tp) # 0.959
 ```
 
 This entire process is implemented within the contextual metrics
 ```python3
-from orion.evaluation.contextual import contextual_accuracy, contextual_f1_score
+from orion.evaluation import contextual_accuracy, contextual_f1_score
 
 
 start, end = data_span
 
-contextual_accuracy(ground_truth, anomalies, start, end) = 0.959
-contextual_f1_score(ground_truth, anomalies, start, end) = 0.122
+contextual_accuracy(ground_truth, anomalies, start=start, end=end) # 0.959
+contextual_f1_score(ground_truth, anomalies, start=start, end=end) # 0.122
 ```
 
 #### Scoring process: Look for overlap between anomalies (overlap segment)
 
 In this methodology, we are more concerned with whether or not we were able to find an anomaly; even just a part of it. It records:
+
 * a true positive if a known anomalous window overlaps any detected windows.
 * a false negative if a known anomalous window does not overlap any detected windows.
 * a false positive if a detected window does not overlap any known anomalous region.
 
-To use this objective, we pass the method that does this counting into the `contextual` metric.
+To use this objective, we pass ``weighted=False`` in the metric method of choice.
 
 ```python3
-from orion.evaluation.common import _overlap_segment
-
 start, end = data_span
 
-contextual_f1_score(ground_truth, anomalies, start, end, weighted=True) = 1.0
+contextual_f1_score(ground_truth, anomalies, start=start, end=end, weighted=False) # 1.0
 ```

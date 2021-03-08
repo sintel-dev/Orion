@@ -9,7 +9,7 @@
    <img width=20% src="https://dai.lids.mit.edu/wp-content/uploads/2018/08/orion.png" alt=“Orion” />
    </p>
 
-|Development Status| |PyPi Shield| |Circle CI| |Travis CI Shield|
+|Development Status| |PyPi Shield| |Run Tests Shield|
 |Downloads| |Binder|
 
 Orion
@@ -41,10 +41,10 @@ Unsupervised time series anomaly detection (UTSAD)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A time series anomaly is defined as a time point or period where a system behaves unusually. Broadly speaking, there are two types of anomalies:
-‌
+
 * *point anomaly*: a single data point that has reached an unusual value.
 * *collective anomaly*: a continuous sequence of data points that are considered anomalous as a whole, even if the individual data points may not be unusual.
-‌
+
 Time series anomaly detection aims to isolate anomalous subsequences of varied lengths within time series. One of the simplest detection techniques is thresholding, which detects data points that exceed a normal range. However, many anomalies do not exceed any boundaries – for example, they may have values that are purportedly normal, but are unusual at the specific time that they occur (i.e., contextual anomalies). These anomalies are harder to identify because the context of a signal is often unclear.
 
 Machine learning for UTSAD
@@ -78,10 +78,8 @@ Explore Orion
    :target: https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha
 .. |PyPi Shield| image:: https://img.shields.io/pypi/v/orion-ml.svg
    :target: https://pypi.python.org/pypi/orion-ml
-.. |Circle CI| image:: https://circleci.com/gh/signals-dev/Orion.svg?style=shield
-   :target: https://circleci.com/gh/signals-dev/Orion
-.. |Travis CI Shield| image:: https://travis-ci.org/signals-dev/Orion.svg?branch=master
-   :target: https://travis-ci.org/signals-dev/Orion
+.. |Run Tests Shield| image:: https://github.com/signals-dev/Orion/workflows/Run%20Tests/badge.svg
+   :target: https://github.com/signals-dev/Orion/actions?query=workflow%3A%22Run+Tests%22+branch%3Amaster
 .. |Downloads| image:: https://pepy.tech/badge/orion-ml
    :target: https://pepy.tech/project/orion-ml
 .. |Binder| image:: https://mybinder.org/badge_logo.svg

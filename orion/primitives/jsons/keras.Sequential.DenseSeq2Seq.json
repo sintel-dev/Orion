@@ -1,0 +1,190 @@
+{
+    "name": "keras.Sequential.DenseSeq2Seq",
+    "contributors": [
+        "Dongyu Liu <dongyu@mit.edu>",
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "description": "Dense autoencoder.",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "mlprimitives.adapters.keras.Sequential",
+    "fit": {
+        "method": "fit",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "y",
+                "type": "array"
+            }
+        ]
+    },
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "array"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "classification": {
+                "type": "bool",
+                "default": false
+            },
+            "verbose": {
+                "type": "bool",
+                "default": true
+            },
+            "callbacks": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "keras.callbacks.EarlyStopping",
+                        "args": {
+                            "monitor": "val_loss",
+                            "patience": 10,
+                            "min_delta": 0.0003
+                        }
+                    }
+                ]
+            },
+            "validation_split": {
+                "type": "float",
+                "default": 0.2
+            },
+            "batch_size": {
+                "type": "int",
+                "default": 64
+            },
+            "input_shape": {
+                "type": "tuple",
+                "default": [
+                    250,
+                    1
+                ]
+            },
+            "target_shape": {
+                "type": "tuple",
+                "description": "Shape of target",
+                "default": [250, 1]
+            },
+            "optimizer": {
+                "type": "str",
+                "default": "keras.optimizers.Adam"
+            },
+            "loss": {
+                "type": "str",
+                "default": "keras.losses.mean_squared_error"
+            },
+            "metrics": {
+                "type": "list",
+                "default": [
+                    "mse"
+                ]
+            },
+            "epochs": {
+                "type": "int",
+                "default": 35
+            },
+            "return_sequences": {
+                "type": "bool",
+                "default": false
+            },
+            "layers": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "keras.layers.Flatten",
+                        "parameters": {
+                            "input_shape": "input_shape"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dense",
+                        "parameters": {
+                            "units": 60,
+                            "activation": "relu"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dropout",
+                        "parameters": {
+                            "rate": "dropout_1_rate"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dense",
+                        "parameters": {
+                            "units": 20,
+                            "activation": "relu"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dropout",
+                        "parameters": {
+                            "rate": "dropout_1_rate"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dense",
+                        "parameters": {
+                            "units": 60,
+                            "activation": "relu"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dropout",
+                        "parameters": {
+                            "rate": "dropout_2_rate"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Dense",
+                        "parameters": {
+                            "units": 100,
+                            "activation": "linear"
+                        }
+                    },
+                    {
+                        "class": "keras.layers.Reshape",
+                        "parameters": {
+                            "target_shape": "target_shape"
+                        }
+                    }
+                ]
+            }
+        },
+        "tunable": {
+            "dropout_1_rate": {
+                "type": "float",
+                "default": 0.3,
+                "range": [
+                    0.01,
+                    0.75
+                ]
+            },
+            "dropout_2_rate": {
+                "type": "float",
+                "default": 0.3,
+                "range": [
+                    0.01,
+                    0.75
+                ]
+            }
+        }
+    }
+}

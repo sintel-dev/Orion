@@ -43,7 +43,7 @@ In order to do so, we will have to create an instance of the `orion.Orion` class
 
 Optionally, we might want to select a pipeline other than the default one or alter the hyperparameters by the underlying MLBlocks pipeline.
 
-For example, let's select the `lstm_dynamic_threshold` pipeline and set some hyperparameters (in this case training epochs as 5).
+For example, let's select the ``lstm_dynamic_threshold`` pipeline and set some hyperparameters (in this case training epochs as 5).
 
 .. ipython:: python
     :okwarning:
@@ -112,7 +112,7 @@ For this, we will first load the known anomalies for the signal that we are usin
 
 The output will be a table in the same format as the `anomalies` one.
 
-Afterwards, we can call the `Orion.evaluate` method, passing both the data to detect anomalies and the ground truth:
+Afterwards, we can call the ``orion.evaluate`` method, passing both the data to detect anomalies and the ground truth:
 
 .. ipython:: python
     :okwarning:

@@ -213,7 +213,7 @@ def _evaluate_datasets(pipelines, datasets, hyperparameters, metrics, distribute
     return df
 
 
-def _summarize_results(df, metrics):
+def summarize_results(df, metrics):
     """ Summarize the result of benchmark.
 
     The table is summarized for according to the number of wins each pipeline
@@ -372,7 +372,7 @@ def main(cuda=False, distributed=False):
     results = benchmark(
         pipelines=pipelines, metrics=metrics, output_path=output_path, distributed=distributed)
 
-    leaderboard = _summarize_results(results, metrics)
+    leaderboard = summarize_results(results, metrics)
     output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
     leaderboard.to_csv(output_path)
 

@@ -1,22 +1,23 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import warnings   # noqa isort:skip
-warnings.filterwarnings("ignore")  # noqa isort:skip
-
 import argparse
 import getpass
 import logging
 import os
 import sys
+import warnings
 from urllib.error import HTTPError
 
 import tabulate
 
-from orion import PIPELINES
+from orion import MLBLOCKS_PIPELINES
 from orion.benchmark import benchmark
 from orion.data import load_signal
 from orion.db.explorer import OrionDBExplorer
+from orion.evaluation import CONTEXTUAL_METRICS as METRICS
+
+warnings.filterwarnings("ignore")
 
 
 def _reset(explorer, args):
@@ -151,12 +152,12 @@ def _process(explorer, args):
 
 def _evaluate(args):
     if args.all:
-        pipelines = PIPELINES
+        pipelines = MLBLOCKS_PIPELINES
     else:
         pipelines = args.pipeline
 
     scores = benchmark(pipelines=pipelines, datasets=args.signal, metrics=args.metric,
-                       rank=args.rank, holdout=args.holdout)
+                       rank=args.rank, test_split=args.holdout)
 
     if args.output:
         print('Writing results in {}'.format(args.output))
@@ -302,18 +303,18 @@ def get_parser():
                                  help='Evaluate one or more pipelines on NASA signals')
     evaluate.add_argument('-s', '--signal', action='append',
                           help='Signal to use. Use multiple times for more signals.')
-    evaluate.add_argument('-m', '--metric', action='append',
+    evaluate.add_argument('-m', '--metric', action='append', default=METRICS,
                           help='Metric to use. Use multiple times for more metrics.')
-    evaluate.add_argument('-r', '--rank', help='Rank scores based on this metric.')
+    evaluate.add_argument('-r', '--rank', default='f1', help='Rank scores based on this metric.')
     evaluate.add_argument('-o', '--output', help='Write the results in the specified CSV file.')
     evaluate.add_argument('--holdout', dest='holdout', action='store_true', default=None,
                           help='Holdout test data during training.')
     evaluate.add_argument('--no-holdout', dest='holdout', action='store_false', default=None,
                           help='Do not holdout test data curing training.')
     group = evaluate.add_mutually_exclusive_group(required=True)
+    group.add_argument('-p', '--pipeline', default=[], action='append',
+                       help='Name of the pipeline JSONs to evaluate.')
     group.add_argument('-a', '--all', action='store_true', help='Evaluate all known pipelines.')
-    group.add_argument('pipeline', default=[], nargs='*',
-                       help='Paths to the pipeline JSONs to evaluate')
 
     return parser
 
@@ -351,3 +352,7 @@ def main():
         explorer = OrionDBExplorer(args.database)
 
         args.function(explorer, args)
+
+
+if __name__ == "__main__":
+    main()

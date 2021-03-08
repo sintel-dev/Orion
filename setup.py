@@ -28,8 +28,13 @@ install_requires = [
     'scikit-learn>=0.20.1,<0.21',
     'tabulate>=0.8.3,<0.9',
     'Keras>=2.1.6,<2.4',
-    'similaritymeasures>=0.4.3',
-    'azure-cognitiveservices-anomalydetector>0.2,<=0.3'
+    'numba>=0.48,<0.52',
+    'pyts>=0.9,<0.11',
+    'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
+
+    # fix conflict
+    'h5py<2.11.0,>=2.10.0',
+    'urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1'
 ]
 
 setup_requires = [
@@ -57,7 +62,7 @@ development_requires = [
     'ipython>=6.5,<7.5',
 
     # style check
-    'flake8>=3.7.7,<3.8',
+    'flake8>=3.7.7,<4',
     'isort>=4.3.4,<5',
 
     # fix style issues
@@ -115,6 +120,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/D3-AI/Orion',
-    version='0.1.5',
+    version='0.1.6.dev1',
     zip_safe=False,
 )

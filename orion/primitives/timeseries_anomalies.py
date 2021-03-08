@@ -1,42 +1,11 @@
 """
 Time Series anomaly detection functions.
-Implementation inspired by the paper https://arxiv.org/pdf/1802.04431.pdf
+Some of the implementation is inspired by the paper https://arxiv.org/pdf/1802.04431.pdf
 """
 
 import numpy as np
 import pandas as pd
 from scipy.optimize import fmin
-
-
-def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True):
-    """Compute an array of absolute errors comparing predictions and expected output.
-
-    If smooth is True, apply EWMA to the resulting array of errors.
-
-    Args:
-        y (ndarray):
-            Ground truth.
-        y_hat (ndarray):
-            Predicted values.
-        smoothing_window (float):
-            Optional. Size of the smoothing window, expressed as a proportion of the total
-            length of y. If not given, 0.01 is used.
-        smooth (bool):
-            Optional. Indicates whether the returned errors should be smoothed with EWMA.
-            If not given, `True` is used.
-
-    Returns:
-        ndarray:
-            Array of errors.
-    """
-    errors = np.abs(y - y_hat)[:, 0]
-
-    if not smooth:
-        return errors
-
-    smoothing_window = int(smoothing_window * len(y))
-
-    return pd.Series(errors).ewm(span=smoothing_window).mean().values
 
 
 def deltas(errors, epsilon, mean, std):
