@@ -2,7 +2,7 @@
 
 __author__ = """MIT Data To AI Lab"""
 __email__ = 'dailabmit@gmail.com'
-__version__ = '0.1.6.dev0'
+__version__ = '0.1.6.dev1'
 
 import os
 
