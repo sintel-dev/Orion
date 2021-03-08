@@ -46,6 +46,10 @@
               "type": "int",
               "default": 2000
           },
+          "verbose": {
+              "type": "bool",
+              "default": true
+          },
           "shape": {
               "type": "tuple",
               "default": [100, 1]
@@ -93,6 +97,27 @@
           "generator_reshape_shape": {
               "type": "tuple",
               "default": [50, 1]
+          },
+          "callbacks": {
+              "type": "list",
+              "default": [
+                  {
+                      "class": "keras.callbacks.EarlyStopping",
+                      "args": {
+                          "monitor": "val_EG_loss",
+                          "patience": 10,
+                          "min_delta": 0.0003
+                      }
+                  }
+              ]
+          },
+          "validation_split": {
+              "type": "float",
+              "default": 0.2
+          },
+          "shuffle": {
+              "type": "bool",
+              "default": true
           },
           "layers_encoder": {
               "type": "list",

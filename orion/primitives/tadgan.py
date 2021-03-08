@@ -36,7 +36,8 @@ class TadGAN(tf.keras.Model):
     def __init__(self, shape, encoder_input_shape, generator_input_shape, critic_x_input_shape,
                  critic_z_input_shape, layers_encoder, layers_generator, layers_critic_x,
                  layers_critic_z, optimizer, learning_rate=0.0005, epochs=2000, latent_dim=20,
-                 batch_size=64, iterations_critic=5, **hyperparameters):
+                 batch_size=64, iterations_critic=5, validation_split=0.2, callbacks=tuple(), 
+                 shuffle=True, verbose=True, **hyperparameters):
         """Initialize the TadGAN object.
 
         Args:
@@ -71,6 +72,9 @@ class TadGAN(tf.keras.Model):
             iterations_critic (int):
                 Optional. Integer denoting the number of critic training steps per one
                 Generator/Encoder training step. Default 5.
+            validation_split (float): Optional. Float between 0 and 1. Fraction of the training 
+                data to be used as validation data. Default 0.2.
+            callacks (tuple): Optional. List of callbacks to apply during training.
             hyperparameters (dictionary):
                 Optional. Dictionary containing any additional inputs.
         """
@@ -80,9 +84,17 @@ class TadGAN(tf.keras.Model):
         self.latent_dim = latent_dim
         self.iterations_critic = iterations_critic
         self.epochs = epochs
+        self.shuffle = shuffle
+        self.verbose = verbose
+        self.validation_split = validation_split
         self.hyperparameters = hyperparameters
 
         self.optimizer = import_object(optimizer)(learning_rate)
+
+        for callback in callbacks:
+            callback['class'] = import_object(callback['class'])
+
+        self.callbacks = callbacks
 
         self.encoder_input_shape = encoder_input_shape
         self.generator_input_shape = generator_input_shape
@@ -100,11 +112,6 @@ class TadGAN(tf.keras.Model):
                                           self.critic_x_input_shape, name='critic_x')
         self.critic_z = self._build_model(hyperparameters, self.layers_critic_z,
                                           self.critic_z_input_shape, name='critic_z')
-
-        print(self.encoder.summary())
-        print(self.generator.summary())
-        print(self.critic_x.summary())
-        print(self.critic_z.summary())
 
         self.gp_weight = 10
         self.cycle_weight = 10
@@ -124,23 +131,23 @@ class TadGAN(tf.keras.Model):
     def gradient_penalty(self, critic, batch_size, inputs):
         """ Calculates the gradient penalty.
 
-        This loss is calculated on an interpolated image
+        This loss is calculated on an interpolated signal
         and added to the discriminator loss.
 
         Args:
             inputs[0] x     original input
             inputs[1] x_    predicted input
         """
-        # Get the interpolated image
+        # Get the interpolated signal
         alpha = tf.random.uniform([batch_size, 1, 1])
         interpolated = (alpha * inputs[0]) + ((1 - alpha) * inputs[1])
 
         with tf.GradientTape() as gp_tape:
             gp_tape.watch(interpolated)
-            # 1. Get the discriminator output for this interpolated image.
+            # 1. Get the critic output for this interpolated signal.
             pred = critic(interpolated, training=True)
 
-        # 2. Calculate the gradients w.r.t to this interpolated image.
+        # 2. Calculate the gradients w.r.t to this interpolated signal.
         grads = gp_tape.gradient(pred, [interpolated])[0]
         # 3. Calculate the norm of the gradients.
         norm = tf.sqrt(tf.reduce_sum(tf.square(grads), axis=np.arange(1, len(grads.shape))))
@@ -148,123 +155,102 @@ class TadGAN(tf.keras.Model):
         return gp
 
     @tf.function
-    def train_step(self, batch):
-        if isinstance(batch, tuple):
-            batch = batch[0]
+    def train_step(self, X):
+        if isinstance(X, tuple):
+            X = X[0]
 
-        batch_size = tf.shape(batch)[0]
+        batch_size = tf.shape(X)[0]
         mini_batch_size = batch_size // self.iterations_critic
 
         fake = tf.ones((mini_batch_size, 1))
         valid = -tf.ones((mini_batch_size, 1))
 
-        batch_eg_loss = []
         batch_cx_loss = []
         batch_cz_loss = []
 
-        print("STEP 0")
-
         # Train the critics
         for j in range(self.iterations_critic):
-            # x = batch
-            x = batch[j * mini_batch_size: (j + 1) * mini_batch_size]
+            x = X[j * mini_batch_size: (j + 1) * mini_batch_size]
             z = tf.random.normal(shape=(mini_batch_size, self.latent_dim, 1))
 
-            print("STEP 1")
             with tf.GradientTape(persistent=True) as tape:
                 x_ = self.generator(z, training=True)  # z -> x
                 z_ = self.encoder(x, training=True)  # x -> z
 
-                print("STEP 2")
                 cx_real = self.critic_x(x, training=True)
                 cx_fake = self.critic_x(x_, training=True)
 
-                print("STEP 3")
                 cz_real = self.critic_z(z, training=True)
                 cz_fake = self.critic_z(z_, training=True)
 
                 # Calculate loss real
-                print("STEP 4")
-                cx_real_cost = self.critic_x_loss_fn(valid, cx_real)
-                cz_real_cost = self.critic_z_loss_fn(valid, cz_real)
+                cx_real_cost = self.critic_x_loss_fn(cx_real, valid)
+                cz_real_cost = self.critic_z_loss_fn(cz_real, valid)
 
                 # Calculate loss fake
-                print("STEP 5")
-                cx_fake_cost = self.critic_x_loss_fn(fake, cx_fake)
-                cz_fake_cost = self.critic_z_loss_fn(fake, cz_fake)
+                cx_fake_cost = self.critic_x_loss_fn(cx_fake, fake)
+                cz_fake_cost = self.critic_z_loss_fn(cz_fake, fake)
 
                 # Calculate the gradient penalty
-                print("STEP 6")
                 cx_gp = self.gradient_penalty(self.critic_x, mini_batch_size, (x, x_))
                 cz_gp = self.gradient_penalty(self.critic_z, mini_batch_size, (z, z_))
 
                 # Add the gradient penalty to the original loss
-                print("STEP 7")
                 cx_loss = cx_real_cost + cx_fake_cost + cx_gp * self.gp_weight
                 cz_loss = cz_real_cost + cz_fake_cost + cz_gp * self.gp_weight
 
             # Get the gradients for the critics
-            print("STEP 8")
             cx_grads = tape.gradient(cx_loss, self.critic_x.trainable_weights)
             cz_grads = tape.gradient(cz_loss, self.critic_z.trainable_weights)
 
-            # Update the weights of the discriminators
-            print("STEP 9")
+            # Update the weights of the critics
             self.optimizer.apply_gradients(zip(cx_grads, self.critic_x.trainable_weights))
             self.optimizer.apply_gradients(zip(cz_grads, self.critic_z.trainable_weights))
 
             # Record loss
-            print("STEP 10")
             batch_cx_loss.append([cx_loss, cx_real_cost, cx_fake_cost, cx_gp])
             batch_cz_loss.append([cz_loss, cz_real_cost, cz_fake_cost, cz_gp])
 
         with tf.GradientTape() as tape:
-            print("STEP 11")
             x_ = self.generator(z, training=True)  # z -> x
             z_ = self.encoder(x, training=True)  # x -> z
             cycled_x = self.generator(z_, training=True)  # x -> z -> x
 
-            print("STEP 12")
             cx_fake = self.critic_x(x_, training=True)
             cz_fake = self.critic_z(z_, training=True)
 
-            # Generator/encoder adverserial loss
-            print("STEP 13")
-            x_cost = self.encoder_generator_loss_fn(valid, cx_fake)
-            z_cost = self.encoder_generator_loss_fn(valid, cz_fake)
+            # Generator/encoder loss
+            x_cost = self.encoder_generator_loss_fn(cx_fake, valid)
+            z_cost = self.encoder_generator_loss_fn(cz_fake, valid)
 
             # Generator/encoder cycle loss
-            print("STEP 14")
-            cycle_loss = self.cycle_loss_fn(x, cycled_x)
+            cycle_loss = self.cycle_loss_fn(cycled_x, x)
 
             # Total loss
-            print("STEP 15")
             eg_loss = x_cost + z_cost + self.cycle_weight * cycle_loss
 
-        # Get the gradients for the generators
-        print("STEP 16")
+        # Get the gradients for the encoder/generator
         encoder_generator_grads = tape.gradient((eg_loss, x_cost, z_cost, cycle_loss),
                                                 self.encoder.trainable_variables + self.generator.trainable_variables)
 
-        # Update the weights of the generators
-        print("STEP 17")
+        # Update the weights of the encoder/generator
         self.optimizer.apply_gradients(
             zip(encoder_generator_grads, self.encoder.trainable_variables + self.generator.trainable_variables))
 
         batch_eg_loss = (eg_loss, x_cost, z_cost, cycle_loss)
 
         return {
-            # "Dx loss": tf.reduce_mean(batch_cx_loss, axis=0)[0],
-            # "Dz loss": tf.reduce_mean(batch_cz_loss, axis=0)[0],
-            "EG loss": batch_eg_loss[0]
+            "Cx_loss": np.mean(np.array(batch_cx_loss), axis=1)[0],
+            "Cz_loss": np.mean(np.array(batch_cz_loss), axis=1)[0],
+            "EG_loss": batch_eg_loss[0]
         }
 
     @tf.function
-    def test_step(self, X):
-        if isinstance(batch, tuple):
-            batch = batch[0]
+    def test_step(self, x):
+        if isinstance(x, tuple):
+            x = x[0]
 
-        batch_size = tf.shape(batch)[0]
+        batch_size = tf.shape(x)[0]
 
         # Prepare data
         fake = tf.ones((batch_size, 1))
@@ -283,45 +269,33 @@ class TadGAN(tf.keras.Model):
         cz_fake = self.critic_z(z_)
 
         # Calculate losses
-        cx_real_cost = self.critic_x_loss_fn(valid, cx_real)
-        cz_real_cost = self.critic_z_loss_fn(valid, cz_real)
+        cx_real_cost = self.critic_x_loss_fn(cx_real, valid)
+        cz_real_cost = self.critic_z_loss_fn(cz_real, valid)
 
-        cx_fake_cost = self.critic_x_loss_fn(fake, cx_fake)
-        cz_fake_cost = self.critic_z_loss_fn(fake, cz_fake)
+        cx_fake_cost = self.critic_x_loss_fn(cx_fake, fake)
+        cz_fake_cost = self.critic_z_loss_fn(cz_fake, fake)
 
         cx_gp = self.gradient_penalty(self.critic_x, batch_size, (x, x_))
         cz_gp = self.gradient_penalty(self.critic_z, batch_size, (z, z_))
 
-        g_cost = self.generator_loss_fn(valid, cx_fake)
-        e_cost = self.encoder_loss_fn(valid, cz_fake)
+        x_cost = self.encoder_generator_loss_fn(cx_fake, valid)
+        z_cost = self.encoder_generator_loss_fn(cz_fake, valid)
 
-        cycle_loss = self.cycle_loss_fn(x, cycled_x)
+        cycle_loss = self.cycle_loss_fn(cycled_x, x)
 
         # Loss combination
         cx_loss = cx_real_cost + cx_fake_cost + cx_gp * self.gp_weight
         cz_loss = cz_real_cost + cz_fake_cost + cz_gp * self.gp_weight
-        eg_loss = g_cost + e_cost + self.cycle_weight * cycle_loss
+        eg_loss = x_cost + z_cost + self.cycle_weight * cycle_loss
 
         return {
-            "Dx loss": cx_loss,
-            "Dz loss": cz_loss,
-            "EG loss": eg_loss
+            "Cx_loss": cx_loss,
+            "Cz_loss": cz_loss,
+            "EG_loss": eg_loss
         }
 
     @tf.function
     def call(self, X):
-        """Predict values using the initialized object.
-
-        Args:
-            X (ndarray):
-                N-dimensional array containing the input sequences for the model.
-
-        Returns:
-            ndarray:
-                N-dimensional array containing the reconstructions for each input sequence.
-            ndarray:
-                N-dimensional array containing the critic scores for each input sequence.
-        """
         z_ = self.encoder(X)
         y_hat = self.generator(z_)
         critic = self.critic_x(X)
@@ -335,12 +309,26 @@ class TadGAN(tf.keras.Model):
             X (ndarray):
                 N-dimensional array containing the input training sequences for the model.
         """
-        train = X.copy()
+        valid_length = round(len(X) * self.validation_split)
+        train = X[:-valid_length].copy()
+        valid = X[-valid_length:].copy()
+
         train = train.astype(np.float32)
         train = tf.data.Dataset.from_tensor_slices(train).shuffle(train.shape[0])
         train = train.batch(self.batch_size, drop_remainder=True)
 
-        super().fit(train, batch_size=self.batch_size, verbose=True, epochs=2, **kwargs)
+        valid = valid.astype(np.float32)
+        valid = tf.data.Dataset.from_tensor_slices(valid).shuffle(valid.shape[0])
+        valid = valid.batch(self.batch_size, drop_remainder=True)
+
+        callbacks = [
+            callback['class'](**callback.get('args', dict()))
+            for callback in self.callbacks
+        ]
+
+        super().fit(train, validation_data=valid, epochs=self.epochs, verbose=self.verbose,
+                       callbacks=callbacks, batch_size=self.batch_size,
+                       shuffle=self.shuffle, **kwargs)
 
     def predict(self, X):
         """Predict values using the initialized object.
@@ -355,7 +343,7 @@ class TadGAN(tf.keras.Model):
             ndarray:
                 N-dimensional array containing the critic scores for each input sequence.
         """
-        return self.model(X)
+        return self.call(X)
 
 
 def _compute_critic_score(critics, smooth_window):
