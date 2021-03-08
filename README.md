@@ -113,9 +113,12 @@ We run the benchmark on **11** datasets with their known grounth truth. We recor
 
 | Pipeline                  |  Outperforms ARIMA |
 |---------------------------|--------------------|
-| TadGAN                    |          7         |
-| LSTM Dynamic Thresholding |          5         |
+| TadGAN                    |          8         |
+| LSTM Dynamic Thresholding |          8         |
+| LSTM Autoencoder          |          7         |
+| Dense Autoencoder         |          7         |
 | Azure                     |          0         |
+
 
 You can find the scores of each pipeline on every signal recorded in the [details Google Sheets document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing). The summarized results can also be browsed in the following [summary Google Sheets document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
 

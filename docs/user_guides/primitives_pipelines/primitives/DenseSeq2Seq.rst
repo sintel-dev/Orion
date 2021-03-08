@@ -51,8 +51,9 @@ argument                type                description
     X = np.array([1] * 100).reshape(1, -1, 1)
 
     primitive = load_primitive('keras.Sequential.DenseSeq2Seq', 
-        arguments={"X": X, "y": X, "input_shape":(100, 1), "target_shape":(100, 1), "batch_size": 1, "validation_split": 0})
+        arguments={"X": X, "y": X, "input_shape":(100, 1), "target_shape":(100, 1), 
+                   "batch_size": 1, "validation_split": 0, "epochs": 5})
 
     primitive.fit()
-    y_hat = primitive.produce(X=X)
-    np.mean(y_hat)
+    pred = primitive.produce(X=X)
+    pred.mean()
