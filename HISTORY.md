@@ -1,6 +1,27 @@
 History
 =======
 
+## 0.1.6 - 2021-02-08
+
+This version introduces two new pipelines: LSTM AE and Dense AE.
+In addition to minor improvements, a bit of code refactoring took place to introduce
+a new primtive: ``reconstruction_errors``.
+
+### Issues resolved
+* Comparison of DTW library performance - [Issue #205](https://github.com/signals-dev/Orion/issues/205) by @sarahmish
+* Not able to pickle dump tadgan pipeline - [Issue #200](https://github.com/signals-dev/Orion/issues/200) by @sarahmish
+* New pipeline LSTM and Dense autoencoders - [Issue #194](https://github.com/signals-dev/Orion/issues/194) by @sarahmish
+* Readme - [Issue #192](https://github.com/signals-dev/Orion/issues/192) by @pvk-developer
+* Unable to launch cli - [Issue #186](https://github.com/signals-dev/Orion/issues/186) by @sarahmish
+* bullet points not formatted correctly in index.rst - [Issue #178](https://github.com/signals-dev/Orion/issues/178) by @micahjsmith
+* Update notebooks - [Issue #176](https://github.com/signals-dev/Orion/issues/176) by @sarahmish
+* Inaccuracy in README.md file in orion/evaluation/ - [Issue #157](https://github.com/signals-dev/Orion/issues/157) by @sarahmish
+* Dockerfile -- docker does not find orion primitives automatically - [Issue #155](https://github.com/signals-dev/Orion/issues/155) by @sarahmish
+* Primitive documentation - [Issue #151](https://github.com/signals-dev/Orion/issues/151) by @sarahmish
+* Variable name inconsistency in tadgan - [Issue #150](https://github.com/signals-dev/Orion/issues/150) by @sarahmish
+* Sync leaderboard tables between `BENCHMARK.md` and the docs - [Issue #148](https://github.com/signals-dev/Orion/issues/148) by @sarahmish
+
+
 ## 0.1.5 - 2020-12-25
 
 This version includes the new style of documentation and a revamp of the `README.md`. In addition to some minor improvements
