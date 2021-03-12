@@ -70,7 +70,7 @@
               "type": "int",
               "default": 64
           },
-          "n_critic": {
+          "iterations_critic": {
               "type": "int",
               "default": 5
           },

@@ -1,0 +1,68 @@
+{
+    "name": "orion.primitives.timeseries_errors.reconstruction_errors",
+    "contributors": [
+        "Alexander Geiger <geigera@mit.edu>",
+        "Dongyu Liu <dongyu@mit.edu>",
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "description": "Compute an array of reconstruction errors comparing predictions and expected output.",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "feature_extractor"
+    },
+    "modalities": [
+        "timeseries"
+    ],
+    "primitive": "orion.primitives.timeseries_errors.reconstruction_errors",
+    "produce": {
+        "args": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "y_hat",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "errors",
+                "type": "ndarray"
+            },
+            {
+                "name": "predictions",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "step_size": {
+                "type": "int",
+                "default": 1
+            },
+            "smooth": {
+                "type": "bool",
+                "default": true
+            }
+        },
+        "tunable": {
+            "score_window": {
+                "type": "int",
+                "default": 10,
+                "range": [2, 200]
+            },
+            "smoothing_window": {
+                "type": "float",
+                "default": 0.01,
+                "range": [0.001, 0.1]
+            },
+            "rec_error_type": {
+                "type": "str",
+                "default": "point",
+                "options": ["point", "area", "dtw"]
+            }
+        }
+    }
+}

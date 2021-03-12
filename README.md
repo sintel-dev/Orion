@@ -9,8 +9,7 @@
 
 [![Development Status](https://img.shields.io/badge/Development%20Status-2%20--%20Pre--Alpha-yellow)](https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha)
 [![PyPi Shield](https://img.shields.io/pypi/v/orion-ml.svg)](https://pypi.python.org/pypi/orion-ml)
-[![CircleCI](https://circleci.com/gh/signals-dev/Orion.svg?style=shield)](https://circleci.com/gh/signals-dev/Orion)
-[![Travis CI Shield](https://travis-ci.org/signals-dev/Orion.svg?branch=master)](https://travis-ci.org/signals-dev/Orion)
+[![Tests](https://github.com/signals-dev/Orion/workflows/Run%20Tests/badge.svg)](https://github.com/signals-dev/Orion/actions?query=workflow%3A%22Run+Tests%22+branch%3Amaster)
 [![Downloads](https://pepy.tech/badge/orion-ml)](https://pepy.tech/project/orion-ml)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/signals-dev/Orion/master?filepath=notebooks)
 
@@ -52,7 +51,7 @@ In the following example we show how to use one of the **Orion Pipelines**.
 
 ## Fit an Orion pipeline
 
-We will load a demo data for this example: 
+We will load a demo data for this example:
 
 ```python3
 from orion.data import load_signal
@@ -91,7 +90,7 @@ orion = Orion(
 orion.fit(train_data)
 ```
 
-## Detect anomalies using the fitted pipeline 
+## Detect anomalies using the fitted pipeline
 Once it is fitted, we are ready to use it to detect anomalies in our incoming time series:
 
 ```python3
@@ -103,13 +102,46 @@ anomalies = orion.detect(new_data)
 The output of the previous command will be a ``pandas.DataFrame`` containing a table of detected anomalies:
 
 ```
-        start         end     score
+        start         end  severity
 0  1394323200  1399701600  0.673494
 ```
+
+# Leaderboard
+In every release, we run Orion benchmark. We maintain an up-to-date leaderboard with the current scoring of the verified pipelines according to the benchmarking procedure.
+
+We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline.
+
+| Pipeline                  |  Outperforms ARIMA |
+|---------------------------|--------------------|
+| TadGAN                    |          8         |
+| LSTM Dynamic Thresholding |          8         |
+| LSTM Autoencoder          |          7         |
+| Dense Autoencoder         |          7         |
+| Azure                     |          0         |
+
+
+You can find the scores of each pipeline on every signal recorded in the [details Google Sheets document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing). The summarized results can also be browsed in the following [summary Google Sheets document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
 
 # Resources
 
 Additional resources that might be of interest:
-* Learn about [benchmarking pipelines](BENCHMARK.md). 
+* Learn about [benchmarking pipelines](BENCHMARK.md).
 * Read about [pipeline evaluation](orion/evaluation/README.md).
 * More about [database design](DATABASE.md).
+* Find out more about [TadGAN](https://arxiv.org/pdf/2009.07769v3.pdf).
+
+# Citation
+
+If you use **Orion** for your research, please consider citing the following paper:
+
+Alexander Geiger, Dongyu Liu, Sarah Alnegheimish, Alfredo Cuesta-Infante, Kalyan Veeramachaneni. [TadGAN - Time Series Anomaly Detection Using Generative Adversarial Networks](https://arxiv.org/pdf/2009.07769v3.pdf).
+
+```
+@inproceedings{geiger2020tadgan,
+  title={TadGAN: Time Series Anomaly Detection Using Generative Adversarial Networks},
+  author={Geiger, Alexander and Liu, Dongyu and Alnegheimish, Sarah and Cuesta-Infante, Alfredo and Veeramachaneni, Kalyan},
+  booktitle={2020 IEEE International Conference on Big Data (IEEE BigData)},
+  organization={IEEE},
+  year={2020}
+}
+```

@@ -123,6 +123,14 @@ coverage: ## check code coverage quickly with the default Python
 	$(BROWSER) htmlcov/index.html
 
 
+.PHONY: check-dependencies
+check-dependencies: ## test if there are any broken dependencies
+	pip check
+
+.PHONY: test-devel
+test-devel: check-dependencies lint docs ## test everything that needs development dependencies
+
+
 # DOCS TARGETS
 
 .PHONY: docs
@@ -264,7 +272,10 @@ docker-jupyter-load: ## Load the orion-jupyter image from orion-jupyter.tar
 
 .PHONY: docker-jupyter-run
 docker-jupyter-run: ## Run the orion-jupyter image in editable mode
-	docker run --rm -v $(shell pwd):/app -ti -p8888:8888 --name orion-jupyter orion-jupyter
+	docker run --rm \
+		-v $(shell pwd)/orion:/app/orion \
+		-v $(shell pwd)/notebooks:/app/notebooks \
+		-ti -p8888:8888 --name orion-jupyter orion-jupyter
 
 .PHONY: docker-jupyter-start
 docker-jupyter-start: ## Start the orion-jupyter image as a daemon

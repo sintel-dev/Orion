@@ -1,0 +1,50 @@
+{
+    "name": "orion.primitives.timeseries_preprocessing.fillna",
+    "contributors": ["Sarah Alnegheimiish <smish@mit.edu>"],
+    "documentation": "",
+    "description": "Fill missing values with the last known value.",
+    "classifiers": {
+        "type": "preprocessor",
+        "subtype": "transformer"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.timeseries_preprocessing.fillna",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "value": {
+                "type": "int",
+                "default": null
+            },
+            "method": {
+                "type": "str",
+                "default": null
+            },
+            "axis": {
+                "type": "int",
+                "default": null
+            },
+            "limit": {
+                "type": "int",
+                "default": null
+            },
+            "downcast": {
+                "type": "dict",
+                "default": null
+            }
+        }
+    }
+}

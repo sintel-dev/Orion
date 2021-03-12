@@ -23,7 +23,8 @@ install_requires = [
     'mongoengine>=0.16.3,<0.17',
     'pymongo>=3.7.2,<4',
     'tabulate>=0.8.3,<0.9',
-    'similaritymeasures>=0.4.3',
+    'numba>=0.48,<0.52',
+    'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     # tensorflow installation
     # 'tensorflow>=2.3,<2.4',
@@ -55,7 +56,7 @@ development_requires = [
     'ipython>=6.5,<7.5',
 
     # style check
-    'flake8>=3.7.7,<3.8',
+    'flake8>=3.7.7,<4',
     'isort>=4.3.4,<5',
 
     # fix style issues
@@ -113,6 +114,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/D3-AI/Orion',
-    version='0.1.6.dev0',
+    version='0.1.7.dev0',
     zip_safe=False,
 )
