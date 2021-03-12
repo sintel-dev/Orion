@@ -3,14 +3,13 @@
 import logging
 import math
 import tempfile
-from functools import partial
 
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 from mlprimitives.adapters.keras import build_layer
 from mlprimitives.utils import import_object
-from scipy import integrate, stats
+from scipy import stats
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Sequential
@@ -34,7 +33,7 @@ class TadGAN(tf.keras.Model):
 
         for network in networks:
             with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=True) as fd:
-                keras.models.save_model(state.pop(network), fd.name, overwrite=True)
+                tf.keras.models.save_model(state.pop(network), fd.name, overwrite=True)
 
                 state[network + '_str'] = fd.read()
 
@@ -47,7 +46,7 @@ class TadGAN(tf.keras.Model):
                 fd.write(state.pop(network + '_str'))
                 fd.flush()
 
-                state[network] = keras.models.load_model(fd.name)
+                state[network] = tf.keras.models.load_model(fd.name)
 
         self.__dict__ = state
 
@@ -67,7 +66,7 @@ class TadGAN(tf.keras.Model):
     def __init__(self, shape, encoder_input_shape, generator_input_shape, critic_x_input_shape,
                  critic_z_input_shape, layers_encoder, layers_generator, layers_critic_x,
                  layers_critic_z, optimizer, learning_rate=0.0005, epochs=2000, latent_dim=20,
-                 batch_size=64, iterations_critic=5, validation_split=0.2, callbacks=tuple(), 
+                 batch_size=64, iterations_critic=5, validation_split=0.2, callbacks=tuple(),
                  shuffle=True, verbose=True, **hyperparameters):
         """Initialize the TadGAN object.
 
@@ -103,7 +102,7 @@ class TadGAN(tf.keras.Model):
             iterations_critic (int):
                 Optional. Integer denoting the number of critic training steps per one
                 Generator/Encoder training step. Default 5.
-            validation_split (float): Optional. Float between 0 and 1. Fraction of the training 
+            validation_split (float): Optional. Float between 0 and 1. Fraction of the training
                 data to be used as validation data. Default 0.2.
             callacks (tuple): Optional. List of callbacks to apply during training.
             hyperparameters (dictionary):
@@ -263,11 +262,13 @@ class TadGAN(tf.keras.Model):
 
         # Get the gradients for the encoder/generator
         encoder_generator_grads = tape.gradient((eg_loss, x_cost, z_cost, cycle_loss),
-                                                self.encoder.trainable_variables + self.generator.trainable_variables)
+                                                self.encoder.trainable_variables +
+                                                self.generator.trainable_variables)
 
         # Update the weights of the encoder/generator
         self.optimizer.apply_gradients(
-            zip(encoder_generator_grads, self.encoder.trainable_variables + self.generator.trainable_variables))
+            zip(encoder_generator_grads, self.encoder.trainable_variables +
+                self.generator.trainable_variables))
 
         batch_eg_loss = (eg_loss, x_cost, z_cost, cycle_loss)
 
@@ -359,8 +360,8 @@ class TadGAN(tf.keras.Model):
         ]
 
         super().fit(train, validation_data=valid, epochs=self.epochs, verbose=self.verbose,
-                       callbacks=callbacks, batch_size=self.batch_size,
-                       shuffle=self.shuffle, **kwargs)
+                    callbacks=callbacks, batch_size=self.batch_size,
+                    shuffle=self.shuffle, **kwargs)
 
     def predict(self, X):
         """Predict values using the initialized object.
