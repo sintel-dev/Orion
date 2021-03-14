@@ -342,22 +342,28 @@ class TadGAN(tf.keras.Model):
             X (ndarray):
                 N-dimensional array containing the input training sequences for the model.
         """
-        valid_length = round(len(X) * self.validation_split)
-        train = X[:-valid_length].copy()
-        valid = X[-valid_length:].copy()
+        if self.validation_split > 0:
+            valid_length = round(len(X) * self.validation_split)
+            train = X[:-valid_length].copy()
+            valid = X[-valid_length:].copy()
+
+            valid = valid.astype(np.float32)
+            valid = tf.data.Dataset.from_tensor_slices(valid).shuffle(valid.shape[0])
+            valid = valid.batch(self.batch_size, drop_remainder=True)
+
+            callbacks = [
+                callback['class'](**callback.get('args', dict()))
+                for callback in self.callbacks
+            ]
+
+        else:
+            train = X.copy()
+            valid = None
+            callbacks = None
 
         train = train.astype(np.float32)
         train = tf.data.Dataset.from_tensor_slices(train).shuffle(train.shape[0])
         train = train.batch(self.batch_size, drop_remainder=True)
-
-        valid = valid.astype(np.float32)
-        valid = tf.data.Dataset.from_tensor_slices(valid).shuffle(valid.shape[0])
-        valid = valid.batch(self.batch_size, drop_remainder=True)
-
-        callbacks = [
-            callback['class'](**callback.get('args', dict()))
-            for callback in self.callbacks
-        ]
 
         super().fit(train, validation_data=valid, epochs=self.epochs, verbose=self.verbose,
                     callbacks=callbacks, batch_size=self.batch_size,
@@ -376,7 +382,9 @@ class TadGAN(tf.keras.Model):
             ndarray:
                 N-dimensional array containing the critic scores for each input sequence.
         """
-        return self.call(X)
+        y_hat, critic = self.call(X)
+
+        return y_hat.numpy(), critic.numpy()
 
 
 def _compute_critic_score(critics, smooth_window):
