@@ -128,5 +128,44 @@ Next, we test the new pipeline/hyperparameters in the benchmark and verify that 
 
 To know more about our process in contributing and testing, read our :ref:`contributing` guidelines and :ref:`benchmarking`.
 
+
+Pipelines for Custom Data
+-------------------------
+
+To use a pipeline on your own data, first you need to make sure that it follows the data format described in :ref:`data`. Additionally, some hyperparameter changes in the pipeline might be necessary.
+
+Since pipelines are composed of :ref:`primitives`, you can discover the interpretation of each hyperparameter by visiting the primitive's documentation. One of the most used primitives is ``time_segments_aggregate`` which makes your signal equi-spaced. You need to set the ``interval`` hyperparameter to the frequency of your data. For example, if your data has a frequency of 5 minutes then ``interval=300`` would be most appropriate since we are dealing with second intervals. A hands on example is shown here:
+
+.. ipython:: python
+    :okwarning:
+
+    import numpy as np
+    import pandas as pd
+
+    from orion import Orion
+
+    np.random.seed(0)
+    custom_data = pd.DataFrame({"timestamp": np.arange(0, 150000, 300),
+                                "value": np.random.randint(0, 10, 500)})    
+
+    hyperparameters = {
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "interval": 300
+        },
+        'keras.Sequential.LSTMTimeSeriesRegressor#1': {
+            'epochs': 5,
+            'verbose': True
+        }
+    }
+
+    orion = Orion(
+        pipeline='lstm_dynamic_threshold',
+        hyperparameters=hyperparameters
+    )
+
+    orion.fit(custom_data)
+
+
+
 .. _NASA: https://arxiv.org/abs/1802.04431
 .. _Anomaly Detector: https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/
