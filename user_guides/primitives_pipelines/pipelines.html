@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pipelines &#8212; Orion 0.1.7.dev0 documentation</title>
     
-  <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.101715efdecc9b59cb6e1ddfa685c31f.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -19,16 +20,12 @@
 
     
       
-  <link rel="stylesheet"
-    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../../_static/js/index.d8bbf5861d671d414e1a.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -46,57 +43,62 @@
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
-<div class="container-xl">
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
 
+
+    
     <a class="navbar-brand" href="../../index.html">
-    
       <p class="title">Orion</p>
-    
     </a>
+    
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
+    
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
-        
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../../getting_started/index.html">Getting Started</a>
-        </li>
-        
-        <li class="nav-item active">
-            <a class="nav-link" href="../index.html">User Guides</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../../api_reference/index.html">API Reference</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../../developer_guides/index.html">Developer Guides</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../../history.html">Release Notes</a>
-        </li>
-        
+        <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../getting_started/index.html">
+  Getting Started
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  User Guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../api_reference/index.html">
+  API Reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../developer_guides/index.html">
+  Developer Guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../history.html">
+  Release Notes
+ </a>
+</li>
+
         
       </ul>
 
-
-      
-
-      <ul class="navbar-nav">
-        
-          <li class="nav-item">
-            <a class="nav-link" href="https://github.com/signals-dev/Orion" target="_blank" rel="noopener">
-              <span><i class="fab fa-github-square"></i></span>
-            </a>
-          </li>
-        
-        
+      <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/signals-dev/Orion" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
       </ul>
     </div>
 </div>
@@ -106,75 +108,57 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form>
 <nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-          
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="../data.html">
+   Data
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="reference internal" href="index.html">
+   Primitives and Pipelines
+  </a>
+  <ul class="current">
+   <li class="toctree-l3">
+    <a class="reference internal" href="primitives.html">
+     Primitives
+    </a>
+   </li>
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
+     Pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../evaluation_doc.html">
+   Evaluation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../benchmarking.html">
+   Benchmarking
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../system/index.html">
+   Building a System
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-                <li class="">
-                    <a href="../data.html">Data</a>
-                </li>
-            
-          
-            
-  
-                <li class="active">
-                    <a href="index.html">Primitives and Pipelines</a>
-                    <ul>
-                    
-                        <li class="">
-                            <a href="primitives.html">Primitives</a>
-                        </li>
-                    
-                        <li class="active">
-                            <a href="">Pipelines</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../evaluation_doc.html">Evaluation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../benchmarking.html">Benchmarking</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../system/index.html">Building a System</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -185,25 +169,34 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#pipeline-representation" class="nav-link">Pipeline Representation</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#current-available-pipelines" class="nav-link">Current Available Pipelines</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#pipeline-storage" class="nav-link">Pipeline Storage</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#verified-pipelines" class="nav-link">Verified Pipelines</a>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pipeline-representation">
+   Pipeline Representation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#current-available-pipelines">
+   Current Available Pipelines
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pipeline-storage">
+   Pipeline Storage
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#verified-pipelines">
+   Verified Pipelines
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pipelines-for-custom-data">
+   Pipelines for Custom Data
+  </a>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -211,6 +204,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -343,6 +339,79 @@ in the subdirectories inside the <code class="docutils literal notranslate"><spa
 Next, we test the new pipeline/hyperparameters in the benchmark and verify that they perform as expected and indicated by the user. Once these checks have passed, we make the transfer.</p>
 <p>To know more about our process in contributing and testing, read our <a class="reference internal" href="../../developer_guides/contributing.html#contributing"><span class="std std-ref">Contributing</span></a> guidelines and <a class="reference internal" href="../benchmarking.html#benchmarking"><span class="std std-ref">Benchmarking</span></a>.</p>
 </div>
+<div class="section" id="pipelines-for-custom-data">
+<h2>Pipelines for Custom Data<a class="headerlink" href="#pipelines-for-custom-data" title="Permalink to this headline">¶</a></h2>
+<p>To use a pipeline on your own data, first you need to make sure that it follows the data format described in <a class="reference internal" href="../data.html#data"><span class="std std-ref">Data</span></a>. Additionally, some hyperparameter changes in the pipeline might be necessary.</p>
+<p>Since pipelines are composed of <a class="reference internal" href="primitives.html#primitives"><span class="std std-ref">Primitives</span></a>, you can discover the interpretation of each hyperparameter by visiting the primitive’s documentation. One of the most used primitives is <code class="docutils literal notranslate"><span class="pre">time_segments_aggregate</span></code> which makes your signal equi-spaced. You need to set the <code class="docutils literal notranslate"><span class="pre">interval</span></code> hyperparameter to the frequency of your data. For example, if your data has a frequency of 5 minutes then <code class="docutils literal notranslate"><span class="pre">interval=300</span></code> would be most appropriate since we are dealing with second intervals. A hands on example is shown here:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="gp">In [3]: </span><span class="kn">from</span> <span class="nn">orion</span> <span class="kn">import</span> <span class="n">Orion</span>
+
+<span class="gp">In [4]: </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="gp">In [5]: </span><span class="n">custom_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">150000</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span>
+<span class="gp">   ...: </span>                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">)})</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [6]: </span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">   ...: </span>    <span class="s2">&quot;mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">   ...: </span>        <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="mi">300</span>
+<span class="gp">   ...: </span>    <span class="p">},</span>
+<span class="gp">   ...: </span>    <span class="s1">&#39;keras.Sequential.LSTMTimeSeriesRegressor#1&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">   ...: </span>        <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+<span class="gp">   ...: </span>        <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">True</span>
+<span class="gp">   ...: </span>    <span class="p">}</span>
+<span class="gp">   ...: </span><span class="p">}</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [7]: </span><span class="n">orion</span> <span class="o">=</span> <span class="n">Orion</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">pipeline</span><span class="o">=</span><span class="s1">&#39;lstm_dynamic_threshold&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">hyperparameters</span><span class="o">=</span><span class="n">hyperparameters</span>
+<span class="gp">   ...: </span><span class="p">)</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [8]: </span><span class="n">orion</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">custom_data</span><span class="p">)</span>
+<span class="go">Train on 200 samples, validate on 50 samples</span>
+<span class="go">Epoch 1/5</span>
+
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 1s - loss: 0.4166 - mse: 0.4166</span>
+<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3906 - mse: 0.3906</span>
+<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3967 - mse: 0.3967</span>
+<span class="go">200/200 [==============================] - 2s 9ms/step - loss: 0.3949 - mse: 0.3949 - val_loss: 0.4182 - val_mse: 0.4182</span>
+<span class="go">Epoch 2/5</span>
+
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3894 - mse: 0.3894</span>
+<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.4189 - mse: 0.4189</span>
+<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.4003 - mse: 0.4003</span>
+<span class="go">200/200 [==============================] - 1s 6ms/step - loss: 0.3926 - mse: 0.3926 - val_loss: 0.4222 - val_mse: 0.4222</span>
+<span class="go">Epoch 3/5</span>
+
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3753 - mse: 0.3753</span>
+<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.4022 - mse: 0.4022</span>
+<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3938 - mse: 0.3938</span>
+<span class="go">200/200 [==============================] - 1s 6ms/step - loss: 0.3922 - mse: 0.3922 - val_loss: 0.4230 - val_mse: 0.4230</span>
+<span class="go">Epoch 4/5</span>
+
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3836 - mse: 0.3836</span>
+<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3858 - mse: 0.3858</span>
+<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3894 - mse: 0.3894</span>
+<span class="go">200/200 [==============================] - 1s 6ms/step - loss: 0.3932 - mse: 0.3932 - val_loss: 0.4203 - val_mse: 0.4203</span>
+<span class="go">Epoch 5/5</span>
+
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3807 - mse: 0.3807</span>
+<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3947 - mse: 0.3947</span>
+<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3878 - mse: 0.3878</span>
+<span class="go">200/200 [==============================] - 1s 6ms/step - loss: 0.3957 - mse: 0.3957 - val_loss: 0.4183 - val_mse: 0.4183</span>
+
+<span class="go"> 64/250 [======&gt;.......................] - ETA: 0s</span>
+<span class="go">128/250 [==============&gt;...............] - ETA: 0s</span>
+<span class="go">192/250 [======================&gt;.......] - ETA: 0s</span>
+<span class="go">250/250 [==============================] - 1s 2ms/step</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -363,7 +432,7 @@ Next, we test the new pipeline/hyperparameters in the benchmark and verify that 
     </div>
 
     
-  <script src="../../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../../_static/js/index.d8bbf5861d671d414e1a.js"></script>
 
 
     <footer class="footer mt-5 mt-md-0">

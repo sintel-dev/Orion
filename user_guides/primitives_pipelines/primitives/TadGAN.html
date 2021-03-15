@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TadGAN &#8212; Orion 0.1.7.dev0 documentation</title>
     
-  <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../_static/css/index.101715efdecc9b59cb6e1ddfa685c31f.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -19,16 +20,12 @@
 
     
       
-  <link rel="stylesheet"
-    href="../../../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
     <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../../../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../../../_static/js/index.d8bbf5861d671d414e1a.js">
 
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -46,57 +43,62 @@
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
-<div class="container-xl">
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
 
+
+    
     <a class="navbar-brand" href="../../../index.html">
-    
       <p class="title">Orion</p>
-    
     </a>
+    
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
+    
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
-        
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../../../getting_started/index.html">Getting Started</a>
-        </li>
-        
-        <li class="nav-item active">
-            <a class="nav-link" href="../../index.html">User Guides</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../../../api_reference/index.html">API Reference</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../../../developer_guides/index.html">Developer Guides</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../../../history.html">Release Notes</a>
-        </li>
-        
+        <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../getting_started/index.html">
+  Getting Started
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../index.html">
+  User Guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../api_reference/index.html">
+  API Reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../developer_guides/index.html">
+  Developer Guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../history.html">
+  Release Notes
+ </a>
+</li>
+
         
       </ul>
 
-
-      
-
-      <ul class="navbar-nav">
-        
-          <li class="nav-item">
-            <a class="nav-link" href="https://github.com/signals-dev/Orion" target="_blank" rel="noopener">
-              <span><i class="fab fa-github-square"></i></span>
-            </a>
-          </li>
-        
-        
+      <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/signals-dev/Orion" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
       </ul>
     </div>
 </div>
@@ -106,75 +108,134 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form>
 <nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-          
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="../../data.html">
+   Data
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="reference internal" href="../index.html">
+   Primitives and Pipelines
+  </a>
+  <ul class="current">
+   <li class="toctree-l3 current active">
+    <a class="reference internal" href="../primitives.html">
+     Primitives
+    </a>
+    <ul class="current">
+     <li class="toctree-l4">
+      <a class="reference internal" href="time_segments_aggregate.html">
+       time segments aggregate
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="intervals_to_mask.html">
+       intervals to mask
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="rolling_window_sequences.html">
+       rolling window sequence
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="fillna.html">
+       fillna
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="SimpleImputer.html">
+       SimpleImputer
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="MinMaxScaler.html">
+       MinMaxScaler
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="arima.html">
+       ARIMA
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="LSTMTimeSeriesRegressor.html">
+       LSTM
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="LSTMSeq2Seq.html">
+       LSTM AE
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="DenseSeq2Seq.html">
+       Dense AE
+      </a>
+     </li>
+     <li class="toctree-l4 current active">
+      <a class="current reference internal" href="#">
+       TadGAN
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="score_anomalies.html">
+       score anomalies
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="reconstruction_errors.html">
+       reconstuction errors
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="regression_errors.html">
+       regression errors
+      </a>
+     </li>
+     <li class="toctree-l4">
+      <a class="reference internal" href="find_anomalies.html">
+       find anomalies
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="../pipelines.html">
+     Pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../../evaluation_doc.html">
+   Evaluation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../../benchmarking.html">
+   Benchmarking
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../../system/index.html">
+   Building a System
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-                <li class="">
-                    <a href="../../data.html">Data</a>
-                </li>
-            
-          
-            
-  
-                <li class="active">
-                    <a href="../index.html">Primitives and Pipelines</a>
-                    <ul>
-                    
-                        <li class="active">
-                            <a href="../primitives.html">Primitives</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="../pipelines.html">Pipelines</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../../evaluation_doc.html">Evaluation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../../benchmarking.html">Benchmarking</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../../system/index.html">Building a System</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -182,9 +243,7 @@
               
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
     
-    </ul>
 </nav>
 
 
@@ -192,6 +251,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -305,18 +367,18 @@
 <span class="gp">   ...: </span>
 
 <span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, [Dx loss: [ 7.7937112e+00  1.4225668e-01 -1.6590742e-03  7.6531136e-01]] [Dz loss: [ 1.9275064   0.20698489 -0.12399185  0.18445134]] [G loss: [1.0179558e+01 1.0471015e-03 1.8341982e-01 9.9950910e-01]]</span>
-<span class="go">Epoch: 2/5, [Dx loss: [ 7.3736377e+00 -1.4594772e-01  1.8161257e-03  7.5177693e-01]] [Dz loss: [3.449656   0.21201792 0.0849166  0.31527215]] [G loss: [ 9.8115244e+00  5.1300740e-04 -1.3529135e-01  9.9463022e-01]]</span>
-<span class="go">Epoch: 3/5, [Dx loss: [ 7.1474142e+00 -1.7246062e-01 -7.0176378e-04  7.3205769e-01]] [Dz loss: [3.3600805  0.06406344 0.3400014  0.29560155]] [G loss: [ 9.5255299e+00 -4.0855287e-03 -2.5052789e-01  9.7801435e-01]]</span>
-<span class="go">Epoch: 4/5, [Dx loss: [ 6.8488665  -0.27749172  0.01194067  0.71144176]] [Dz loss: [3.5027466  0.25340122 0.45061597 0.27987295]] [G loss: [ 8.63016    -0.00916648 -0.74439734  0.93837243]]</span>
-<span class="go">Epoch: 5/5, [Dx loss: [ 6.3910961e+00 -3.4357288e-01  2.4739439e-03  6.7321950e-01]] [Dz loss: [4.4265914  1.1664313  1.3238056  0.19363545]] [G loss: [ 7.962926   -0.02020803 -1.7235866   0.9706721 ]]</span>
+<span class="go">Epoch: 1/5, [Dx loss: [ 7.4012737  -0.12128364 -0.01035884  0.7532916 ]] [Dz loss: [3.6446135  0.3151792  0.01098265 0.33184516]] [G loss: [ 1.0000742e+01 -2.0353878e-03  1.8300159e-02  9.9844772e-01]]</span>
+<span class="go">Epoch: 2/5, [Dx loss: [ 7.2324719e+00 -6.8116866e-02 -2.0130491e-03  7.3026019e-01]] [Dz loss: [ 3.1993885  -0.30395266  0.15308087  0.33502603]] [G loss: [ 9.4863520e+00 -2.1985897e-03 -3.8149685e-02  9.5266998e-01]]</span>
+<span class="go">Epoch: 3/5, [Dx loss: [ 6.937735   -0.16152346  0.03099178  0.7068267 ]] [Dz loss: [ 3.4045203   0.77203065 -0.03314461  0.26656342]] [G loss: [ 9.39615    -0.01096139  0.16186447  0.92452466]]</span>
+<span class="go">Epoch: 4/5, [Dx loss: [ 5.9272823e+00 -8.1385452e-01  5.8856690e-03  6.7352509e-01]] [Dz loss: [3.2953947  0.05078407 0.52745914 0.27171513]] [G loss: [ 9.046634   -0.01963557 -0.17663652  0.9242906 ]]</span>
+<span class="go">Epoch: 5/5, [Dx loss: [ 5.6489778  -0.65751565  0.02617903  0.62803143]] [Dz loss: [2.7209387  0.0505604  0.31087974 0.23594984]] [G loss: [ 6.490898   -0.05191371 -0.27741605  0.6820228 ]]</span>
 
 <span class="gp">In [6]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
 <span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.07, critic score 0.58</span>
+<span class="go">average reconstructed value: 0.25, critic score 1.01</span>
 </pre></div>
 </div>
 </div>
@@ -339,7 +401,7 @@
     </div>
 
     
-  <script src="../../../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../../../_static/js/index.d8bbf5861d671d414e1a.js"></script>
 
 
     <footer class="footer mt-5 mt-md-0">
