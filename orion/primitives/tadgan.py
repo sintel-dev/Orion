@@ -104,10 +104,10 @@ class TadGAN(tf.keras.Model):
                 Generator/Encoder training step. Default 5.
             validation_split (float): Optional. Float between 0 and 1. Fraction of the training
                 data to be used as validation data. Default 0.2.
-            callacks (tuple): 
+            callacks (tuple):
                 Optional. List of callbacks to apply during training.
-            verbose (int or bool): 
-                Optional. Verbosity mode where 0 = silent, 1 = progress bar, 
+            verbose (int or bool):
+                Optional. Verbosity mode where 0 = silent, 1 = progress bar,
                 2 = one line per epoch. Default False.
             detailed (bool):
                 Optional. Whether to output all loss values in verbose mode.
