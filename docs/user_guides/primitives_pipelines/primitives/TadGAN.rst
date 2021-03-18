@@ -51,7 +51,7 @@ argument                    type                description
 
     X = np.array([1] * 100).reshape(1, -1, 1)
     primitive = load_primitive('orion.primitives.tadgan.TadGAN', 
-        arguments={"X": X, "epochs": 5, "batch_size": 1,
+        arguments={"X": X, "epochs": 5, "batch_size": 1, "verbose": False,
                    "iterations_critic": 1, "validation_split": 0})
 
     primitive.fit()
