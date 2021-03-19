@@ -179,8 +179,7 @@
                               "parameters": {
                                   "units": 64,
                                   "return_sequences": true,
-                                  "dropout": 0.2,
-                                  "recurrent_dropout": 0.2
+                                  "dropout": 0.2
                               }
                           },
                           "merge_mode": "concat"
@@ -200,8 +199,7 @@
                               "parameters": {
                                   "units": 64,
                                   "return_sequences": true,
-                                  "dropout": 0.2,
-                                  "recurrent_dropout": 0.2
+                                  "dropout": 0.2
                               }
                           },
                           "merge_mode": "concat"

@@ -37,15 +37,6 @@ VERIFIED_PIPELINES = [
     'arima', 'lstm_dynamic_threshold', 'azure', 'tadgan', 'lstm_autoencoder', 'dense_autoencoder'
 ]
 
-VERIFIED_PIPELINES_GPU = {
-    'arima': 'arima',
-    'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu',
-    'azure': 'azure',
-    'tadgan': 'tadgan_gpu',
-    'lstm_autoencoder': 'lstm_autoencoder_gpu',
-    'dense_autoencoder': 'dense_autoencoder'
-}
-
 
 def _load_signal(signal, test_split):
     if isinstance(test_split, float):
@@ -356,7 +347,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
     return _sort_leaderboard(results, rank, metrics)
 
 
-def main(cuda=False, distributed=False):
+def main(distributed=False):
     # output path
     version = "results.csv"
     output_path = os.path.join(BENCHMARK_PATH, 'results', version)
@@ -368,8 +359,6 @@ def main(cuda=False, distributed=False):
 
     # pipelines
     pipelines = VERIFIED_PIPELINES
-    if cuda:
-        pipelines = VERIFIED_PIPELINES_GPU
 
     results = benchmark(
         pipelines=pipelines, metrics=metrics, output_path=output_path, distributed=distributed)
