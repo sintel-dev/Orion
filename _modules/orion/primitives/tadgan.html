@@ -8,7 +8,7 @@
     <title>orion.primitives.tadgan &#8212; Orion 0.1.7.dev0 documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../../_static/css/index.101715efdecc9b59cb6e1ddfa685c31f.css" rel="stylesheet" />
+  <link href="../../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../../../_static/js/index.d8bbf5861d671d414e1a.js">
+  <link rel="preload" as="script" href="../../../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -226,7 +226,7 @@
             <span class="k">del</span> <span class="n">state</span><span class="p">[</span><span class="n">module</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
                 <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">network</span><span class="p">),</span> <span class="n">fd</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
                 <span class="n">state</span><span class="p">[</span><span class="n">network</span> <span class="o">+</span> <span class="s1">&#39;_str&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -236,7 +236,7 @@
     <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="n">networks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;critic_x&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_z&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder&#39;</span><span class="p">,</span> <span class="s1">&#39;generator&#39;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
                 <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">network</span> <span class="o">+</span> <span class="s1">&#39;_str&#39;</span><span class="p">))</span>
                 <span class="n">fd</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
@@ -569,7 +569,7 @@
     </div>
 
     
-  <script src="../../../_static/js/index.d8bbf5861d671d414e1a.js"></script>
+  <script src="../../../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     <footer class="footer mt-5 mt-md-0">
