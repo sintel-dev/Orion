@@ -81,7 +81,7 @@ class TadGAN(object):
             del state[module]
 
         for network in networks:
-            with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=True) as fd:
+            with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=False) as fd:
                 keras.models.save_model(state.pop(network), fd.name, overwrite=True)
 
                 state[network + '_str'] = fd.read()
@@ -91,7 +91,7 @@ class TadGAN(object):
     def __setstate__(self, state):
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
         for network in networks:
-            with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=True) as fd:
+            with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=False) as fd:
                 fd.write(state.pop(network + '_str'))
                 fd.flush()
 
