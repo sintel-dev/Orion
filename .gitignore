@@ -110,8 +110,6 @@ ENV/
 
 data/
 output/
-notebooks/ses
-notebooks-private/
 orion-jupyter.tar
 *.csv
 
