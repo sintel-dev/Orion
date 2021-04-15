@@ -8,7 +8,7 @@
     <title>orion.evaluation &#8212; Orion 0.1.7.dev0 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
-  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
+  <link href="../_static/css/index.ee6fb81b276d6fba8a971ad8e9b95dd9.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
+  <link rel="preload" as="script" href="../_static/js/index.c86189f1ce1b71a67eb6.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -40,26 +40,36 @@
     <link rel="prev" title="orion.benchmark.benchmark" href="api/orion.benchmark.benchmark.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
+    
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
+    <div class="container-fluid" id="banner"></div>
+
+    
     <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
 
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../index.html">
+<p class="title">Orion</p>
+</a>
 
     
-    <a class="navbar-brand" href="../index.html">
-      <p class="title">Orion</p>
-    </a>
-    
+  </div>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
-      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
-        <li class="toctree-l1 nav-item">
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../getting_started/index.html">
   Getting Started
  </a>
@@ -89,10 +99,16 @@
  </a>
 </li>
 
-        
-      </ul>
+    
+</ul>
+      </div>
+      
+    </div>
 
-      <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/signals-dev/Orion" rel="noopener" target="_blank" title="GitHub">
             <span><i class="fab fa-github-square"></i></span>
@@ -100,7 +116,10 @@
           </a>
         </li>
       </ul>
+      </div>
+      
     </div>
+  </div>
 </div>
     </nav>
     
@@ -113,83 +132,344 @@
             <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l2">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="orion.html">
    orion
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.Orion.html">
+     orion.Orion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.Orion.fit.html">
+     orion.Orion.fit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.Orion.detect.html">
+     orion.Orion.detect
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.Orion.evaluate.html">
+     orion.Orion.evaluate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.Orion.save.html">
+     orion.Orion.save
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.Orion.load.html">
+     orion.Orion.load
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.fit_pipeline.html">
+     orion.fit_pipeline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.detect_anomalies.html">
+     orion.detect_anomalies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.evaluate_pipeline.html">
+     orion.evaluate_pipeline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.benchmark.benchmark.html">
+     orion.benchmark.benchmark
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l2 current active">
+ <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
    orion.evaluation
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
   <ul>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.contextual_accuracy.html">
      orion.evaluation.contextual_accuracy
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.contextual_precision.html">
      orion.evaluation.contextual_precision
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.contextual_recall.html">
      orion.evaluation.contextual_recall
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.contextual_f1_score.html">
      orion.evaluation.contextual_f1_score
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.contextual_confusion_matrix.html">
      orion.evaluation.contextual_confusion_matrix
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.point_accuracy.html">
      orion.evaluation.point_accuracy
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.point_precision.html">
      orion.evaluation.point_precision
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.point_recall.html">
      orion.evaluation.point_recall
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.point_f1_score.html">
      orion.evaluation.point_f1_score
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api/orion.evaluation.point_confusion_matrix.html">
      orion.evaluation.point_confusion_matrix
     </a>
    </li>
   </ul>
  </li>
- <li class="toctree-l2">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="db.html">
    orion.db
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.html">
+     orion.db.OrionDBExplorer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_dataset.html">
+     orion.db.OrionDBExplorer.add_dataset
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_datasets.html">
+     orion.db.OrionDBExplorer.get_datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_dataset.html">
+     orion.db.OrionDBExplorer.get_dataset
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_signal.html">
+     orion.db.OrionDBExplorer.add_signal
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_signals.html">
+     orion.db.OrionDBExplorer.add_signals
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_signals.html">
+     orion.db.OrionDBExplorer.get_signals
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_signal.html">
+     orion.db.OrionDBExplorer.get_signal
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_template.html">
+     orion.db.OrionDBExplorer.add_template
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_templates.html">
+     orion.db.OrionDBExplorer.get_templates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_template.html">
+     orion.db.OrionDBExplorer.get_template
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_pipeline.html">
+     orion.db.OrionDBExplorer.add_pipeline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_pipelines.html">
+     orion.db.OrionDBExplorer.get_pipelines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_pipeline.html">
+     orion.db.OrionDBExplorer.get_pipeline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_experiment.html">
+     orion.db.OrionDBExplorer.add_experiment
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_experiments.html">
+     orion.db.OrionDBExplorer.get_experiments
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_experiment.html">
+     orion.db.OrionDBExplorer.get_experiment
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_datarun.html">
+     orion.db.OrionDBExplorer.add_datarun
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_dataruns.html">
+     orion.db.OrionDBExplorer.get_dataruns
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_datarun.html">
+     orion.db.OrionDBExplorer.get_datarun
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_signalrun.html">
+     orion.db.OrionDBExplorer.add_signalrun
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_signalruns.html">
+     orion.db.OrionDBExplorer.get_signalruns
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_signalrun.html">
+     orion.db.OrionDBExplorer.get_signalrun
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_event.html">
+     orion.db.OrionDBExplorer.add_event
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_events.html">
+     orion.db.OrionDBExplorer.get_events
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_event.html">
+     orion.db.OrionDBExplorer.get_event
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.add_annotation.html">
+     orion.db.OrionDBExplorer.add_annotation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_annotations.html">
+     orion.db.OrionDBExplorer.get_annotations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.db.OrionDBExplorer.get_annotation.html">
+     orion.db.OrionDBExplorer.get_annotation
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l2">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="prim.html">
    orion.primitives
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.primitives.tadgan.TadGAN.html">
+     orion.primitives.tadgan.TadGAN
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.primitives.tadgan.score_anomalies.html">
+     orion.primitives.tadgan.score_anomalies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.primitives.timeseries_preprocessing.fillna.html">
+     orion.primitives.timeseries_preprocessing.fillna
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.primitives.timeseries_errors.regression_errors.html">
+     orion.primitives.timeseries_errors.regression_errors
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.primitives.timeseries_errors.reconstruction_errors.html">
+     orion.primitives.timeseries_errors.reconstruction_errors
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.primitives.timeseries_anomalies.find_anomalies.html">
+     orion.primitives.timeseries_anomalies.find_anomalies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.primitives.azure_anomaly_detector.split_sequence.html">
+     orion.primitives.azure_anomaly_detector.split_sequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/orion.primitives.azure_anomaly_detector.detect_anomalies.html">
+     orion.primitives.azure_anomaly_detector.detect_anomalies
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
+
   </div>
 </nav>
             </div>
@@ -198,7 +478,10 @@
 
           
           <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
               
+              <div class="toc-item">
+                
 <div class="tocsection onthispage pt-5 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
@@ -218,9 +501,13 @@
 </ul>
 
 </nav>
-
-
+              </div>
               
+              <div class="toc-item">
+                
+              </div>
+              
+            
           </div>
           
 
@@ -304,17 +591,25 @@
 
       </div>
     </div>
-
     
-  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
+  <script src="../_static/js/index.c86189f1ce1b71a67eb6.js"></script>
 
 
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
-    <p>
-          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
-    </p>
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+</p>
+    </div>
+    
   </div>
 </footer>
   </body>

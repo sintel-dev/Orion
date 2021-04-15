@@ -8,7 +8,7 @@
     <title>Building a System &#8212; Orion 0.1.7.dev0 documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
+  <link href="../../_static/css/index.ee6fb81b276d6fba8a971ad8e9b95dd9.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
+  <link rel="preload" as="script" href="../../_static/js/index.c86189f1ce1b71a67eb6.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -40,26 +40,36 @@
     <link rel="prev" title="Benchmarking" href="../benchmarking.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
+    
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
+    <div class="container-fluid" id="banner"></div>
+
+    
     <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
 
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../../index.html">
+<p class="title">Orion</p>
+</a>
 
     
-    <a class="navbar-brand" href="../../index.html">
-      <p class="title">Orion</p>
-    </a>
-    
+  </div>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
-      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
-        <li class="toctree-l1 nav-item">
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../getting_started/index.html">
   Getting Started
  </a>
@@ -89,10 +99,16 @@
  </a>
 </li>
 
-        
-      </ul>
+    
+</ul>
+      </div>
+      
+    </div>
 
-      <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/signals-dev/Orion" rel="noopener" target="_blank" title="GitHub">
             <span><i class="fab fa-github-square"></i></span>
@@ -100,7 +116,10 @@
           </a>
         </li>
       </ul>
+      </div>
+      
     </div>
+  </div>
 </div>
     </nav>
     
@@ -113,46 +132,149 @@
             <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l2">
+ <li class="toctree-l1">
   <a class="reference internal" href="../data.html">
    Data
   </a>
  </li>
- <li class="toctree-l2">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../primitives_pipelines/index.html">
    Primitives and Pipelines
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../primitives_pipelines/primitives.html">
+     Primitives
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/time_segments_aggregate.html">
+       time segments aggregate
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/intervals_to_mask.html">
+       intervals to mask
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/rolling_window_sequences.html">
+       rolling window sequence
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/fillna.html">
+       fillna
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/SimpleImputer.html">
+       SimpleImputer
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/MinMaxScaler.html">
+       MinMaxScaler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/arima.html">
+       ARIMA
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/LSTMTimeSeriesRegressor.html">
+       LSTM
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/LSTMSeq2Seq.html">
+       LSTM AE
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/DenseSeq2Seq.html">
+       Dense AE
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/TadGAN.html">
+       TadGAN
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/score_anomalies.html">
+       score anomalies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/reconstruction_errors.html">
+       reconstuction errors
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/regression_errors.html">
+       regression errors
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../primitives_pipelines/primitives/find_anomalies.html">
+       find anomalies
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../primitives_pipelines/pipelines.html">
+     Pipelines
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l2">
+ <li class="toctree-l1">
   <a class="reference internal" href="../evaluation_doc.html">
    Evaluation
   </a>
  </li>
- <li class="toctree-l2">
+ <li class="toctree-l1">
   <a class="reference internal" href="../benchmarking.html">
    Benchmarking
   </a>
  </li>
- <li class="toctree-l2 current active">
+ <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
    Building a System
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
   <ul>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="database.html">
      Database Schema
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="api.html">
      API
     </a>
    </li>
-   <li class="toctree-l3">
+   <li class="toctree-l2">
     <a class="reference internal" href="interface.html">
      User Interface
     </a>
@@ -160,6 +282,7 @@
   </ul>
  </li>
 </ul>
+
   </div>
 </nav>
             </div>
@@ -168,14 +291,21 @@
 
           
           <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
               
+              <div class="toc-item">
+                
 
 <nav id="bd-toc-nav">
     
 </nav>
-
-
+              </div>
               
+              <div class="toc-item">
+                
+              </div>
+              
+            
           </div>
           
 
@@ -257,17 +387,25 @@
 
       </div>
     </div>
-
     
-  <script src="../../_static/js/index.1e043a052b0af929e4d8.js"></script>
+  <script src="../../_static/js/index.c86189f1ce1b71a67eb6.js"></script>
 
 
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
-    <p>
-          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
-    </p>
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+</p>
+    </div>
+    
   </div>
 </footer>
   </body>
