@@ -34,7 +34,6 @@ install_requires = [
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
-    'urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1'
 ]
 
 setup_requires = [
