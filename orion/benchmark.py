@@ -2,19 +2,26 @@
 
 import ast
 import json
+import concurrent
 import logging
+import multiprocessing
 import os
+import uuid
 from datetime import datetime
 from functools import partial
+from pathlib import Path
 
 import dask
+import numpy as np
 import pandas as pd
+import tqdm
 from scipy import signal as scipy_signal
 
 from orion.analysis import _load_pipeline, analyze
 from orion.data import load_anomalies, load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 from orion.evaluation import contextual_confusion_matrix
+from orion.progress import TqdmLogger, progress
 
 LOGGER = logging.getLogger(__name__)
 
@@ -62,11 +69,24 @@ def _detrend_signal(df, value_column):
     return df
 
 
-def _get_parameter(parameters, name):
-    if isinstance(parameters, dict) and name in parameters.keys():
-        return parameters[name]
+def _get_pipeline_hyperparameter(hyperparameters, dataset_name, pipeline_name):
+    hyperparameters_ = None
+    if hyperparameters:
+        hyperparameters_ = {**hyperparameters}
+        hyperparameters_ = hyperparameters_.get(dataset_name) or hyperparameters_
+        hyperparameters_ = hyperparameters_.get(pipeline_name) or hyperparameters_
 
-    return None
+    if hyperparameters_ is None:
+        file_path = os.path.join(
+            PIPELINE_DIR, pipeline_name, pipeline_name + '_' + dataset_name.lower() + '.json')
+        if os.path.exists(file_path):
+            hyperparameters_ = file_path
+
+    if isinstance(hyperparameters_, str) and os.path.exists(hyperparameters_):
+        with open(hyperparameters_) as f:
+            hyperparameters_ = json.load(f)
+
+    return hyperparameters_
 
 
 def _sort_leaderboard(df, rank, metrics):
@@ -135,84 +155,6 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
     return scores
 
 
-def _evaluate_pipeline(pipeline, pipeline_name, dataset, signals, hyperparameter, metrics,
-                       distributed, test_split, detrend):
-    if test_split is None:
-        test_split = (True, False)
-    elif not isinstance(test_split, tuple):
-        test_split = (test_split, )
-
-    # hyperparameter settings
-    if hyperparameter is None:
-        file_path = os.path.join(
-            PIPELINE_DIR, pipeline_name, pipeline_name + '_' + dataset.lower() + '.json')
-        if os.path.exists(file_path):
-            hyperparameter = file_path
-
-    if isinstance(hyperparameter, str) and os.path.exists(hyperparameter):
-        LOGGER.info("Loading hyperparameter %s", hyperparameter)
-        with open(hyperparameter) as f:
-            hyperparameter = json.load(f)
-
-    if distributed:
-        function = dask.delayed(_evaluate_signal)
-    else:
-        function = _evaluate_signal
-
-    scores = list()
-
-    for signal in signals:
-        for test_split_ in test_split:
-            score = function(pipeline, pipeline_name, dataset, signal, hyperparameter,
-                             metrics, test_split_, detrend)
-
-            scores.append(score)
-
-    return scores
-
-
-def _evaluate_pipelines(pipelines, dataset, signals, hyperparameters, metrics, distributed,
-                        test_split, detrend):
-
-    scores = list()
-    for name, pipeline in pipelines.items():
-        hyperparameter = _get_parameter(hyperparameters, name)
-        score = _evaluate_pipeline(pipeline, name, dataset, signals, hyperparameter,
-                                   metrics, distributed, test_split, detrend)
-        scores.extend(score)
-
-    return scores
-
-
-def _evaluate_datasets(pipelines, datasets, hyperparameters, metrics, distributed, test_split,
-                       detrend):
-    delayed = []
-    for dataset, signals in datasets.items():
-        LOGGER.info("Starting dataset {} with {} signals..".format(
-            dataset, len(signals)))
-
-        # dataset configuration
-        hyperparameters_ = _get_parameter(hyperparameters, dataset)
-        parameters = _get_parameter(BENCHMARK_PARAMS, dataset)
-        if parameters is not None:
-            detrend, test_split = parameters.values()
-
-        result = _evaluate_pipelines(pipelines, dataset, signals, hyperparameters_,
-                                     metrics, distributed, test_split, detrend)
-
-        delayed.extend(result)
-
-    if distributed:
-        persisted = dask.persist(*delayed)
-        results = dask.compute(*persisted)
-
-    else:
-        results = delayed
-
-    df = pd.DataFrame.from_records(results)
-    return df
-
-
 def summarize_results(df, metrics):
     """ Summarize the result of benchmark.
 
@@ -277,10 +219,54 @@ def summarize_results(df, metrics):
 
     return result
 
+def _run_job(args):
+    # Reset random seed
+    np.random.seed()
+
+    pipeline, pipeline_name, dataset, signal, hyperparameter, metrics, test_split, detrend, iteration, cache_dir, run_id = args
+
+    LOGGER.info('Evaluating pipeline %s on signal %s from dataset %s (test split: %s); iteration %s',
+                pipeline_name, signal, dataset, test_split, iteration)
+
+    output = _evaluate_signal(pipeline, pipeline_name, dataset, signal, hyperparameter, metrics, test_split, detrend)
+    scores = pd.DataFrame(output)
+
+    scores.insert(0, 'iteration', iteration)
+    scores['run_id'] = run_id
+
+    if cache_dir:
+        base_path = str(cache_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}_{run_id}')
+        scores.to_csv(base_path + '_scores.csv', index=False)
+
+    return scores
+
+def _run_on_dask(jobs, verbose):
+    """Run the tasks in parallel using dask."""
+    try:
+        import dask
+    except ImportError as ie:
+        ie.msg += (
+            '\n\nIt seems like `dask` is not installed.\n'
+            'Please install `dask` and `distributed` using:\n'
+            '\n    pip install dask distributed'
+        )
+        raise
+
+    scorer = dask.delayed(_run_job)
+    persisted = dask.persist(*[scorer(args) for args in jobs])
+    if verbose:
+        try:
+            progress(persisted)
+        except ValueError:
+            pass
+
+    return dask.compute(*persisted)
+
 
 def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
-              distributed=False, test_split=False, detrend=False, output_path=None):
-    """Evaluate pipelines on the given datasets and evaluate the performance.
+              test_split=False, detrend=False, iterations=1, workers=1, cache_dir=None,
+              show_progress=False, output_path=None):
+    """Run pipelines on the given datasets and evaluate the performance.
 
     The pipelines are used to analyze the given signals and later on the
     detected anomalies are scored against the known anomalies using the
@@ -306,21 +292,36 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             If not given, all the available metrics will be used.
         rank (str): Sort and rank the pipelines based on the given metric.
             If not given, rank using the first metric.
-        distributed (bool): Whether to use dask for distributed computing. If not given,
-            use ``False``.
         test_split (bool or float): Whether to use the prespecified train-test split. If
             float, then it should be between 0.0 and 1.0 and represent the proportion of
             the signal to include in the test split. If not given, use ``False``.
         detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.
+        iterations (int):
+            Number of iterations to perform over each signal and pipeline. Defaults to 1.
+        workers (int or str):
+            If ``workers`` is given as an integer value other than 0 or 1, a multiprocessing
+            Pool is used to distribute the computation across the indicated number of workers.
+            If the string ``dask`` is given, the computation is distributed using ``dask``.
+            In this case, setting up the ``dask`` cluster and client is expected to be handled
+            outside of this function.
+        cache_dir (str):
+            If a ``cache_dir`` is given, intermediate results are stored in the indicated directory
+            as CSV files as they get computted. This allows inspecting results while the benchmark
+            is still running and also recovering results in case the process does not finish
+            properly. Defaults to ``None``.
+        show_progress (bool):
+            Whether to use tqdm to keep track of the progress. Defaults to ``True``.
         output_path (str): Location to save the intermediatry results. If not given,
             intermediatry results will not be saved.
 
     Returns:
-        pandas.DataFrame: Table containing the scores obtained with
-            each scoring function accross all the signals for each pipeline.
+        pandas.DataFrame: 
+            A table containing the scores obtained with each scoring function accross 
+            all the signals for each pipeline.
     """
     pipelines = pipelines or VERIFIED_PIPELINES
-    datasets = datasets or BENCHMARK_DATA
+    datasets = datasets or list(BENCHMARK_DATA['MSL'])
+    run_id = os.getenv('RUN_ID') or str(uuid.uuid4())[:10]
 
     if isinstance(pipelines, list):
         pipelines = {pipeline: pipeline for pipeline in pipelines}
@@ -343,18 +344,57 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
                 raise ValueError('Unknown metric: {}'.format(metric))
 
         metrics = metrics_
+    
+    if cache_dir:
+        cache_dir = Path(cache_dir)
+        os.makedirs(cache_dir, exist_ok=True)
 
-    results = _evaluate_datasets(
-        pipelines, datasets, hyperparameters, metrics, distributed, test_split, detrend)
+    jobs = list()
+    for dataset, signals in datasets.items():
+        for pipeline_name, pipeline in pipelines.items():
+            hyperparameter = _get_pipeline_hyperparameter(hyperparameters, dataset, pipeline_name)
+            parameters = BENCHMARK_PARAMS.get(dataset)
+            if parameters is not None:
+                detrend, test_split = parameters.values()
+            for signal in signals:
+                for iteration in range(iterations):
+                    args = (
+                        pipeline,
+                        pipeline_name,
+                        dataset,
+                        signal,
+                        hyperparameter,
+                        metrics,
+                        test_split,
+                        detrend,
+                        iteration,
+                        cache_dir,
+                        run_id,
+                    )
+                    jobs.append(args)
 
+    if workers == 'dask':
+        scores = _run_on_dask(jobs, show_progress)
+    else:
+        if workers in (0, 1):
+            scores = map(_run_job, jobs)
+        else:
+            pool = concurrent.futures.ProcessPoolExecutor(workers)
+            scores = pool.map(_run_job, jobs)
+
+        scores = tqdm.tqdm(scores, total=len(jobs), file=TqdmLogger())
+        if show_progress:
+            scores = tqdm.tqdm(scores, total=len(jobs))
+
+    scores = pd.concat(scores)
     if output_path:
         LOGGER.info('Saving benchmark report to %s', output_path)
-        results.to_csv(output_path)
+        scores.to_csv(output_path, index=False)
 
-    return _sort_leaderboard(results, rank, metrics)
+    return _sort_leaderboard(scores, rank, metrics)
 
 
-def main(cuda=False, distributed=False):
+def main(workers='dask'):
     # output path
     version = "results.csv"
     output_path = os.path.join(BENCHMARK_PATH, 'results', version)
@@ -366,11 +406,9 @@ def main(cuda=False, distributed=False):
 
     # pipelines
     pipelines = VERIFIED_PIPELINES
-    if cuda:
-        pipelines = VERIFIED_PIPELINES_GPU
 
     results = benchmark(
-        pipelines=pipelines, metrics=metrics, output_path=output_path, distributed=distributed)
+        pipelines=pipelines, metrics=metrics, output_path=output_path, workers=workers)
 
     leaderboard = summarize_results(results, metrics)
     output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
