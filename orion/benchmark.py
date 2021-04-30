@@ -45,7 +45,7 @@ BENCHMARK_PARAMS = pd.read_csv(S3_URL.format(
 PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
 VERIFIED_PIPELINES = [
-    'arima', 'lstm_dynamic_threshold'
+    'arima', 'lstm_dynamic_threshold', 'azure', 'tadgan'
 ]
 
 VERIFIED_PIPELINES_GPU = {
@@ -298,7 +298,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             all the signals for each pipeline.
     """
     pipelines = pipelines or VERIFIED_PIPELINES
-    datasets = datasets or list(BENCHMARK_DATA['MSL'][:2])
+    datasets = datasets or BENCHMARK_DATA
     run_id = os.getenv('RUN_ID') or str(uuid.uuid4())[:10]
 
     if isinstance(pipelines, list):
@@ -377,7 +377,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
     return _sort_leaderboard(scores, rank, metrics)
 
 
-def main(workers=4):
+def main(workers=1):
     pipeline_dir = 'save_pipelines'
     cache_dir = 'cache'
 
