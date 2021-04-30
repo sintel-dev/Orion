@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import ast
-import json
 import concurrent
+import json
 import logging
-import multiprocessing
 import os
+import pickle
 import uuid
+import warnings
+from copy import deepcopy
 from datetime import datetime
 from functools import partial
 from pathlib import Path
 
-import dask
 import numpy as np
 import pandas as pd
 import tqdm
@@ -22,6 +23,9 @@ from orion.data import load_anomalies, load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 from orion.evaluation import contextual_confusion_matrix
 from orion.progress import TqdmLogger, progress
+from orion.results import write_results
+
+warnings.simplefilter('ignore')
 
 LOGGER = logging.getLogger(__name__)
 
@@ -41,7 +45,7 @@ BENCHMARK_PARAMS = pd.read_csv(S3_URL.format(
 PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
 VERIFIED_PIPELINES = [
-    'arima', 'lstm_dynamic_threshold', 'azure', 'tadgan'
+    'arima', 'lstm_dynamic_threshold'
 ]
 
 VERIFIED_PIPELINES_GPU = {
@@ -70,13 +74,13 @@ def _detrend_signal(df, value_column):
 
 
 def _get_pipeline_hyperparameter(hyperparameters, dataset_name, pipeline_name):
-    hyperparameters_ = None
+    hyperparameters_ = deepcopy(hyperparameters)
+
     if hyperparameters:
-        hyperparameters_ = {**hyperparameters}
         hyperparameters_ = hyperparameters_.get(dataset_name) or hyperparameters_
         hyperparameters_ = hyperparameters_.get(pipeline_name) or hyperparameters_
 
-    if hyperparameters_ is None:
+    if hyperparameters_ is None and dataset_name and pipeline_name:
         file_path = os.path.join(
             PIPELINE_DIR, pipeline_name, pipeline_name + '_' + dataset_name.lower() + '.json')
         if os.path.exists(file_path):
@@ -87,6 +91,22 @@ def _get_pipeline_hyperparameter(hyperparameters, dataset_name, pipeline_name):
             hyperparameters_ = json.load(f)
 
     return hyperparameters_
+
+
+def _parse_confusion_matrix(scores, truth):
+    columns = ["tn", "fp", "fn", "tp"]
+    metric_ = 'confusion_matrix'
+
+    values = scores[metric_]
+    if values == 0:
+        fn = len(truth)
+        values = (None, 0, fn, 0)  # (tn, fp, fn, tp)
+
+    # formating output
+    for metric_name, score in zip(columns, list(values)):
+        scores[metric_name] = score
+
+    del scores[metric_]
 
 
 def _sort_leaderboard(df, rank, metrics):
@@ -105,8 +125,8 @@ def _sort_leaderboard(df, rank, metrics):
     return df.set_index('pipeline').reset_index()
 
 
-def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
-                     test_split=False, detrend=False):
+def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
+                     test_split=False, detrend=False, pipeline_path=None):
 
     train, test = _load_signal(signal, test_split)
     truth = load_anomalies(signal)
@@ -117,7 +137,7 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
 
     try:
         LOGGER.info("Scoring pipeline %s on signal %s (test split: %s)",
-                    name, signal, test_split)
+                    pipeline, signal, test_split)
 
         start = datetime.utcnow()
         pipeline = _load_pipeline(pipeline, hyperparameter)
@@ -128,110 +148,64 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
             name: scorer(truth, anomalies, test)
             for name, scorer in metrics.items()
         }
-        scores['status'] = 'OK'
+
+        status = 'OK'
 
     except Exception as ex:
         LOGGER.exception("Exception scoring pipeline %s on signal %s (test split: %s), error %s.",
-                         name, signal, test_split, ex)
+                         pipeline, signal, test_split, ex)
 
         elapsed = datetime.utcnow() - start
         scores = {
             name: 0 for name in metrics.keys()
         }
 
-        metric_ = 'confusion_matrix'
-        if metric_ in metrics.keys():
-            fn = len(truth)
-            scores[metric_] = (None, 0, fn, 0)  # (tn, fp, fn, tp)
+        status = 'ERROR'
 
-        scores['status'] = 'ERROR'
+    if 'confusion_matrix' in metrics.keys():
+        _parse_confusion_matrix(scores, truth)
 
+    scores['status'] = status
     scores['elapsed'] = elapsed.total_seconds()
-    scores['pipeline'] = name
     scores['split'] = test_split
-    scores['dataset'] = dataset
-    scores['signal'] = signal
+
+    if pipeline_path:
+        with open(pipeline_path, 'wb') as f:
+            pickle.dump(pipeline, f)
 
     return scores
 
-
-def summarize_results(df, metrics):
-    """ Summarize the result of benchmark.
-
-    The table is summarized for according to the number of wins each pipeline
-    had over ARIMA pipeline per dataset, the number of anomalies detected, and
-    the average f1 score acheived by that pipeline.
-    """
-    def return_cm(x):
-        if isinstance(x, int):
-            return (0, 0, 0)
-
-        elif len(x) > 3:
-            return x[1:]
-
-        return x
-
-    def get_status(x):
-        return {
-            "OK": 0,
-            "ERROR": 1
-        }[x]
-
-    df['status'] = df['status'].apply(get_status)
-    df['confusion_matrix'] = df['confusion_matrix'].apply(ast.literal_eval)
-    df['confusion_matrix'] = df['confusion_matrix'].apply(return_cm)
-    df[['fp', 'fn', 'tp']] = pd.DataFrame(df['confusion_matrix'].tolist(), index=df.index)
-
-    # calculate f1 score
-    df_ = df.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
-
-    precision = df_['tp'] / (df_['tp'] + df_['fp'])
-    recall = df_['tp'] / (df_['tp'] + df_['fn'])
-    df_['f1'] = 2 * (precision * recall) / (precision + recall)
-
-    result = dict()
-
-    # number of wins over ARIMA
-    arima_pipeline = 'arima'
-    intermediate = df_.set_index(['pipeline', 'dataset'])['f1'].unstack().T
-    arima = intermediate.pop(arima_pipeline)
-
-    result['# Wins'] = (intermediate.T > arima).sum(axis=1)
-    result['# Wins'][arima_pipeline] = None
-
-    # number of anomalies detected
-    result['# Anomalies'] = df_.groupby('pipeline')[['tp', 'fp']].sum().sum(axis=1).to_dict()
-
-    # average f1 score
-    result['Average F1 Score'] = df_.groupby('pipeline')['f1'].mean().to_dict()
-
-    # failure rate
-    result['Failure Rate'] = df.groupby(
-        ['dataset', 'pipeline'])['status'].mean().unstack('pipeline').T.mean(axis=1)
-
-    result = pd.DataFrame(result)
-    result.index.name = 'pipeline'
-    result.reset_index(inplace=True)
-
-    rank = 'Average F1 Score'
-    result = _sort_leaderboard(result, rank, metrics)
-    result = result.drop('rank', axis=1).set_index('pipeline')
-
-    return result
 
 def _run_job(args):
     # Reset random seed
     np.random.seed()
 
-    pipeline, pipeline_name, dataset, signal, hyperparameter, metrics, test_split, detrend, iteration, cache_dir, run_id = args
+    (pipeline, pipeline_name, dataset, signal, hyperparameter, metrics, test_split, detrend,
+        iteration, cache_dir, pipeline_dir, run_id) = args
 
-    LOGGER.info('Evaluating pipeline %s on signal %s from dataset %s (test split: %s); iteration %s',
+    pipeline_path = pipeline_dir
+    if pipeline_dir:
+        base_path = str(pipeline_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}')
+        pipeline_path = base_path + '_pipeline.pkl'
+
+    LOGGER.info('Evaluating pipeline %s on signal %s dataset %s (test split: %s); iteration %s',
                 pipeline_name, signal, dataset, test_split, iteration)
 
-    output = _evaluate_signal(pipeline, pipeline_name, dataset, signal, hyperparameter, metrics, test_split, detrend)
-    scores = pd.DataFrame(output)
+    output = _evaluate_signal(
+        pipeline,
+        signal,
+        hyperparameter,
+        metrics,
+        test_split,
+        detrend,
+        pipeline_path
+    )
+    scores = pd.DataFrame.from_records([output], columns=output.keys())
 
-    scores.insert(0, 'iteration', iteration)
+    scores.insert(0, 'dataset', dataset)
+    scores.insert(1, 'pipeline', pipeline_name)
+    scores.insert(2, 'signal', signal)
+    scores.insert(3, 'iteration', iteration)
     scores['run_id'] = run_id
 
     if cache_dir:
@@ -239,6 +213,7 @@ def _run_job(args):
         scores.to_csv(base_path + '_scores.csv', index=False)
 
     return scores
+
 
 def _run_on_dask(jobs, verbose):
     """Run the tasks in parallel using dask."""
@@ -264,8 +239,8 @@ def _run_on_dask(jobs, verbose):
 
 
 def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
-              test_split=False, detrend=False, iterations=1, workers=1, cache_dir=None,
-              show_progress=False, output_path=None):
+              test_split=False, detrend=False, iterations=1, workers=1, show_progress=False,
+              cache_dir=None, output_path=None, pipeline_dir=None):
     """Run pipelines on the given datasets and evaluate the performance.
 
     The pipelines are used to analyze the given signals and later on the
@@ -304,23 +279,26 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             If the string ``dask`` is given, the computation is distributed using ``dask``.
             In this case, setting up the ``dask`` cluster and client is expected to be handled
             outside of this function.
+        show_progress (bool):
+            Whether to use tqdm to keep track of the progress. Defaults to ``True``.
         cache_dir (str):
             If a ``cache_dir`` is given, intermediate results are stored in the indicated directory
             as CSV files as they get computted. This allows inspecting results while the benchmark
             is still running and also recovering results in case the process does not finish
             properly. Defaults to ``None``.
-        show_progress (bool):
-            Whether to use tqdm to keep track of the progress. Defaults to ``True``.
         output_path (str): Location to save the intermediatry results. If not given,
             intermediatry results will not be saved.
+        pipeline_dir (str):
+            If a ``pipeline_dir`` is given, pipelines will get dumped in the specificed directory
+            as pickle files. Defaults to ``None``.
 
     Returns:
-        pandas.DataFrame: 
-            A table containing the scores obtained with each scoring function accross 
+        pandas.DataFrame:
+            A table containing the scores obtained with each scoring function accross
             all the signals for each pipeline.
     """
     pipelines = pipelines or VERIFIED_PIPELINES
-    datasets = datasets or list(BENCHMARK_DATA['MSL'])
+    datasets = datasets or list(BENCHMARK_DATA['MSL'][:2])
     run_id = os.getenv('RUN_ID') or str(uuid.uuid4())[:10]
 
     if isinstance(pipelines, list):
@@ -344,10 +322,14 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
                 raise ValueError('Unknown metric: {}'.format(metric))
 
         metrics = metrics_
-    
+
     if cache_dir:
         cache_dir = Path(cache_dir)
         os.makedirs(cache_dir, exist_ok=True)
+
+    if pipeline_dir:
+        pipeline_dir = Path(pipeline_dir)
+        os.makedirs(pipeline_dir, exist_ok=True)
 
     jobs = list()
     for dataset, signals in datasets.items():
@@ -369,6 +351,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
                         detrend,
                         iteration,
                         cache_dir,
+                        pipeline_dir,
                         run_id,
                     )
                     jobs.append(args)
@@ -394,7 +377,10 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
     return _sort_leaderboard(scores, rank, metrics)
 
 
-def main(workers='dask'):
+def main(workers=4):
+    pipeline_dir = 'save_pipelines'
+    cache_dir = 'cache'
+
     # output path
     version = "results.csv"
     output_path = os.path.join(BENCHMARK_PATH, 'results', version)
@@ -408,11 +394,11 @@ def main(workers='dask'):
     pipelines = VERIFIED_PIPELINES
 
     results = benchmark(
-        pipelines=pipelines, metrics=metrics, output_path=output_path, workers=workers)
+        pipelines=pipelines, metrics=metrics, output_path=output_path, workers=workers,
+        show_progress=False, pipeline_dir=pipeline_dir, cache_dir=cache_dir)
 
-    leaderboard = summarize_results(results, metrics)
-    output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
-    leaderboard.to_csv(output_path)
+    leaderboard_path = os.path.join(BENCHMARK_PATH, 'benchmark-summary.xlsx')
+    write_results(results, leaderboard_path, version='dev')
 
 
 if __name__ == "__main__":

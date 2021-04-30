@@ -1,4 +1,4 @@
-"""Progress bars for SDGym compatible with logging and dask."""
+"""Progress bars for Orion benchmark compatible with logging and dask."""
 
 import io
 import logging
