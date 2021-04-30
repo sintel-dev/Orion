@@ -31,6 +31,7 @@ install_requires = [
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
+    'xlsxwriter>=1.3.6<1.4',
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',

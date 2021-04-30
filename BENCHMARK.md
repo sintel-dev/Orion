@@ -103,9 +103,7 @@ To use ``orion.benchmark.benchmark`` function, it expects the following inputs:
 * pipeline_dir (str): If a ``pipeline_dir`` is given, pipelines will get dumped in the specificed directory as pickle files.
  Defaults to ``None``.
 
-And returns a ``pandas.DataFrame`` which contains the scores obtained with each scoring function accross all the signals for each pipeline. 
-Optionally, you can feed the result to 
-``summarize_results`` to average the scores and produce the leaderboard.
+And returns a ``pandas.DataFrame`` which contains the scores obtained with each scoring function accross all the signals for each pipeline.
 
 This is an example of how to call this function:
 
