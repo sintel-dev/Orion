@@ -396,6 +396,8 @@ def main(workers=1):
         pipelines=pipelines, metrics=metrics, output_path=output_path, workers=workers,
         show_progress=False, pipeline_dir=pipeline_dir, cache_dir=cache_dir)
 
+    return results
+
 
 if __name__ == "__main__":
-    main()
+    results = main()
