@@ -23,7 +23,6 @@ from orion.data import load_anomalies, load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 from orion.evaluation import contextual_confusion_matrix
 from orion.progress import TqdmLogger, progress
-from orion.results import write_results
 
 warnings.simplefilter('ignore')
 
@@ -396,9 +395,6 @@ def main(workers=1):
     results = benchmark(
         pipelines=pipelines, metrics=metrics, output_path=output_path, workers=workers,
         show_progress=False, pipeline_dir=pipeline_dir, cache_dir=cache_dir)
-
-    leaderboard_path = os.path.join(BENCHMARK_PATH, 'benchmark-summary.xlsx')
-    write_results(results, leaderboard_path, version='dev')
 
 
 if __name__ == "__main__":
