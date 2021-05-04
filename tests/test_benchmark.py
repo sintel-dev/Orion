@@ -89,7 +89,7 @@ def test__detrend_signal_no_trend():
     pd.testing.assert_frame_equal(returned, expected_return)
 
 
-def test__get_parameter_pipeline():
+def test__get_pipeline_hyperparameter():
     hyperparameters = {
         "pipeline1": "pipeline1.json",
         "pipeline2": "pipeline2.json",
@@ -97,11 +97,11 @@ def test__get_parameter_pipeline():
     pipeline = "pipeline1"
 
     expected_return = "pipeline1.json"
-    returned = benchmark._get_parameter(hyperparameters, pipeline)
+    returned = benchmark._get_pipeline_hyperparameter(hyperparameters, None, pipeline)
     assert returned == expected_return
 
 
-def test__get_parameter_dataset():
+def test__get_pipeline_hyperparameter_dataset():
     hyperparameters = {
         "dataset1": {
             "pipeline1": "pipeline1.json",
@@ -114,16 +114,16 @@ def test__get_parameter_dataset():
         "pipeline1": "pipeline1.json",
         "pipeline2": "pipeline2.json",
     }
-    returned = benchmark._get_parameter(hyperparameters, dataset)
+    returned = benchmark._get_pipeline_hyperparameter(hyperparameters, dataset, None)
     assert returned == expected_return
 
 
-def test__get_parameter_does_not_exist():
+def test__get_pipeline_hyperparameter_does_not_exist():
     hyperparameters = None
     pipeline = "pipeline1"
 
     expected_return = None
-    returned = benchmark._get_parameter(hyperparameters, pipeline)
+    returned = benchmark._get_pipeline_hyperparameter(hyperparameters, None, pipeline)
     assert returned == expected_return
 
 
@@ -200,19 +200,51 @@ class TestBenchmark(TestCase):
         cls.hyper = None
         cls.distributed = False
         cls.rank = 'metric-name'
+        cls.test_split = False
+        cls.detrend = False
+        cls.pipeline_path = None
+        cls.cache_dir = None
+        cls.iteration = 0
+        cls.run_id = ANY
         cls.metrics = {
             'metric-name': Mock(autospec=METRICS['f1'], return_value=1)
         }
+
+    def args(self):
+        return (
+            self.pipeline,
+            self.name,
+            self.dataset,
+            self.signal,
+            self.hyper,
+            self.metrics,
+            self.test_split,
+            self.detrend,
+            self.iteration,
+            self.cache_dir,
+            self.pipeline_path,
+            self.run_id
+        )
 
     def set_score(self, metric, elapsed, test_split):
         return {
             'metric-name': metric,
             'elapsed': elapsed,
-            'pipeline': self.name,
             'split': test_split,
-            'dataset': self.dataset,
-            'signal': self.signal,
             'status': 'OK'
+        }
+
+    def set_output(self, metric, elapsed, test_split):
+        return {
+            'dataset': self.dataset,
+            'pipeline': self.name,
+            'signal': self.signal,
+            'iteration': self.iteration,
+            'metric-name': metric,
+            'elapsed': elapsed,
+            'split': test_split,
+            'status': 'OK',
+            'run_id': self.run_id
         }
 
     @patch('orion.benchmark.load_anomalies')
@@ -230,7 +262,7 @@ class TestBenchmark(TestCase):
         analyze_mock.return_value = anomalies
 
         returned = benchmark._evaluate_signal(
-            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics, True)
+            self.pipeline, self.signal, self.hyper, self.metrics, True)
 
         expected_return = self.set_score(1, ANY, ANY)
         assert returned == expected_return
@@ -259,7 +291,7 @@ class TestBenchmark(TestCase):
         analyze_mock.side_effect = Exception("failed analyze.")
 
         returned = benchmark._evaluate_signal(
-            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics, True)
+            self.pipeline, self.signal, self.hyper, self.metrics, True)
 
         expected_return = self.set_score(0, ANY, ANY)
         expected_return['status'] = 'ERROR'
@@ -297,11 +329,14 @@ class TestBenchmark(TestCase):
         metrics = {'confusion_matrix': Mock(autospec=contextual_confusion_matrix)}
         metrics = {**metrics, **self.metrics}
         returned = benchmark._evaluate_signal(
-            self.pipeline, self.name, self.dataset, self.signal, self.hyper, metrics, True)
+            self.pipeline, self.signal, self.hyper, metrics, True)
 
         expected_return = self.set_score(0, ANY, ANY)
         expected_return['status'] = 'ERROR'
-        expected_return['confusion_matrix'] = (None, 0, 2, 0)
+        expected_return['tn'] = None
+        expected_return['fp'] = 0
+        expected_return['fn'] = 2
+        expected_return['tp'] = 0
 
         assert returned == expected_return
 
@@ -319,8 +354,7 @@ class TestBenchmark(TestCase):
         test_split = True
 
         returned = benchmark._evaluate_signal(
-            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics,
-            test_split=test_split)
+            self.pipeline, self.signal, self.hyper, self.metrics, test_split=test_split)
 
         expected_return = self.set_score(1, ANY, test_split)
         assert returned == expected_return
@@ -348,8 +382,7 @@ class TestBenchmark(TestCase):
         test_split = False
 
         returned = benchmark._evaluate_signal(
-            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics,
-            test_split=test_split)
+            self.pipeline, self.signal, self.hyper, self.metrics, test_split=test_split)
 
         expected_return = self.set_score(1, ANY, test_split)
         assert returned == expected_return
@@ -377,8 +410,7 @@ class TestBenchmark(TestCase):
         detrend = False
 
         returned = benchmark._evaluate_signal(
-            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics,
-            test_split=True, detrend=detrend)
+            self.pipeline, self.signal, self.hyper, self.metrics, test_split=True, detrend=detrend)
 
         expected_return = self.set_score(1, ANY, ANY)
         assert returned == expected_return
@@ -410,8 +442,7 @@ class TestBenchmark(TestCase):
         detrend = True
 
         returned = benchmark._evaluate_signal(
-            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics,
-            test_split=True, detrend=detrend)
+            self.pipeline, self.signal, self.hyper, self.metrics, test_split=True, detrend=detrend)
 
         expected_return = self.set_score(1, ANY, ANY)
         assert returned == expected_return
@@ -433,220 +464,156 @@ class TestBenchmark(TestCase):
         load_anomalies_mock.assert_called_once_with(self.signal)
 
     @patch('orion.benchmark._evaluate_signal')
-    def test__evaluate_pipeline(self, evaluate_signal_mock):
-        test_split = (True, False)
-        detrend = False
-
-        signals = [self.signal]
+    def test__run_job(self, evaluate_signal_mock):
+        pass
 
         score = self.set_score(1, ANY, ANY)
         evaluate_signal_mock.return_value = score
 
-        benchmark._evaluate_pipeline(
-            self.pipeline, self.name, self.dataset, signals, self.hyper, self.metrics,
-            self.distributed, test_split, detrend)
+        benchmark._run_job(self.args())
 
         expected_calls = [
-            call(self.pipeline, self.name, self.dataset, self.signal,
-                 self.hyper, self.metrics, True, detrend),
-
-            call(self.pipeline, self.name, self.dataset, self.signal,
-                 self.hyper, self.metrics, False, detrend)
+            self.pipeline, self.signal, self.hyper, self.metrics,
+            self.test_split, self.detrend, self.pipeline_path
         ]
-        assert evaluate_signal_mock.call_args_list == expected_calls
 
-    @patch('orion.benchmark._evaluate_signal')
-    def test__evaluate_pipeline_test_split_none(self, evaluate_signal_mock):
-        test_split = None
-        detrend = False
+        evaluate_signal_mock.assert_called_once_with(*expected_calls)
 
-        signals = [self.signal]
-
-        score = self.set_score(1, ANY, ANY)
-        evaluate_signal_mock.return_value = score
-
-        returned = benchmark._evaluate_pipeline(
-            self.pipeline, self.name, self.dataset, signals, self.hyper, self.metrics,
-            self.distributed, test_split, detrend)
-
-        expected_return = [
-            self.set_score(1, ANY, True),
-            self.set_score(1, ANY, False)
-        ]
-        assert returned == expected_return
-
-        expected_calls = [
-            call(self.pipeline, self.name, self.dataset, self.signal,
-                 self.hyper, self.metrics, True, detrend),
-
-            call(self.pipeline, self.name, self.dataset, self.signal,
-                 self.hyper, self.metrics, False, detrend)
-        ]
-        assert evaluate_signal_mock.call_args_list == expected_calls
-
-    @patch('orion.benchmark._evaluate_signal')
-    def test__evaluate_pipeline_test_split(self, evaluate_signal_mock):
-        test_split = True
-        detrend = False
-
-        signals = [self.signal]
-
-        score = self.set_score(1, ANY, test_split)
-        evaluate_signal_mock.return_value = score
-
-        expected_return = [score]
-        returned = benchmark._evaluate_pipeline(
-            self.pipeline, self.name, self.dataset, signals, self.hyper, self.metrics,
-            self.distributed, test_split, detrend)
-
-        assert returned == expected_return
-
-        evaluate_signal_mock.assert_called_once_with(
-            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics,
-            test_split, detrend)
-
-    @patch('orion.benchmark._evaluate_signal')
-    def test__evaluate_pipeline_no_test_split(self, evaluate_signal_mock):
-        test_split = False
-        detrend = False
-
-        signals = [self.signal]
-
-        score = self.set_score(1, ANY, test_split)
-        evaluate_signal_mock.return_value = score
-
-        expected_return = [score]
-        returned = benchmark._evaluate_pipeline(
-            self.pipeline, self.name, self.dataset, signals, self.hyper, self.metrics,
-            self.distributed, test_split, detrend)
-
-        assert returned == expected_return
-
-        evaluate_signal_mock.assert_called_once_with(
-            self.pipeline, self.name, self.dataset, self.signal, self.hyper, self.metrics,
-            test_split, detrend)
-
-    @patch('orion.benchmark._evaluate_pipeline')
-    def test__evaluate_pipelines(self, evaluate_pipeline_mock):
-        test_split = False
-        detrend = False
-
-        signals = [self.signal]
-        pipelines = {self.name: self.pipeline}
-
-        score = self.set_score(1, ANY, test_split)
-        evaluate_pipeline_mock.return_value = [score]
-
-        expected_return = [score]
-        returned = benchmark._evaluate_pipelines(pipelines, self.dataset, signals, self.hyper,
-                                                 self.metrics, self.distributed, test_split,
-                                                 detrend)
-
-        assert returned == expected_return
-
-        evaluate_pipeline_mock.assert_called_once_with(
-            self.pipeline, self.name, self.dataset, signals, self.hyper, self.metrics,
-            self.distributed, test_split, detrend)
-
-    @patch('orion.benchmark._evaluate_pipeline')
-    def test__evaluate_pipelines_hyperparameter(self, evaluate_pipeline_mock):
-        test_split = False
-        detrend = False
-
-        signals = [self.signal]
-        pipelines = {self.name: self.pipeline}
-
-        hyperparameter = Mock(autospec=dict)
-        hyperparameters = {self.name: hyperparameter}
-
-        score = self.set_score(1, ANY, test_split)
-        evaluate_pipeline_mock.return_value = [score]
-
-        expected_return = [score]
-        returned = benchmark._evaluate_pipelines(pipelines, self.dataset, signals, hyperparameters,
-                                                 self.metrics, self.distributed, test_split,
-                                                 detrend)
-
-        assert returned == expected_return
-
-        evaluate_pipeline_mock.assert_called_once_with(
-            self.pipeline, self.name, self.dataset, signals, hyperparameter, self.metrics,
-            self.distributed, test_split, detrend)
-
-    @patch('orion.benchmark._evaluate_pipelines')
-    def test__evaluate_datasets(self, evaluate_pipelines_mock):
-        test_split = False
-        detrend = False
-
+    @patch('orion.benchmark._run_job')
+    def test_benchmark(self, run_job_mock):
         signals = [self.signal]
         datasets = {self.dataset: signals}
-        pipelines = {self.name, self.pipeline}
+        pipelines = {self.name: self.pipeline}
 
-        score = self.set_score(1, ANY, test_split)
-        evaluate_pipelines_mock.return_value = [score]
-
-        order = ['dataset', 'elapsed', 'metric-name', 'pipeline', 'signal', 'split', 'status']
-        expected_return = pd.DataFrame.from_records([{
-            'metric-name': 1,
-            'elapsed': ANY,
-            'split': test_split,
-            'pipeline': self.name,
-            'dataset': self.dataset,
-            'signal': self.signal,
-            'status': 'OK'
-        }])[order]
-
-        returned = benchmark._evaluate_datasets(
-            pipelines, datasets, self.hyper, self.metrics, self.distributed, test_split, detrend)
-
-        pd.testing.assert_frame_equal(returned, expected_return)
-
-        evaluate_pipelines_mock.assert_called_once_with(
-            pipelines, self.dataset, signals, self.hyper, self.metrics,
-            self.distributed, test_split, detrend)
-
-    @patch('orion.benchmark._evaluate_datasets')
-    def test_benchmark(self, evaluate_datasets_mock):
-        signals = [self.signal]
-        datasets = {self.dataset: signals}
-        pipelines = {self.name, self.pipeline}
-
-        score = self.set_score(1, ANY, ANY)
-        evaluate_datasets_mock.return_value = pd.DataFrame.from_records([score])
+        output = self.set_output(1, ANY, ANY)
+        run_job_mock.return_value = pd.DataFrame.from_records([output])
 
         order = [
             'pipeline',
             'rank',
             'dataset',
-            'elapsed',
-            'metric-name',
             'signal',
+            'iteration',
+            'metric-name',
+            'status',
+            'elapsed',
             'split',
-            'status']
+            'run_id']
 
         expected_return = pd.DataFrame.from_records([{
-            'rank': 1,
             'metric-name': 1,
+            'rank': 1,
             'elapsed': ANY,
             'split': ANY,
+            'status': 'OK',
+            'iteration': self.iteration,
             'pipeline': self.name,
             'dataset': self.dataset,
             'signal': self.signal,
-            'status': 'OK'
+            'run_id': self.run_id
         }])[order]
 
         returned = benchmark.benchmark(
-            pipelines, datasets, self.hyper, self.metrics, self.rank, self.distributed)
+            pipelines, datasets, self.hyper, self.metrics, self.rank)[order]
 
         pd.testing.assert_frame_equal(returned, expected_return)
 
-        evaluate_datasets_mock.assert_called_once_with(
-            pipelines, datasets, self.hyper, self.metrics, self.distributed, False, False)
+        run_job_mock.assert_called_once_with(self.args())
 
-    @patch('orion.benchmark._evaluate_datasets')
-    def test_benchmark_metrics_list(self, evaluate_datasets_mock):
-        test_split = False
-        detrend = False
+    @patch('orion.benchmark._run_job')
+    def test_benchmark_dataset_list(self, run_job_mock):
+        signals = [self.signal]
+        pipelines = {self.name: self.pipeline}
+
+        output = self.set_output(1, ANY, ANY)
+        output['dataset'] = 'dataset'
+        run_job_mock.return_value = pd.DataFrame.from_records([output])
+
+        order = [
+            'pipeline',
+            'rank',
+            'dataset',
+            'signal',
+            'iteration',
+            'metric-name',
+            'status',
+            'elapsed',
+            'split',
+            'run_id']
+
+        expected_return = pd.DataFrame.from_records([{
+            'metric-name': 1,
+            'rank': 1,
+            'elapsed': ANY,
+            'split': ANY,
+            'status': 'OK',
+            'iteration': self.iteration,
+            'pipeline': self.name,
+            'dataset': 'dataset',
+            'signal': self.signal,
+            'run_id': self.run_id
+        }])[order]
+
+        returned = benchmark.benchmark(
+            pipelines, signals, self.hyper, self.metrics, self.rank)[order]
+
+        pd.testing.assert_frame_equal(returned, expected_return)
+
+        args = list(self.args())
+        args[2] = 'dataset'
+        run_job_mock.assert_called_once_with(tuple(args))
+
+    @patch('orion.benchmark._run_job')
+    def test_benchmark_pipelines_list(self, run_job_mock):
+        signals = [self.signal]
+        datasets = {self.dataset: signals}
+        pipelines = [self.pipeline]
+
+        hyper = {}
+
+        output = self.set_output(1, ANY, ANY)
+        output['pipeline'] = self.pipeline
+        run_job_mock.return_value = pd.DataFrame.from_records([output])
+
+        order = [
+            'pipeline',
+            'rank',
+            'dataset',
+            'signal',
+            'iteration',
+            'metric-name',
+            'status',
+            'elapsed',
+            'split',
+            'run_id']
+
+        expected_return = pd.DataFrame.from_records([{
+            'metric-name': 1,
+            'rank': 1,
+            'elapsed': ANY,
+            'split': ANY,
+            'status': 'OK',
+            'iteration': self.iteration,
+            'pipeline': self.pipeline,
+            'dataset': self.dataset,
+            'signal': self.signal,
+            'run_id': self.run_id
+        }])[order]
+
+        returned = benchmark.benchmark(
+            pipelines, datasets, hyper, self.metrics, self.rank)[order]
+
+        pd.testing.assert_frame_equal(returned, expected_return)
+
+        args = list(self.args())
+        args[1] = self.pipeline
+        args[4] = hyper
+
+        run_job_mock.assert_called_once_with(tuple(args))
+
+    @patch('orion.benchmark._run_job')
+    def test_benchmark_metrics_list(self, run_job_mock):
+        pass
 
         signals = [self.signal]
         datasets = {self.dataset: signals}
@@ -657,43 +624,47 @@ class TestBenchmark(TestCase):
         metrics = [metric]
         metrics_ = {metric.__name__: metric}
 
-        score = self.set_score(1, ANY, test_split)
-        score[metric.__name__] = metric
-        evaluate_datasets_mock.return_value = pd.DataFrame.from_records([score])
+        output = self.set_output(1, ANY, ANY)
+        output[metric.__name__] = metric
+        run_job_mock.return_value = pd.DataFrame.from_records([output])
 
         order = [
             'pipeline',
             'rank',
             'dataset',
-            'elapsed',
-            'metric-name',
             'signal',
+            'iteration',
+            'metric-name',
+            'status',
+            'elapsed',
             'split',
-            'status']
+            'run_id']
 
         expected_return = pd.DataFrame.from_records([{
-            'rank': 1,
             'metric-name': metric,
+            'rank': 1,
             'elapsed': ANY,
-            'split': test_split,
+            'split': ANY,
+            'status': 'OK',
+            'iteration': self.iteration,
             'pipeline': self.name,
             'dataset': self.dataset,
             'signal': self.signal,
-            'status': 'OK'
+            'run_id': self.run_id
         }])[order]
 
-        returned = benchmark.benchmark(pipelines, datasets, self.hyper, metrics, self.rank,
-                                       self.distributed, test_split, detrend)
+        returned = benchmark.benchmark(
+            pipelines, datasets, self.hyper, metrics, self.rank)[order]
 
         pd.testing.assert_frame_equal(returned, expected_return)
 
-        evaluate_datasets_mock.assert_called_once_with(
-            pipelines, datasets, self.hyper, metrics_, self.distributed, test_split, detrend)
+        args = list(self.args())
+        args[5] = metrics_
 
-    @patch('orion.benchmark._evaluate_datasets')
-    def test_benchmark_metrics_exception(self, evaluate_datasets_mock):
-        test_split = False
-        detrend = False
+        run_job_mock.assert_called_once_with(tuple(args))
+
+    def test_benchmark_metrics_exception(self):
+        pass
 
         signals = [self.signal]
         datasets = {self.dataset: signals}
@@ -702,54 +673,7 @@ class TestBenchmark(TestCase):
         metric = 'does-not-exist'
         metrics = [metric]
 
-        score = self.set_score(1, ANY, test_split)
-        evaluate_datasets_mock.return_value = pd.DataFrame.from_records([score])
-
         with self.assertRaises(ValueError) as ex:
-            benchmark.benchmark(pipelines, datasets, self.hyper, metrics, self.rank,
-                                self.distributed, test_split, detrend)
+            benchmark.benchmark(pipelines, datasets, self.hyper, metrics, self.rank)
 
             self.assertTrue(metric in ex.exception)
-
-    @patch('orion.benchmark._evaluate_datasets')
-    def test_benchmark_pipelines_list(self, evaluate_datasets_mock):
-        test_split = False
-        detrend = False
-
-        signals = [self.signal]
-        datasets = {self.dataset: signals}
-        pipelines = [self.pipeline]
-        pipelines_ = {self.pipeline: self.pipeline}
-
-        score = self.set_score(1, ANY, test_split)
-        score['pipeline'] = self.pipeline
-        evaluate_datasets_mock.return_value = pd.DataFrame.from_records([score])
-
-        order = [
-            'pipeline',
-            'rank',
-            'dataset',
-            'elapsed',
-            'metric-name',
-            'signal',
-            'split',
-            'status']
-
-        expected_return = pd.DataFrame.from_records([{
-            'rank': 1,
-            'metric-name': 1,
-            'elapsed': ANY,
-            'split': test_split,
-            'pipeline': self.pipeline,
-            'dataset': self.dataset,
-            'signal': self.signal,
-            'status': 'OK'
-        }])[order]
-
-        returned = benchmark.benchmark(pipelines, datasets, self.hyper, self.metrics, self.rank,
-                                       self.distributed, test_split, detrend)
-
-        pd.testing.assert_frame_equal(returned, expected_return)
-
-        evaluate_datasets_mock.assert_called_once_with(
-            pipelines_, datasets, self.hyper, self.metrics, self.distributed, test_split, detrend)
