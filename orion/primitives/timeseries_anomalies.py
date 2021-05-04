@@ -492,3 +492,31 @@ def find_anomalies(errors, index, z_range=(0, 10), window_size=None, window_size
         anomalies.append([index[int(start)], index[int(stop)], score])
 
     return np.asarray(anomalies)
+
+
+def format_anomalies(y_hat, index, threshold=0.5, anomaly_padding=50):
+    """Format binary predictions into anomalous sequences.
+
+    Args:
+        y_hat (ndarray):
+            Array of predictions.
+        index (ndarray):
+            Array of indices of the windows.
+        threshold (float):
+            Optional. Separation between the two classes.
+        anomaly_padding (int):
+            Optional. Number of errors before and after a found anomaly that are added to the
+            anomalous sequence. If not given, 50 is used.
+
+    Returns:
+        ndarray:
+            Array containing start-index, end-index for each anomalous sequence that
+            was found.
+    """
+    sequences, _ = _find_sequences(y_hat, threshold, anomaly_padding)
+
+    anomalies = list()
+    for start, stop in sequences:
+        anomalies.append([index[int(start)], index[int(stop)]])
+
+    return np.asarray(anomalies)

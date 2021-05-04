@@ -1,0 +1,37 @@
+{
+    "primitives": [
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate",
+        "orion.primitives.timeseries_preprocessing.fillna",
+        "orion.primitives.timeseries_preprocessing.rolling_window_sequences_labels",
+        "keras.Sequential.LSTMTimeSeriesClassifier",
+        "orion.primitives.timeseries_anomalies.format_anomalies"
+    ],
+    "init_params": {
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "time_column": "timestamp",
+            "interval": 21600,
+            "method": ["max"]
+        },
+        "orion.primitives.timeseries_preprocessing.fillna#1": {
+            "method": ["ffill", "bfill"]
+        },
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 1,
+            "window_size": 250
+        },
+        "keras.Sequential.LSTMTimeSeriesClassifier#1": {
+            "epochs": 5,
+            "validation_split": 0.1
+        }
+    },
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.format_anomalies#1": {
+            "index": "target_index"
+        }
+    },
+    "output_names": {
+        "keras.Sequential.LSTMTimeSeriesClassifier#1": {
+            "y": "y_hat"
+        }
+    }
+}

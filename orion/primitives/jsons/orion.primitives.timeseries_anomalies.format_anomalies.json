@@ -1,0 +1,52 @@
+{
+    "name": "orion.primitives.timeseries_anomalies.format_anomalies",
+    "contributors": [
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "documentation": "",
+    "description": "Format point-wise anomalous predictions into orion standard format.",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "anomaly_detector"
+    },
+    "modalities": [
+        "timeseries"
+    ],
+    "primitive": "orion.primitives.timeseries_anomalies.format_anomalies",
+    "produce": {
+        "args": [
+            {
+                "name": "y_hat",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "threshold": {
+                "type": "float",
+                "default": 0.5
+            }
+        },
+        "tunable": {
+            "anomaly_padding": {
+                "type": "int",
+                "default": 50,
+                "range": [
+                    0,
+                    400
+                ]
+            }
+        }
+    }
+}
