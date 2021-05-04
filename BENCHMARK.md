@@ -84,14 +84,26 @@ To use ``orion.benchmark.benchmark`` function, it expects the following inputs:
  If not given, all the available metrics will be used.
 * rank (str): Sort and rank the pipelines based on the given metric.
  If not given, rank using the first metric.
-* distributed (bool): Whether to use dask for distributed computing. If not given, use ``False``.
-* test_split (bool or float): if bool, it indicates whether to use the prespecified train-test split. If float, then it should be between 0.0 and 1.0 and represent the proportion of the signal to include in the test split. If not given, use ``False``.
+* test_split (bool or float): if bool, it indicates whether to use the prespecified train-test split. If float, then it 
+ should be between 0.0 and 1.0 and represent the proportion of the signal to include in the test split. 
+ If not given, use ``False``.
 * detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.
-* output_path (str): Location to save the results. If not given, results will not be saved.
+* iterations (int): Number of iterations to perform over each signal and pipeline. Defaults to 1.
+* workers (int or str): If ``workers`` is given as an integer value other than 0 or 1, a multiprocessing 
+ Pool is used to distribute the computation across the indicated number of workers.
+ If the string ``dask`` is given, the computation is distributed using ``dask``.
+ In this case, setting up the ``dask`` cluster and client is expected to be handled outside of this function.
+* show_progress (bool): Whether to use tqdm to keep track of the progress. Defaults to ``True``.
+* cache_dir (str): If a ``cache_dir`` is given, intermediate results are stored in the indicated directory
+ as CSV files as they get computted. This allows inspecting results while the benchmark
+ is still running and also recovering results in case the process does not finish
+ properly. Defaults to ``None``.
+* output_path (str): Location to save the intermediatry results. If not given,
+ intermediatry results will not be saved.
+* pipeline_dir (str): If a ``pipeline_dir`` is given, pipelines will get dumped in the specificed directory as pickle files.
+ Defaults to ``None``.
 
-And returns a ``pandas.DataFrame`` which contains the scores obtained with each scoring function accross all the signals for each pipeline. 
-Optionally, you can feed the result to 
-``summarize_results`` to average the scores and produce the leaderboard.
+And returns a ``pandas.DataFrame`` which contains the scores obtained with each scoring function accross all the signals for each pipeline.
 
 This is an example of how to call this function:
 
