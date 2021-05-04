@@ -114,8 +114,8 @@ We run the benchmark on **11** datasets with their known grounth truth. We recor
 | Pipeline                  |  Outperforms ARIMA |
 |---------------------------|--------------------|
 | TadGAN                    |          8         |
-| LSTM Dynamic Thresholding |          8         |
-| LSTM Autoencoder          |          7         |
+| LSTM Dynamic Thresholding |          7         |
+| LSTM Autoencoder          |          6         |
 | Dense Autoencoder         |          7         |
 | Azure                     |          0         |
 
