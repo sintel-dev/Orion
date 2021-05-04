@@ -60,13 +60,12 @@ def get_summary_page(results):
             "ERROR": 1
         }[x]
 
+    results['status'] = results['status'].apply(get_status)
     df = results.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
 
     precision = df['tp'] / (df['tp'] + df['fp'])
     recall = df['tp'] / (df['tp'] + df['fn'])
     df['f1'] = 2 * (precision * recall) / (precision + recall)
-
-    df['status'] = results['status'].apply(get_status)
 
     summary = dict()
 
@@ -85,7 +84,7 @@ def get_summary_page(results):
     summary['Average F1 Score'] = df.groupby('pipeline')['f1'].mean().to_dict()
 
     # failure rate
-    summary['Failure Rate'] = df.groupby(
+    summary['Failure Rate'] = results.groupby(
         ['dataset', 'pipeline'])['status'].mean().unstack('pipeline').T.mean(axis=1)
 
     summary = pd.DataFrame(summary)
