@@ -59,8 +59,8 @@ def fillna(X, value=None, method=None, axis=None, limit=None, downcast=None):
     return X_.values
 
 
-def rolling_window_sequences_labels(X, index, window_size, target_size=1, step_size=1, target_column=1,
-                                    positive_class=1, min_percent=0.01):
+def rolling_window_sequences_labels(X, index, window_size, target_size=1, step_size=1,
+                                    target_column=1, positive_class=1, min_percent=0.01):
     """Create rolling window sequences out of time series data.
 
     The function creates an array of input sequences and an array of label sequences by rolling
