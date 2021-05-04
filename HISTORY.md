@@ -1,7 +1,16 @@
 History
 =======
 
-## 0.1.6 - 2021-02-08
+## 0.1.7 - 2021-05-04
+
+This version adds new features to the benchmark function where users can now save pipelines, view results as they are being calculated, and allow a single evaluation to be compared multiple times.
+
+### Issues resolved
+* Dask issues in benchmark function & improvements - [Issue #225](https://github.com/signals-dev/Orion/issues/225) by @sarahmish
+* Numerical overflow when using contextual metrics - [Issue #212](https://github.com/signals-dev/Orion/issues/212) by @kronerte
+
+
+## 0.1.6 - 2021-03-08
 
 This version introduces two new pipelines: LSTM AE and Dense AE.
 In addition to minor improvements, a bit of code refactoring took place to introduce

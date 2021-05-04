@@ -31,10 +31,10 @@ install_requires = [
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
+    'xlsxwriter>=1.3.6<1.4',
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
-    'urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1'
 ]
 
 setup_requires = [
@@ -120,6 +120,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/D3-AI/Orion',
-    version='0.1.6',
+    version='0.1.7.dev1',
     zip_safe=False,
 )

@@ -1,20 +1,30 @@
 # -*- coding: utf-8 -*-
 
 import ast
+import concurrent
 import json
 import logging
 import os
+import pickle
+import uuid
+import warnings
+from copy import deepcopy
 from datetime import datetime
 from functools import partial
+from pathlib import Path
 
-import dask
+import numpy as np
 import pandas as pd
+import tqdm
 from scipy import signal as scipy_signal
 
 from orion.analysis import _load_pipeline, analyze
 from orion.data import load_anomalies, load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 from orion.evaluation import contextual_confusion_matrix
+from orion.progress import TqdmLogger, progress
+
+warnings.simplefilter('ignore')
 
 LOGGER = logging.getLogger(__name__)
 
@@ -62,11 +72,40 @@ def _detrend_signal(df, value_column):
     return df
 
 
-def _get_parameter(parameters, name):
-    if isinstance(parameters, dict) and name in parameters.keys():
-        return parameters[name]
+def _get_pipeline_hyperparameter(hyperparameters, dataset_name, pipeline_name):
+    hyperparameters_ = deepcopy(hyperparameters)
 
-    return None
+    if hyperparameters:
+        hyperparameters_ = hyperparameters_.get(dataset_name) or hyperparameters_
+        hyperparameters_ = hyperparameters_.get(pipeline_name) or hyperparameters_
+
+    if hyperparameters_ is None and dataset_name and pipeline_name:
+        file_path = os.path.join(
+            PIPELINE_DIR, pipeline_name, pipeline_name + '_' + dataset_name.lower() + '.json')
+        if os.path.exists(file_path):
+            hyperparameters_ = file_path
+
+    if isinstance(hyperparameters_, str) and os.path.exists(hyperparameters_):
+        with open(hyperparameters_) as f:
+            hyperparameters_ = json.load(f)
+
+    return hyperparameters_
+
+
+def _parse_confusion_matrix(scores, truth):
+    columns = ["tn", "fp", "fn", "tp"]
+    metric_ = 'confusion_matrix'
+
+    values = scores[metric_]
+    if values == 0:
+        fn = len(truth)
+        values = (None, 0, fn, 0)  # (tn, fp, fn, tp)
+
+    # formating output
+    for metric_name, score in zip(columns, list(values)):
+        scores[metric_name] = score
+
+    del scores[metric_]
 
 
 def _sort_leaderboard(df, rank, metrics):
@@ -85,8 +124,8 @@ def _sort_leaderboard(df, rank, metrics):
     return df.set_index('pipeline').reset_index()
 
 
-def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
-                     test_split=False, detrend=False):
+def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
+                     test_split=False, detrend=False, pipeline_path=None):
 
     train, test = _load_signal(signal, test_split)
     truth = load_anomalies(signal)
@@ -97,7 +136,7 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
 
     try:
         LOGGER.info("Scoring pipeline %s on signal %s (test split: %s)",
-                    name, signal, test_split)
+                    pipeline, signal, test_split)
 
         start = datetime.utcnow()
         pipeline = _load_pipeline(pipeline, hyperparameter)
@@ -108,179 +147,100 @@ def _evaluate_signal(pipeline, name, dataset, signal, hyperparameter, metrics,
             name: scorer(truth, anomalies, test)
             for name, scorer in metrics.items()
         }
-        scores['status'] = 'OK'
+
+        status = 'OK'
 
     except Exception as ex:
         LOGGER.exception("Exception scoring pipeline %s on signal %s (test split: %s), error %s.",
-                         name, signal, test_split, ex)
+                         pipeline, signal, test_split, ex)
 
         elapsed = datetime.utcnow() - start
         scores = {
             name: 0 for name in metrics.keys()
         }
 
-        metric_ = 'confusion_matrix'
-        if metric_ in metrics.keys():
-            fn = len(truth)
-            scores[metric_] = (None, 0, fn, 0)  # (tn, fp, fn, tp)
+        status = 'ERROR'
 
-        scores['status'] = 'ERROR'
+    if 'confusion_matrix' in metrics.keys():
+        _parse_confusion_matrix(scores, truth)
 
+    scores['status'] = status
     scores['elapsed'] = elapsed.total_seconds()
-    scores['pipeline'] = name
     scores['split'] = test_split
-    scores['dataset'] = dataset
-    scores['signal'] = signal
+
+    if pipeline_path:
+        with open(pipeline_path, 'wb') as f:
+            pickle.dump(pipeline, f)
 
     return scores
 
 
-def _evaluate_pipeline(pipeline, pipeline_name, dataset, signals, hyperparameter, metrics,
-                       distributed, test_split, detrend):
-    if test_split is None:
-        test_split = (True, False)
-    elif not isinstance(test_split, tuple):
-        test_split = (test_split, )
+def _run_job(args):
+    # Reset random seed
+    np.random.seed()
 
-    # hyperparameter settings
-    if hyperparameter is None:
-        file_path = os.path.join(
-            PIPELINE_DIR, pipeline_name, pipeline_name + '_' + dataset.lower() + '.json')
-        if os.path.exists(file_path):
-            hyperparameter = file_path
+    (pipeline, pipeline_name, dataset, signal, hyperparameter, metrics, test_split, detrend,
+        iteration, cache_dir, pipeline_dir, run_id) = args
 
-    if isinstance(hyperparameter, str) and os.path.exists(hyperparameter):
-        LOGGER.info("Loading hyperparameter %s", hyperparameter)
-        with open(hyperparameter) as f:
-            hyperparameter = json.load(f)
+    pipeline_path = pipeline_dir
+    if pipeline_dir:
+        base_path = str(pipeline_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}')
+        pipeline_path = base_path + '_pipeline.pkl'
 
-    if distributed:
-        function = dask.delayed(_evaluate_signal)
-    else:
-        function = _evaluate_signal
+    LOGGER.info('Evaluating pipeline %s on signal %s dataset %s (test split: %s); iteration %s',
+                pipeline_name, signal, dataset, test_split, iteration)
 
-    scores = list()
+    output = _evaluate_signal(
+        pipeline,
+        signal,
+        hyperparameter,
+        metrics,
+        test_split,
+        detrend,
+        pipeline_path
+    )
+    scores = pd.DataFrame.from_records([output], columns=output.keys())
 
-    for signal in signals:
-        for test_split_ in test_split:
-            score = function(pipeline, pipeline_name, dataset, signal, hyperparameter,
-                             metrics, test_split_, detrend)
+    scores.insert(0, 'dataset', dataset)
+    scores.insert(1, 'pipeline', pipeline_name)
+    scores.insert(2, 'signal', signal)
+    scores.insert(3, 'iteration', iteration)
+    scores['run_id'] = run_id
 
-            scores.append(score)
-
-    return scores
-
-
-def _evaluate_pipelines(pipelines, dataset, signals, hyperparameters, metrics, distributed,
-                        test_split, detrend):
-
-    scores = list()
-    for name, pipeline in pipelines.items():
-        hyperparameter = _get_parameter(hyperparameters, name)
-        score = _evaluate_pipeline(pipeline, name, dataset, signals, hyperparameter,
-                                   metrics, distributed, test_split, detrend)
-        scores.extend(score)
+    if cache_dir:
+        base_path = str(cache_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}_{run_id}')
+        scores.to_csv(base_path + '_scores.csv', index=False)
 
     return scores
 
 
-def _evaluate_datasets(pipelines, datasets, hyperparameters, metrics, distributed, test_split,
-                       detrend):
-    delayed = []
-    for dataset, signals in datasets.items():
-        LOGGER.info("Starting dataset {} with {} signals..".format(
-            dataset, len(signals)))
+def _run_on_dask(jobs, verbose):
+    """Run the tasks in parallel using dask."""
+    try:
+        import dask
+    except ImportError as ie:
+        ie.msg += (
+            '\n\nIt seems like `dask` is not installed.\n'
+            'Please install `dask` and `distributed` using:\n'
+            '\n    pip install dask distributed'
+        )
+        raise
 
-        # dataset configuration
-        hyperparameters_ = _get_parameter(hyperparameters, dataset)
-        parameters = _get_parameter(BENCHMARK_PARAMS, dataset)
-        if parameters is not None:
-            detrend, test_split = parameters.values()
+    scorer = dask.delayed(_run_job)
+    persisted = dask.persist(*[scorer(args) for args in jobs])
+    if verbose:
+        try:
+            progress(persisted)
+        except ValueError:
+            pass
 
-        result = _evaluate_pipelines(pipelines, dataset, signals, hyperparameters_,
-                                     metrics, distributed, test_split, detrend)
-
-        delayed.extend(result)
-
-    if distributed:
-        persisted = dask.persist(*delayed)
-        results = dask.compute(*persisted)
-
-    else:
-        results = delayed
-
-    df = pd.DataFrame.from_records(results)
-    return df
-
-
-def summarize_results(df, metrics):
-    """ Summarize the result of benchmark.
-
-    The table is summarized for according to the number of wins each pipeline
-    had over ARIMA pipeline per dataset, the number of anomalies detected, and
-    the average f1 score acheived by that pipeline.
-    """
-    def return_cm(x):
-        if isinstance(x, int):
-            return (0, 0, 0)
-
-        elif len(x) > 3:
-            return x[1:]
-
-        return x
-
-    def get_status(x):
-        return {
-            "OK": 0,
-            "ERROR": 1
-        }[x]
-
-    df['status'] = df['status'].apply(get_status)
-    df['confusion_matrix'] = df['confusion_matrix'].apply(ast.literal_eval)
-    df['confusion_matrix'] = df['confusion_matrix'].apply(return_cm)
-    df[['fp', 'fn', 'tp']] = pd.DataFrame(df['confusion_matrix'].tolist(), index=df.index)
-
-    # calculate f1 score
-    df_ = df.groupby(['dataset', 'pipeline'])[['fp', 'fn', 'tp']].sum().reset_index()
-
-    precision = df_['tp'] / (df_['tp'] + df_['fp'])
-    recall = df_['tp'] / (df_['tp'] + df_['fn'])
-    df_['f1'] = 2 * (precision * recall) / (precision + recall)
-
-    result = dict()
-
-    # number of wins over ARIMA
-    arima_pipeline = 'arima'
-    intermediate = df_.set_index(['pipeline', 'dataset'])['f1'].unstack().T
-    arima = intermediate.pop(arima_pipeline)
-
-    result['# Wins'] = (intermediate.T > arima).sum(axis=1)
-    result['# Wins'][arima_pipeline] = None
-
-    # number of anomalies detected
-    result['# Anomalies'] = df_.groupby('pipeline')[['tp', 'fp']].sum().sum(axis=1).to_dict()
-
-    # average f1 score
-    result['Average F1 Score'] = df_.groupby('pipeline')['f1'].mean().to_dict()
-
-    # failure rate
-    result['Failure Rate'] = df.groupby(
-        ['dataset', 'pipeline'])['status'].mean().unstack('pipeline').T.mean(axis=1)
-
-    result = pd.DataFrame(result)
-    result.index.name = 'pipeline'
-    result.reset_index(inplace=True)
-
-    rank = 'Average F1 Score'
-    result = _sort_leaderboard(result, rank, metrics)
-    result = result.drop('rank', axis=1).set_index('pipeline')
-
-    return result
+    return dask.compute(*persisted)
 
 
 def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
-              distributed=False, test_split=False, detrend=False, output_path=None):
-    """Evaluate pipelines on the given datasets and evaluate the performance.
+              test_split=False, detrend=False, iterations=1, workers=1, show_progress=False,
+              cache_dir=None, output_path=None, pipeline_dir=None):
+    """Run pipelines on the given datasets and evaluate the performance.
 
     The pipelines are used to analyze the given signals and later on the
     detected anomalies are scored against the known anomalies using the
@@ -306,21 +266,39 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             If not given, all the available metrics will be used.
         rank (str): Sort and rank the pipelines based on the given metric.
             If not given, rank using the first metric.
-        distributed (bool): Whether to use dask for distributed computing. If not given,
-            use ``False``.
         test_split (bool or float): Whether to use the prespecified train-test split. If
             float, then it should be between 0.0 and 1.0 and represent the proportion of
             the signal to include in the test split. If not given, use ``False``.
         detrend (bool): Whether to use ``scipy.detrend``. If not given, use ``False``.
+        iterations (int):
+            Number of iterations to perform over each signal and pipeline. Defaults to 1.
+        workers (int or str):
+            If ``workers`` is given as an integer value other than 0 or 1, a multiprocessing
+            Pool is used to distribute the computation across the indicated number of workers.
+            If the string ``dask`` is given, the computation is distributed using ``dask``.
+            In this case, setting up the ``dask`` cluster and client is expected to be handled
+            outside of this function.
+        show_progress (bool):
+            Whether to use tqdm to keep track of the progress. Defaults to ``True``.
+        cache_dir (str):
+            If a ``cache_dir`` is given, intermediate results are stored in the indicated directory
+            as CSV files as they get computted. This allows inspecting results while the benchmark
+            is still running and also recovering results in case the process does not finish
+            properly. Defaults to ``None``.
         output_path (str): Location to save the intermediatry results. If not given,
             intermediatry results will not be saved.
+        pipeline_dir (str):
+            If a ``pipeline_dir`` is given, pipelines will get dumped in the specificed directory
+            as pickle files. Defaults to ``None``.
 
     Returns:
-        pandas.DataFrame: Table containing the scores obtained with
-            each scoring function accross all the signals for each pipeline.
+        pandas.DataFrame:
+            A table containing the scores obtained with each scoring function accross
+            all the signals for each pipeline.
     """
     pipelines = pipelines or VERIFIED_PIPELINES
     datasets = datasets or BENCHMARK_DATA
+    run_id = os.getenv('RUN_ID') or str(uuid.uuid4())[:10]
 
     if isinstance(pipelines, list):
         pipelines = {pipeline: pipeline for pipeline in pipelines}
@@ -344,17 +322,64 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
 
         metrics = metrics_
 
-    results = _evaluate_datasets(
-        pipelines, datasets, hyperparameters, metrics, distributed, test_split, detrend)
+    if cache_dir:
+        cache_dir = Path(cache_dir)
+        os.makedirs(cache_dir, exist_ok=True)
 
+    if pipeline_dir:
+        pipeline_dir = Path(pipeline_dir)
+        os.makedirs(pipeline_dir, exist_ok=True)
+
+    jobs = list()
+    for dataset, signals in datasets.items():
+        for pipeline_name, pipeline in pipelines.items():
+            hyperparameter = _get_pipeline_hyperparameter(hyperparameters, dataset, pipeline_name)
+            parameters = BENCHMARK_PARAMS.get(dataset)
+            if parameters is not None:
+                detrend, test_split = parameters.values()
+            for signal in signals:
+                for iteration in range(iterations):
+                    args = (
+                        pipeline,
+                        pipeline_name,
+                        dataset,
+                        signal,
+                        hyperparameter,
+                        metrics,
+                        test_split,
+                        detrend,
+                        iteration,
+                        cache_dir,
+                        pipeline_dir,
+                        run_id,
+                    )
+                    jobs.append(args)
+
+    if workers == 'dask':
+        scores = _run_on_dask(jobs, show_progress)
+    else:
+        if workers in (0, 1):
+            scores = map(_run_job, jobs)
+        else:
+            pool = concurrent.futures.ProcessPoolExecutor(workers)
+            scores = pool.map(_run_job, jobs)
+
+        scores = tqdm.tqdm(scores, total=len(jobs), file=TqdmLogger())
+        if show_progress:
+            scores = tqdm.tqdm(scores, total=len(jobs))
+
+    scores = pd.concat(scores)
     if output_path:
         LOGGER.info('Saving benchmark report to %s', output_path)
-        results.to_csv(output_path)
+        scores.to_csv(output_path, index=False)
 
-    return _sort_leaderboard(results, rank, metrics)
+    return _sort_leaderboard(scores, rank, metrics)
 
 
-def main(cuda=False, distributed=False):
+def main(workers=1):
+    pipeline_dir = 'save_pipelines'
+    cache_dir = 'cache'
+
     # output path
     version = "results.csv"
     output_path = os.path.join(BENCHMARK_PATH, 'results', version)
@@ -366,16 +391,13 @@ def main(cuda=False, distributed=False):
 
     # pipelines
     pipelines = VERIFIED_PIPELINES
-    if cuda:
-        pipelines = VERIFIED_PIPELINES_GPU
 
     results = benchmark(
-        pipelines=pipelines, metrics=metrics, output_path=output_path, distributed=distributed)
+        pipelines=pipelines, metrics=metrics, output_path=output_path, workers=workers,
+        show_progress=False, pipeline_dir=pipeline_dir, cache_dir=cache_dir)
 
-    leaderboard = summarize_results(results, metrics)
-    output_path = os.path.join(BENCHMARK_PATH, 'leaderboard.csv')
-    leaderboard.to_csv(output_path)
+    return results
 
 
 if __name__ == "__main__":
-    main()
+    results = main()
