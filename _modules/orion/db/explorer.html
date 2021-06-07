@@ -365,7 +365,8 @@
     <span class="c1"># ###### #</span>
 
 <div class="viewcode-block" id="OrionDBExplorer.add_signal"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_signal.html#orion.db.OrionDBExplorer.add_signal">[docs]</a>    <span class="k">def</span> <span class="nf">add_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">data_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">abspath</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new Signal object to the database.</span>
 
 <span class="sd">        The signal needs to be given a name and be associated to a Dataset.</span>
@@ -390,6 +391,8 @@
 <span class="sd">                Optional. Index of the timestamp column.</span>
 <span class="sd">            value_column (int):</span>
 <span class="sd">                Optional. Index of the value column.</span>
+<span class="sd">            abspath (bool):</span>
+<span class="sd">                Optional. Whether to store data location in absolute path.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotUniqueError:</span>
@@ -407,6 +410,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">stop_time</span><span class="p">:</span>
             <span class="n">stop_time</span> <span class="o">=</span> <span class="n">timestamps</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 
+        <span class="k">if</span> <span class="n">abspath</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">data_location</span><span class="p">):</span>
+            <span class="n">data_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">abspath</span><span class="p">)</span>
+
         <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
@@ -421,7 +427,8 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="OrionDBExplorer.add_signals"><a class="viewcode-back" href="../../../api_reference/api/orion.db.OrionDBExplorer.add_signals.html#orion.db.OrionDBExplorer.add_signals">[docs]</a>    <span class="k">def</span> <span class="nf">add_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                    <span class="n">stop_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">abspath</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a multiple Signal objects to the database.</span>
 
 <span class="sd">        All the signals will be added to the Dataset using the CSV filename</span>
@@ -444,6 +451,8 @@
 <span class="sd">                Optional. Index of the timestamp column.</span>
 <span class="sd">            value_column (int):</span>
 <span class="sd">                Optional. Index of the value column.</span>
+<span class="sd">            abspath (bool):</span>
+<span class="sd">                Optional. Whether to store data location in absolute path.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">signals_path</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">):</span>
@@ -457,6 +466,7 @@
                         <span class="n">stop_time</span><span class="o">=</span><span class="n">stop_time</span><span class="p">,</span>
                         <span class="n">timestamp_column</span><span class="o">=</span><span class="n">timestamp_column</span><span class="p">,</span>
                         <span class="n">value_column</span><span class="o">=</span><span class="n">value_column</span><span class="p">,</span>
+                        <span class="n">abspath</span><span class="o">=</span><span class="n">abspath</span>
                     <span class="p">)</span>
                 <span class="k">except</span> <span class="n">NotUniqueError</span><span class="p">:</span>
                     <span class="k">pass</span></div>
