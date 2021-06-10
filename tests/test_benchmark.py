@@ -206,6 +206,7 @@ class TestBenchmark(TestCase):
         cls.cache_dir = None
         cls.iteration = 0
         cls.run_id = ANY
+        cls.cuda = False
         cls.metrics = {
             'metric-name': Mock(autospec=METRICS['f1'], return_value=1)
         }
@@ -223,7 +224,8 @@ class TestBenchmark(TestCase):
             self.iteration,
             self.cache_dir,
             self.pipeline_path,
-            self.run_id
+            self.run_id,
+            self.cuda
         )
 
     def set_score(self, metric, elapsed, test_split):

@@ -8,6 +8,7 @@ import os
 import pickle
 import uuid
 import warnings
+import subprocess as sp
 from copy import deepcopy
 from datetime import datetime
 from functools import partial
@@ -53,6 +54,24 @@ VERIFIED_PIPELINES_GPU = {
     'azure': 'azure',
     'tadgan': 'tadgan_gpu'
 }
+
+
+def _select_gpu(num_gpu):
+    memory_gpu = list()
+    for gpu_id in range(num_gpu):
+        command = f"nvidia-smi --id={gpu_id} --query-gpu=memory.used --format=csv"
+        output_cmd = sp.check_output(command.split())
+        memory_used = output_cmd.decode("ascii").split("\n")[1]
+        memory_gpu.append(int(memory_used.split()[0]) + np.random.randint(10))
+
+    gpu_id = np.argmin(memory_gpu)
+    os.environ["CUDA_VISIBLE_DEVICES"] = "{}".format(gpu_id)
+    
+    # assign process to gpu
+    import tensorflow as tf
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    for gpu in gpus:
+       tf.config.experimental.set_memory_growth(gpu, True)
 
 
 def _load_signal(signal, test_split):
@@ -180,7 +199,10 @@ def _run_job(args):
     np.random.seed()
 
     (pipeline, pipeline_name, dataset, signal, hyperparameter, metrics, test_split, detrend,
-        iteration, cache_dir, pipeline_dir, run_id) = args
+        iteration, cache_dir, pipeline_dir, run_id, cuda) = args
+
+    if cuda:
+    	_select_gpu(cuda)
 
     pipeline_path = pipeline_dir
     if pipeline_dir:
@@ -238,8 +260,8 @@ def _run_on_dask(jobs, verbose):
 
 
 def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
-              test_split=False, detrend=False, iterations=1, workers=1, show_progress=False,
-              cache_dir=None, output_path=None, pipeline_dir=None):
+              test_split=False, detrend=False, iterations=1, workers=1, cuda=False,
+              show_progress=False, cache_dir=None, output_path=None, pipeline_dir=None):
     """Run pipelines on the given datasets and evaluate the performance.
 
     The pipelines are used to analyze the given signals and later on the
@@ -278,6 +300,10 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             If the string ``dask`` is given, the computation is distributed using ``dask``.
             In this case, setting up the ``dask`` cluster and client is expected to be handled
             outside of this function.
+        cuda (int):
+        	If ``cuda`` is given as an integer, it indicates the number of available gpu devices.
+        	When used with multiprocessing, the process will search for a gpu with least used
+        	memory. If not given, use ``False``.
         show_progress (bool):
             Whether to use tqdm to keep track of the progress. Defaults to ``True``.
         cache_dir (str):
@@ -352,6 +378,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
                         cache_dir,
                         pipeline_dir,
                         run_id,
+                        cuda
                     )
                     jobs.append(args)
 
