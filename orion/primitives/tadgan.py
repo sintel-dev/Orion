@@ -20,6 +20,7 @@ LOGGER = logging.getLogger(__name__)
 
 tf.keras.backend.set_floatx('float64')
 
+
 class TadGAN(tf.keras.Model):
     """TadGAN class"""
 
