@@ -209,7 +209,8 @@ class OrionDBExplorer:
     # ###### #
 
     def add_signal(self, name, dataset, data_location=None, start_time=None,
-                   stop_time=None, timestamp_column=None, value_column=None):
+                   stop_time=None, timestamp_column=None, value_column=None,
+                   abspath=False):
         """Add a new Signal object to the database.
 
         The signal needs to be given a name and be associated to a Dataset.
@@ -234,6 +235,8 @@ class OrionDBExplorer:
                 Optional. Index of the timestamp column.
             value_column (int):
                 Optional. Index of the value column.
+            abspath (bool):
+                Optional. Whether to store data location in absolute path.
 
         Raises:
             NotUniqueError:
@@ -251,6 +254,9 @@ class OrionDBExplorer:
         if not stop_time:
             stop_time = timestamps.max()
 
+        if abspath and os.path.isfile(data_location):
+            data_location = os.path.abspath(abspath)
+
         dataset = self.get_dataset(dataset)
 
         return schema.Signal.insert(
@@ -265,7 +271,8 @@ class OrionDBExplorer:
         )
 
     def add_signals(self, dataset, signals_path=None, start_time=None,
-                    stop_time=None, timestamp_column=None, value_column=None):
+                    stop_time=None, timestamp_column=None, value_column=None,
+                    abspath=False):
         """Add a multiple Signal objects to the database.
 
         All the signals will be added to the Dataset using the CSV filename
@@ -288,6 +295,8 @@ class OrionDBExplorer:
                 Optional. Index of the timestamp column.
             value_column (int):
                 Optional. Index of the value column.
+            abspath (bool):
+                Optional. Whether to store data location in absolute path.
         """
         for filename in os.listdir(signals_path):
             if filename.endswith('.csv'):
@@ -301,6 +310,7 @@ class OrionDBExplorer:
                         stop_time=stop_time,
                         timestamp_column=timestamp_column,
                         value_column=value_column,
+                        abspath=abspath
                     )
                 except NotUniqueError:
                     pass

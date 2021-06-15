@@ -42,7 +42,7 @@ class TadGAN(tf.keras.Model):
     def __setstate__(self, state):
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
         for network in networks:
-            with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=True) as fd:
+            with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=False) as fd:
                 fd.write(state.pop(network + '_str'))
                 fd.flush()
 

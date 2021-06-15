@@ -20,8 +20,8 @@ Orion
 -  License: `MIT <https://github.com/signals-dev/Orion/blob/master/LICENSE>`__
 -  Development Status:
    `Pre-Alpha <https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha>`__
--  Documentation: https://github.com/signals-dev/Orion
--  Homepage: https://signals-dev.github.io/Orion
+-  Homepage: https://github.com/signals-dev/Orion
+-  Documentation: https://signals-dev.github.io/Orion
 
 Overview
 --------

@@ -26,9 +26,7 @@ install_requires = [
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
-    # tensorflow installation
-    # 'tensorflow>=2.3,<2.4',
-    # 'tensorflow-gpu>=2.3,<2.4'
+    'xlsxwriter>=1.3.6<1.4',
 ]
 
 setup_requires = [
@@ -114,6 +112,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/D3-AI/Orion',
-    version='0.1.7.dev0',
+    version='0.1.8.dev0',
     zip_safe=False,
 )
