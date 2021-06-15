@@ -68,7 +68,7 @@ class TadGAN(tf.keras.Model):
     def __init__(self, shape, encoder_input_shape, generator_input_shape, critic_x_input_shape,
                  critic_z_input_shape, layers_encoder, layers_generator, layers_critic_x,
                  layers_critic_z, optimizer, learning_rate=0.0005, epochs=50, latent_dim=20,
-                 batch_size=64, iterations_critic=5, validation_split=0.2, callbacks=tuple(),
+                 batch_size=64, iterations_critic=5, validation_split=0.0, callbacks=tuple(),
                  shuffle=True, verbose=True, detailed=False, **hyperparameters):
         """Initialize the TadGAN object.
 

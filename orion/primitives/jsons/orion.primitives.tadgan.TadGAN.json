@@ -44,7 +44,7 @@
       "fixed": {
           "epochs": {
               "type": "int",
-              "default": 2000
+              "default": 50
           },
           "verbose": {
               "type": "bool",
@@ -113,7 +113,7 @@
           },
           "validation_split": {
               "type": "float",
-              "default": 0.2
+              "default": 0.0
           },
           "shuffle": {
               "type": "bool",
