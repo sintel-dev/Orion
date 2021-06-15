@@ -18,6 +18,7 @@ from orion.primitives.timeseries_errors import reconstruction_errors
 
 LOGGER = logging.getLogger(__name__)
 
+tf.keras.backend.set_floatx('float64')
 
 class TadGAN(tf.keras.Model):
     """TadGAN class"""
@@ -205,7 +206,7 @@ class TadGAN(tf.keras.Model):
             inputs[1] x_    predicted input
         """
         # Get the interpolated signal
-        alpha = tf.random.uniform([batch_size, 1, 1])
+        alpha = tf.random.uniform([batch_size, 1, 1], dtype=tf.float64)
         interpolated = (alpha * inputs[0]) + ((1 - alpha) * inputs[1])
 
         with tf.GradientTape() as gp_tape:
@@ -227,8 +228,8 @@ class TadGAN(tf.keras.Model):
         batch_size = tf.shape(X)[0]
         mini_batch_size = batch_size // self.iterations_critic
 
-        fake = tf.ones((mini_batch_size, 1))
-        valid = -tf.ones((mini_batch_size, 1))
+        fake = tf.ones((mini_batch_size, 1), dtype=tf.float64)
+        valid = -tf.ones((mini_batch_size, 1), dtype=tf.float64)
 
         batch_cx_loss = []
         batch_cz_loss = []
@@ -236,7 +237,7 @@ class TadGAN(tf.keras.Model):
         # Train the critics
         for j in range(self.iterations_critic):
             x = X[j * mini_batch_size: (j + 1) * mini_batch_size]
-            z = tf.random.normal(shape=(mini_batch_size, self.latent_dim, 1))
+            z = tf.random.normal(shape=(mini_batch_size, self.latent_dim, 1), dtype=tf.float64)
 
             with tf.GradientTape(persistent=True) as tape:
                 x_ = self.generator(z, training=True)  # z -> x
@@ -317,10 +318,10 @@ class TadGAN(tf.keras.Model):
         batch_size = tf.shape(x)[0]
 
         # Prepare data
-        fake = tf.ones((batch_size, 1))
-        valid = -tf.ones((batch_size, 1))
+        fake = tf.ones((batch_size, 1), dtype=tf.float64)
+        valid = -tf.ones((batch_size, 1), dtype=tf.float64)
 
-        z = tf.random.normal(shape=(batch_size, self.latent_dim, 1))
+        z = tf.random.normal(shape=(batch_size, self.latent_dim, 1), dtype=tf.float64)
 
         x_ = self.generator(z)  # z -> x
         z_ = self.encoder(x)  # x -> z
