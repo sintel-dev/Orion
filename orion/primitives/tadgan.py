@@ -65,7 +65,7 @@ class TadGAN(tf.keras.Model):
 
     def __init__(self, shape, encoder_input_shape, generator_input_shape, critic_x_input_shape,
                  critic_z_input_shape, layers_encoder, layers_generator, layers_critic_x,
-                 layers_critic_z, optimizer, learning_rate=0.0005, epochs=2000, latent_dim=20,
+                 layers_critic_z, optimizer, learning_rate=0.0005, epochs=50, latent_dim=20,
                  batch_size=64, iterations_critic=5, validation_split=0.2, callbacks=tuple(),
                  shuffle=True, verbose=True, detailed=False, **hyperparameters):
         """Initialize the TadGAN object.
@@ -194,7 +194,6 @@ class TadGAN(tf.keras.Model):
 
         return output
 
-    @tf.function
     def gradient_penalty(self, critic, batch_size, inputs):
         """ Calculates the gradient penalty.
 
@@ -221,7 +220,6 @@ class TadGAN(tf.keras.Model):
         gp = tf.reduce_mean((norm - 1.0) ** 2)
         return gp
 
-    @tf.function
     def train_step(self, X):
         if isinstance(X, tuple):
             X = X[0]
@@ -312,7 +310,6 @@ class TadGAN(tf.keras.Model):
 
         return self.get_output(batch_cx_loss, batch_cz_loss, batch_eg_loss)
 
-    @tf.function
     def test_step(self, x):
         if isinstance(x, tuple):
             x = x[0]
@@ -359,7 +356,6 @@ class TadGAN(tf.keras.Model):
                                (cz_loss, cz_real_cost, cz_fake_cost, cz_gp),
                                (eg_loss, x_cost, z_cost, cycle_loss))
 
-    @tf.function
     def call(self, X):
         z_ = self.encoder(X)
         y_hat = self.generator(z_)
@@ -379,7 +375,7 @@ class TadGAN(tf.keras.Model):
             train = X[:-valid_length].copy()
             valid = X[-valid_length:].copy()
 
-            valid = valid.astype(np.float32)
+            valid = valid.astype(np.float)
             valid = tf.data.Dataset.from_tensor_slices(valid).shuffle(valid.shape[0])
             valid = valid.batch(self.batch_size, drop_remainder=True)
 
@@ -393,7 +389,7 @@ class TadGAN(tf.keras.Model):
             valid = None
             callbacks = None
 
-        train = train.astype(np.float32)
+        train = train.astype(np.float)
         train = tf.data.Dataset.from_tensor_slices(train).shuffle(train.shape[0])
         train = train.batch(self.batch_size, drop_remainder=True)
 
