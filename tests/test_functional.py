@@ -62,6 +62,37 @@ class TestLoadDict:
 
         assert returned is None
 
+# @pytest.mark.xfail
+# @pytest.mark.developing
+class TestSaveOrion:
+
+    def test_save_lstm_pickle(self, tmpdir):
+        r"""
+        produces mlprimitives/adapters/keras.py:32: KeyError
+        with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=True) as fd:
+            keras.models.save_model(state.pop('model'), fd.name, overwrite=True)
+
+        E KeyError: 'model'
+        """
+        hyperparameters = {
+            'keras.Sequential.LSTMTimeSeriesRegressor#1': {
+                'epochs': 5,
+                'verbose': True
+                }
+            }
+
+        orion = Orion(
+            pipeline='lstm_dynamic_threshold',
+            hyperparameters=hyperparameters
+            )
+        path = os.path.join(tmpdir, 'orion.pkl')
+        orion.save(path)
+
+        orion_load = functional._load_orion(path)
+
+        assert orion_load is not orion
+        assert orion_load == orion
+
 
 class TestLoadOrion:
 
