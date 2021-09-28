@@ -63,13 +63,18 @@ def test_download_new(exists_mock, read_csv_mock):
 @patch('orion.data.os.path.isfile')
 def test_load_signal_filename(isfile_mock, load_csv_mock):
     # setup
+    data = pd.DataFrame({
+        'timestamp': list(range(10)),
+        'value': list(np.arange(10, 20, dtype=float))
+    })
+    load_csv_mock.return_value = data
     isfile_mock.return_value = True
 
     # run
     returned = load_signal('a/path/to/a.csv')
 
     # assert
-    assert returned == load_csv_mock.return_value
+    pd.testing.assert_frame_equal(returned, load_csv_mock.return_value)
 
     load_csv_mock.assert_called_once_with('a/path/to/a.csv', None, None)
 
@@ -79,16 +84,45 @@ def test_load_signal_filename(isfile_mock, load_csv_mock):
 @patch('orion.data.os.path.isfile')
 def test_load_signal_nasa_signal_name(isfile_mock, load_csv_mock, lns_mock):
     # setup
+    data = pd.DataFrame({
+        'timestamp': list(range(10)),
+        'value': list(np.arange(10, 20, dtype=float))
+    })
+    lns_mock.return_value = data
     isfile_mock.return_value = False
 
     # run
     returned = load_signal('S-1')
 
     # assert
-    assert returned == lns_mock.return_value
+    pd.testing.assert_frame_equal(returned, data)
 
     load_csv_mock.assert_not_called()
     lns_mock.assert_called_once_with('S-1')
+
+
+@patch('orion.data.download')
+@patch('orion.data.load_csv')
+@patch('orion.data.os.path.isfile')
+def test_load_signal_nasa_signal_name_multivariate(isfile_mock, load_csv_mock, lns_mock):
+    # setup
+    data = pd.DataFrame({
+        'timestamp': list(range(10)),
+        '0': list(np.arange(10, 20, dtype=float)),
+        '1': list(np.arange(20, 30, dtype=float)),
+        '2': list(np.arange(30, 40, dtype=float))
+    })
+    lns_mock.return_value = data
+    isfile_mock.return_value = False
+
+    # run
+    returned = load_signal('multivariate/S-1')
+
+    # assert
+    pd.testing.assert_frame_equal(returned, data)
+
+    load_csv_mock.assert_not_called()
+    lns_mock.assert_called_once_with('multivariate/S-1')
 
 
 @patch('orion.data.load_csv')
