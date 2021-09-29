@@ -104,15 +104,16 @@ def download_demo(path='orion-data', split=False):
         else:
             download(signal, data_path=path)
 
+
 def format_csv(df, timestamp_column=None, value_columns=None):
     timestamp_column_name = df.columns[timestamp_column] if timestamp_column else df.columns[0]
     value_column_names = df.columns[value_columns] if value_columns else df.columns[1:]
-    
+
     data = dict()
     data['timestamp'] = df[timestamp_column_name].astype('int64').values
     for column in value_column_names:
-        data[column] = df[column].astype(float).values 
-    
+        data[column] = df[column].astype(float).values
+
     return pd.DataFrame(data)
 
 
@@ -139,7 +140,7 @@ def load_signal(signal, test_size=None, timestamp_column=None, value_column=None
         data = load_csv(signal, timestamp_column, value_column)
     else:
         data = download(signal)
-        
+
     data = format_csv(data)
 
     if test_size is None:

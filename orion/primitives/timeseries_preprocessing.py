@@ -1,17 +1,18 @@
 import numpy as np
 import pandas as pd
 
+
 def slice_dim(X, target_index, axis=0):
     """Slice an ndarray.
 
-    This function creates a copy of X then slices the array from the specificed 
+    This function creates a copy of X then slices the array from the specificed
     dimension and returns the sliced array of the specified index.
 
     Args:
         X (ndarray):
             Array of input sequence.
         target_index (int or list[int]):
-            Integer of the index to extract. Can be a list of integer values 
+            Integer of the index to extract. Can be a list of integer values
             to extract multiple dimensions.
         axis (int or str):
             Optional. Axis along which to extract value. Default is ``0``.
@@ -29,7 +30,7 @@ def slice_dim(X, target_index, axis=0):
 
     indices = [slice(None)] * dims
     indices[axis] = target_index
-    
+
     return X[tuple(indices)].copy()
 
 
