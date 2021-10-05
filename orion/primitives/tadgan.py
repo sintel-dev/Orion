@@ -140,11 +140,6 @@ class TadGAN(object):
         self.target_shape = target_shape
         self.iterations_critic = iterations_critic
 
-        self.encoder_input_shape = self.shape
-        self.generator_input_shape = self.latent_shape
-        self.critic_x_input_shape = self.target_shape
-        self.critic_z_input_shape = self.latent_shape
-
         self.layers_encoder, self.layers_generator = layers_encoder, layers_generator
         self.layers_critic_x, self.layers_critic_z = layers_critic_x, layers_critic_z
 
@@ -152,15 +147,26 @@ class TadGAN(object):
 
         self.hyperparameters = hyperparameters
 
-    def _augment_hyperparameters(self, X, kwargs):
+    def _augment_hyperparameters(self, X, y, kwargs):
         shape = np.asarray(X)[0].shape
         length = shape[0]
+        target_shape = np.asarray(y)[0].shape
+
+        # to infer the shape
+        self.shape = self.shape or shape
+        self.target_shape = self.target_shape or target_shape
 
         self._setdefault(kwargs, 'generator_reshape_dim', length // 2)
         self._setdefault(kwargs, 'generator_reshape_shape', (length // 2, 1))
         self._setdefault(kwargs, 'encoder_reshape_shape', self.latent_shape)
 
         return kwargs
+
+    def _set_shapes(self):
+        self.encoder_input_shape = self.shape
+        self.generator_input_shape = self.latent_shape
+        self.critic_x_input_shape = self.target_shape
+        self.critic_z_input_shape = self.latent_shape
 
     def _build_tadgan(self, **kwargs):
         hyperparameters = self.hyperparameters.copy()
@@ -276,7 +282,8 @@ class TadGAN(object):
             y (ndarray):
                 N-dimensional array containing the target sequences we want to reconstruct.
         """
-        self._augment_hyperparameters(X, kwargs)
+        self._augment_hyperparameters(X, y, kwargs)
+        self._set_shapes()
         self._build_tadgan(**kwargs)
         self._fit(X, y)
 
