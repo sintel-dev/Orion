@@ -51,7 +51,7 @@ argument                type                description
     from mlprimitives import load_primitive
 
     X = np.array([1] * 100).reshape(1, -1, 1)
-    y = np.array([1])
+    y = np.array([[1]])
     primitive = load_primitive('keras.Sequential.LSTMTimeSeriesRegressor', 
         arguments={"X": X, "y": y, "input_shape":(100, 1), "batch_size": 1, "validation_split": 0})
 

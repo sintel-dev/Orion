@@ -77,6 +77,7 @@ def download(name, test_size=None, data_path=DATA_PATH):
         filename = os.path.join(data_path, path.split('/')[-1])
     else:
         filename = os.path.join(data_path, name + '.csv')
+        data_path = filename.rsplit('/', 1)[0]
 
     if os.path.exists(filename):
         data = pd.read_csv(filename)
@@ -104,6 +105,18 @@ def download_demo(path='orion-data', split=False):
             download(signal, data_path=path)
 
 
+def format_csv(df, timestamp_column=None, value_columns=None):
+    timestamp_column_name = df.columns[timestamp_column] if timestamp_column else df.columns[0]
+    value_column_names = df.columns[value_columns] if value_columns else df.columns[1:]
+
+    data = dict()
+    data['timestamp'] = df[timestamp_column_name].astype('int64').values
+    for column in value_column_names:
+        data[column] = df[column].astype(float).values
+
+    return pd.DataFrame(data)
+
+
 def load_csv(path, timestamp_column=None, value_column=None):
     header = None if timestamp_column is not None else 'infer'
     data = pd.read_csv(path, header=header)
@@ -119,14 +132,7 @@ def load_csv(path, timestamp_column=None, value_column=None):
     elif timestamp_column == value_column:
         raise ValueError("timestamp_column cannot be the same as value_column")
 
-    timestamp_column_name = data.columns[timestamp_column]
-    value_column_name = data.columns[value_column]
-    columns = {
-        'timestamp': data[timestamp_column_name].values,
-        'value': data[value_column_name].values,
-    }
-
-    return pd.DataFrame(columns)[['timestamp', 'value']]
+    return format_csv(data, timestamp_column, value_column)
 
 
 def load_signal(signal, test_size=None, timestamp_column=None, value_column=None):
@@ -135,8 +141,7 @@ def load_signal(signal, test_size=None, timestamp_column=None, value_column=None
     else:
         data = download(signal)
 
-    data['timestamp'] = data['timestamp'].astype('int64')
-    data['value'] = data['value'].astype(float)
+    data = format_csv(data)
 
     if test_size is None:
         return data
