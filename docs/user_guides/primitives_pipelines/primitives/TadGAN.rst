@@ -47,7 +47,7 @@ argument                    type                description
     from mlprimitives import load_primitive
 
     X = np.array([1] * 100).reshape(1, -1, 1)
-    y = X[:,: [0]] # signal to reconstruct from X (channel 0)
+    y = X[:,:, [0]] # signal to reconstruct from X (channel 0)
     primitive = load_primitive('orion.primitives.tadgan.TadGAN', 
         arguments={"X": X, "y":X, "epochs": 5, "batch_size": 1,
                    "iterations_critic": 1})
