@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>orion.primitives.tadgan.TadGAN &#8212; Orion 0.1.8.dev0 documentation</title>
     
-  <link href="../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -22,10 +22,10 @@
       
 
     
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/blank.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -39,7 +39,10 @@
     <link rel="next" title="orion.primitives.tadgan.score_anomalies" href="orion.primitives.tadgan.score_anomalies.html" />
     <link rel="prev" title="orion.primitives" href="../prim.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -508,7 +511,7 @@
 <h1>orion.primitives.tadgan.TadGAN<a class="headerlink" href="#orion-primitives-tadgan-tadgan" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="orion.primitives.tadgan.TadGAN">
-<em class="property">class </em><code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">TadGAN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">encoder_input_shape</span></em>, <em class="sig-param"><span class="n">generator_input_shape</span></em>, <em class="sig-param"><span class="n">critic_x_input_shape</span></em>, <em class="sig-param"><span class="n">critic_z_input_shape</span></em>, <em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.0005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">2000</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">TadGAN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">input_shape</span><span class="o">=</span><span class="default_value">100, 1</span></em>, <em class="sig-param"><span class="n">target_shape</span><span class="o">=</span><span class="default_value">100, 1</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.0005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">2000</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN" title="Permalink to this definition">¶</a></dt>
 <dd><p>TadGAN model for time series reconstruction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -535,7 +538,7 @@ Generator/Encoder training step. Default 5.</p></li>
 </dl>
 <dl class="py method">
 <dt id="orion.primitives.tadgan.TadGAN.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">encoder_input_shape</span></em>, <em class="sig-param"><span class="n">generator_input_shape</span></em>, <em class="sig-param"><span class="n">critic_x_input_shape</span></em>, <em class="sig-param"><span class="n">critic_z_input_shape</span></em>, <em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.0005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">2000</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">input_shape</span><span class="o">=</span><span class="default_value">100, 1</span></em>, <em class="sig-param"><span class="n">target_shape</span><span class="o">=</span><span class="default_value">100, 1</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.0005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">2000</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -546,13 +549,13 @@ Generator/Encoder training step. Default 5.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#orion.primitives.tadgan.TadGAN.__init__" title="orion.primitives.tadgan.TadGAN.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(shape, encoder_input_shape, …[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#orion.primitives.tadgan.TadGAN.__init__" title="orion.primitives.tadgan.TadGAN.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(layers_encoder, layers_generator, …)</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, **kwargs)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y, **kwargs)</p></td>
 <td><p>Fit the TadGAN.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X, y)</p></td>
 <td><p>Predict values using the initialized object.</p></td>
 </tr>
 </tbody>
@@ -565,12 +568,23 @@ Generator/Encoder training step. Default 5.</p></li>
               </div>
               
               
-              <div class='prev-next-bottom'>
-                
-    <a class='left-prev' id="prev-link" href="../prim.html" title="previous page">orion.primitives</a>
-    <a class='right-next' id="next-link" href="orion.primitives.tadgan.score_anomalies.html" title="next page">orion.primitives.tadgan.score_anomalies</a>
-
-              </div>
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../prim.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">orion.primitives</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="orion.primitives.tadgan.score_anomalies.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">orion.primitives.tadgan.score_anomalies</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
               
           </main>
           
@@ -578,20 +592,19 @@ Generator/Encoder training step. Default 5.</p></li>
       </div>
     </div>
   
-  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
-
-  <footer class="footer mt-5 mt-md-0">
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+    &copy; Copyright 2018, MIT Data To AI Lab.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br>
 </p>
     </div>
     

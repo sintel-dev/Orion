@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pipelines &#8212; Orion 0.1.8.dev0 documentation</title>
     
-  <link href="../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -22,10 +22,10 @@
       
 
     
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/blank.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -39,7 +39,10 @@
     <link rel="next" title="Evaluation" href="../evaluation_doc.html" />
     <link rel="prev" title="find anomalies" href="primitives/find_anomalies.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -511,39 +514,39 @@ Next, we test the new pipeline/hyperparameters in the benchmark and verify that 
 <span class="go">Train on 200 samples, validate on 50 samples</span>
 <span class="go">Epoch 1/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 1s - loss: 0.4166 - mse: 0.4166</span>
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 2s - loss: 0.4166 - mse: 0.4166</span>
 <span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3906 - mse: 0.3906</span>
-<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3971 - mse: 0.3971</span>
-<span class="go">200/200 [==============================] - 2s 9ms/step - loss: 0.3952 - mse: 0.3952 - val_loss: 0.4187 - val_mse: 0.4187</span>
+<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3967 - mse: 0.3967</span>
+<span class="go">200/200 [==============================] - 2s 12ms/step - loss: 0.3949 - mse: 0.3949 - val_loss: 0.4182 - val_mse: 0.4182</span>
 <span class="go">Epoch 2/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3895 - mse: 0.3895</span>
-<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.4188 - mse: 0.4188</span>
-<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.4004 - mse: 0.4004</span>
-<span class="go">200/200 [==============================] - 1s 6ms/step - loss: 0.3927 - mse: 0.3927 - val_loss: 0.4227 - val_mse: 0.4227</span>
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3894 - mse: 0.3894</span>
+<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.4189 - mse: 0.4189</span>
+<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.4003 - mse: 0.4003</span>
+<span class="go">200/200 [==============================] - 1s 7ms/step - loss: 0.3926 - mse: 0.3926 - val_loss: 0.4222 - val_mse: 0.4222</span>
 <span class="go">Epoch 3/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3752 - mse: 0.3752</span>
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3753 - mse: 0.3753</span>
 <span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.4022 - mse: 0.4022</span>
-<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3939 - mse: 0.3939</span>
-<span class="go">200/200 [==============================] - 1s 6ms/step - loss: 0.3923 - mse: 0.3923 - val_loss: 0.4232 - val_mse: 0.4232</span>
+<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3938 - mse: 0.3938</span>
+<span class="go">200/200 [==============================] - 1s 7ms/step - loss: 0.3922 - mse: 0.3922 - val_loss: 0.4230 - val_mse: 0.4230</span>
 <span class="go">Epoch 4/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3838 - mse: 0.3838</span>
-<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3859 - mse: 0.3859</span>
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3836 - mse: 0.3836</span>
+<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3858 - mse: 0.3858</span>
 <span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3894 - mse: 0.3894</span>
-<span class="go">200/200 [==============================] - 1s 6ms/step - loss: 0.3931 - mse: 0.3931 - val_loss: 0.4202 - val_mse: 0.4202</span>
+<span class="go">200/200 [==============================] - 1s 7ms/step - loss: 0.3932 - mse: 0.3932 - val_loss: 0.4203 - val_mse: 0.4203</span>
 <span class="go">Epoch 5/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3806 - mse: 0.3806</span>
-<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3946 - mse: 0.3946</span>
-<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3879 - mse: 0.3879</span>
-<span class="go">200/200 [==============================] - 1s 6ms/step - loss: 0.3958 - mse: 0.3958 - val_loss: 0.4182 - val_mse: 0.4182</span>
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 1s - loss: 0.3807 - mse: 0.3807</span>
+<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3947 - mse: 0.3947</span>
+<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3878 - mse: 0.3878</span>
+<span class="go">200/200 [==============================] - 2s 10ms/step - loss: 0.3957 - mse: 0.3957 - val_loss: 0.4183 - val_mse: 0.4183</span>
 
-<span class="go"> 64/250 [======&gt;.......................] - ETA: 0s</span>
+<span class="go"> 64/250 [======&gt;.......................] - ETA: 1s</span>
 <span class="go">128/250 [==============&gt;...............] - ETA: 0s</span>
 <span class="go">192/250 [======================&gt;.......] - ETA: 0s</span>
-<span class="go">250/250 [==============================] - 1s 2ms/step</span>
+<span class="go">250/250 [==============================] - 1s 3ms/step</span>
 </pre></div>
 </div>
 </div>
@@ -553,12 +556,23 @@ Next, we test the new pipeline/hyperparameters in the benchmark and verify that 
               </div>
               
               
-              <div class='prev-next-bottom'>
-                
-    <a class='left-prev' id="prev-link" href="primitives/find_anomalies.html" title="previous page">find anomalies</a>
-    <a class='right-next' id="next-link" href="../evaluation_doc.html" title="next page">Evaluation</a>
-
-              </div>
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="primitives/find_anomalies.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">find anomalies</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../evaluation_doc.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Evaluation</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
               
           </main>
           
@@ -566,20 +580,19 @@ Next, we test the new pipeline/hyperparameters in the benchmark and verify that 
       </div>
     </div>
   
-  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
-
-  <footer class="footer mt-5 mt-md-0">
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+    &copy; Copyright 2018, MIT Data To AI Lab.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br>
 </p>
     </div>
     

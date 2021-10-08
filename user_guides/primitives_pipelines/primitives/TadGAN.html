@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TadGAN &#8212; Orion 0.1.8.dev0 documentation</title>
     
-  <link href="../../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -22,10 +22,10 @@
       
 
     
-    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/blank.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -39,7 +39,10 @@
     <link rel="next" title="score anomalies" href="score_anomalies.html" />
     <link rel="prev" title="Dense AE" href="DenseSeq2Seq.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -324,9 +327,9 @@
 <p>see <a class="reference external" href="https://github.com/signals-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.tadgan.TadGAN.json">json</a>.</p>
 <table class="table">
 <colgroup>
-<col style="width: 18%" />
 <col style="width: 13%" />
-<col style="width: 68%" />
+<col style="width: 10%" />
+<col style="width: 77%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>argument</p></td>
@@ -339,15 +342,23 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
 <td><p>n-dimensional array containing the input sequences for the model</p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional array containing the target sequences we want to reconstruct. Typically <code class="docutils literal notranslate"><span class="pre">y</span></code> is a signal from a selected set of channels from <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">epochs</span></code></p></td>
+<tr class="row-odd"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">epochs</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
 <td><p>number of epochs to train the model. An epoch is an iteration over the entire X data provided</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shape</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input_shape</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
 <td><p>tuple denoting the shape of an input sample</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">target_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>tuple denoting the shape of an reconstructed sample</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
@@ -368,22 +379,6 @@
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">iterations_critic</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
 <td><p>number of critic training steps per generator/encoder training steps. Default is 5</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">encoder_input_shape</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
-<td><p>shape of encoder input</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generator_input_shape</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
-<td><p>shape of generator input</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">critic_x_input_shape</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
-<td><p>shape of <code class="docutils literal notranslate"><span class="pre">critic_x</span></code> input</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">critic_z_input_shape</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
-<td><p>shape of <code class="docutils literal notranslate"><span class="pre">critic_z</span></code> input</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">layers_encoder</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
@@ -419,24 +414,26 @@
 
 <span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="gp">In [4]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.tadgan.TadGAN&#39;</span><span class="p">,</span>
-<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">In [4]: </span><span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="c1"># signal to reconstruct from X (channel 0)</span>
+
+<span class="gp">In [5]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.tadgan.TadGAN&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span><span class="n">X</span><span class="p">,</span> <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
 <span class="gp">   ...: </span>               <span class="s2">&quot;iterations_critic&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
 <span class="gp">   ...: </span>
 
-<span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, [Dx loss: [ 7.4012737  -0.12128364 -0.01035884  0.7532916 ]] [Dz loss: [3.6446135  0.3151792  0.01098265 0.33184516]] [G loss: [ 1.0000742e+01 -2.0353878e-03  1.8300159e-02  9.9844772e-01]]</span>
-<span class="go">Epoch: 2/5, [Dx loss: [ 7.2324719e+00 -6.8116866e-02 -2.0130491e-03  7.3026019e-01]] [Dz loss: [ 3.1993885  -0.30395266  0.15308087  0.33502603]] [G loss: [ 9.4863520e+00 -2.1985897e-03 -3.8149685e-02  9.5266998e-01]]</span>
-<span class="go">Epoch: 3/5, [Dx loss: [ 6.937735   -0.16152346  0.03099178  0.7068267 ]] [Dz loss: [ 3.4045203   0.77203065 -0.03314461  0.26656342]] [G loss: [ 9.39615    -0.01096139  0.16186447  0.92452466]]</span>
-<span class="go">Epoch: 4/5, [Dx loss: [ 5.9272823e+00 -8.1385452e-01  5.8856690e-03  6.7352509e-01]] [Dz loss: [3.2953947  0.05078407 0.52745914 0.27171513]] [G loss: [ 9.046634   -0.01963557 -0.17663652  0.9242906 ]]</span>
-<span class="go">Epoch: 5/5, [Dx loss: [ 5.6489778  -0.65751565  0.02617903  0.62803143]] [Dz loss: [2.7209387  0.0505604  0.31087974 0.23594984]] [G loss: [ 6.490898   -0.05191371 -0.27741605  0.6820228 ]]</span>
+<span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="go">Epoch: 1/5, [Dx loss: [ 7.4012737  -0.12128364 -0.01035884  0.7532916 ]] [Dz loss: [ 0.7379352   0.24590623 -0.05702575  0.05490547]] [G loss: [ 1.0042341e+01 -2.0353878e-03  5.9899919e-02  9.9844772e-01]]</span>
+<span class="go">Epoch: 2/5, [Dx loss: [ 7.2324719e+00 -6.8116866e-02 -2.0130491e-03  7.3026019e-01]] [Dz loss: [-0.17377841 -0.70371246 -0.21680316  0.07467373]] [G loss: [ 9.5194817e+00 -2.1985897e-03 -5.2750567e-03  9.5269555e-01]]</span>
+<span class="go">Epoch: 3/5, [Dx loss: [ 6.937075   -0.16152346  0.03098794  0.70676106]] [Dz loss: [ 0.53654534 -0.85731995  0.10852388  0.12853414]] [G loss: [ 9.44869    -0.01097982  0.20135847  0.9258312 ]]</span>
+<span class="go">Epoch: 4/5, [Dx loss: [ 5.9269276e+00 -8.1382531e-01  5.7596704e-03  6.7349929e-01]] [Dz loss: [-0.4732746  -1.075751   -0.45963618  0.10621125]] [G loss: [ 9.573753   -0.01948907  0.32790455  0.9265338 ]]</span>
+<span class="go">Epoch: 5/5, [Dx loss: [ 5.6495337  -0.657529    0.02654563  0.6280517 ]] [Dz loss: [ 1.7269502  -0.07213718  0.77035546  0.10287318]] [G loss: [ 6.7601414  -0.05282806 -0.75567245  0.7568642 ]]</span>
 
-<span class="gp">In [6]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">In [7]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
-<span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="gp">In [8]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.25, critic score 1.01</span>
+<span class="go">average reconstructed value: 0.17, critic score 1.01</span>
 </pre></div>
 </div>
 </div>
@@ -445,12 +442,23 @@
               </div>
               
               
-              <div class='prev-next-bottom'>
-                
-    <a class='left-prev' id="prev-link" href="DenseSeq2Seq.html" title="previous page">Dense AE</a>
-    <a class='right-next' id="next-link" href="score_anomalies.html" title="next page">score anomalies</a>
-
-              </div>
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="DenseSeq2Seq.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Dense AE</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="score_anomalies.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">score anomalies</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
               
           </main>
           
@@ -458,20 +466,19 @@
       </div>
     </div>
   
-  <script src="../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
-
-  <footer class="footer mt-5 mt-md-0">
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+    &copy; Copyright 2018, MIT Data To AI Lab.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br>
 </p>
     </div>
     
