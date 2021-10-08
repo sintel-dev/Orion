@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 from numpy.testing import assert_array_equal
 
-from orion.primitives.timeseries_preprocessing import fillna, slice_dim
+from orion.primitives.timeseries_preprocessing import fillna, slice_array_by_dims
 
 
 def signal():
@@ -26,7 +26,7 @@ def series():
 def test_slice_dim_axis_one():
     X = multidimensional()
     expected_return = X[:, [0]]
-    returned = slice_dim(X, 0, axis=1)
+    returned = slice_array_by_dims(X, 0, axis=1)
 
     assert_array_equal(returned, expected_return)
 
@@ -34,14 +34,14 @@ def test_slice_dim_axis_one():
 def test_slice_dim_axis_zero():
     X = multidimensional()
     expected_return = X[[0], :]
-    returned = slice_dim(X, 0, axis=0)
+    returned = slice_array_by_dims(X, 0, axis=0)
 
     assert_array_equal(returned, expected_return)
 
 
 def test_slice_dim_identity():
     X = signal()
-    returned = slice_dim(X, 0, axis=1)
+    returned = slice_array_by_dims(X, 0, axis=1)
 
     assert_array_equal(returned, X)
 
@@ -49,7 +49,7 @@ def test_slice_dim_identity():
 def test_slice_dim_error():
     X = multidimensional()
     with pytest.raises(ValueError):
-        slice_dim(X, 0, axis=3)
+        slice_array_by_dims(X, 0, axis=3)
 
 
 def test_fillna_series():
