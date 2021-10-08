@@ -15,7 +15,7 @@ argument                    type                description
 **parameters**
 ------------------------------------------------------------------------------------------------------------------------------------------------
  ``X``                      ``numpy.ndarray``   n-dimensional array containing the input sequences for the model 
- ``y``                      ``numpy.ndarray``   n-dimensional array containing the target sequences we want to reconstruct
+ ``y``                      ``numpy.ndarray``   n-dimensional array containing the target sequences we want to reconstruct. Typically ``y`` is a signal from a selected set of channels from ``X``.
 **hyperparameters**
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -47,12 +47,13 @@ argument                    type                description
     from mlprimitives import load_primitive
 
     X = np.array([1] * 100).reshape(1, -1, 1)
+    y = X[:,: [0]] # signal to reconstruct from X (channel 0)
     primitive = load_primitive('orion.primitives.tadgan.TadGAN', 
         arguments={"X": X, "y":X, "epochs": 5, "batch_size": 1,
                    "iterations_critic": 1})
 
     primitive.fit()
-    y, critic = primitive.produce(X=X, y=X)
+    y, critic = primitive.produce(X=X, y=y)
 
     print("average reconstructed value: {:.2f}, critic score {:.2f}".format(
         y.mean(), critic[0][0])) 

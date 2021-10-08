@@ -4,7 +4,7 @@
         "sklearn.impute.SimpleImputer",
         "sklearn.preprocessing.MinMaxScaler",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
-        "orion.primitives.timeseries_preprocessing.slice_dim",
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
         "keras.Sequential.LSTMSeq2Seq",
         "orion.primitives.timeseries_errors.reconstruction_errors",
         "orion.primitives.timeseries_anomalies.find_anomalies"
@@ -22,7 +22,7 @@
             "target_column": 0,
             "window_size": 100            
         },
-        "orion.primitives.timeseries_preprocessing.slice_dim": {
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims": {
             "target_index": 0,
             "axis": 2
         },

@@ -4,7 +4,7 @@
         "sklearn.impute.SimpleImputer",
         "sklearn.preprocessing.MinMaxScaler",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
-        "orion.primitives.timeseries_preprocessing.slice_dim",
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
         "orion.primitives.tadgan.TadGAN",
         "orion.primitives.tadgan.score_anomalies",
         "orion.primitives.timeseries_anomalies.find_anomalies"
@@ -26,7 +26,7 @@
             "window_size": 100,
             "target_size": 1
         },
-        "orion.primitives.timeseries_preprocessing.slice_dim": {
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims": {
             "target_index": 0,
             "axis": 2
         },

@@ -1,5 +1,5 @@
 {
-    "name": "orion.primitives.timeseries_preprocessing.slice_dim",
+    "name": "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
     "contributors": ["Sarah Alnegheimiish <smish@mit.edu>"],
     "documentation": "",
     "description": "Slice an array from specified axis.",
@@ -8,7 +8,7 @@
         "subtype": "transformer"
     },
     "modalities": [],
-    "primitive": "orion.primitives.timeseries_preprocessing.slice_dim",
+    "primitive": "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
     "produce": {
         "args": [
             {

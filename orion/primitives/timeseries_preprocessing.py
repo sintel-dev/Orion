@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 
 
-def slice_dim(X, target_index, axis=0):
-    """Slice an ndarray.
+def slice_array_by_dims(X, target_index, axis=0):
+    """Slice an ndarray by given dimensions.
 
     This function creates a copy of X then slices the array from the specificed
     dimension and returns the sliced array of the specified index.
