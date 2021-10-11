@@ -109,6 +109,13 @@ class TadGAN(object):
 
         return Model(x, model(x))
 
+    def _setdefault(self, kwargs, key, value):
+        if key in kwargs:
+            return
+
+        if key in self.hyperparameters and self.hyperparameters[key] is None:
+            kwargs[key] = value
+
     def _wasserstein_loss(self, y_true, y_pred):
         return K.mean(y_true * y_pred)
 
@@ -120,30 +127,48 @@ class TadGAN(object):
         gradient_penalty = K.square(1 - gradient_l2_norm)
         return K.mean(gradient_penalty)
 
-    def __init__(self, shape, encoder_input_shape, generator_input_shape, critic_x_input_shape,
-                 critic_z_input_shape, layers_encoder, layers_generator, layers_critic_x,
-                 layers_critic_z, optimizer, learning_rate=0.0005, epochs=2000, latent_dim=20,
-                 batch_size=64, iterations_critic=5, **hyperparameters):
+    def __init__(self, layers_encoder, layers_generator, layers_critic_x, layers_critic_z,
+                 optimizer, input_shape=(100, 1), target_shape=(100, 1), latent_dim=20,
+                 learning_rate=0.0005, epochs=2000, batch_size=64, iterations_critic=5,
+                 **hyperparameters):
 
-        self.shape = shape
-        self.latent_dim = latent_dim
-        self.batch_size = batch_size
-        self.iterations_critic = iterations_critic
+        self.shape = input_shape
         self.epochs = epochs
-        self.hyperparameters = hyperparameters
-
-        self.encoder_input_shape = encoder_input_shape
-        self.generator_input_shape = generator_input_shape
-        self.critic_x_input_shape = critic_x_input_shape
-        self.critic_z_input_shape = critic_z_input_shape
+        self.batch_size = batch_size
+        self.latent_dim = latent_dim
+        self.latent_shape = (latent_dim, 1)
+        self.target_shape = target_shape
+        self.iterations_critic = iterations_critic
 
         self.layers_encoder, self.layers_generator = layers_encoder, layers_generator
         self.layers_critic_x, self.layers_critic_z = layers_critic_x, layers_critic_z
 
         self.optimizer = import_object(optimizer)(learning_rate)
 
-    def _build_tadgan(self, **kwargs):
+        self.hyperparameters = hyperparameters
 
+    def _augment_hyperparameters(self, X, y, kwargs):
+        shape = np.asarray(X)[0].shape
+        length = shape[0]
+        target_shape = np.asarray(y)[0].shape
+
+        # to infer the shape
+        self.shape = self.shape or shape
+        self.target_shape = self.target_shape or target_shape
+
+        self._setdefault(kwargs, 'generator_reshape_dim', length // 2)
+        self._setdefault(kwargs, 'generator_reshape_shape', (length // 2, 1))
+        self._setdefault(kwargs, 'encoder_reshape_shape', self.latent_shape)
+
+        return kwargs
+
+    def _set_shapes(self):
+        self.encoder_input_shape = self.shape
+        self.generator_input_shape = self.latent_shape
+        self.critic_x_input_shape = self.target_shape
+        self.critic_z_input_shape = self.latent_shape
+
+    def _build_tadgan(self, **kwargs):
         hyperparameters = self.hyperparameters.copy()
         hyperparameters.update(kwargs)
 
@@ -159,17 +184,20 @@ class TadGAN(object):
         self.generator.trainable = False
         self.encoder.trainable = False
 
-        z = Input(shape=(self.latent_dim, 1))
         x = Input(shape=self.shape)
+        y = Input(shape=self.target_shape)
+        z = Input(shape=(self.latent_dim, 1))
+
         x_ = self.generator(z)
         z_ = self.encoder(x)
         fake_x = self.critic_x(x_)
-        valid_x = self.critic_x(x)
-        interpolated_x = RandomWeightedAverage()([x, x_])
+        valid_x = self.critic_x(y)
+
+        interpolated_x = RandomWeightedAverage()([y, x_])
         validity_interpolated_x = self.critic_x(interpolated_x)
         partial_gp_loss_x = partial(self._gradient_penalty_loss, averaged_samples=interpolated_x)
         partial_gp_loss_x.__name__ = 'gradient_penalty'
-        self.critic_x_model = Model(inputs=[x, z], outputs=[valid_x, fake_x,
+        self.critic_x_model = Model(inputs=[y, z], outputs=[valid_x, fake_x,
                                                             validity_interpolated_x])
         self.critic_x_model.compile(loss=[self._wasserstein_loss, self._wasserstein_loss,
                                           partial_gp_loss_x], optimizer=self.optimizer,
@@ -205,14 +233,17 @@ class TadGAN(object):
                                                    'mse'], optimizer=self.optimizer,
                                              loss_weights=[1, 1, 10])
 
-    def _fit(self, X):
+    def _fit(self, X, target):
         fake = np.ones((self.batch_size, 1))
         valid = -np.ones((self.batch_size, 1))
         delta = np.ones((self.batch_size, 1))
 
-        X_ = np.copy(X)
+        indices = np.arange(X.shape[0])
         for epoch in range(1, self.epochs + 1):
-            np.random.shuffle(X_)
+            np.random.shuffle(indices)
+            X_ = X[indices]
+            y_ = target[indices]
+
             epoch_g_loss = []
             epoch_cx_loss = []
             epoch_cz_loss = []
@@ -222,17 +253,19 @@ class TadGAN(object):
 
             for i in range(num_minibatches):
                 minibatch = X_[i * minibatches_size: (i + 1) * minibatches_size]
+                y_minibatch = y_[i * minibatches_size: (i + 1) * minibatches_size]
 
                 for j in range(self.iterations_critic):
                     x = minibatch[j * self.batch_size: (j + 1) * self.batch_size]
+                    y = y_minibatch[j * self.batch_size: (j + 1) * self.batch_size]
                     z = np.random.normal(size=(self.batch_size, self.latent_dim, 1))
                     epoch_cx_loss.append(
-                        self.critic_x_model.train_on_batch([x, z], [valid, fake, delta]))
+                        self.critic_x_model.train_on_batch([y, z], [valid, fake, delta]))
                     epoch_cz_loss.append(
                         self.critic_z_model.train_on_batch([x, z], [valid, fake, delta]))
 
                 epoch_g_loss.append(
-                    self.encoder_generator_model.train_on_batch([x, z], [valid, valid, x]))
+                    self.encoder_generator_model.train_on_batch([x, z], [valid, valid, y]))
 
             cx_loss = np.mean(np.array(epoch_cx_loss), axis=0)
             cz_loss = np.mean(np.array(epoch_cz_loss), axis=0)
@@ -240,23 +273,28 @@ class TadGAN(object):
             print('Epoch: {}/{}, [Dx loss: {}] [Dz loss: {}] [G loss: {}]'.format(
                 epoch, self.epochs, cx_loss, cz_loss, g_loss))
 
-    def fit(self, X, **kwargs):
+    def fit(self, X, y, **kwargs):
         """Fit the TadGAN.
 
         Args:
             X (ndarray):
                 N-dimensional array containing the input training sequences for the model.
+            y (ndarray):
+                N-dimensional array containing the target sequences we want to reconstruct.
         """
+        self._augment_hyperparameters(X, y, kwargs)
+        self._set_shapes()
         self._build_tadgan(**kwargs)
-        X = X.reshape((-1, self.shape[0], 1))
-        self._fit(X)
+        self._fit(X, y)
 
-    def predict(self, X):
+    def predict(self, X, y):
         """Predict values using the initialized object.
 
         Args:
             X (ndarray):
                 N-dimensional array containing the input sequences for the model.
+            y (ndarray):
+                N-dimensional array containing the target sequences we want to reconstruct.
 
         Returns:
             ndarray:
@@ -265,10 +303,9 @@ class TadGAN(object):
                 N-dimensional array containing the critic scores for each input sequence.
         """
 
-        X = X.reshape((-1, self.shape[0], 1))
         z_ = self.encoder.predict(X)
         y_hat = self.generator.predict(z_)
-        critic = self.critic_x.predict(X)
+        critic = self.critic_x.predict(y)
 
         return y_hat, critic
 

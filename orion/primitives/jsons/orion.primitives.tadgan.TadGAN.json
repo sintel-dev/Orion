@@ -18,6 +18,10 @@
           {
               "name": "X",
               "type": "ndarray"
+          },
+          {
+              "name": "y",
+              "type": "ndarray"
           }
       ]
   },
@@ -26,6 +30,10 @@
       "args": [
           {
               "name": "X",
+              "type": "ndarray"
+          },
+          {
+              "name": "y",
               "type": "ndarray"
           }
       ],
@@ -46,9 +54,17 @@
               "type": "int",
               "default": 2000
           },
-          "shape": {
+          "input_shape": {
               "type": "tuple",
               "default": [100, 1]
+          },
+          "target_shape": {
+              "type": "tuple",
+              "default": [100, 1]
+          },
+          "latent_dim": {
+              "type": "int",
+              "default": 20
           },
           "optimizer": {
               "type": "str",
@@ -58,10 +74,6 @@
               "type": "float",
               "default": 0.0005
           },
-          "latent_dim": {
-              "type": "int",
-              "default": 20
-          },
           "batch_size": {
               "type": "int",
               "default": 64
@@ -70,29 +82,25 @@
               "type": "int",
               "default": 5
           },
-          "encoder_input_shape": {
-              "type": "tuple",
-              "default": [100, 1]
-          },
-          "generator_input_shape": {
-              "type": "tuple",
-              "default": [20, 1]
-          },
-          "critic_x_input_shape": {
-              "type": "tuple",
-              "default": [100, 1]
-          },
-          "critic_z_input_shape": {
-              "type": "tuple",
-              "default": [20, 1]
-          },
           "encoder_reshape_shape": {
               "type": "tuple",
-              "default": [20, 1]
+              "default": null
+          },
+          "generator_reshape_dim": {
+              "type": "int",
+              "default": null
           },
           "generator_reshape_shape": {
               "type": "tuple",
-              "default": [50, 1]
+              "default": null
+          },
+          "lstm_units": {
+              "type": "int",
+              "default": 100
+          },
+          "dense_units": {
+              "type": "int",
+              "default": 20
           },
           "layers_encoder": {
               "type": "list",
@@ -103,7 +111,7 @@
                           "layer": {
                               "class": "keras.layers.LSTM",
                               "parameters": {
-                                  "units": 100,
+                                  "units": "lstm_units",
                                   "return_sequences": true
                               }
                           }
@@ -116,7 +124,7 @@
                   {
                       "class": "keras.layers.Dense",
                       "parameters": {
-                          "units": 20
+                          "units": "dense_units"
                       }
                   },
                   {
@@ -137,7 +145,7 @@
                   {
                       "class": "keras.layers.Dense",
                       "parameters": {
-                          "units": 50
+                          "units": "generator_reshape_dim"
                       }
                   },
                   {
@@ -302,7 +310,7 @@
                   {
                       "class": "keras.layers.Dense",
                       "parameters": {
-                          "units": 100
+                          "units": "dense_units"
                       }
                   },
                   {
@@ -320,7 +328,7 @@
                   {
                       "class": "keras.layers.Dense",
                       "parameters": {
-                          "units": 100
+                          "units": "dense_units"
                       }
                   },
                   {

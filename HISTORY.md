@@ -1,6 +1,18 @@
 History
 =======
 
+## 0.2.0 - 2021-10-11
+This version supports multivariate timeseries as input. In addition to minor improvements
+and maintenance.
+
+### Issues resolved
+* `setuptools` no longer supports `lib2to3` breaking `mongoengine` - [Issue #252](https://github.com/signals-dev/Orion/issues/252) by @sarahmish
+* Supporting multivariate input - [Issue #248](https://github.com/signals-dev/Orion/issues/248) by @sarahmish
+* TadGAN pipeline with visualization option - [Issue #240](https://github.com/signals-dev/Orion/issues/240) by @sarahmish
+* Support saving absolute path for add_signals and add_signal when using dbExplorer - [Issue #202](https://github.com/signals-dev/Orion/issues/202) by @sarahmish
+* dynamic scalability of TadGAN primitive based on `window_size` - [Issue #87](https://github.com/signals-dev/Orion/issues/87) by @sarahmish
+
+
 ## 0.1.7 - 2021-05-04
 
 This version adds new features to the benchmark function where users can now save pipelines, view results as they are being calculated, and allow a single evaluation to be compared multiple times.

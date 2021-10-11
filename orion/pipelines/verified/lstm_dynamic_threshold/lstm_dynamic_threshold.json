@@ -12,7 +12,7 @@
         "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
             "time_column": "timestamp",
             "interval": 21600,
-	    "method": "mean"
+            "method": "mean"
         },
         "sklearn.preprocessing.MinMaxScaler#1": {
             "feature_range": [
@@ -27,7 +27,7 @@
         "keras.Sequential.LSTMTimeSeriesRegressor": {
             "epochs": 35
         },
-	"orion.primitives.timeseries_anomalies.find_anomalies#1": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "window_size_portion": 0.33,
             "window_step_size_portion": 0.1,
             "fixed_threshold": true

@@ -1,0 +1,38 @@
+{
+    "name": "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
+    "contributors": ["Sarah Alnegheimiish <smish@mit.edu>"],
+    "documentation": "",
+    "description": "Slice an array from specified axis.",
+    "classifiers": {
+        "type": "preprocessor",
+        "subtype": "transformer"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "target_index",
+                "type": "int"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "axis": {
+                "type": "int",
+                "default": 0
+            }
+        }
+    }
+}

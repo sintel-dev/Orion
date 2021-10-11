@@ -24,7 +24,7 @@ see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/pri
 
  ``window_size``      ``int``                                                        length of the input sequences
  ``target_size``      ``int``                                                        length of the target sequences
- ``step_size``        ``int``                                                        length of the target sequences
+ ``step_size``        ``int``                                                        indicating the number of steps to move the window forward each round
  ``target_column``    ``int``                                                        indicating which column of ``X`` is the target
  ``drop_windows``     ``bool``                                                       indicates whether the dropping functionality should be enabled
 
