@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dense AE &#8212; Orion 0.1.8.dev0 documentation</title>
+    <title>Dense AE &#8212; Orion 0.2.1.dev0 documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -430,22 +430,22 @@ In [4]: primitive = load_primitive('keras.Sequential.DenseSeq2Seq',
 In [5]: primitive.fit()
 Epoch 1/5
 
-1/1 [==============================] - 0s 259ms/step - loss: 1.1719 - mse: 1.1719
+1/1 [==============================] - 0s 262ms/step - loss: 1.1719 - mse: 1.1719
 Epoch 2/5
 
 1/1 [==============================] - 0s 2ms/step - loss: 1.2683 - mse: 1.2683
 Epoch 3/5
 
-1/1 [==============================] - 0s 1ms/step - loss: 1.2350 - mse: 1.2350
+1/1 [==============================] - 0s 2ms/step - loss: 1.2350 - mse: 1.2350
 Epoch 4/5
 
-1/1 [==============================] - 0s 1ms/step - loss: 1.1307 - mse: 1.1307
+1/1 [==============================] - 0s 2ms/step - loss: 1.1307 - mse: 1.1307
 Epoch 5/5
 
-1/1 [==============================] - 0s 1ms/step - loss: 1.1537 - mse: 1.1537
+1/1 [==============================] - 0s 2ms/step - loss: 1.1537 - mse: 1.1537
 
 In [6]: pred = primitive.produce(X=X)
-1/1 [==============================] - 0s 299ms/step
+1/1 [==============================] - 0s 261ms/step
 
 In [7]: pred.mean()
 Out[7]: 0.036859464</pre>
