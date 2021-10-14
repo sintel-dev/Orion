@@ -43,7 +43,7 @@ You can clone the repository and install it from source by running ``make instal
 
 .. code-block:: console
 
-    git clone git://github.com/signals-dev/Orion
+    git clone git://github.com/sintel-dev/Orion
     cd Orion
     git checkout stable
     make install
@@ -60,4 +60,4 @@ can be found in the :ref:`contributing` guide.
 .. _virtualenv: https://virtualenv.pypa.io/en/latest/
 .. _pip: https://pip.pypa.io
 .. _PyPI: https://pypi.org/
-.. _Github repository: https://github.com/signals-dev/Orion
+.. _Github repository: https://github.com/sintel-dev/Orion
