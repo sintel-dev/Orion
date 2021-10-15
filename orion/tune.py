@@ -117,7 +117,8 @@ class OrionTuner(Orion):
 
             # post step
             self._mlpipeline_post.fit(**output_train)
-            detected = self._mlpipeline_post.predict(**output_test)
+            outputs = self._mlpipeline_post.predict(**output_test)
+            detected = self._build_events_df(outputs)
             scores.append(self._scorer(y_test, detected, X_test))
 
         return np.mean(scores)
