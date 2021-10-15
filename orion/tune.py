@@ -28,44 +28,43 @@ class OrionTuner(Orion):
     _scorer = None
     tuned = None
 
+    def _extract_pipeline(self):
+        pipeline_base = deepcopy(self._mlpipeline.to_dict())
+        pipeline_post = deepcopy(self._mlpipeline.to_dict())
 
-def _extract_pipeline(self):
-    pipeline_base = deepcopy(self._mlpipeline.to_dict())
-    pipeline_post = deepcopy(self._mlpipeline.to_dict())
+        output_primitive = None
+        postprocessing = list()
+        for primitive, blocks in self._mlpipeline.blocks.items():
+            if blocks.metadata.get('classifiers').get('type') == 'postprocessor':
+                postprocessing.append(primitive.split('#')[0])
+            else:
+                output_primitive = primitive
 
-    output_primitive = None
-    postprocessing = list()
-    for primitive, blocks in self._mlpipeline.blocks.items():
-        if blocks.metadata.get('classifiers').get('type') == 'postprocessor':
-            postprocessing.append(primitive.split('#')[0])
-        else:
-            output_primitive = primitive
+        for attr, value in pipeline_base.items():
+            if isinstance(value, dict):
+                primitives = list(value.keys())
+                for primitive in primitives:
+                    name = primitive.split('#')[0]
+                    if name in postprocessing:
+                        del pipeline_base[attr][primitive]
+                    else:
+                        del pipeline_post[attr][primitive]
 
-    for attr, value in pipeline_base.items():
-        if isinstance(value, dict):
-            primitives = list(value.keys())
-            for primitive in primitives:
-                name = primitive.split('#')[0]
-                if name in postprocessing:
-                    del pipeline_base[attr][primitive]
-                else:
-                    del pipeline_post[attr][primitive]
+            else:
+                pipeline_base[attr] = [p for p in value if p not in postprocessing]
+                pipeline_post[attr] = postprocessing
 
-        else:
-            pipeline_base[attr] = [p for p in value if p not in postprocessing]
-            pipeline_post[attr] = postprocessing
+        # change output
+        pipeline_post['outputs'] = deepcopy(pipeline_base['outputs'])
+        pipeline_base['outputs'] = {
+            'default': [{
+                'name': 'output',
+                'type': 'dict',
+                'variable': output_primitive
+            }]
+        }
 
-    # change output
-    pipeline_post['outputs'] = deepcopy(pipeline_base['outputs'])
-    pipeline_base['outputs'] = {
-        'default': [{
-            'name': 'output',
-            'type': 'dict',
-            'variable': output_primitive
-        }]
-    }
-
-    return MLPipeline(pipeline_base), MLPipeline(pipeline_post)
+        return MLPipeline(pipeline_base), MLPipeline(pipeline_post)
 
     def _expand(self, data, anomalies):
         data = data.set_index(self._time_column)
