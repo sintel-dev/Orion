@@ -283,7 +283,7 @@ class TadGAN(object):
                 N-dimensional array containing the target sequences we want to reconstruct.
         """
         if y is None:
-            y = X.copy() # reconstruct the same input
+            y = X.copy()  # reconstruct the same input
 
         self._augment_hyperparameters(X, y, kwargs)
         self._set_shapes()
@@ -306,7 +306,7 @@ class TadGAN(object):
                 N-dimensional array containing the critic scores for each input sequence.
         """
         if y is None:
-            y = X.copy() # reconstruct the same input
+            y = X.copy()  # reconstruct the same input
 
         z_ = self.encoder.predict(X)
         y_hat = self.generator.predict(z_)
