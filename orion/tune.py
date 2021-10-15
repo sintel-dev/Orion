@@ -116,14 +116,15 @@ class OrionTuner(Orion):
             output_test = self._mlpipeline_base.predict(X_test)
 
             # post step
-            self._mlpipeline_post.fit(output_train)
-            detected = self._mlpipeline_post.predict(output_test)
+            self._mlpipeline_post.fit(**output_train)
+            detected = self._mlpipeline_post.predict(**output_test)
             scores.append(self._scorer(y_test, detected, X_test))
 
         return np.mean(scores)
 
     def tune(self, data: pd.DataFrame, anomalies: pd.DataFrame,
-             scorer: str = 'f1', max_evals: int = 10, post: bool = False):
+             train: pd.DataFrame = None, scorer: str = 'f1',
+             max_evals: int = 10, post: bool = False):
         """Fit and tune the pipeline to the given data.
 
         Args:
@@ -134,7 +135,7 @@ class OrionTuner(Orion):
                 Ground truth anomalies, passed as `pandas.DataFrame``
                 containing the start and end timestamps.
         """
-
+        train = train or data
         self._scorer = METRICS[scorer]
         self._mlpipeline = self._get_mlpipeline()
 
@@ -142,7 +143,7 @@ class OrionTuner(Orion):
             self._mlpipeline_base, self._mlpipeline_post = self._extract_pipeline()
             # train the base once
             LOGGER.debug('Training the base pipeline %s', self._mlpipeline_base.primitives)
-            self._mlpipeline_base.fit(data)
+            self._mlpipeline_base.fit(train)
         else:
             self._mlpipeline_base = self._mlpipeline
             self._mlpipeline_post = self._mlpipeline
