@@ -1,9 +1,11 @@
 """Extension to Orion class"""
 import logging
+from copy import deepcopy
 
 import numpy as np
 import pandas as pd
 from btb.tuning import GPTuner, Tunable
+from mlblocks import MLPipeline
 from sklearn.model_selection import KFold
 
 from orion.core import Orion
@@ -18,11 +20,52 @@ class OrionTuner(Orion):
     The OrionExtended Class provides additional features of
     tunning the pipeline.
     """
+    _mlpipeline_base = None
+    _mlpipeline_post = None
     _time_column = 'timestamp'
     _label_column = 'label'
     _columns = None
     _scorer = None
     tuned = None
+
+
+def _extract_pipeline(self):
+    pipeline_base = deepcopy(self._mlpipeline.to_dict())
+    pipeline_post = deepcopy(self._mlpipeline.to_dict())
+
+    output_primitive = None
+    postprocessing = list()
+    for primitive, blocks in self._mlpipeline.blocks.items():
+        if blocks.metadata.get('classifiers').get('type') == 'postprocessor':
+            postprocessing.append(primitive.split('#')[0])
+        else:
+            output_primitive = primitive
+
+    for attr, value in pipeline_base.items():
+        if isinstance(value, dict):
+            primitives = list(value.keys())
+            for primitive in primitives:
+                name = primitive.split('#')[0]
+                if name in postprocessing:
+                    del pipeline_base[attr][primitive]
+                else:
+                    del pipeline_post[attr][primitive]
+
+        else:
+            pipeline_base[attr] = [p for p in value if p not in postprocessing]
+            pipeline_post[attr] = postprocessing
+
+    # change output
+    pipeline_post['outputs'] = deepcopy(pipeline_base['outputs'])
+    pipeline_base['outputs'] = {
+        'default': [{
+            'name': 'output',
+            'type': 'dict',
+            'variable': output_primitive
+        }]
+    }
+
+    return MLPipeline(pipeline_base), MLPipeline(pipeline_post)
 
     def _expand(self, data, anomalies):
         data = data.set_index(self._time_column)
@@ -63,20 +106,25 @@ class OrionTuner(Orion):
 
         return splits
 
-    def scoring_function(self, data, anomalies, hyperparameters=None, verbose=False):
+    def scoring_function(self, data, anomalies, hyperparameters=None):
         if hyperparameters:
             self._mlpipeline.set_hyperparameters(hyperparameters)
 
         scores = []
         for X_train, y_train, X_test, y_test in self._cv_split(data, anomalies, 3):
-            self.fit(X_train, verbose=verbose)
-            detected = self.detect(X_test, verbose=verbose)
+            # base step
+            output_train = self._mlpipeline_base.predict(X_train)
+            output_test = self._mlpipeline_base.predict(X_test)
+
+            # post step
+            self._mlpipeline_post.fit(output_train)
+            detected = self._mlpipeline_post.predict(output_test)
             scores.append(self._scorer(y_test, detected, X_test))
 
         return np.mean(scores)
 
     def tune(self, data: pd.DataFrame, anomalies: pd.DataFrame,
-             scorer: str = 'f1', max_evals: int = 10, verbose: bool = False):
+             scorer: str = 'f1', max_evals: int = 10, post: bool = False):
         """Fit and tune the pipeline to the given data.
 
         Args:
@@ -91,10 +139,19 @@ class OrionTuner(Orion):
         self._scorer = METRICS[scorer]
         self._mlpipeline = self._get_mlpipeline()
 
-        tunables = self._mlpipeline.get_tunable_hyperparameters(flat=True)
+        if post:
+            self._mlpipeline_base, self._mlpipeline_post = self._extract_pipeline()
+            # train the base once
+            LOGGER.debug('Training the base pipeline %s', self._mlpipeline_base.primitives)
+            self._mlpipeline_base.fit(data)
+        else:
+            self._mlpipeline_base = self._mlpipeline
+            self._mlpipeline_post = self._mlpipeline
+
+        tunables = self._mlpipeline_post.get_tunable_hyperparameters(flat=True)
         tunables = Tunable.from_dict(tunables)
 
-        default_score = self.scoring_function(data, anomalies, verbose=verbose)
+        default_score = self.scoring_function(data, anomalies)
         defaults = tunables.get_defaults()
 
         tuner = GPTuner(tunables)
@@ -107,8 +164,9 @@ class OrionTuner(Orion):
             proposal = tuner.propose()
             LOGGER.debug('Scoring proposal %s: %s', iteration, proposal)
             try:
-                score = self.scoring_function(data, anomalies, proposal, verbose=verbose)
+                score = self.scoring_function(data, anomalies, proposal)
                 tuner.record(proposal, score)
+                LOGGER.debug('Proposal %s scored %f', proposal, score)
             except Exception as ex:
                 LOGGER.exception("Exception tuning pipeline %s",
                                  iteration, ex)
