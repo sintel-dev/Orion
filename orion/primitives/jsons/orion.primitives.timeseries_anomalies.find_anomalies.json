@@ -60,18 +60,18 @@
         "tunable": {
             "window_size_portion": {
                 "type": "float",
-                "default": null,
+                "default": 0.33,
                 "range": [
                     0.01,
-                    1.0
+                    0.9
                 ]
             },
             "window_step_size_portion": {
                 "type": "float",
-                "default": null,
+                "default": 0.1,
                 "range": [
                     0.01,
-                    1.0
+                    0.9
                 ]
             },
             "min_percent": {
