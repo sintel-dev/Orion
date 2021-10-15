@@ -121,7 +121,7 @@ class OrionTuner(Orion):
             detected = self._build_events_df(outputs)
             scores.append(self._scorer(y_test, detected, X_test))
 
-        return np.mean(scores)
+        return np.nanmean(scores)
 
     def tune(self, data: pd.DataFrame, anomalies: pd.DataFrame,
              train: pd.DataFrame = None, scorer: str = 'f1',
