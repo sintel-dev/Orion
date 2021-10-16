@@ -273,7 +273,7 @@ class TadGAN(object):
             print('Epoch: {}/{}, [Dx loss: {}] [Dz loss: {}] [G loss: {}]'.format(
                 epoch, self.epochs, cx_loss, cz_loss, g_loss))
 
-    def fit(self, X, y, **kwargs):
+    def fit(self, X, y=None, **kwargs):
         """Fit the TadGAN.
 
         Args:
@@ -282,12 +282,15 @@ class TadGAN(object):
             y (ndarray):
                 N-dimensional array containing the target sequences we want to reconstruct.
         """
+        if y is None:
+            y = X.copy()  # reconstruct the same input
+
         self._augment_hyperparameters(X, y, kwargs)
         self._set_shapes()
         self._build_tadgan(**kwargs)
         self._fit(X, y)
 
-    def predict(self, X, y):
+    def predict(self, X, y=None):
         """Predict values using the initialized object.
 
         Args:
@@ -302,6 +305,8 @@ class TadGAN(object):
             ndarray:
                 N-dimensional array containing the critic scores for each input sequence.
         """
+        if y is None:
+            y = X.copy()  # reconstruct the same input
 
         z_ = self.encoder.predict(X)
         y_hat = self.generator.predict(z_)
