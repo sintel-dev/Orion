@@ -107,7 +107,7 @@ class OrionTuner(Orion):
 
     def scoring_function(self, data, anomalies, hyperparameters=None):
         if hyperparameters:
-            self._mlpipeline.set_hyperparameters(hyperparameters)
+            self._mlpipeline_post.set_hyperparameters(hyperparameters)
 
         scores = []
         for X_train, y_train, X_test, y_test in self._cv_split(data, anomalies, 3):
@@ -118,6 +118,7 @@ class OrionTuner(Orion):
             # post step
             self._mlpipeline_post.fit(**output_train)
             outputs = self._mlpipeline_post.predict(**output_test)
+            LOGGER.debug('Actual %s - Found %s', y_test.to_dict(), outputs)
             detected = self._build_events_df(outputs)
             scores.append(self._scorer(y_test, detected, X_test))
 
@@ -136,7 +137,9 @@ class OrionTuner(Orion):
                 Ground truth anomalies, passed as `pandas.DataFrame``
                 containing the start and end timestamps.
         """
-        train = train or data
+        if train is None:
+            train = data
+            
         self._scorer = METRICS[scorer]
         self._mlpipeline = self._get_mlpipeline()
 
@@ -166,8 +169,12 @@ class OrionTuner(Orion):
             LOGGER.debug('Scoring proposal %s: %s', iteration, proposal)
             try:
                 score = self.scoring_function(data, anomalies, proposal)
-                tuner.record(proposal, score)
                 LOGGER.debug('Proposal %s scored %f', proposal, score)
+                if pd.isnull(score):
+                    score = np.random.rand() * 0.01
+                LOGGER.debug('Recorded score %f', score)
+                tuner.record(proposal, score)
+                    
             except Exception as ex:
                 LOGGER.exception("Exception tuning pipeline %s",
                                  iteration, ex)

@@ -39,8 +39,6 @@
             "rec_error_type": "dtw"
         },
 	"orion.primitives.timeseries_anomalies.find_anomalies#1": {
-            "window_size_portion": 0.33,
-            "window_step_size_portion": 0.1,
             "fixed_threshold": true
         }
     },
