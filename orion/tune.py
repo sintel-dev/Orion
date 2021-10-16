@@ -139,7 +139,7 @@ class OrionTuner(Orion):
         """
         if train is None:
             train = data
-            
+
         self._scorer = METRICS[scorer]
         self._mlpipeline = self._get_mlpipeline()
 
@@ -174,7 +174,7 @@ class OrionTuner(Orion):
                     score = np.random.rand() * 0.01
                 LOGGER.debug('Recorded score %f', score)
                 tuner.record(proposal, score)
-                    
+
             except Exception as ex:
                 LOGGER.exception("Exception tuning pipeline %s",
                                  iteration, ex)
