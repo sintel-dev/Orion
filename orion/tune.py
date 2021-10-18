@@ -120,7 +120,7 @@ class OrionTuner(Orion):
             outputs = self._mlpipeline_post.predict(**output_test)
             LOGGER.debug('Actual %s - Found %s', y_test.to_dict(), outputs)
             detected = self._build_events_df(outputs)
-            scores.append(self._scorer(y_test, detected, X_test))
+            scores.append(self._scorer(y_test, detected, X_test, weighted=False))
 
         return np.nanmean(scores)
 
@@ -183,6 +183,10 @@ class OrionTuner(Orion):
                 LOGGER.debug("New best found: {}".format(score))
                 best_score = score
                 best_proposal = proposal
+
+            # early stoppage
+            if score == 1.0:
+                break
 
         self._mlpipeline.set_hyperparameters(best_proposal)
         self.tuned = best_proposal

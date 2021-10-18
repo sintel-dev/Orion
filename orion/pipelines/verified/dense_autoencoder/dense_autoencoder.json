@@ -33,7 +33,7 @@
             "target_shape": [100, 1]
         },
         "orion.primitives.timeseries_anomalies.find_anomalies#1": {
-            "fixed_threshold": true
+            "fixed_threshold": false
         }
     },
     "output_names": {

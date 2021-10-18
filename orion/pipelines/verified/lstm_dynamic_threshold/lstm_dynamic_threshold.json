@@ -28,7 +28,7 @@
             "epochs": 35
         },
         "orion.primitives.timeseries_anomalies.find_anomalies#1": {
-            "fixed_threshold": true
+            "fixed_threshold": false
         }
     },
     "input_names": {
