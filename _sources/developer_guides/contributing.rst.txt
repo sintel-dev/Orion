@@ -123,7 +123,7 @@ Before you submit a pull request, check that it meets these guidelines:
 4. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the documentation in an appropriate place.
-5. The pull request should work for all the supported Python versions. Check the `Travis Build
+5. The pull request should work for all the supported Python versions. Check the `GitHub Actions
    Status page`_ and make sure that all the checks pass.
 
 Unit Testing Guidelines
@@ -201,6 +201,6 @@ Once this is done, run of the following commands:
 
     make release-major
 
-.. _GitHub issues page: https://github.com/D3-AI/Orion/issues
-.. _Travis Build Status page: https://travis-ci.org/D3-AI/Orion/pull_requests
+.. _GitHub issues page: https://github.com/sintel-dev/Orion/issues
+.. _GitHub Actions Status page: https://github.com/sintel-dev/Orion/actions
 .. _Google docstrings style: https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments

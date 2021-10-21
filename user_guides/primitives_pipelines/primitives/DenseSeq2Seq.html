@@ -113,7 +113,7 @@
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/signals-dev/Orion" rel="noopener" target="_blank" title="GitHub">
+          <a class="nav-link" href="https://github.com/sintel-dev/Orion" rel="noopener" target="_blank" title="GitHub">
             <span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label>
           </a>
@@ -324,7 +324,7 @@
 <h1>Dense AE<a class="headerlink" href="#dense-ae" title="Permalink to this headline">¶</a></h1>
 <p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">keras.Sequential.DenseSeq2Seq</span></code></p>
 <p><strong>description</strong>: this is a reconstruction model autoencoder using dense layers.</p>
-<p>see <a class="reference external" href="https://github.com/signals-dev/Orion/blob/master/orion/primitives/jsons/keras.Sequential.DenseSeq2Seq.json">json</a>.</p>
+<p>see <a class="reference external" href="https://github.com/sintel-dev/Orion/blob/master/orion/primitives/jsons/keras.Sequential.DenseSeq2Seq.json">json</a>.</p>
 <table class="table">
 <colgroup>
 <col style="width: 12%" />
@@ -430,22 +430,22 @@ In [4]: primitive = load_primitive('keras.Sequential.DenseSeq2Seq',
 In [5]: primitive.fit()
 Epoch 1/5
 
-1/1 [==============================] - 0s 220ms/step - loss: 1.1719 - mse: 1.1719
+1/1 [==============================] - 0s 287ms/step - loss: 1.1719 - mse: 1.1719
 Epoch 2/5
 
 1/1 [==============================] - 0s 2ms/step - loss: 1.2683 - mse: 1.2683
 Epoch 3/5
 
-1/1 [==============================] - 0s 1ms/step - loss: 1.2350 - mse: 1.2350
+1/1 [==============================] - 0s 2ms/step - loss: 1.2350 - mse: 1.2350
 Epoch 4/5
 
-1/1 [==============================] - 0s 1ms/step - loss: 1.1307 - mse: 1.1307
+1/1 [==============================] - 0s 2ms/step - loss: 1.1307 - mse: 1.1307
 Epoch 5/5
 
-1/1 [==============================] - 0s 1ms/step - loss: 1.1537 - mse: 1.1537
+1/1 [==============================] - 0s 2ms/step - loss: 1.1537 - mse: 1.1537
 
 In [6]: pred = primitive.produce(X=X)
-1/1 [==============================] - 0s 225ms/step
+1/1 [==============================] - 0s 293ms/step
 
 In [7]: pred.mean()
 Out[7]: 0.036859464</pre>

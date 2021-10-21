@@ -7,6 +7,8 @@ reconstuction errors
 
 **description** this primitive computes an array of errors comparing reconstructed and expected output. There are three main approaches for computing the discrepancies: point-wise, area, and dtw.
 
+see `json <https://github.com/sintel-dev/Orion/blob/master/orion/primitives/jsons/orion.primitives.timeseries_errors.reconstruction_errors.json>`__.
+
 ========================== =================== ======================================================================
 argument                    type                description  
 

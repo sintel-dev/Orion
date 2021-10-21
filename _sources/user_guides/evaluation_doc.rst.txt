@@ -30,7 +30,7 @@ For example:
 We have created an evaluator for both types. 
 We also provide a suite of transformation functions in ``utils.py`` to help with converting one type to another.
 
-View the `Evaluation sub-package <https://github.com/signals-dev/Orion/tree/master/orion/evaluation>`__ to see the metrics provided in **Orion**.
+View the `Evaluation sub-package <https://github.com/sintel-dev/Orion/tree/master/orion/evaluation>`__ to see the metrics provided in **Orion**.
 
 How do we score anomalies?
 --------------------------
@@ -108,7 +108,7 @@ To use this objective, we pass ``weighted=False`` in the metric method of choice
 
     contextual_f1_score(ground_truth, anomalies, start=start, end=end, weighted=False)
 
-You can read more about our step-by-step process in our evaluation by visiting the `Evaluation sub-package <https://github.com/signals-dev/Orion/tree/master/orion/evaluation>`__
+You can read more about our step-by-step process in our evaluation by visiting the `Evaluation sub-package <https://github.com/sintel-dev/Orion/tree/master/orion/evaluation>`__
 
 
 Evaluate the performance of your pipeline
