@@ -7,6 +7,8 @@ regression errors
 
 **description** this primitive computes an array of absolute errors comparing predictions and expected output. Optionally smooth them using EWMA.
 
+see `json <https://github.com/sintel-dev/Orion/blob/master/orion/primitives/jsons/orion.primitives.timeseries_errors.regression_errors.json>`__.
+
 ========================== =================== ======================================================================
 argument                    type                description  
 

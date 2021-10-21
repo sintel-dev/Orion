@@ -56,8 +56,8 @@ The complete evaluation process is directly available using the
     scores = benchmark(pipelines=pipelines, datasets=datasets, metrics=metrics, rank='f1')
 
 For further details about all the arguments and possibilities that the ``benchmark`` function offers please refer to the `Orion benchmark
-documentation <https://github.com/signals-dev/Orion/blob/master/BENCHMARK.md>`__
+documentation <https://github.com/sintel-dev/Orion/blob/master/BENCHMARK.md>`__
 
-.. _benchmark/results: https://github.com/signals-dev/Orion/tree/master/benchmark/results
+.. _benchmark/results: https://github.com/sintel-dev/Orion/tree/master/benchmark/results
 .. _summary Google Sheets document: https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing
 .. _details Google Sheets document: https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing

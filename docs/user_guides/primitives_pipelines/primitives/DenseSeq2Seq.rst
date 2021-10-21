@@ -7,7 +7,7 @@ Dense AE
 
 **description**: this is a reconstruction model autoencoder using dense layers.
 
-see `json <https://github.com/signals-dev/Orion/blob/master/orion/primitives/jsons/keras.Sequential.DenseSeq2Seq.json>`__.
+see `json <https://github.com/sintel-dev/Orion/blob/master/orion/primitives/jsons/keras.Sequential.DenseSeq2Seq.json>`__.
 
 ====================== =================== ===========================================================================================================================================
 argument                type                description  

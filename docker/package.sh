@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Clone a fresh repository anonymously
-git clone https://github.com/D3-AI/Orion.git
+git clone https://github.com/sintel-dev/Orion.git
 
 # Put the orion-jupyter image inside it
 mv orion-jupyter.tar Orion

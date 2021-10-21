@@ -119,7 +119,7 @@ setup(
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,
-    url='https://github.com/D3-AI/Orion',
+    url='https://github.com/sintel-dev/Orion',
     version='0.2.1.dev0',
     zip_safe=False,
 )
