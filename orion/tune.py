@@ -120,7 +120,7 @@ class OrionTuner(Orion):
             outputs = self._mlpipeline_post.predict(**output_test)
             LOGGER.debug('Actual %s - Found %s', y_test.to_dict(), outputs)
             detected = self._build_events_df(outputs)
-            scores.append(self._scorer(y_test, detected, X_test, weighted=False))
+            scores.append(self._scorer(y_test, detected, X_test, weighted=True))
 
         return np.nanmean(scores)
 
@@ -145,12 +145,17 @@ class OrionTuner(Orion):
 
         if post:
             self._mlpipeline_base, self._mlpipeline_post = self._extract_pipeline()
+            # if self._hyperparameters:
+            #    self._mlpipeline_base.set_hyperparameters(self._hyperparameters)
+
             # train the base once
-            LOGGER.debug('Training the base pipeline %s', self._mlpipeline_base.primitives)
+            LOGGER.debug('Training the base pipeline %s - %s',
+                         self._mlpipeline_base.primitives,
+                         self._mlpipeline_base.get_hyperparameters())
             self._mlpipeline_base.fit(train)
         else:
-            self._mlpipeline_base = self._mlpipeline
-            self._mlpipeline_post = self._mlpipeline
+            self._mlpipeline_base = MLPipeline(self._pipeline)
+            self._mlpipeline_post = MLPipeline(self._pipeline)
 
         tunables = self._mlpipeline_post.get_tunable_hyperparameters(flat=True)
         tunables = Tunable.from_dict(tunables)
@@ -188,5 +193,4 @@ class OrionTuner(Orion):
             if score == 1.0:
                 break
 
-        self._mlpipeline.set_hyperparameters(best_proposal)
         self.tuned = best_proposal

@@ -80,7 +80,6 @@ class Orion:
                 Input data, passed as a ``pandas.DataFrame`` containing
                 exactly two columns: timestamp and value.
         """
-        self._mlpipeline = self._get_mlpipeline()
         self._mlpipeline.fit(data)
         self._fitted = True
 
