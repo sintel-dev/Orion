@@ -15,7 +15,7 @@ observations with two columns:
 This is an example of such table:
 
 |  timestamp |     value |
---------------------------
+|------------|-----------|
 | 1222819200 | -0.366358 |
 | 1222840800 | -0.394107 |
 | 1222862400 |  0.403624 |
@@ -36,7 +36,7 @@ severity of the detected anomaly.
 An example of such a table is:
 
 |      start |        end | severity |
---------------------------------------
+|------------|------------|----------|
 | 1222970400 | 1222992000 | 0.572643 |
 | 1223013600 | 1223035200 | 0.572643 |
 
