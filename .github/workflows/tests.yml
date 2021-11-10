@@ -60,5 +60,41 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install package and dependencies
       run: pip install .[test]
-    - name: make test
-      run: make test
+    - name: make test-unit
+      run: make test-unit
+
+
+  minimum:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7]
+        os: [ubuntu-latest, macos-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install package and dependencies
+      run: pip install .[test]
+    - name: make test-minimum
+      run: make test-minimum
+
+
+  notebooks:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7]
+        os: [ubuntu-latest, macos-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install package and dependencies
+      run: pip install jupyter .
+    - name: make test-notebooks
+      run: make test-notebooks

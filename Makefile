@@ -81,6 +81,12 @@ install-test: clean-build clean-pyc ## install the package and test dependencies
 install-develop: clean-build clean-pyc ## install the package in editable mode and dependencies for development
 	pip install -e .[dev]
 
+MINIMUM := $(shell sed -n '/install_requires = \[/,/]/p' setup.py | grep -v -e '[][]' | sed 's/ *\(.*\),$?$$/\1/g' | tr '>' '=')
+
+.PHONY: install-minimum
+install-minimum: ## install the minimum supported versions of the package dependencies
+	echo pip install $(MINIMUM)
+
 
 # LINT TARGETS
 
@@ -102,18 +108,29 @@ fix-lint: ## fix lint issues using autoflake, autopep8, and isort
 
 # TEST TARGETS
 
-.PHONY: test
-test: ## run tests quickly with the default Python
+.PHONY: test-unit
+test-unit: ## run tests quickly with the default Python
 	python -m pytest tests --cov=orion
-
-.PHONY: test-all
-test-all: ## run tests on every Python version with tox
-	tox -r
 
 .PHONY: test-readme
 test-readme: ## run the readme snippets
 	rundoc run --single-session python3 -t python3 README.md
 	rundoc run --single-session python3 -t python3 orion/evaluation/README.md
+
+.PHONY: test-notebooks
+test-notebooks: ## run the tutorial notebooks
+	find notebooks -path "*/.ipynb_checkpoints" -prune -false -o -name "*.ipynb" -exec \
+		jupyter nbconvert --execute --ExecutePreprocessor.timeout=3600 --to=html --stdout {} > /dev/null \;
+
+.PHONY: test
+test: test-unit test-readme test-notebooks ## test everything that needs test dependencies
+
+.PHONY: test-minimum
+test-minimum: install-minimum check-dependencies test ## run tests using the minimum supported dependencies
+
+.PHONY: test-all
+test-all: ## run tests on every Python version with tox
+	tox -r
 
 .PHONY: coverage
 coverage: ## check code coverage quickly with the default Python
