@@ -85,13 +85,20 @@ MINIMUM := $(shell sed -n '/install_requires = \[/,/]/p' setup.py | grep -v -e '
 
 .PHONY: install-minimum
 install-minimum: ## install the minimum supported versions of the package dependencies
-	echo pip install $(MINIMUM)
+	pip install $(MINIMUM)
 
+.PHONY: check-dependencies
+check-dependencies: ## test if there are any broken dependencies
+	pip check
 
 # LINT TARGETS
 
 .PHONY: lint
 lint: ## check style with flake8 and isort
+	invoke lint
+
+.PHONY: lint-orion
+lint-orion: ## check style with flake8 and isort
 	flake8 orion tests
 	isort -c --recursive orion tests
 
@@ -110,20 +117,18 @@ fix-lint: ## fix lint issues using autoflake, autopep8, and isort
 
 .PHONY: test-unit
 test-unit: ## run tests quickly with the default Python
-	python -m pytest tests --cov=orion
+	invoke pytest
 
 .PHONY: test-readme
 test-readme: ## run the readme snippets
-	rundoc run --single-session python3 -t python3 README.md
-	rundoc run --single-session python3 -t python3 orion/evaluation/README.md
+	invoke readme
 
-.PHONY: test-notebooks
-test-notebooks: ## run the tutorial notebooks
-	find notebooks -path "*/.ipynb_checkpoints" -prune -false -o -name "*.ipynb" -exec \
-		jupyter nbconvert --execute --ExecutePreprocessor.timeout=3600 --to=html --stdout {} > /dev/null \;
+.PHONY: test-tutorials
+test-tutorials: ## run the tutorial notebooks
+	invoke tutorials
 
 .PHONY: test
-test: test-unit test-readme test-notebooks ## test everything that needs test dependencies
+test: test-unit test-readme test-tutorials ## test everything that needs test dependencies
 
 .PHONY: test-minimum
 test-minimum: install-minimum check-dependencies test ## run tests using the minimum supported dependencies
@@ -138,14 +143,6 @@ coverage: ## check code coverage quickly with the default Python
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
-
-
-.PHONY: check-dependencies
-check-dependencies: ## test if there are any broken dependencies
-	pip check
-
-.PHONY: test-devel
-test-devel: check-dependencies lint docs ## test everything that needs development dependencies
 
 
 # DOCS TARGETS
