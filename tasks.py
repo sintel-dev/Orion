@@ -42,7 +42,7 @@ def install_minimum(c):
 def minimum(c):
     install_minimum(c)
     c.run('python -m pip check')
-    c.run('python -m pytest 5')
+    c.run('python -m pytest')
 
 
 @task
@@ -76,7 +76,6 @@ def tutorials(c):
 def lint(c):
     c.run('flake8 orion tests')
     c.run('isort -c --recursive orion tests')
-    c.run('pydocstyle orion')
 
 
 def remove_readonly(func, path, _):

@@ -94,7 +94,7 @@ def download(name, test_size=None, data_path=DATA_PATH):
 
 def download_demo(path='orion-data', split=False):
     if not os.path.exists(path):
-        os.makedirs(path, exist_ok=True)
+        os.makedirs(path, mode='0o777', exist_ok=True)
 
     LOGGER.info('Downloading Orion Demo Data to folder %s', path)
     for signal in NASA_SIGNALS[0:3]:

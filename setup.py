@@ -18,11 +18,10 @@ except IOError:
 
 install_requires = [
     's3fs>=0.2.2,<0.5',
-    'baytune>=0.2.3,<0.3',
-    'mlblocks>=0.3.0,<0.4',
+    'mlblocks>=0.3.3,<0.4',
     'mlprimitives>=0.2.2,<0.3',
     'mongoengine>=0.20.0,<0.25',
-    'numpy>=1.15.4,<1.17',
+    'numpy>=1.16,<1.17',
     'pandas>=0.23.4,<0.25',
     'pymongo>=3.7.2,<4',
     'scikit-learn>=0.20.1,<0.21',
