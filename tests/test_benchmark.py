@@ -1,6 +1,7 @@
 from unittest import TestCase
 from unittest.mock import ANY, Mock, call, patch
 
+import numpy as np
 import pandas as pd
 from mlblocks import MLPipeline
 
@@ -48,7 +49,8 @@ def test__sort_leaderboard_rank_does_not_exist():
 def test__sort_leaderboard_no_rank():
     rank = None
     metrics = METRICS
-    score = {k: range(5) for k in metrics.keys()}
+    score = {k: np.arange(5, dtype='int64') for k in metrics.keys()}
+
     score['pipeline'] = range(5)
     score = pd.DataFrame(score)
 
