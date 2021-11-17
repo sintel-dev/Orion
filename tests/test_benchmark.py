@@ -1,7 +1,6 @@
 from unittest import TestCase
 from unittest.mock import ANY, Mock, call, patch
 
-import numpy as np
 import pandas as pd
 from mlblocks import MLPipeline
 
