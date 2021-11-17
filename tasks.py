@@ -65,6 +65,8 @@ def readme(c):
 @task
 def tutorials(c):
     for ipynb_file in glob.glob('tutorials/*.ipynb') + glob.glob('tutorials/**/*.ipynb'):
+        if 'OrionDBExplorer' in ipynb_file: # skip db testing
+            continue
         if '.ipynb_checkpoints' not in ipynb_file:
             c.run((
                 'jupyter nbconvert --execute --ExecutePreprocessor.timeout=3600 '
