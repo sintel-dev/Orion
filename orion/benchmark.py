@@ -121,7 +121,9 @@ def _sort_leaderboard(df, rank, metrics):
     df.reset_index(drop=False, inplace=True)
     df['rank'] += 1
 
-    return df.set_index('pipeline').reset_index()
+    pipeline_col = df.pop('pipeline')
+    df.insert(0, 'pipeline', pipeline_col)
+    return df
 
 
 def _evaluate_signal(pipeline, signal, hyperparameter, metrics,

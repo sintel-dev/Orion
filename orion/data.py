@@ -77,7 +77,7 @@ def download(name, test_size=None, data_path=DATA_PATH):
         filename = os.path.join(data_path, path.split('/')[-1])
     else:
         filename = os.path.join(data_path, name + '.csv')
-        data_path = filename.rsplit('/', 1)[0]
+        data_path = os.path.join(data_path, os.path.dirname(name))
 
     if os.path.exists(filename):
         data = pd.read_csv(filename)

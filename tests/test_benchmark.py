@@ -49,6 +49,7 @@ def test__sort_leaderboard_no_rank():
     rank = None
     metrics = METRICS
     score = {k: range(5) for k in metrics.keys()}
+
     score['pipeline'] = range(5)
     score = pd.DataFrame(score)
 
@@ -59,7 +60,7 @@ def test__sort_leaderboard_no_rank():
 
     assert len(returned.columns) == len(expected_return.columns)
     assert sorted(returned.columns) == sorted(expected_return.columns)
-    pd.testing.assert_frame_equal(returned, expected_return[returned.columns])
+    pd.testing.assert_frame_equal(returned, expected_return[returned.columns], check_dtype=False)
 
 
 def test__detrend_signal_trend():
