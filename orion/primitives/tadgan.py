@@ -146,6 +146,7 @@ class TadGAN(object):
         self.optimizer = import_object(optimizer)(learning_rate)
 
         self.hyperparameters = hyperparameters
+        self._fitted = False
 
     def _augment_hyperparameters(self, X, y, kwargs):
         shape = np.asarray(X)[0].shape
@@ -273,7 +274,7 @@ class TadGAN(object):
             print('Epoch: {}/{}, [Dx loss: {}] [Dz loss: {}] [G loss: {}]'.format(
                 epoch, self.epochs, cx_loss, cz_loss, g_loss))
 
-    def fit(self, X, y=None, **kwargs):
+    def fit(self, X, y=None, build=False, **kwargs):
         """Fit the TadGAN.
 
         Args:
@@ -285,10 +286,13 @@ class TadGAN(object):
         if y is None:
             y = X.copy()  # reconstruct the same input
 
-        self._augment_hyperparameters(X, y, kwargs)
-        self._set_shapes()
-        self._build_tadgan(**kwargs)
+        if build or not self._fitted:
+            self._augment_hyperparameters(X, y, kwargs)
+            self._set_shapes()
+            self._build_tadgan(**kwargs)
+
         self._fit(X, y)
+        self._fitted = True
 
     def predict(self, X, y=None):
         """Predict values using the initialized object.
