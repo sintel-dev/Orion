@@ -15,10 +15,25 @@
 
 # Orion
 
-* License: [MIT](https://github.com/sintel-dev/Orion/blob/master/LICENSE)
-* Development Status: [Pre-Alpha](https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha)
-* Homepage: https://github.com/sintel-dev/Orion
-* Documentation: https://sintel-dev.github.io/Orion
+A machine learning library for unsupervised time series anomaly detection.
+
+| Important Links                     |                                                                      |
+| ----------------------------------- | -------------------------------------------------------------------- |
+| :computer: **[Website]**            | Check out the Sintel Website for more information about the project. |
+| :book: **[Documentation]**          | Quickstarts, User and Development Guides, and API Reference.         |
+| :star: **[Tutorials]**              | Checkout our notebooks                                               |
+| :octocat: **[Repository]**          | The link to the Github Repository of this library.                   |
+| :scroll: **[License]**              | The repository is published under the MIT License.                   |
+| :keyboard: **[Development Status]** | This software is in its Pre-Alpha stage.                             |
+| :thought_balloon: **[Community]**   | Join our Slack Workspace for announcements and discussions.          |
+
+[Website]: https://sintel.dev/
+[Documentation]: https://sintel-dev.github.io/Orion
+[Tutorials]: https://github.com/sintel-dev/Orion/tree/master/tutorials
+[Repository]: https://github.com/sintel-dev/Orion
+[License]: https://github.com/sintel-dev/Orion/blob/master/LICENSE
+[Development Status]: https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha
+[Community]: https://join.slack.com/t/sintel-space/shared_invite/zt-q147oimb-4HcphcxPfDAM0O9_4PaUtw
 
 # Overview
 
@@ -26,7 +41,7 @@ Orion is a machine learning library built for *unsupervised time series anomaly 
 
 The library makes use of a number of **automated machine learning** tools developed under [Data to AI Lab at MIT](https://dai.lids.mit.edu/).
 
-**Recent news:** Read about using an Orion pipeline on NYC taxi dataset in a blog series:
+Read about using an Orion pipeline on NYC taxi dataset in a blog series:
 
 [Part 1: Learn about unsupervised time series anomaly detection](https://t.co/yIFVM1oRwQ?amp=1) | [Part 2: Learn how we use GANs to solving the problem? ](https://link.medium.com/cGsBD0Fevbb) | [Part 3: How does one evaluate anomaly detection pipelines?](https://link.medium.com/FqCrFXMevbb)
 :--------------------------------------:|:---------------------------------------------:|:--------------------------------------------:
