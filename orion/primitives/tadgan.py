@@ -274,7 +274,7 @@ class TadGAN(object):
             print('Epoch: {}/{}, [Dx loss: {}] [Dz loss: {}] [G loss: {}]'.format(
                 epoch, self.epochs, cx_loss, cz_loss, g_loss))
 
-    def fit(self, X, y=None, build=False, **kwargs):
+    def fit(self, X, y=None, **kwargs):
         """Fit the TadGAN.
 
         Args:
@@ -286,7 +286,7 @@ class TadGAN(object):
         if y is None:
             y = X.copy()  # reconstruct the same input
 
-        if build or not self._fitted:
+        if not self._fitted:
             self._augment_hyperparameters(X, y, kwargs)
             self._set_shapes()
             self._build_tadgan(**kwargs)

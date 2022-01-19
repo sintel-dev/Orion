@@ -22,11 +22,6 @@
           {
               "name": "y",
               "type": "ndarray"
-          },
-          {
-              "name": "build",
-              "type": "bool",
-              "default": false
           }
       ]
   },
