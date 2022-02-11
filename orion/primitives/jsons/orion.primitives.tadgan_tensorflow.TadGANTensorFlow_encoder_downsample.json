@@ -1,0 +1,383 @@
+{
+    "name": "orion.primitives.tadgan_tensorflow.TadGANTensorFlow",
+    "contributors": [
+        "Alexander Geiger <geigera@mit.edu>",
+        "Dongyu Liu <dongyu@mit.edu>",
+        "Lawrence Wong <lcwong@mit.edu>"
+    ],
+    "documentation": "orion.primitives.tadgan_tensorflow.TadGANTensorFlow_encoder_downsample.json",
+    "description": "TadGAN TensorFlow + Encoder + Down sample",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.tadgan_tensorflow.TadGANTensorFlow",
+    "fit": {
+        "method": "fit",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "critic",
+                "type": "ndarray"
+            },
+            {
+                "name": "fit_summary",
+                "type": "list"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "num_heads": {
+                "type": "int",
+                "default": 1
+            },
+            "d_model": {
+                "type": "int",
+                "default": 1
+            },
+            "dff": {
+                "type": "int",
+                "default": 4
+            },
+            "epochs": {
+                "type": "int",
+                "default": 2000
+            },
+            "input_shape": {
+                "type": "tuple",
+                "default": [
+                    100,
+                    1
+                ]
+            },
+            "target_shape": {
+                "type": "tuple",
+                "default": [
+                    100,
+                    1
+                ]
+            },
+            "latent_dim": {
+                "type": "int",
+                "default": 20
+            },
+            "optimizer": {
+                "type": "str",
+                "default": "tensorflow.keras.optimizers.Adam"
+            },
+            "learning_rate": {
+                "type": "float",
+                "default": 0.0005
+            },
+            "batch_size": {
+                "type": "int",
+                "default": 64
+            },
+            "iterations_critic": {
+                "type": "int",
+                "default": 5
+            },
+            "encoder_reshape_shape": {
+                "type": "tuple",
+                "default": null
+            },
+            "generator_reshape_dim": {
+                "type": "int",
+                "default": null
+            },
+            "generator_reshape_shape": {
+                "type": "tuple",
+                "default": null
+            },
+            "lstm_units": {
+                "type": "int",
+                "default": 100
+            },
+            "dense_units": {
+                "type": "int",
+                "default": 20
+            },
+            "layers_encoder": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "orion.primitives.attention_layers.Encoder",
+                        "parameters": {
+                            "num_layers": 1,
+                            "d_model": "d_model",
+                            "num_heads": "num_heads",
+                            "dff": "dff"
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.AvgPool1D",
+                        "parameters": {
+                            "strides": 2
+                        }
+                    },
+                    {
+                        "class": "orion.primitives.attention_layers.Encoder",
+                        "parameters": {
+                            "num_layers": 1,
+                            "d_model": "d_model",
+                            "num_heads": "num_heads",
+                            "dff": "dff"
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Flatten",
+                        "parameters": {}
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dense",
+                        "parameters": {
+                            "units": "dense_units"
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Reshape",
+                        "parameters": {
+                            "target_shape": "encoder_reshape_shape"
+                        }
+                    }
+                ]
+            },
+            "layers_generator": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "tensorflow.keras.layers.Flatten",
+                        "parameters": {}
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dense",
+                        "parameters": {
+                            "units": "generator_reshape_dim"
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Reshape",
+                        "parameters": {
+                            "target_shape": "generator_reshape_shape"
+                        }
+                    },
+                    {
+                        "class": "orion.primitives.attention_layers.Encoder",
+                        "parameters": {
+                            "num_layers": 1,
+                            "d_model": 1,
+                            "num_heads": 1,
+                            "dff": 4
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.UpSampling1D",
+                        "parameters": {
+                            "size": 2
+                        }
+                    },
+                    {
+                        "class": "orion.primitives.attention_layers.Encoder",
+                        "parameters": {
+                            "num_layers": 1,
+                            "d_model": 1,
+                            "num_heads": 1,
+                            "dff": 4
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.TimeDistributed",
+                        "parameters": {
+                            "layer": {
+                                "class": "tensorflow.keras.layers.Dense",
+                                "parameters": {
+                                    "units": 1
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Activation",
+                        "parameters": {
+                            "activation": "tanh"
+                        }
+                    }
+                ]
+            },
+            "layers_critic_x": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "tensorflow.keras.layers.Conv1D",
+                        "parameters": {
+                            "filters": 64,
+                            "kernel_size": 5
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.LeakyReLU",
+                        "parameters": {
+                            "alpha": 0.2
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dropout",
+                        "parameters": {
+                            "rate": 0.25
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Conv1D",
+                        "parameters": {
+                            "filters": 64,
+                            "kernel_size": 5
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.LeakyReLU",
+                        "parameters": {
+                            "alpha": 0.2
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dropout",
+                        "parameters": {
+                            "rate": 0.25
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Conv1D",
+                        "parameters": {
+                            "filters": 64,
+                            "kernel_size": 5
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.LeakyReLU",
+                        "parameters": {
+                            "alpha": 0.2
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dropout",
+                        "parameters": {
+                            "rate": 0.25
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Conv1D",
+                        "parameters": {
+                            "filters": 64,
+                            "kernel_size": 5
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.LeakyReLU",
+                        "parameters": {
+                            "alpha": 0.2
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dropout",
+                        "parameters": {
+                            "rate": 0.25
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Flatten",
+                        "parameters": {}
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dense",
+                        "parameters": {
+                            "units": 1
+                        }
+                    }
+                ]
+            },
+            "layers_critic_z": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "tensorflow.keras.layers.Flatten",
+                        "parameters": {}
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dense",
+                        "parameters": {
+                            "units": "dense_units"
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.LeakyReLU",
+                        "parameters": {
+                            "alpha": 0.2
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dropout",
+                        "parameters": {
+                            "rate": 0.2
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dense",
+                        "parameters": {
+                            "units": "dense_units"
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.LeakyReLU",
+                        "parameters": {
+                            "alpha": 0.2
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dropout",
+                        "parameters": {
+                            "rate": 0.2
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dense",
+                        "parameters": {
+                            "units": 1
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
