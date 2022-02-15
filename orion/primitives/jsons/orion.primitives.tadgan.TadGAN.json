@@ -18,10 +18,6 @@
           {
               "name": "X",
               "type": "ndarray"
-          },
-          {
-              "name": "y",
-              "type": "ndarray"
           }
       ]
   },
@@ -50,6 +46,30 @@
   },
   "hyperparameters": {
       "fixed": {
+          "detailed": {
+              "type": "bool",
+              "default": false
+          },
+          "shape": {
+              "type": "tuple",
+              "default": [100, 1]
+          },
+          "encoder_input_shape": {
+              "type": "tuple",
+              "default": [100, 1]
+          },
+          "generator_input_shape": {
+              "type": "tuple",
+              "default": [20, 1]
+          },
+          "critic_x_input_shape": {
+              "type": "tuple",
+              "default": [100, 1]
+          },
+          "critic_z_input_shape": {
+              "type": "tuple",
+              "default": [20, 1]
+          },
           "epochs": {
               "type": "int",
               "default": 2000
@@ -84,15 +104,21 @@
           },
           "encoder_reshape_shape": {
               "type": "tuple",
-              "default": null
+              "default": [
+                  20,
+                  1
+              ]
           },
           "generator_reshape_dim": {
               "type": "int",
-              "default": null
+              "default": 50
           },
           "generator_reshape_shape": {
               "type": "tuple",
-              "default": null
+              "default": [
+                  50,
+                  1
+              ]
           },
           "lstm_units": {
               "type": "int",

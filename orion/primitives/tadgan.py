@@ -3,8 +3,8 @@
 import logging
 import math
 import tempfile
+from typing import Union
 
-import keras
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -24,6 +24,7 @@ tf.keras.backend.set_floatx('float32')
 def build_layer(layer: dict, hyperparameters: dict):
     layer_class = import_object(layer['class'])
     layer_kwargs = layer['parameters'].copy()
+    # TODO: Upgrade to using tf.keras.layers.Wrapper in mlprimitives.
     if issubclass(layer_class, tf.keras.layers.Wrapper):
         layer_kwargs['layer'] = build_layer(layer_kwargs['layer'], hyperparameters)
     for key, value in layer_kwargs.items():
@@ -40,7 +41,7 @@ class TadGAN(tf.keras.Model):
     critic_z_input_shape (tuple): Shape of critic_z input.
     """
 
-    def __getstate__(self):
+    def __getstate__(self) -> None:
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
         modules = ['optimizer', 'critic_x_model', 'critic_z_model', 'encoder_generator_model']
 
@@ -51,20 +52,20 @@ class TadGAN(tf.keras.Model):
 
         for network in networks:
             with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=False) as fd:
-                keras.models.save_model(state.pop(network), fd.name, overwrite=True)
+                tf.keras.models.save_model(state.pop(network), fd.name, overwrite=True)
 
                 state[network + '_str'] = fd.read()
 
         return state
 
-    def __setstate__(self, state):
+    def __setstate__(self, state: dict) -> None:
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
         for network in networks:
             with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=False) as fd:
                 fd.write(state.pop(network + '_str'))
                 fd.flush()
 
-                state[network] = keras.models.load_model(fd.name)
+                state[network] = tf.keras.models.load_model(fd.name)
 
         self.__dict__ = state
 
@@ -79,7 +80,7 @@ class TadGAN(tf.keras.Model):
 
         return Model(x, model(x))
 
-    def _setdefault(self, kwargs, key, value):
+    def _setdefault(self, kwargs: dict, key: str, value: any):
         if key in kwargs:
             return
 
@@ -92,9 +93,17 @@ class TadGAN(tf.keras.Model):
 
     @classmethod
     def _gradient_penalty_loss(cls, real, fake, critic):
-        """https://keras.io/examples/generative/wgan_gp/"""
-        alpha = tf.random.uniform([real.shape[0], 1, 1], dtype=tf.float32)
+        """Implementation of gradient penalty loss.
+
+        References:
+            https://keras.io/examples/generative/wgan_gp/
+        """
+
+        # Random Weighted Average
+        batch_size = real.shape[0]
+        alpha = tf.random.uniform([batch_size, 1, 1], dtype=tf.float32)
         interpolated = (alpha * real) + ((1 - alpha) * fake)
+
         with tf.GradientTape() as gp_tape:
             gp_tape.watch(interpolated)
             validity_interpolated = critic(interpolated)
@@ -110,7 +119,8 @@ class TadGAN(tf.keras.Model):
                  target_shape: tuple = (100, 1), latent_dim: int = 20,
                  learning_rate: float = 0.0005, epochs: int = 2000,
                  batch_size: int = 64, iterations_critic: int = 5,
-                 detailed: bool = True,
+                 shuffle: bool = True, callbacks: tuple = tuple(), validation_ratio: float = 0.2,
+                 detailed: bool = True, verbose: Union[int, bool] = True,
                  **hyperparameters):
         """Tensorflow 2.x TadGAN model for time series reconstruction.
 
@@ -163,7 +173,16 @@ class TadGAN(tf.keras.Model):
                                           self.critic_x_input_shape, name='critic_x')
         self.critic_z = self._build_model(hyperparameters, self.layers_critic_z,
                                           self.critic_z_input_shape, name='critic_z')
+
+        # Training parameters
+        self.shuffle = shuffle
+        self.validation_ratio = validation_ratio
+        for callback in callbacks:
+            callback['class'] = import_object(callback['class'])
+        self.callbacks = callbacks
+        self.verbose = verbose
         self.detailed = detailed
+
         self.compile()
 
     def call(self, inputs, training=None, mask=None):
@@ -176,36 +195,24 @@ class TadGAN(tf.keras.Model):
     def compile(self, **kwargs):
         super(TadGAN, self).compile(**kwargs)
 
-    def get_output(self, cx_loss, cz_loss, eg_loss):
+    def _format_losses(self, losses: list) -> dict:
+        loss_names = [
+            ['cx_loss', 'cx_real', 'cx_fake', 'cx_gp'],
+            ['cz_loss', 'cz_real', 'cz_fake', 'cz_gp'],
+            ['eg_loss', 'eg_x', 'eg_z', 'eg_mse']
+        ]
+        output = dict()
         if self.detailed:
-            output = {
-                # format Cx loss
-                "Cx_loss": cx_loss[0],
-                "Cx_real": cx_loss[1],
-                "Cx_fake": cx_loss[2],
-                "Cx_gp": cx_loss[3],
-                # format Cz loss
-                "Cz_loss": cz_loss[0],
-                "Cz_real": cz_loss[1],
-                "Cz_fake": cz_loss[2],
-                "Cz_gp": cz_loss[3],
-                # format EG loss
-                "EG_loss": eg_loss[0],
-                "EG_x": eg_loss[1],
-                "EG_z": eg_loss[2],
-                "EG_mse": eg_loss[3]
-            }
-
+            for i in range(len(loss_names)):
+                for j in range(len(loss_names[i])):
+                    output[loss_names[i][j]] = losses[i][j]
         else:
-            output = {
-                "Cx_loss": cx_loss[0],
-                "Cz_loss": cz_loss[0],
-                "EG_loss": eg_loss[0]
-            }
+            for i in range(len(loss_names)):
+                output[loss_names[i][0]] = losses[i][0]
 
         return output
 
-    def train_step(self, X):
+    def train_step(self, X) -> dict:
 
         batch_size = tf.shape(X)[0]
         mini_batch_size = batch_size // self.iterations_critic
@@ -278,8 +285,9 @@ class TadGAN(tf.keras.Model):
         batch_cx_loss = np.mean(np.array(batch_cx_loss), axis=1)
         batch_cz_loss = np.mean(np.array(batch_cz_loss), axis=1)
         batch_eg_loss = (eg_loss, eg_x_loss, eg_z_loss, eg_mse)
+        output = self._format_losses([batch_cx_loss, batch_cz_loss, batch_eg_loss])
 
-        return self.get_output(batch_cx_loss, batch_cz_loss, batch_eg_loss)
+        return output
 
     def fit(self, X, **kwargs):
         """Fit the TadGAN.
@@ -287,32 +295,32 @@ class TadGAN(tf.keras.Model):
             X (ndarray):
                 N-dimensional array containing the input training sequences for the model.
         """
-        # if self.validation_split > 0:
-        #     valid_length = round(len(X) * self.validation_split)
-        #     train = X[:-valid_length].copy()
-        #     valid = X[-valid_length:].copy()
-        #
-        #     valid = valid.astype(np.float)
-        #     valid = tf.data.Dataset.from_tensor_slices(valid).shuffle(valid.shape[0])
-        #     valid = valid.batch(self.batch_size, drop_remainder=True)
-        #
-        #     callbacks = [
-        #         callback['class'](**callback.get('args', dict()))
-        #         for callback in self.callbacks
-        #     ]
-        #
-        # else:
-        train = X.copy()
-        valid = None
-        callbacks = None
+        if self.validation_ratio > 0:
+            valid_length = round(len(X) * self.validation_ratio)
+            train = X[:-valid_length].copy()
+            valid = X[-valid_length:].copy()
+
+            valid = valid.astype(np.float32)
+            valid = tf.data.Dataset.from_tensor_slices(valid).shuffle(valid.shape[0])
+            valid = valid.batch(self.batch_size, drop_remainder=True)
+
+            callbacks = [
+                callback['class'](**callback.get('args', dict()))
+                for callback in self.callbacks
+            ]
+
+        else:
+            train = X.copy()
+            valid = None
+            callbacks = None
 
         train = train.astype(np.float32)
         train = tf.data.Dataset.from_tensor_slices(train).shuffle(train.shape[0])
         train = train.batch(self.batch_size, drop_remainder=True)
 
-        super().fit(train, validation_data=valid, epochs=self.epochs, verbose=True,
+        super().fit(train, validation_data=valid, epochs=self.epochs, verbose=self.verbose,
                     callbacks=callbacks, batch_size=self.batch_size,
-                    shuffle=True, **kwargs)
+                    shuffle=self.shuffle, **kwargs)
 
     def predict(self, X):
         """Predict values using the initialized object.
