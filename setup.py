@@ -15,7 +15,6 @@ try:
 except IOError:
     history = ''
 
-
 install_requires = [
     's3fs>=0.2.2,<0.5',
     'mlblocks>=0.4.0,<0.5',
