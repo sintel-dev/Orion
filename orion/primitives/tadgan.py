@@ -13,7 +13,7 @@ from scipy import stats
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model, Sequential
-from tensorflow.python.keras.losses import mean_squared_error
+from tensorflow.keras.losses import MeanSquaredError
 
 from orion.primitives.timeseries_errors import reconstruction_errors
 
@@ -91,7 +91,8 @@ class TadGAN(Model):
 
         # Calculated model hyperparameters
         self.encoder_input_shape = hyperparameters.get('encoder_input_shape', self.shape)
-        self.generator_input_shape = hyperparameters.get('generator_input_shape', self.latent_shape)
+        self.generator_input_shape = hyperparameters.get('generator_input_shape',
+                                                         self.latent_shape)
         self.critic_x_input_shape = hyperparameters.get('critic_x_input_shape', self.target_shape)
         self.critic_z_input_shape = hyperparameters.get('critic_z_input_shape', self.latent_shape)
 
@@ -122,6 +123,7 @@ class TadGAN(Model):
         self.callbacks = callbacks
         self.verbose = verbose
         self.detailed_losses = detailed_losses
+        self.fit_history = None
 
         self.compile()
 
@@ -135,7 +137,7 @@ class TadGAN(Model):
 
     def __getstate__(self):
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
-        modules = ['optimizer', 'critic_x_model', 'critic_z_model', 'encoder_generator_model']
+        modules = ['optimizer']
 
         state = self.__dict__.copy()
 
@@ -264,7 +266,7 @@ class TadGAN(Model):
             # Encoder Generator Loss
             eg_x_loss = self._wasserstein_loss(valid, cx_fake)
             eg_z_loss = self._wasserstein_loss(valid, cz_fake)
-            eg_mse = mean_squared_error(x, x_rec_)
+            eg_mse = MeanSquaredError()(x, x_rec_)
             eg_loss = eg_x_loss + eg_z_loss + 10 * eg_mse
 
         # Get the gradients for the encoder/generator
@@ -314,7 +316,7 @@ class TadGAN(Model):
         x_rec_ = self.generator(z_)
         eg_x_loss = self._wasserstein_loss(valid, cx_fake)
         eg_z_loss = self._wasserstein_loss(valid, cz_fake)
-        eg_mse = mean_squared_error(x, x_rec_)
+        eg_mse = MeanSquaredError()(x, x_rec_)
         eg_loss = eg_x_loss + eg_z_loss + 10 * eg_mse
 
         batch_loss = [
@@ -376,9 +378,9 @@ class TadGAN(Model):
 
         train = tf.data.Dataset.from_tensor_slices(train).shuffle(train[0].shape[0])
         train = train.batch(self.batch_size, drop_remainder=True)
-        super().fit(train, validation_data=valid, epochs=self.epochs, verbose=self.verbose,
-                    callbacks=callbacks, batch_size=self.batch_size, shuffle=self.shuffle,
-                    **kwargs)
+        self.fit_history = super().fit(train, validation_data=valid, epochs=self.epochs,
+                                       verbose=self.verbose, callbacks=callbacks,
+                                       batch_size=self.batch_size, shuffle=self.shuffle, **kwargs)
 
     def predict(self, X: np.ndarray, y: Optional[np.ndarray] = None) -> tuple:
         """Predict using TadGAN model.
