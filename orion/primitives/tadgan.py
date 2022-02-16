@@ -72,8 +72,8 @@ class TadGAN(Model):
                  layers_critic_z: list, optimizer: str, input_shape: tuple = (100, 1),
                  latent_shape: Optional[tuple] = None, target_shape: Optional[tuple] = None,
                  latent_dim: int = 20, learning_rate: float = 0.0005, epochs: int = 2000,
-                 batch_size: int = 64, iterations_critic: int = 5,
-                 shuffle: bool = True, callbacks: tuple = tuple(), validation_ratio: float = 0.2,
+                 batch_size: int = 64, iterations_critic: int = 5, shuffle: bool = True,
+                 callbacks: tuple = tuple(), validation_ratio: float = 0.2,
                  detailed_losses: bool = True, verbose: Union[int, bool] = True,
                  **hyperparameters):
         """Initialize the TadGAN model."""
@@ -90,14 +90,14 @@ class TadGAN(Model):
         self.target_shape = target_shape if target_shape else input_shape
 
         # Calculated model hyperparameters
-        self.encoder_input_shape = self.shape
-        self.generator_input_shape = self.latent_shape
-        self.critic_x_input_shape = self.target_shape
-        self.critic_z_input_shape = self.latent_shape
+        self.encoder_input_shape = hyperparameters.get('encoder_input_shape', self.shape)
+        self.generator_input_shape = hyperparameters.get('generator_input_shape', self.latent_shape)
+        self.critic_x_input_shape = hyperparameters.get('critic_x_input_shape', self.target_shape)
+        self.critic_z_input_shape = hyperparameters.get('critic_z_input_shape', self.latent_shape)
 
-        hyperparameters.setdefault('generator_reshape_dim', self.shape[0] // 2)
-        hyperparameters.setdefault('generator_reshape_shape', (self.shape[0] // 2, 1))
-        hyperparameters.setdefault('encoder_reshape_shape', self.latent_shape)
+        self._setdefault(hyperparameters, 'generator_reshape_dim', self.shape[0] // 2)
+        self._setdefault(hyperparameters, 'generator_reshape_shape', (self.shape[0] // 2, 1))
+        self._setdefault(hyperparameters, 'encoder_reshape_shape', self.latent_shape)
         self.hyperparameters = hyperparameters
 
         self.encoder = self._build_model(
@@ -127,6 +127,11 @@ class TadGAN(Model):
 
     def compile(self, **kwargs):
         super(TadGAN, self).compile(**kwargs)
+
+    @classmethod
+    def _setdefault(cls, kwargs, key, value):
+        if kwargs.get(key) is None:
+            kwargs[key] = value
 
     def __getstate__(self):
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
@@ -192,12 +197,10 @@ class TadGAN(Model):
         return K.mean(gradient_penalty)
 
     def call(self, data, training=None, mask=None):
-
-        print(data, type(data))
-
-        z_ = self.encoder(X)
+        x, target = data
+        z_ = self.encoder(x)
         y_hat = self.generator(z_)
-        critic = self.critic_x(y)
+        critic = self.critic_x(target)
         return y_hat, critic
 
     def train_step(self, data) -> dict:
