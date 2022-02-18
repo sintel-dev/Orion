@@ -7,7 +7,7 @@ score anomalies
 
 **description**: this primitive computes an array of anomaly scores based on a combination of reconstruction error and critic output.
 
-see `json <https://github.com/signals-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.tadgan.score_anomalies.json>`__.
+see `json <https://github.com/sintel-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.tadgan.score_anomalies.json>`__.
 
 ========================== =================== =================================================================================================
 argument                    type                description  

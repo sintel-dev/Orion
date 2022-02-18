@@ -18,7 +18,7 @@ Pipeline Representation
 -----------------------
 
 As previously mentioned, a pipeline is composed of a sequence of :ref:`primitives`. In Orion, we store pipelines as annotated **JSON** files.
-Let's view the structure of a pipeline JSON for anomaly detection in `orion/pipelines <https://github.com/signals-dev/Orion/tree/master/orion/pipelines>`__. For example let's consider the `ARIMA <https://github.com/signals-dev/Orion/blob/master/orion/pipelines/verified/arima/arima.json>`__ pipeline. There are four main categories defined in the JSON:
+Let's view the structure of a pipeline JSON for anomaly detection in `orion/pipelines <https://github.com/sintel-dev/Orion/tree/master/orion/pipelines>`__. For example let's consider the `ARIMA <https://github.com/sintel-dev/Orion/blob/master/orion/pipelines/verified/arima/arima.json>`__ pipeline. There are four main categories defined in the JSON:
 
 .. code-block:: python
 

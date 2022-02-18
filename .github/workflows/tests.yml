@@ -10,12 +10,30 @@ on:
     branches: [ master ]
 
 jobs:
-  devel:
+  lint:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         python-version: [3.6, 3.7]
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-10.15, windows-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install package
+      run: pip install invoke .[dev]
+    - name: invoke lint
+      run: invoke lint
+
+
+  docs:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7]
+        os: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
@@ -24,8 +42,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install package
       run: pip install .[dev]
-    - name: make test-devel
-      run: make test-devel
+    - name: make docs
+      run: make docs
 
 
   readme:
@@ -33,7 +51,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7]
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-10.15]
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
@@ -41,9 +59,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install package and dependencies
-      run: pip install rundoc .
-    - name: make test-readme
-      run: make test-readme
+      run: pip install invoke rundoc .
+    - name: invoke readme
+      run: invoke readme
 
 
   unit:
@@ -51,7 +69,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7]
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-10.15, windows-latest]
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
@@ -59,6 +77,42 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install package and dependencies
-      run: pip install .[test]
-    - name: make test
-      run: make test
+      run: pip install invoke .[test]
+    - name: invoke pytest
+      run: invoke pytest
+
+
+  minimum:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7]
+        os: [ubuntu-latest, macos-10.15]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install package and dependencies
+      run: pip install invoke .[test]
+    - name: invoke minimum
+      run: invoke minimum
+
+
+  tutorials:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7]
+        os: [ubuntu-latest, macos-10.15, windows-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install package and dependencies
+      run: pip install invoke jupyter matplotlib .
+    - name: invoke tutorials
+      run: invoke tutorials

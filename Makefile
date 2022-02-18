@@ -81,11 +81,24 @@ install-test: clean-build clean-pyc ## install the package and test dependencies
 install-develop: clean-build clean-pyc ## install the package in editable mode and dependencies for development
 	pip install -e .[dev]
 
+MINIMUM := $(shell sed -n '/install_requires = \[/,/]/p' setup.py | grep -v -e '[][]' | sed 's/ *\(.*\),$?$$/\1/g' | tr '>' '=')
+
+.PHONY: install-minimum
+install-minimum: ## install the minimum supported versions of the package dependencies
+	pip install $(MINIMUM)
+
+.PHONY: check-dependencies
+check-dependencies: ## test if there are any broken dependencies
+	pip check
 
 # LINT TARGETS
 
 .PHONY: lint
 lint: ## check style with flake8 and isort
+	invoke lint
+
+.PHONY: lint-orion
+lint-orion: ## check style with flake8 and isort
 	flake8 orion tests
 	isort -c --recursive orion tests
 
@@ -102,18 +115,27 @@ fix-lint: ## fix lint issues using autoflake, autopep8, and isort
 
 # TEST TARGETS
 
+.PHONY: test-unit
+test-unit: ## run tests quickly with the default Python
+	invoke pytest
+
+.PHONY: test-readme
+test-readme: ## run the readme snippets
+	invoke readme
+
+.PHONY: test-tutorials
+test-tutorials: ## run the tutorial notebooks
+	invoke tutorials
+
 .PHONY: test
-test: ## run tests quickly with the default Python
-	python -m pytest tests --cov=orion
+test: test-unit test-readme test-tutorials ## test everything that needs test dependencies
+
+.PHONY: test-minimum
+test-minimum: install-minimum check-dependencies test ## run tests using the minimum supported dependencies
 
 .PHONY: test-all
 test-all: ## run tests on every Python version with tox
 	tox -r
-
-.PHONY: test-readme
-test-readme: ## run the readme snippets
-	rundoc run --single-session python3 -t python3 README.md
-	rundoc run --single-session python3 -t python3 orion/evaluation/README.md
 
 .PHONY: coverage
 coverage: ## check code coverage quickly with the default Python
@@ -121,14 +143,6 @@ coverage: ## check code coverage quickly with the default Python
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
-
-
-.PHONY: check-dependencies
-check-dependencies: ## test if there are any broken dependencies
-	pip check
-
-.PHONY: test-devel
-test-devel: check-dependencies lint docs ## test everything that needs development dependencies
 
 
 # DOCS TARGETS
@@ -274,7 +288,7 @@ docker-jupyter-load: ## Load the orion-jupyter image from orion-jupyter.tar
 docker-jupyter-run: ## Run the orion-jupyter image in editable mode
 	docker run --rm \
 		-v $(shell pwd)/orion:/app/orion \
-		-v $(shell pwd)/notebooks:/app/notebooks \
+		-v $(shell pwd)/tutorials:/app/tutorials \
 		-ti -p8888:8888 --name orion-jupyter orion-jupyter
 
 .PHONY: docker-jupyter-start

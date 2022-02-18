@@ -7,7 +7,7 @@ LSTM AE
 
 **description**: this is a reconstruction model autoencoder using LSTM layers.
 
-see `json <https://github.com/signals-dev/Orion/blob/master/orion/primitives/jsons/keras.Sequential.LSTMSeq2Seq.json>`__.
+see `json <https://github.com/sintel-dev/Orion/blob/master/orion/primitives/jsons/keras.Sequential.LSTMSeq2Seq.json>`__.
 
 ====================== =================== ===========================================================================================================================================
 argument                type                description  

@@ -80,7 +80,7 @@ title = project + ' Documentation',
 copyright = '2018, MIT Data To AI Lab'
 author = 'MIT Data To AI Lab'
 description = 'Orion is a machine learning library built for anomaly detection.'
-user = 'signals-dev'
+user = 'sintel-dev'
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -135,7 +135,7 @@ html_context = {
 # }
 
 html_theme_options = {
-    "github_url": "https://github.com/signals-dev/Orion",
+    "github_url": "https://github.com/sintel-dev/Orion",
     "show_prev_next": True,
 }
 

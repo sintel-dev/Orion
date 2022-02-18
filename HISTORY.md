@@ -1,7 +1,17 @@
 History
 =======
 
+## 0.2.1 - 2022-02-18
+
+This version introduces improvements and more testing.
+
+### Issues resolved
+* Adjusting builds for TadGAN - [Issue #261](https://github.com/signals-dev/Orion/issues/261) by @sarahmish
+* Testing tutorials, dependencies, and OS - [Issue #251](https://github.com/signals-dev/Orion/issues/251) by @sarahmish
+
+
 ## 0.2.0 - 2021-10-11
+
 This version supports multivariate timeseries as input. In addition to minor improvements
 and maintenance.
 

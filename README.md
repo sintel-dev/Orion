@@ -9,16 +9,16 @@
 
 [![Development Status](https://img.shields.io/badge/Development%20Status-2%20--%20Pre--Alpha-yellow)](https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha)
 [![PyPi Shield](https://img.shields.io/pypi/v/orion-ml.svg)](https://pypi.python.org/pypi/orion-ml)
-[![Tests](https://github.com/signals-dev/Orion/workflows/Run%20Tests/badge.svg)](https://github.com/signals-dev/Orion/actions?query=workflow%3A%22Run+Tests%22+branch%3Amaster)
+[![Tests](https://github.com/sintel-dev/Orion/workflows/Run%20Tests/badge.svg)](https://github.com/sintel-dev/Orion/actions?query=workflow%3A%22Run+Tests%22+branch%3Amaster)
 [![Downloads](https://pepy.tech/badge/orion-ml)](https://pepy.tech/project/orion-ml)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/signals-dev/Orion/master?filepath=notebooks)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/sintel-dev/Orion/master?filepath=notebooks)
 
 # Orion
 
-* License: [MIT](https://github.com/signals-dev/Orion/blob/master/LICENSE)
+* License: [MIT](https://github.com/sintel-dev/Orion/blob/master/LICENSE)
 * Development Status: [Pre-Alpha](https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha)
-* Homepage: https://github.com/signals-dev/Orion
-* Documentation: https://signals-dev.github.io/Orion
+* Homepage: https://github.com/sintel-dev/Orion
+* Documentation: https://sintel-dev.github.io/Orion
 
 # Overview
 

@@ -48,8 +48,8 @@ def _run_pipeline(pipeline, train, test):
 
 def _build_events_df(events):
     events = pd.DataFrame(list(events), columns=['start', 'end', 'score'])
-    events['start'] = events['start'].astype(int)
-    events['end'] = events['end'].astype(int)
+    events['start'] = events['start'].astype('int64')
+    events['end'] = events['end'].astype('int64')
 
     return events
 
