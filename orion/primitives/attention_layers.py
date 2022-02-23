@@ -97,7 +97,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         matmul_qk = tf.matmul(q, k, transpose_b=True)  # (..., seq_len_q, seq_len_k)
 
         # scale matmul_qk
-        dk = tf.cast(tf.shape(k)[-1], tf.float32)
+        dk = tf.cast(tf.shape(k)[-1], tf.float64)
         scaled_attention_logits = matmul_qk / tf.math.sqrt(dk)
 
         # Add the mask to the scaled tensor.
@@ -135,7 +135,7 @@ class PositionalEncoding(tf.keras.layers.Layer):
 
     def call(self, x, training=True):
         seq_len = tf.shape(x)[1]
-        x *= tf.math.sqrt(tf.cast(self.d_model, tf.float32))
+        x *= tf.math.sqrt(tf.cast(self.d_model, tf.float64))
         x += self.pos_encoding[:, :seq_len, :]
         x = self.dropout(x, training=training)
         return x
@@ -152,7 +152,7 @@ class PositionalEncoding(tf.keras.layers.Layer):
             positional encoding with shape (n, d)
         """
         i = np.arange(d_model)[np.newaxis, :]
-        angle_rates = 1 / np.power(10000, (2 * (i // 2)) / np.float32(d_model))
+        angle_rates = 1 / np.power(10000, (2 * (i // 2)) / np.float64(d_model))
         angle_rads = np.arange(position)[:, np.newaxis] * angle_rates
 
         # Apply sin to even indices in the array; 2i.
@@ -163,7 +163,7 @@ class PositionalEncoding(tf.keras.layers.Layer):
 
         pos_encoding = angle_rads[np.newaxis, ...]
 
-        return tf.cast(pos_encoding, dtype=tf.float32)
+        return tf.cast(pos_encoding, dtype=tf.float64)
 
     def get_config(self):
         config = super().get_config().copy()
