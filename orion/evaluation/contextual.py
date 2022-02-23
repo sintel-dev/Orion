@@ -227,3 +227,11 @@ def contextual_f1_score(expected, observed, data=None, start=None, end=None, wei
     def _cm(x, y, z, w, f):
         return contextual_confusion_matrix(x, y, z, w, f, weighted)
     return _f1_score(expected, observed, data, start, end, _cm)
+
+
+def record_expected(expected, observed, data=None, start=None, end=None, weighted=True):
+    return expected.values.tolist()
+
+
+def record_observed(expected, observed, data=None, start=None, end=None, weighted=True):
+    return observed.values.tolist()

@@ -12,6 +12,7 @@ from copy import deepcopy
 from datetime import datetime
 from functools import partial
 from pathlib import Path
+import tensorflow as tf
 
 import numpy as np
 import pandas as pd
@@ -36,10 +37,23 @@ BENCHMARK_PATH = os.path.join(os.path.join(
     'benchmark'
 )
 
-BENCHMARK_DATA = pd.read_csv(S3_URL.format(
-    BUCKET, 'datasets.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
-BENCHMARK_PARAMS = pd.read_csv(S3_URL.format(
-    BUCKET, 'parameters.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
+# BENCHMARK_DATA = pd.read_csv(S3_URL.format(
+#     BUCKET, 'datasets.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
+# BENCHMARK_PARAMS = pd.read_csv(S3_URL.format(
+#     BUCKET, 'parameters.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
+
+DATA_DIRECTORY = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data'))
+
+BENCHMARK_DATA = \
+pd.read_csv(os.path.join(DATA_DIRECTORY, 'datasets.csv'), index_col=0, header=None).applymap(
+    ast.literal_eval).to_dict()[1]
+BENCHMARK_DATA['MULTIVARIATE_SMAP'] = tuple(f'multivariate_{signal}' for signal in
+                                       BENCHMARK_DATA['SMAP'])
+BENCHMARK_DATA['MULTIVARIATE_MSL'] = tuple(f'multivariate_{signal}' for signal in BENCHMARK_DATA['MSL'])
+
+BENCHMARK_PARAMS = pd.read_csv(os.path.join(DATA_DIRECTORY, 'parameters.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
+BENCHMARK_PARAMS['MULTIVARIATE_SMAP'] = BENCHMARK_PARAMS['SMAP']
+BENCHMARK_PARAMS['MULTIVARIATE_MSL'] = BENCHMARK_PARAMS['MSL']
 
 PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
@@ -127,7 +141,7 @@ def _sort_leaderboard(df, rank, metrics):
 
 
 def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
-                     test_split=False, detrend=False, pipeline_path=None):
+                     test_split=False, detrend=False, pipeline_path=None, cache_path=None):
 
     train, test = _load_signal(signal, test_split)
     truth = load_anomalies(signal)
@@ -142,7 +156,8 @@ def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
 
         start = datetime.utcnow()
         pipeline = _load_pipeline(pipeline, hyperparameter)
-        anomalies = analyze(pipeline, train, test)
+        save_output = cache_path + '_log.pkl' if cache_path else cache_path
+        anomalies = analyze(pipeline, train, test, save_output=save_output)
         elapsed = datetime.utcnow() - start
 
         scores = {
@@ -192,6 +207,10 @@ def _run_job(args):
     LOGGER.info('Evaluating pipeline %s on signal %s dataset %s (test split: %s); iteration %s',
                 pipeline_name, signal, dataset, test_split, iteration)
 
+    cache_path = None
+    if cache_dir:
+        cache_path = str(cache_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}_{run_id}')
+
     output = _evaluate_signal(
         pipeline,
         signal,
@@ -199,7 +218,8 @@ def _run_job(args):
         metrics,
         test_split,
         detrend,
-        pipeline_path
+        pipeline_path,
+        cache_path,
     )
     scores = pd.DataFrame.from_records([output], columns=output.keys())
 
@@ -210,9 +230,10 @@ def _run_job(args):
     scores['run_id'] = run_id
 
     if cache_dir:
-        base_path = str(cache_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}_{run_id}')
-        scores.to_csv(base_path + '_scores.csv', index=False)
-
+        scores.to_csv(cache_path + '_scores.csv', index=False)
+    # if import tensorflow
+    # if 'tensorflow' in globals():
+    tf.keras.backend.clear_session()
     return scores
 
 

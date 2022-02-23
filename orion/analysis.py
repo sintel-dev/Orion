@@ -1,5 +1,6 @@
 import logging
 import os
+import pickle
 
 import pandas as pd
 from mlblocks import MLPipeline
@@ -35,12 +36,16 @@ def _load_pipeline(pipeline, hyperparams=None):
     return pipeline
 
 
-def _run_pipeline(pipeline, train, test):
+def _run_pipeline(pipeline, train, test, save_output):
     LOGGER.debug("Fitting the pipeline")
     pipeline.fit(train)
 
     LOGGER.debug("Finding events")
-    events = pipeline.predict(test)
+    output = pipeline.predict(test, output_=['default', 'model_info'])
+    if save_output:
+        with open(save_output, 'wb') as f:
+            pickle.dump(output, f)
+    events = output[0]
 
     LOGGER.debug("%s events found", len(events))
     return events
@@ -54,13 +59,13 @@ def _build_events_df(events):
     return events
 
 
-def analyze(pipeline, train, test=None, hyperparams=None):
+def analyze(pipeline, train, test=None, hyperparams=None, save_output=None):
     if test is None:
         test = train
 
     if not isinstance(pipeline, MLPipeline):
         pipeline = _load_pipeline(pipeline, hyperparams)
 
-    events = _run_pipeline(pipeline, train, test)
+    events = _run_pipeline(pipeline, train, test, save_output)
 
     return _build_events_df(events)
