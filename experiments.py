@@ -5,36 +5,46 @@ from orion.benchmark import benchmark, BENCHMARK_DATA, METRICS
 from orion.evaluation import contextual_confusion_matrix
 from orion.evaluation.contextual import record_observed, record_expected
 
-NOTEBOOKS_DIRECTORY = os.path.join(os.getcwd(), 'notebooks')
 
-pipelines = [
-    # 'arima'
-    'tadgan',
-    # 'tadgan_tensorflow',
-]
+def main(workers=1):
+    NOTEBOOKS_DIRECTORY = os.path.join(os.getcwd(), 'notebooks')
 
-# metrics
-del METRICS['accuracy']
-METRICS['confusion_matrix'] = contextual_confusion_matrix
-METRICS['observed'] = record_observed
-METRICS['expected'] = record_expected
-metrics = {k: partial(fun, weighted=False) for k, fun in METRICS.items()}
+    pipelines = {
+        # 'arima': 'arima',
+        # 'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu',
+        # 'azure': 'azure',
+        # 'tadgan': 'tadgan_gpu',
+        # 'tadgan': 'tadgan',
+        'tadgan': 'tadgan_encoder_downsample'
+    }
 
-# datasets = ['artificialWithAnomaly', 'realAdExchange', 'realAWSCloudwatch', 'realTraffic', 'realTweets', 'MSL', 'SMAP']
-# datasets = ['YAHOOA1', 'YAHOOA2', 'YAHOOA3', 'YAHOOA4']
-# datasets = ['MULTIVARIATE_SMAP', 'MULTIVARIATE_MSL']
-datasets = ['SMAP']
-datasets = {key: BENCHMARK_DATA[key] for key in datasets}
+    # metrics
+    del METRICS['accuracy']
+    METRICS['confusion_matrix'] = contextual_confusion_matrix
+    METRICS['observed'] = record_observed
+    METRICS['expected'] = record_expected
+    metrics = {k: partial(fun, weighted=False) for k, fun in METRICS.items()}
 
-EXPERIMENT_NAME = 'tadgan_tensorflow_2.0'
+    NAB = ['artificialWithAnomaly', 'realAdExchange', 'realAWSCloudwatch', 'realTraffic', 'realTweets']
+    YAHOO = ['YAHOOA1', 'YAHOOA2', 'YAHOOA3', 'YAHOOA4']
+    NASA = ['MSL', 'SMAP']
+    # MULTIVARIATE_NASA = ['MULTIVARIATE_SMAP', 'MULTIVARIATE_MSL']
+    # datasets = ['artificialWithAnomaly']
+    datasets = NAB + YAHOO + NASA
+    datasets = {key: BENCHMARK_DATA[key] for key in datasets}
 
-scores = benchmark(
-    pipelines=pipelines,
-    datasets=datasets,
-    metrics=metrics,
-    rank='f1',
-    show_progress=True,
-    workers=1,
-    cache_dir=os.path.join(NOTEBOOKS_DIRECTORY, EXPERIMENT_NAME, 'cache'),
-    # pipeline_dir=os.path.join(NOTEBOOKS_DIRECTORY, EXPERIMENT_NAME, 'pipeline'),
-)
+    EXPERIMENT_NAME = 'tadgan_tensorflow_2.0_encoder_downsample'
+    scores = benchmark(
+        pipelines=pipelines,
+        datasets=datasets,
+        metrics=metrics,
+        rank='f1',
+        show_progress=True,
+        workers=workers,
+        cache_dir=os.path.join(NOTEBOOKS_DIRECTORY, EXPERIMENT_NAME, 'cache'),
+        # pipeline_dir=os.path.join(NOTEBOOKS_DIRECTORY, EXPERIMENT_NAME, 'pipeline'),
+    )
+
+
+if __name__ == '__main__':
+    main()
