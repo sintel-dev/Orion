@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from multiprocessing import Pool
 import ast
 import concurrent
 import json
@@ -384,8 +384,8 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
         if workers in (0, 1):
             scores = map(_run_job, jobs)
         else:
-            pool = concurrent.futures.ProcessPoolExecutor(workers)
-            scores = pool.map(_run_job, jobs)
+            with Pool(processes=workers) as pool:
+                scores = pool.map(_run_job, jobs)
 
         scores = tqdm.tqdm(scores, total=len(jobs), file=TqdmLogger())
         if show_progress:
