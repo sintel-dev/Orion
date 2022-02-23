@@ -2,7 +2,8 @@
     "name": "orion.primitives.tadgan.TadGAN",
     "contributors": [
         "Alexander Geiger <geigera@mit.edu>",
-        "Dongyu Liu <dongyu@mit.edu>"
+        "Dongyu Liu <dongyu@mit.edu>",
+        "Lawrence Wong <lcwong@mit.edu>"
     ],
     "documentation": "",
     "description": "time series GAN for anomaly detection",
@@ -45,6 +46,10 @@
             {
                 "name": "critic",
                 "type": "ndarray"
+            },
+            {
+                "name": "fit_history",
+                "type": "dict"
             }
         ]
     },
@@ -82,7 +87,7 @@
             },
             "epochs": {
                 "type": "int",
-                "default": 2000
+                "default": 50
             },
             "batch_size": {
                 "type": "int",

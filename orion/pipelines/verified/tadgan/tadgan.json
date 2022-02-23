@@ -57,5 +57,27 @@
             "index": "X_index",
             "target_index": "y_index"
         }
+    },
+    "outputs": {
+        "default": [
+            {
+                "name": "events",
+                "variable": "orion.primitives.timeseries_anomalies.find_anomalies#1.y"
+            }
+        ],
+        "model_info": [
+            {
+                "name": "y_hat",
+                "variable": "orion.primitives.tadgan.TadGAN#1.y_hat"
+            },
+            {
+                "name": "critic",
+                "variable": "orion.primitives.tadgan.TadGAN#1.critic"
+            },
+            {
+                "name": "fit_history",
+                "variable": "orion.primitives.tadgan.TadGAN#1.fit_history"
+            }
+        ]
     }
 }
