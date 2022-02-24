@@ -13,8 +13,9 @@ from numpy import ndarray
 from scipy import stats
 from tensorflow.keras.layers import Input
 from tensorflow.keras.losses import MeanSquaredError
-from tensorflow.keras.models import Model, Sequential
+from tensorflow.keras import Model, Sequential
 
+from orion.primitives.attention_layers import CustomSchedule
 from orion.primitives.timeseries_errors import reconstruction_errors
 
 LOGGER = logging.getLogger(__name__)
@@ -132,7 +133,7 @@ class TadGAN(Model):
 
     def __getstate__(self):
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
-        modules = ['optimizer']
+        modules = ['critic_x_optimizer', 'critic_z_optimizer', 'encoder_generator_optimizer']
 
         state = self.__dict__.copy()
 
@@ -212,6 +213,8 @@ class TadGAN(Model):
         self.critic_x_optimizer = import_object(self.optimizer)(self.learning_rate)
         self.critic_z_optimizer = import_object(self.optimizer)(self.learning_rate)
         self.encoder_generator_optimizer = import_object(self.optimizer)(self.learning_rate)
+        # self.encoder_generator_optimizer = import_object(self.optimizer)(
+        #     CustomSchedule(self.shape[-1]), beta_1=0.9, beta_2=0.98, epsilon=1e-9)
 
         self.compile()
 
@@ -259,7 +262,6 @@ class TadGAN(Model):
         gradient_penalty = tf.reduce_mean((norm - 1.0) ** 2)
         return gradient_penalty
 
-    @tf.function
     def call(self, data: tuple, training=None, mask=None) -> tuple:
         X, y = data
         z_ = self.encoder(X)
@@ -449,7 +451,7 @@ class TadGAN(Model):
         y = X.copy() if y is None else y
         X, y = X.astype(np.float64), y.astype(np.float64)
         test_data = (X, y)
-        y_hat, critic = self.call(test_data)
+        y_hat, critic = self(test_data)
 
         return y_hat.numpy(), critic.numpy(), self.fit_history.history
 
