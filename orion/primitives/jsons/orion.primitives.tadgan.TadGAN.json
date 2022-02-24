@@ -63,6 +63,10 @@
                 "type": "str",
                 "default": "keras.optimizers.Adam"
             },
+            "enable_custom_optimizer": {
+                "type": "bool",
+                "default": false
+            },
             "input_shape": {
                 "type": "tuple",
                 "default": [

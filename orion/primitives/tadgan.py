@@ -100,6 +100,7 @@ class TadGAN(Model):
                  batch_size: int = 64, iterations_critic: int = 5, shuffle: bool = True,
                  callbacks: tuple = (), validation_ratio: float = 0.2,
                  detailed_losses: bool = True, verbose: Union[int, bool] = True,
+                 enable_custom_optimizer: bool = False,
                  **hyperparameters):
         """Initialize the TadGAN model."""
         super(TadGAN, self).__init__()
@@ -118,6 +119,7 @@ class TadGAN(Model):
         # Model training hyperparameters.
         self.learning_rate = learning_rate
         self.optimizer = optimizer
+        self.enable_custom_optimizer = enable_custom_optimizer
         self.epochs = epochs
         self.batch_size = batch_size
         self.iterations_critic = iterations_critic
@@ -129,11 +131,12 @@ class TadGAN(Model):
         self.verbose = verbose
         self.detailed_losses = detailed_losses
         self.fit_history = None
-        self._fitted = False
+        self.fitted = False
 
     def __getstate__(self):
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
-        modules = ['critic_x_optimizer', 'critic_z_optimizer', 'encoder_generator_optimizer']
+        modules = ['train_function', 'critic_x_optimizer', 'critic_z_optimizer',
+                   'encoder_generator_optimizer']
 
         state = self.__dict__.copy()
 
@@ -143,8 +146,8 @@ class TadGAN(Model):
         for network in networks:
             with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=False) as fd:
                 tf.keras.models.save_model(state.pop(network), fd.name, overwrite=True)
-
                 state[network + '_str'] = fd.read()
+        state = {k: v for k, v in state.items() if not k.startswith('_')}
 
         return state
 
@@ -212,11 +215,11 @@ class TadGAN(Model):
         # Optimizers
         self.critic_x_optimizer = import_object(self.optimizer)(self.learning_rate)
         self.critic_z_optimizer = import_object(self.optimizer)(self.learning_rate)
-        self.encoder_generator_optimizer = import_object(self.optimizer)(self.learning_rate)
-        # self.encoder_generator_optimizer = import_object(self.optimizer)(
-        #     CustomSchedule(self.shape[-1]), beta_1=0.9, beta_2=0.98, epsilon=1e-9)
-
-        self.compile()
+        if self.enable_custom_optimizer:
+            self.encoder_generator_optimizer = import_object(self.optimizer)(
+                CustomSchedule(self.shape[-1]), beta_1=0.9, beta_2=0.98, epsilon=1e-9)
+        else:
+            self.encoder_generator_optimizer = import_object(self.optimizer)(self.learning_rate)
 
     def _format_losses(self, losses: list) -> dict:
         loss_names = [
@@ -404,10 +407,11 @@ class TadGAN(Model):
         # Infer dimensions and compile model.
         y = X.copy() if y is None else y
         X, y = X.astype(np.float64), y.astype(np.float64)
-        if not self._fitted:
+        if not self.fitted:
             kwargs = self._augment_hyperparameters(X, y, **kwargs)
             self._set_shapes()
             self._build_tadgan(**kwargs)
+            self.compile()
 
         # Build train and validation dataset.
         train_data = (X, y)
@@ -431,8 +435,8 @@ class TadGAN(Model):
         # Fit the model using TensorFlow's fit function.
         self.fit_history = super().fit(train_data, validation_data=valid, epochs=self.epochs,
                                        verbose=self.verbose, callbacks=callbacks,
-                                       batch_size=self.batch_size, shuffle=self.shuffle,)
-        self._fitted = True
+                                       batch_size=self.batch_size, shuffle=self.shuffle)
+        self.fitted = True
 
     def predict(self, X: ndarray, y: Optional[ndarray] = None) -> tuple:
         """Predict using TadGAN model.
