@@ -67,12 +67,20 @@
         ],
         "model_info": [
             {
+                "name": "y_true",
+                "variable": "orion.primitives.tadgan.TadGAN#1.y_true"
+            },
+            {
                 "name": "y_hat",
                 "variable": "orion.primitives.tadgan.TadGAN#1.y_hat"
             },
             {
                 "name": "critic",
                 "variable": "orion.primitives.tadgan.TadGAN#1.critic"
+            },
+            {
+                "name": "index",
+                "variable": "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1.index"
             },
             {
                 "name": "fit_history",

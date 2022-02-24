@@ -453,7 +453,7 @@ class TadGAN(Model):
         test_data = (X, y)
         y_hat, critic = self(test_data)
 
-        return y_hat.numpy(), critic.numpy(), self.fit_history.history
+        return y_hat.numpy(), critic.numpy(), y, self.fit_history.history
 
 
 def _compute_critic_score(critics: ndarray, smooth_window: int):

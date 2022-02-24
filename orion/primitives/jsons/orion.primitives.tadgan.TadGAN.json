@@ -48,6 +48,10 @@
                 "type": "ndarray"
             },
             {
+                "name": "y_true",
+                "type": "ndarray"
+            },
+            {
                 "name": "fit_history",
                 "type": "dict"
             }
