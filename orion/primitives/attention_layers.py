@@ -7,7 +7,6 @@ https://www.tensorflow.org/text/tutorials/transformer
 
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras
 from tensorflow.keras import backend as K
 
 
@@ -17,6 +16,22 @@ def point_wise_feed_forward_network(d_model: int, dff: int):
         tf.keras.layers.Dense(dff, activation='relu'),  # (batch_size, seq_len, dff)
         tf.keras.layers.Dense(d_model)  # (batch_size, seq_len, d_model)
     ])
+
+
+class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
+    def __init__(self, d_model, warmup_steps=4000):
+        super(CustomSchedule, self).__init__()
+
+        self.d_model = d_model
+        self.d_model = tf.cast(self.d_model, tf.float64)
+
+        self.warmup_steps = warmup_steps
+
+    def __call__(self, step):
+        arg1 = tf.math.rsqrt(step)
+        arg2 = step * (self.warmup_steps ** -1.5)
+
+        return tf.math.rsqrt(self.d_model) * tf.math.minimum(arg1, arg2)
 
 
 class MultiHeadAttention(tf.keras.layers.Layer):
