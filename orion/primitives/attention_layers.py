@@ -8,6 +8,7 @@ https://www.tensorflow.org/text/tutorials/transformer
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import backend as K
+tf.keras.backend.set_floatx('float64')
 
 
 def point_wise_feed_forward_network(d_model: int, dff: int):
@@ -238,19 +239,19 @@ class Encoder(tf.keras.layers.Layer):
     The output of this summation is the input to the encoder layers.
     The output of the encoder is the input to the decoder."""
 
-    def __init__(self, num_layers: int, d_model: int, num_heads: int, dff: int,
+    def __init__(self, num_layers: int, d_model: int, num_heads: int, dff: int = None,
                  maximum_position_encoding: int = 10000, rate: float = 0.1, **kwargs):
         super(Encoder, self).__init__()
 
         self.d_model = d_model
         self.num_layers = num_layers
         self.num_heads = num_heads
-        self.dff = dff
+        self.dff = d_model * 4 if dff is None else dff
         self.maximum_position_encoding = maximum_position_encoding
         self.rate = rate
 
         self.pos_encoding = PositionalEncoding(self.d_model, self.maximum_position_encoding, rate)
-        self.enc_layers = [EncoderLayer(d_model, num_heads, dff, rate) for _ in range(num_layers)]
+        self.enc_layers = [EncoderLayer(d_model, num_heads, self.dff, rate) for _ in range(num_layers)]
 
         self.dropout = tf.keras.layers.Dropout(rate)
 
@@ -332,7 +333,7 @@ class Decoder(tf.keras.layers.Layer):
     """The target is put through an embedding which is summed with the positional encoding. The output of this
     summation is the input to the decoder layers. The output of the decoder is the input to the final linear layer."""
 
-    def __init__(self, num_layers: int, d_model: int, num_heads: int, dff: int,
+    def __init__(self, num_layers: int, d_model: int, num_heads: int, dff: int = None,
                  maximum_position_encoding: int = 10000, rate: float = 0.1, **kwargs):
         super(Decoder, self).__init__()
 
@@ -340,11 +341,12 @@ class Decoder(tf.keras.layers.Layer):
         self.num_layers = num_layers
         self.maximum_position_encoding = maximum_position_encoding
         self.rate = rate
+        self.dff = d_model * 4 if dff is None else dff
 
         self.pos_encoding = PositionalEncoding(self.d_model, self.maximum_position_encoding,
                                                self.rate)
 
-        self.dec_layers = [DecoderLayer(d_model, num_heads, dff, rate) for _ in range(num_layers)]
+        self.dec_layers = [DecoderLayer(d_model, num_heads, self.dff, rate) for _ in range(num_layers)]
         self.dropout = tf.keras.layers.Dropout(rate)
 
     def call(self, x, enc_output, look_ahead_mask, training=True, mask=None):
@@ -377,19 +379,19 @@ class Transformer(tf.keras.layers.Layer):
     """Transformer consists of the encoder, decoder and a final linear layer. The output of the decoder is the
     input to the linear layer and its output is returned."""
 
-    def __init__(self, num_layers: int, d_model: int, num_heads: int, dff: int,
+    def __init__(self, num_layers: int, d_model: int, num_heads: int, dff: int = None,
                  maximum_position_encoding: int = 10000, rate: float = 0.1):
         super().__init__()
         self.num_layers = num_layers
         self.d_model = d_model
         self.num_heads = num_heads
-        self.dff = dff
+        self.dff = d_model * 4 if dff is None else dff
         self.maximum_position_encoding = maximum_position_encoding
         self.rate = rate
 
-        self.encoder = Encoder(num_layers, d_model, num_heads, dff, maximum_position_encoding,
+        self.encoder = Encoder(num_layers, d_model, num_heads, self.dff, maximum_position_encoding,
                                rate)
-        self.decoder = Decoder(num_layers, d_model, num_heads, dff, maximum_position_encoding,
+        self.decoder = Decoder(num_layers, d_model, num_heads, self.dff, maximum_position_encoding,
                                rate)
 
     def call(self, x, training=True):
@@ -398,9 +400,9 @@ class Transformer(tf.keras.layers.Layer):
 
         # dec_output.shape == (batch_size, tar_seq_len, d_model)
         seq_len = tf.shape(x)[1]
-        look_ahead_mask = 1 - tf.linalg.band_part(tf.ones((seq_len, seq_len)), -1, 0)
+        look_ahead_mask = tf.cast(1 - tf.linalg.band_part(tf.ones((seq_len, seq_len)), -1, 0),
+                                  tf.float64)
         dec_output, attention_weights = self.decoder(x, enc_output, look_ahead_mask, training)
-
         return dec_output
 
     def get_config(self):
