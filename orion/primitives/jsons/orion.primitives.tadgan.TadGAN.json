@@ -59,6 +59,18 @@
     },
     "hyperparameters": {
         "fixed": {
+            "num_layers": {
+                "type": "int",
+                "default": 1
+            },
+            "d_model": {
+                "type": "int",
+                "default": 1
+            },
+            "num_heads": {
+                "type": "int",
+                "default": 1
+            },
             "optimizer": {
                 "type": "str",
                 "default": "keras.optimizers.Adam"
@@ -69,10 +81,7 @@
             },
             "input_shape": {
                 "type": "tuple",
-                "default": [
-                    100,
-                    1
-                ]
+                "default": null
             },
             "latent_shape": {
                 "type": "tuple",
@@ -80,10 +89,7 @@
             },
             "target_shape": {
                 "type": "tuple",
-                "default": [
-                    100,
-                    1
-                ]
+                "default": null
             },
             "latent_dim": {
                 "type": "int",
@@ -120,34 +126,6 @@
             "verbose": {
                 "type": "bool",
                 "default": true
-            },
-            "encoder_input_shape": {
-                "type": "tuple",
-                "default": [
-                    100,
-                    1
-                ]
-            },
-            "generator_input_shape": {
-                "type": "tuple",
-                "default": [
-                    20,
-                    1
-                ]
-            },
-            "critic_x_input_shape": {
-                "type": "tuple",
-                "default": [
-                    100,
-                    1
-                ]
-            },
-            "critic_z_input_shape": {
-                "type": "tuple",
-                "default": [
-                    20,
-                    1
-                ]
             },
             "encoder_reshape_shape": {
                 "type": "tuple",
