@@ -94,7 +94,7 @@ class TadGAN(Model):
     """
 
     def __init__(self, layers_encoder: list, layers_generator: list, layers_critic_x: list,
-                 layers_critic_z: list, optimizer: str, input_shape: tuple = (100, 1),
+                 layers_critic_z: list, optimizer: str, input_shape: Optional[tuple] = None,
                  latent_shape: Optional[tuple] = None, target_shape: Optional[tuple] = None,
                  latent_dim: int = 20, learning_rate: float = 0.005, epochs: int = 2000,
                  batch_size: int = 64, iterations_critic: int = 5, shuffle: bool = True,
@@ -112,8 +112,8 @@ class TadGAN(Model):
         # Optional model hyperparameters.
         self.shape = input_shape
         self.latent_dim = latent_dim
-        self.latent_shape = latent_shape if latent_shape else (latent_dim, 1)
-        self.target_shape = target_shape if target_shape else input_shape
+        self.latent_shape = latent_shape or (self.latent_dim, 1)
+        self.target_shape = target_shape
         self.hyperparameters = hyperparameters
 
         # Model training hyperparameters.
