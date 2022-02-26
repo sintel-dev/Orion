@@ -35,21 +35,7 @@
             "enable_custom_optimizer": true,
             "layers_encoder": [
                 {
-                    "class": "orion.primitives.attention_layers.Encoder",
-                    "parameters": {
-                        "num_layers": "num_layers",
-                        "d_model": "d_model",
-                        "num_heads": "num_heads"
-                    }
-                },
-                {
-                    "class": "tensorflow.keras.layers.AvgPool1D",
-                    "parameters": {
-                        "strides": 2
-                    }
-                },
-                {
-                    "class": "orion.primitives.attention_layers.Encoder",
+                    "class": "orion.primitives.attention_layers.Transformer",
                     "parameters": {
                         "num_layers": "num_layers",
                         "d_model": "d_model",
@@ -93,7 +79,7 @@
                 {
                     "class": "orion.primitives.attention_layers.Encoder",
                     "parameters": {
-                        "num_layers": "num_layers",
+                        "num_layers": 1,
                         "d_model": 1,
                         "num_heads": 1
                     }

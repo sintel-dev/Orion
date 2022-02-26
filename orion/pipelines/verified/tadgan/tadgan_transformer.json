@@ -31,25 +31,11 @@
             "axis": 2
         },
         "orion.primitives.tadgan.TadGAN#1": {
-            "epochs": 35,
-            "enable_custom_optimizer": true,
+            "epochs": 1,
+            "enable_custom_optimizer": false,
             "layers_encoder": [
                 {
-                    "class": "orion.primitives.attention_layers.Encoder",
-                    "parameters": {
-                        "num_layers": "num_layers",
-                        "d_model": "d_model",
-                        "num_heads": "num_heads"
-                    }
-                },
-                {
-                    "class": "tensorflow.keras.layers.AvgPool1D",
-                    "parameters": {
-                        "strides": 2
-                    }
-                },
-                {
-                    "class": "orion.primitives.attention_layers.Encoder",
+                    "class": "orion.primitives.attention_layers.Transformer",
                     "parameters": {
                         "num_layers": "num_layers",
                         "d_model": "d_model",

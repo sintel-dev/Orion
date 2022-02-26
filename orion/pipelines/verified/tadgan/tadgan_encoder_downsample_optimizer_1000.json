@@ -33,22 +33,13 @@
         "orion.primitives.tadgan.TadGAN#1": {
             "epochs": 35,
             "enable_custom_optimizer": true,
-            "input_shape": [
-                1000,
-                1
-            ],
-            "target_shape": [
-                1000,
-                1
-            ],
             "layers_encoder": [
                 {
                     "class": "orion.primitives.attention_layers.Encoder",
                     "parameters": {
-                        "num_layers": 1,
-                        "d_model": 1,
-                        "num_heads": 1,
-                        "dff": 4
+                        "num_layers": "num_layers",
+                        "d_model": "d_model",
+                        "num_heads": "num_heads"
                     }
                 },
                 {
@@ -60,10 +51,9 @@
                 {
                     "class": "orion.primitives.attention_layers.Encoder",
                     "parameters": {
-                        "num_layers": 1,
-                        "d_model": 1,
-                        "num_heads": 1,
-                        "dff": 4
+                        "num_layers": "num_layers",
+                        "d_model": "d_model",
+                        "num_heads": "num_heads"
                     }
                 },
                 {
@@ -103,10 +93,9 @@
                 {
                     "class": "orion.primitives.attention_layers.Encoder",
                     "parameters": {
-                        "num_layers": 1,
+                        "num_layers": "num_layers",
                         "d_model": 1,
-                        "num_heads": 1,
-                        "dff": 4
+                        "num_heads": 1
                     }
                 },
                 {
@@ -118,10 +107,9 @@
                 {
                     "class": "orion.primitives.attention_layers.Encoder",
                     "parameters": {
-                        "num_layers": 1,
+                        "num_layers": "num_layers",
                         "d_model": 1,
-                        "num_heads": 1,
-                        "dff": 4
+                        "num_heads": 1
                     }
                 },
                 {

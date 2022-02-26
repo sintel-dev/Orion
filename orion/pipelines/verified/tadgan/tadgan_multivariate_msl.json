@@ -6,7 +6,8 @@
     },
     "orion.primitives.tadgan.TadGAN#1": {
         "epochs": 70,
-        "input_shape": [100, 55]
+        "d_model": 55,
+        "num_heads": 5
     },
     "orion.primitives.tadgan.score_anomalies#1": {
         "rec_error_type": "dtw",
