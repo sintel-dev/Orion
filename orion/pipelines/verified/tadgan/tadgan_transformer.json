@@ -31,7 +31,7 @@
             "axis": 2
         },
         "orion.primitives.tadgan.TadGAN#1": {
-            "epochs": 1,
+            "epochs": 35,
             "enable_custom_optimizer": false,
             "layers_encoder": [
                 {
