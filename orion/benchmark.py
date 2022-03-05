@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from multiprocessing import Pool
 import ast
-import concurrent
 import json
 import logging
 import os
@@ -11,11 +9,12 @@ import warnings
 from copy import deepcopy
 from datetime import datetime
 from functools import partial
+from multiprocessing import Pool
 from pathlib import Path
-import tensorflow as tf
 
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 import tqdm
 from scipy import signal as scipy_signal
 
@@ -43,17 +42,10 @@ BENCHMARK_PATH = os.path.join(os.path.join(
 #     BUCKET, 'parameters.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
 
 DATA_DIRECTORY = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data'))
-
-BENCHMARK_DATA = \
-pd.read_csv(os.path.join(DATA_DIRECTORY, 'datasets.csv'), index_col=0, header=None).applymap(
-    ast.literal_eval).to_dict()[1]
-BENCHMARK_DATA['MULTIVARIATE_SMAP'] = tuple(f'multivariate_{signal}' for signal in
-                                       BENCHMARK_DATA['SMAP'])
-BENCHMARK_DATA['MULTIVARIATE_MSL'] = tuple(f'multivariate_{signal}' for signal in BENCHMARK_DATA['MSL'])
-
-BENCHMARK_PARAMS = pd.read_csv(os.path.join(DATA_DIRECTORY, 'parameters.csv'), index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
-BENCHMARK_PARAMS['MULTIVARIATE_SMAP'] = BENCHMARK_PARAMS['SMAP']
-BENCHMARK_PARAMS['MULTIVARIATE_MSL'] = BENCHMARK_PARAMS['MSL']
+BENCHMARK_DATA = pd.read_csv(os.path.join(DATA_DIRECTORY, 'datasets.csv'),
+                             index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
+BENCHMARK_PARAMS = pd.read_csv(os.path.join(DATA_DIRECTORY, 'parameters.csv'),
+                               index_col=0, header=None).applymap(ast.literal_eval).to_dict()[1]
 
 PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
@@ -158,6 +150,7 @@ def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
         pipeline = _load_pipeline(pipeline, hyperparameter)
         save_output = cache_path + '_log.pkl' if cache_path else cache_path
         anomalies = analyze(pipeline, train, test, save_output=save_output)
+        # anomalies = analyze(pipeline, train, test, labels=truth, save_output=save_output)
         elapsed = datetime.utcnow() - start
 
         scores = {
@@ -231,8 +224,6 @@ def _run_job(args):
 
     if cache_dir:
         scores.to_csv(cache_path + '_scores.csv', index=False)
-    # if import tensorflow
-    # if 'tensorflow' in globals():
     tf.keras.backend.clear_session()
     return scores
 
