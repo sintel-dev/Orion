@@ -1,23 +1,27 @@
 #!/bin/bash
 
-LOCAL=0
+LOCAL=1
 
 # -----BASE 2.0 EXPERIMENTS------
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="U_tadgan_2.0"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'tadgan':'tadgan'}"
 #GPU=0
 
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="M_tadgan_2.0"
 #DATASETS="multivariate_datasets"
 #PIPELINES="{'tadgan':'tadgan'}"
 #GPU=0
 
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="U_tadgan_2.0_gpu"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'tadgan':'tadgan_gpu'}"
 #GPU=1
 
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="M_tadgan_2.0_gpu"
 #DATASETS="multivariate_datasets"
 #PIPELINES="{'tadgan':'tadgan_gpu'}"
@@ -25,25 +29,29 @@ LOCAL=0
 
 
 # -----BASE 2.0 + ATTENTION LAYER EXPERIMENTS------
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="U_tadgan_2.0_attention"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'tadgan':'tadgan_attention'}"
 #GPU=0
 
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="M_tadgan_2.0_attention"
 #DATASETS="multivariate_datasets"
 #PIPELINES="{'tadgan':'tadgan_attention'}"
 #GPU=0
 
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="U_tadgan_2.0_attention_gpu"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'tadgan':'tadgan_attention_gpu'}"
 #GPU=1
 
-#EXPERIMENT_NAME="M_tadgan_2.0_attention_gpu"
-#DATASETS="multivariate_datasets"
-#PIPELINES="{'tadgan':'tadgan_attention_gpu'}"
-#GPU=1
+cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+EXPERIMENT_NAME="M_tadgan_2.0_attention_gpu"
+DATASETS="multivariate_datasets"
+PIPELINES="{'tadgan':'tadgan_attention_gpu'}"
+GPU=1
 
 
 # -----TRANSFORMER ENCODER EXPERIMENTS------
