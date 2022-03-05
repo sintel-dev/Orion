@@ -20,19 +20,19 @@ install_requires = [
     'mlblocks>=0.4.0,<0.5',
     'mlprimitives>=0.3.2,<0.4',
     'mongoengine>=0.20.0,<0.25',
-    'numpy<1.19,>=1.17.1',
-    'pandas>=1,<1.4',
+    'numpy>=1.16.0,<1.21.0',
+    'pandas>=1,<2',
     'pymongo>=3.7.2,<4',
     'scikit-learn>=0.21',
     'tabulate>=0.8.3,<0.9',
-    'tensorflow<2.4,>=2',
+    'tensorflow>=2,<2.5',
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
-    'xlsxwriter>=1.3.6<1.4',
+    'xlsxwriter>=1.3.6,<1.4',
 
     # fix conflict
-    'h5py<2.11.0,>=2.10.0',
+    'h5py>=2.10.0,<2.11.0',
 ]
 
 setup_requires = [
