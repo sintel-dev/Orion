@@ -47,15 +47,39 @@ LOCAL=1
 #PIPELINES="{'tadgan':'tadgan_attention_gpu'}"
 #GPU=1
 
-cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
-EXPERIMENT_NAME="M_tadgan_2.0_attention_gpu"
-DATASETS="multivariate_datasets"
-PIPELINES="{'tadgan':'tadgan_attention_gpu'}"
-GPU=1
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_attention_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_attention_gpu'}"
+#GPU=1
 
 
-# -----TRANSFORMER ENCODER EXPERIMENTS------
+# -----ENCODER (1:1) EXPERIMENTS------
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_encoder"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder'}"
+#GPU=0
 
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_encoder"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder'}"
+#GPU=0
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_encoder_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_encoder_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder'}"
+#GPU=1
+
+# -----ENCODER DOWNSAMPLE EXPERIMENTS------
 # pipelines = {
 #     'tadgan': 'tadgan_encoder_downsample',
 #     'tadgan': 'tadgan_encoder_downsample_1000',
