@@ -21,6 +21,12 @@ from orion.primitives.timeseries_errors import reconstruction_errors
 LOGGER = logging.getLogger(__name__)
 tf.keras.backend.set_floatx('float64')
 
+LOSS_NAMES = [
+    ['cx_loss', 'cx_real', 'cx_fake', 'cx_gp'],
+    ['cz_loss', 'cz_real', 'cz_fake', 'cz_gp'],
+    ['eg_loss', 'eg_cx_fake', 'eg_cz_fake', 'eg_mse']
+]
+
 
 def build_layer(layer: dict, hyperparameters: dict):
     layer_class = import_object(layer['class'])
@@ -112,7 +118,7 @@ class TadGAN(Model):
         # Optional model hyperparameters.
         self.shape = input_shape
         self.latent_dim = latent_dim
-        self.latent_shape = latent_shape or (self.latent_dim, 1)
+        self.latent_shape = latent_shape
         self.target_shape = target_shape
         self.hyperparameters = hyperparameters
 
@@ -176,18 +182,22 @@ class TadGAN(Model):
 
     def _augment_hyperparameters(self, X: ndarray, y: ndarray, **kwargs) -> dict:
         shape = np.asarray(X)[0].shape
-        length = shape[0]
+        length, input_dim = shape
         target_shape = np.asarray(y)[0].shape
+        output_dim = target_shape[1]
 
         # Infers the shape.
         self.shape = self.shape or shape
         self.target_shape = self.target_shape or target_shape
+        self.latent_shape = self.latent_shape or (self.latent_dim, output_dim)
 
         kwargs.update({
             'shape': self.shape,
             'target_shape': self.target_shape,
+            'input_dim': input_dim,
+            'output_dim': output_dim,
             'generator_reshape_dim': length // 2,
-            'generator_reshape_shape': (length // 2, 1),
+            'generator_reshape_shape': (length // 2, output_dim),
             'encoder_reshape_shape': self.latent_shape
         })
         return kwargs
@@ -222,20 +232,15 @@ class TadGAN(Model):
             self.encoder_generator_optimizer = import_object(self.optimizer)(self.learning_rate)
 
     def _format_losses(self, losses: list) -> dict:
-        loss_names = [
-            ['cx_loss', 'cx_real', 'cx_fake', 'cx_gp'],
-            ['cz_loss', 'cz_real', 'cz_fake', 'cz_gp'],
-            ['eg_loss', 'eg_cx_fake', 'eg_cz_fake', 'eg_mse']
-        ]
+        """Format losses into dictionary mapping metric names to their current value."""
         output = dict()
         if self.detailed_losses:
             for i in range(len(losses)):
                 for j in range(len(losses[i])):
-                    output[loss_names[i][j]] = losses[i][j]
+                    output[LOSS_NAMES[i][j]] = losses[i][j]
         else:
             for i in range(len(losses)):
-                output[loss_names[i][0]] = losses[i][0]
-
+                output[LOSS_NAMES[i][0]] = losses[i][0]
         return output
 
     def compile(self, **kwargs):
