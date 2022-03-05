@@ -1,4 +1,5 @@
 import os
+import sys
 from functools import partial
 
 from orion.benchmark import benchmark, BENCHMARK_DATA, METRICS
@@ -44,58 +45,23 @@ def run_experiment(experiment_name: str, pipelines: dict, datasets: list, metric
 
 
 if __name__ == "__main__":
+    experiment_name, datasets, pipelines = sys.argv[1:4]
+    if datasets == 'univariate_datasets':
+        datasets = UNIVARIATE_DATASETS
+    elif datasets == 'multivariate_datasets':
+        datasets = MULTIVARIATE_DATASETS
+    else:
+        raise Exception('Unknown dataset.')
 
-    # -----BASE MODEL EXPERIMENTS------
-    # EXPERIMENT_NAME = 'U_tadgan_2.0'
-    # DATASETS = UNIVARIATE_DATASETS
-    # PIPELINES = {'tadgan': 'tadgan'}
+    try:
+        pipelines = eval(pipelines)
+    except Exception:
+        raise
 
-    # EXPERIMENT_NAME = 'M_tadgan_2.0'
-    # DATASETS = MULTIVARIATE_DATASETS
-    # PIPELINES = {'tadgan': 'tadgan'}
-
-    # EXPERIMENT_NAME = 'U_tadgan_2.0_gpu'
-    # DATASETS = UNIVARIATE_DATASETS
-    # PIPELINES = {'tadgan': 'tadgan_gpu'}
-
-    # EXPERIMENT_NAME = 'M_tadgan_2.0_gpu'
-    # DATASETS = MULTIVARIATE_DATASETS
-    # PIPELINES = {'tadgan': 'tadgan_gpu'}
-
-    # -----BASE + ATTENTION LAYER MODEL EXPERIMENTS------
-    EXPERIMENT_NAME = 'U_tadgan_2.0_attention'
-    DATASETS = UNIVARIATE_DATASETS
-    PIPELINES = {'tadgan': 'tadgan_attention'}
-
-    # EXPERIMENT_NAME = 'M_tadgan_2.0_attention'
-    # DATASETS = MULTIVARIATE_DATASETS
-    # PIPELINES = {'tadgan': 'tadgan_attention'}
-
-    # EXPERIMENT_NAME = 'U_tadgan_2.0_attention_gpu'
-    # DATASETS = UNIVARIATE_DATASETS
-    # PIPELINES = {'tadgan': 'tadgan_attention_gpu'}
-
-    # EXPERIMENT_NAME = 'M_tadgan_2.0_attention_gpu'
-    # DATASETS = MULTIVARIATE_DATASETS
-    # PIPELINES = {'tadgan': 'tadgan_attention_gpu'}
-
-    # pipelines = {
-    #     'tadgan': 'tadgan_encoder_downsample',
-    #     'tadgan': 'tadgan_encoder_downsample_1000',
-    #     'tadgan': 'tadgan_encoder_downsample_optimizer',
-    #     'tadgan': 'tadgan_encoder_downsample_optimizer_1000',
-    #     'tadgan': 'tadgan_transformer',
-    #     'tadgan': 'tadgan_transformer_optimizer',
-    #     'tadgan': 'tadgan_encoder_downsample_multi_gen',
-    #     'tadgan': 'tadsgan'
-    #     'tadgan': 'tadgan_2.0_complete_encoder'
-    # }
-
-    print(EXPERIMENT_NAME)
     results = run_experiment(
-        experiment_name=EXPERIMENT_NAME,
-        pipelines=PIPELINES,
-        datasets=DATASETS,
+        experiment_name=experiment_name,
+        pipelines=pipelines,
+        datasets=datasets,
         metrics=METRICS,
         results_directory=RESULTS_DIRECTORY,
         workers=1
