@@ -45,6 +45,7 @@ def run_experiment(experiment_name: str, pipelines: dict, datasets: list, metric
 
 if __name__ == "__main__":
 
+    # -----BASE MODEL EXPERIMENTS------
     # EXPERIMENT_NAME = 'U_tadgan_2.0'
     # DATASETS = UNIVARIATE_DATASETS
     # PIPELINES = {'tadgan': 'tadgan'}
@@ -60,6 +61,23 @@ if __name__ == "__main__":
     # EXPERIMENT_NAME = 'M_tadgan_2.0_gpu'
     # DATASETS = MULTIVARIATE_DATASETS
     # PIPELINES = {'tadgan': 'tadgan_gpu'}
+
+    # -----BASE + ATTENTION LAYER MODEL EXPERIMENTS------
+    EXPERIMENT_NAME = 'U_tadgan_2.0_attention'
+    DATASETS = UNIVARIATE_DATASETS
+    PIPELINES = {'tadgan': 'tadgan_attention'}
+
+    # EXPERIMENT_NAME = 'M_tadgan_2.0_attention'
+    # DATASETS = MULTIVARIATE_DATASETS
+    # PIPELINES = {'tadgan': 'tadgan_attention'}
+
+    # EXPERIMENT_NAME = 'U_tadgan_2.0_attention_gpu'
+    # DATASETS = UNIVARIATE_DATASETS
+    # PIPELINES = {'tadgan': 'tadgan_attention_gpu'}
+
+    # EXPERIMENT_NAME = 'M_tadgan_2.0_attention_gpu'
+    # DATASETS = MULTIVARIATE_DATASETS
+    # PIPELINES = {'tadgan': 'tadgan_attention_gpu'}
 
     # pipelines = {
     #     'tadgan': 'tadgan_encoder_downsample',
