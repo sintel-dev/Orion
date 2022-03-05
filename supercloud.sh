@@ -8,7 +8,7 @@ scp orion/benchmark.py lwong@txe1-login.mit.edu:/home/gridsan/lwong/Orion/orion/
 scp orion/data/parameters.csv lwong@txe1-login.mit.edu:/home/gridsan/lwong/Orion/orion/data/parameters.csv
 scp orion/data/datasets.csv lwong@txe1-login.mit.edu:/home/gridsan/lwong/Orion/orion/data/datasets.csv
 
-scp run.sh lwong@txe1-login.mit.edu:/home/gridsan/lwong/Orion
+scp *.sh lwong@txe1-login.mit.edu:/home/gridsan/lwong/Orion
 scp experiments.py lwong@txe1-login.mit.edu:/home/gridsan/lwong/Orion
 scp orion/*.py lwong@txe1-login.mit.edu:/home/gridsan/lwong/Orion/orion/
 scp orion/primitives/*.py lwong@txe1-login.mit.edu:/home/gridsan/lwong/Orion/orion/primitives/
