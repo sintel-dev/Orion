@@ -73,7 +73,7 @@
             },
             "optimizer": {
                 "type": "str",
-                "default": "keras.optimizers.Adam"
+                "default": "tensorflow.keras.optimizers.Adam"
             },
             "enable_custom_optimizer": {
                 "type": "bool",
@@ -121,7 +121,7 @@
             },
             "detailed_losses": {
                 "type": "bool",
-                "default": false
+                "default": true
             },
             "verbose": {
                 "type": "bool",
