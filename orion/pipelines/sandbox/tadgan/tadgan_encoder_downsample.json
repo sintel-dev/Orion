@@ -33,6 +33,10 @@
         "orion.primitives.tadgan.TadGAN#1": {
             "epochs": 35,
             "enable_custom_optimizer": false,
+            "latent_shape": [
+                20,
+                1
+            ],
             "layers_encoder": [
                 {
                     "class": "orion.primitives.attention_layers.Encoder",
