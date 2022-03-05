@@ -32,110 +32,125 @@
         },
         "orion.primitives.tadgan.TadGAN#1": {
             "epochs": 35,
-            "input_shape":[100, 1],
-            "target_shape": [100, 1],
             "layers_encoder": [
                 {
-                    "class": "keras.layers.Bidirectional",
+                    "class": "tensorflow.keras.layers.Bidirectional",
                     "parameters": {
                         "layer": {
-                            "class": "keras.layers.CuDNNLSTM",
+                            "class": "tensorflow.keras.layers.LSTM",
                             "parameters": {
-                                "units": 100,
-                                "return_sequences": true
+                                "units": "lstm_units",
+                                "return_sequences": true,
+                                "activation": "tanh",
+                                "recurrent_activation": "sigmoid",
+                                "use_bias": true,
+                                "recurrent_dropout": 0.0,
+                                "unroll": false
                             }
                         }
                     }
                 },
                 {
-                    "class": "keras.layers.Flatten",
+                    "class": "tensorflow.keras.layers.Flatten",
                     "parameters": {}
                 },
                 {
-                    "class": "keras.layers.Dense",
+                    "class": "tensorflow.keras.layers.Dense",
                     "parameters": {
-                        "units": 20
+                        "units": "dense_units"
                     }
                 },
                 {
-                    "class": "keras.layers.Reshape",
+                    "class": "tensorflow.keras.layers.Reshape",
                     "parameters": {
                         "target_shape": "encoder_reshape_shape"
                     }
                 }
             ],
             "layers_generator": [
-                    {
-                        "class": "keras.layers.Flatten",
-                        "parameters": {}
-                    },
-                    {
-                        "class": "keras.layers.Dense",
-                        "parameters": {
-                            "units": 50
-                        }
-                    },
-                    {
-                        "class": "keras.layers.Reshape",
-                        "parameters": {
-                            "target_shape": "generator_reshape_shape"
-                        }
-                    },
-                    {
-                        "class": "keras.layers.Bidirectional",
-                        "parameters": {
-                            "layer": {
-                                "class": "keras.layers.CuDNNLSTM",
-                                "parameters": {
-                                    "units": 64,
-                                    "return_sequences": true
-                                }
-                            },
-                            "merge_mode": "concat"
-                        }
-                    },
-                    {
-                        "class": "keras.layers.convolutional.UpSampling1D",
-                        "parameters": {
-                            "size": 2
-                        }
-                    },
-                    {
-                        "class": "keras.layers.Bidirectional",
-                        "parameters": {
-                            "layer": {
-                                "class": "keras.layers.CuDNNLSTM",
-                                "parameters": {
-                                    "units": 64,
-                                    "return_sequences": true
-                                }
-                            },
-                            "merge_mode": "concat"
-                        }
-                    },
-                    {
-                        "class": "keras.layers.TimeDistributed",
-                        "parameters": {
-                            "layer": {
-                                "class": "keras.layers.Dense",
-                                "parameters": {
-                                    "units": 1
-                                }
+                {
+                    "class": "tensorflow.keras.layers.Flatten",
+                    "parameters": {}
+                },
+                {
+                    "class": "tensorflow.keras.layers.Dense",
+                    "parameters": {
+                        "units": "generator_reshape_dim"
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Reshape",
+                    "parameters": {
+                        "target_shape": "generator_reshape_shape"
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Bidirectional",
+                    "parameters": {
+                        "layer": {
+                            "class": "tensorflow.keras.layers.LSTM",
+                            "parameters": {
+                                "units": 64,
+                                "return_sequences": true,
+                                "dropout": 0.2,
+                                "activation": "tanh",
+                                "recurrent_activation": "sigmoid",
+                                "use_bias": true,
+                                "recurrent_dropout": 0.0,
+                                "unroll": false
+                            }
+                        },
+                        "merge_mode": "concat"
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.UpSampling1D",
+                    "parameters": {
+                        "size": 2
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Bidirectional",
+                    "parameters": {
+                        "layer": {
+                            "class": "tensorflow.keras.layers.LSTM",
+                            "parameters": {
+                                "units": 64,
+                                "return_sequences": true,
+                                "dropout": 0.2,
+                                "activation": "tanh",
+                                "recurrent_activation": "sigmoid",
+                                "use_bias": true,
+                                "recurrent_dropout": 0.0,
+                                "unroll": false
+                            }
+                        },
+                        "merge_mode": "concat"
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.TimeDistributed",
+                    "parameters": {
+                        "layer": {
+                            "class": "tensorflow.keras.layers.Dense",
+                            "parameters": {
+                                "units": 1
                             }
                         }
-                    },
-                    {
-                        "class": "keras.layers.Activation",
-                        "parameters": {
-                            "activation": "tanh"
-                        }
                     }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Activation",
+                    "parameters": {
+                        "activation": "tanh"
+                    }
+                }
             ]
         },
         "orion.primitives.tadgan.score_anomalies#1": {
             "rec_error_type": "dtw"
         },
-    "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "window_size_portion": 0.33,
             "window_step_size_portion": 0.1,
             "fixed_threshold": true
@@ -154,5 +169,35 @@
             "index": "X_index",
             "target_index": "y_index"
         }
+    },
+    "outputs": {
+        "default": [
+            {
+                "name": "events",
+                "variable": "orion.primitives.timeseries_anomalies.find_anomalies#1.y"
+            }
+        ],
+        "model_info": [
+            {
+                "name": "y_true",
+                "variable": "orion.primitives.tadgan.TadGAN#1.y_true"
+            },
+            {
+                "name": "y_hat",
+                "variable": "orion.primitives.tadgan.TadGAN#1.y_hat"
+            },
+            {
+                "name": "critic",
+                "variable": "orion.primitives.tadgan.TadGAN#1.critic"
+            },
+            {
+                "name": "index",
+                "variable": "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1.index"
+            },
+            {
+                "name": "fit_history",
+                "variable": "orion.primitives.tadgan.TadGAN#1.fit_history"
+            }
+        ]
     }
 }
