@@ -240,27 +240,33 @@ class Encoder(tf.keras.layers.Layer):
     The output of the encoder is the input to the decoder."""
 
     def __init__(self, num_layers: int, d_model: int, num_heads: int, dff: int = None,
-                 maximum_position_encoding: int = 10000, rate: float = 0.1, **kwargs):
+                 maximum_position_encoding: int = 10000, rate: float = 0.1,
+                 include_positional_encoding: bool = True,
+                 return_last_position: bool = False, **kwargs):
         super(Encoder, self).__init__()
 
         self.d_model = d_model
         self.num_layers = num_layers
         self.num_heads = num_heads
         self.dff = d_model * 4 if dff is None else dff
+        self.include_positional_encoding = include_positional_encoding
         self.maximum_position_encoding = maximum_position_encoding
+        self.return_last_position = return_last_position
         self.rate = rate
 
         self.pos_encoding = PositionalEncoding(self.d_model, self.maximum_position_encoding, rate)
-        self.enc_layers = [EncoderLayer(d_model, num_heads, self.dff, rate) for _ in range(num_layers)]
+        self.enc_layers = [EncoderLayer(d_model, num_heads, self.dff, rate) for _ in
+                           range(num_layers)]
 
         self.dropout = tf.keras.layers.Dropout(rate)
 
     def call(self, x, training=True, mask=None):
-        x = self.pos_encoding(x, training)
+        if self.include_positional_encoding:
+            x = self.pos_encoding(x, training)
         for i in range(self.num_layers):
             x = self.enc_layers[i](x, training, mask)
-
-        return x  # (batch_size, input_seq_len, d_model)
+        # (batch_size, input_seq_len, d_model)
+        return x[:, 0, :] if self.return_last_position else x
 
     def get_config(self):
         config = super().get_config().copy()
@@ -269,6 +275,7 @@ class Encoder(tf.keras.layers.Layer):
             'd_model': self.d_model,
             'num_heads': self.num_heads,
             'dff': self.dff,
+            'include_position_encoding': self.include_positional_encoding,
             'maximum_position_encoding': self.maximum_position_encoding,
             'rate': self.rate,
         })
@@ -334,11 +341,13 @@ class Decoder(tf.keras.layers.Layer):
     summation is the input to the decoder layers. The output of the decoder is the input to the final linear layer."""
 
     def __init__(self, num_layers: int, d_model: int, num_heads: int, dff: int = None,
-                 maximum_position_encoding: int = 10000, rate: float = 0.1, **kwargs):
+                 maximum_position_encoding: int = 10000, rate: float = 0.1,
+                 include_positional_encoding: bool = True, **kwargs):
         super(Decoder, self).__init__()
 
         self.d_model = d_model
         self.num_layers = num_layers
+        self.include_positional_encoding = include_positional_encoding
         self.maximum_position_encoding = maximum_position_encoding
         self.rate = rate
         self.dff = d_model * 4 if dff is None else dff
@@ -346,12 +355,14 @@ class Decoder(tf.keras.layers.Layer):
         self.pos_encoding = PositionalEncoding(self.d_model, self.maximum_position_encoding,
                                                self.rate)
 
-        self.dec_layers = [DecoderLayer(d_model, num_heads, self.dff, rate) for _ in range(num_layers)]
+        self.dec_layers = [DecoderLayer(d_model, num_heads, self.dff, rate) for _ in
+                           range(num_layers)]
         self.dropout = tf.keras.layers.Dropout(rate)
 
     def call(self, x, enc_output, look_ahead_mask, training=True, mask=None):
         attention_weights = {}
-        x = self.pos_encoding(x)
+        if self.include_positional_encoding:
+            x = self.pos_encoding(x)
 
         for i in range(self.num_layers):
             x, block1, block2 = self.dec_layers[i](x, enc_output, look_ahead_mask, training, mask)
@@ -427,8 +438,10 @@ class AttentionLayer(tf.keras.layers.Layer):
         super(AttentionLayer, self).__init__()
 
     def build(self, input_shape: tuple):
-        self.att_weight = self.add_weight(shape=(input_shape[-1], 1), initializer="normal")
-        self.att_bias = self.add_weight(shape=(input_shape[1], 1), initializer="zeros")
+        self.att_weight = self.add_weight(shape=(input_shape[-1], 1),
+                                          initializer="normal", name="att_weight")
+        self.att_bias = self.add_weight(shape=(input_shape[1], 1),
+                                        initializer="zeros", name="att_bias")
         super(AttentionLayer, self).build(input_shape)
 
     def call(self, X):
