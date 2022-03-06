@@ -38,7 +38,7 @@
                     "class": "orion.primitives.attention_layers.Transformer",
                     "parameters": {
                         "num_layers": "num_layers",
-                        "d_model": "d_model",
+                        "d_model": "input_dim",
                         "num_heads": "num_heads"
                     }
                 },

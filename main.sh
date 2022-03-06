@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL=1
+LOCAL=0
 
 # -----BASE 2.0 EXPERIMENTS------
 #cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
@@ -119,6 +119,32 @@ LOCAL=1
 
 # -----TRANSFORMER EXPERIMENTS------
 
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_transformer_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_transformer'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_transformer_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_transformer'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_transformer_optimizer_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_transformer_optimizer'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_transformer_optimizer_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_transformer_optimizer'}"
+#GPU=1
+
+
+# -----RESHAPE EXPERIMENTS------
 
 
 # pipelines = {
