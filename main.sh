@@ -91,6 +91,7 @@ LOCAL=0
 #PIPELINES="{'tadgan':'tadgan_encoder_optimizer'}"
 #GPU=1
 
+
 # -----ENCODER DOWNSAMPLE EXPERIMENTS------
 
 #cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
@@ -116,6 +117,7 @@ LOCAL=0
 #DATASETS="multivariate_datasets"
 #PIPELINES="{'tadgan':'tadgan_encoder_downsample_optimizer'}"
 #GPU=1
+
 
 # -----TRANSFORMER EXPERIMENTS------
 
@@ -144,15 +146,39 @@ LOCAL=0
 #GPU=1
 
 
+# -----MULTIGAN EXPERIMENTS------
+
+#cp orion/primitives/tadgan_multigen.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_multigen_lstm_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_multigen_lstm'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_multigen.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_multigen_lstm_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_multigen_lstm'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_multigen.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_multigen_encoder_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_multigen_encoder'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_multigen.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_multigen_encoder_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_multigen_encoder'}"
+#GPU=1
+
+
 # -----RESHAPE EXPERIMENTS------
 
 
 # pipelines = {
 #     'tadgan': 'tadgan_encoder_downsample_1000',
 #     'tadgan': 'tadgan_encoder_downsample_optimizer_1000',
-#     'tadgan': 'tadgan_transformer',
-#     'tadgan': 'tadgan_transformer_optimizer',
-#     'tadgan': 'tadgan_encoder_downsample_multi_gen',
 #     'tadgan': 'tadsgan'
 #     'tadgan': 'tadgan_2.0_complete_encoder'
 # }

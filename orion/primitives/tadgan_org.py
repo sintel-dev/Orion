@@ -11,16 +11,21 @@ import tensorflow as tf
 from mlprimitives.utils import import_object
 from numpy import ndarray
 from scipy import stats
-from tensorflow.keras import Model, Sequential
 from tensorflow.keras.layers import Input
 from tensorflow.keras.losses import MeanSquaredError
-from tensorflow.keras.losses import SparseCategoricalCrossentropy
+from tensorflow.keras import Model, Sequential
 
 from orion.primitives.attention_layers import CustomSchedule
 from orion.primitives.timeseries_errors import reconstruction_errors
 
 LOGGER = logging.getLogger(__name__)
 tf.keras.backend.set_floatx('float64')
+
+LOSS_NAMES = [
+    ['cx_loss', 'cx_real', 'cx_fake', 'cx_gp'],
+    ['cz_loss', 'cz_real', 'cz_fake', 'cz_gp'],
+    ['eg_loss', 'eg_cx_fake', 'eg_cz_fake', 'eg_mse']
+]
 
 
 def build_layer(layer: dict, hyperparameters: dict):
@@ -113,7 +118,7 @@ class TadGAN(Model):
         # Optional model hyperparameters.
         self.shape = input_shape
         self.latent_dim = latent_dim
-        self.latent_shape = latent_shape or (self.latent_dim, 1)
+        self.latent_shape = latent_shape
         self.target_shape = target_shape
         self.hyperparameters = hyperparameters
 
@@ -135,10 +140,9 @@ class TadGAN(Model):
         self.fitted = False
 
     def __getstate__(self):
-        networks = ['critic_x', 'critic_z', 'encoder', 'critic_x_base',
-                    'critic_x_classifier', 'generator_base']
+        networks = ['critic_x', 'critic_z', 'encoder', 'generator']
         modules = ['train_function', 'critic_x_optimizer', 'critic_z_optimizer',
-                   'encoder_generator_optimizer', 'generators']
+                   'encoder_generator_optimizer']
 
         state = self.__dict__.copy()
 
@@ -178,18 +182,22 @@ class TadGAN(Model):
 
     def _augment_hyperparameters(self, X: ndarray, y: ndarray, **kwargs) -> dict:
         shape = np.asarray(X)[0].shape
-        length = shape[0]
+        length, input_dim = shape
         target_shape = np.asarray(y)[0].shape
+        output_dim = target_shape[1]
 
         # Infers the shape.
         self.shape = self.shape or shape
         self.target_shape = self.target_shape or target_shape
+        self.latent_shape = self.latent_shape or (self.latent_dim, output_dim)
 
         kwargs.update({
             'shape': self.shape,
             'target_shape': self.target_shape,
+            'input_dim': input_dim,
+            'output_dim': output_dim,
             'generator_reshape_dim': length // 2,
-            'generator_reshape_shape': (length // 2, 1),
+            'generator_reshape_shape': (length // 2, output_dim),
             'encoder_reshape_shape': self.latent_shape
         })
         return kwargs
@@ -204,34 +212,13 @@ class TadGAN(Model):
         hyperparameters = self.hyperparameters.copy()
         hyperparameters.update(kwargs)
 
-        # Encoder
+        # Models
         self.encoder = self._build_model(
             hyperparameters, self.layers_encoder, self.encoder_input_shape, name='encoder')
-
-        # Generators
-        self.beta = .5
-        self.num_generators = 8
-        self.generators = []
-        self.generator_base = self._build_model(hyperparameters,
-                                                self.layers_generator,
-                                                self.generator_input_shape,
-                                                name=f'generator_base')
-        x = Input(shape=self.generator_input_shape)
-        for i in range(self.num_generators):
-            td = tf.keras.layers.TimeDistributed(layer=tf.keras.layers.Dense(units=1))
-            al = tf.keras.layers.Activation(activation="tanh")
-            self.generators.append(Model(x, al(td(self.generator_base(x)))))
-
-        # Critic x
-        self.critic_x_base = self._build_model(
+        self.generator = self._build_model(
+            hyperparameters, self.layers_generator, self.generator_input_shape, name='generator')
+        self.critic_x = self._build_model(
             hyperparameters, self.layers_critic_x, self.critic_x_input_shape, name='critic_x')
-        x = Input(shape=self.critic_x_input_shape)
-        critic_x_discriminator_layer = tf.keras.layers.Dense(units=1)
-        self.critic_x = Model(x, critic_x_discriminator_layer(self.critic_x_base(x)))
-        critic_x_classifier_layer = tf.keras.layers.Dense(units=self.num_generators)
-        self.critic_x_classifier = Model(x, critic_x_classifier_layer(self.critic_x_base(x)))
-
-        # Critic z
         self.critic_z = self._build_model(
             hyperparameters, self.layers_critic_z, self.critic_z_input_shape, name='critic_z')
 
@@ -245,35 +232,30 @@ class TadGAN(Model):
             self.encoder_generator_optimizer = import_object(self.optimizer)(self.learning_rate)
 
     def _format_losses(self, losses: list) -> dict:
-        loss_names = [
-            ['cx_loss', 'cx_real', 'cx_fake', 'cx_gp', 'cx_c'],
-            ['cz_loss', 'cz_real', 'cz_fake', 'cz_gp'],
-            ['eg_loss', 'eg_x', 'eg_z', 'eg_mse', 'eg_cx_c']
-        ]
+        """Format losses into dictionary mapping metric names to their current value."""
         output = dict()
         if self.detailed_losses:
             for i in range(len(losses)):
                 for j in range(len(losses[i])):
-                    output[loss_names[i][j]] = losses[i][j]
+                    output[LOSS_NAMES[i][j]] = losses[i][j]
         else:
             for i in range(len(losses)):
-                output[loss_names[i][0]] = losses[i][0]
-
+                output[LOSS_NAMES[i][0]] = losses[i][0]
         return output
 
     def compile(self, **kwargs):
         super(TadGAN, self).compile(**kwargs)
 
-    @classmethod
+    @staticmethod
     @tf.function
-    def _wasserstein_loss(cls, y_true, y_pred):
+    def _wasserstein_loss(y_true, y_pred):
         return tf.reduce_mean(y_true * y_pred)
 
-    @classmethod
+    @staticmethod
     @tf.function
-    def _gradient_penalty_loss(cls, real, fake, critic: Model, batch_size: int):
+    def _gradient_penalty_loss(real, fake, critic: Model):
         # Random weighted average to create interpolated signals.
-        # batch_size = real.get_shape()[0]
+        batch_size = tf.shape(real)[0]
         alpha = tf.random.uniform([batch_size, 1, 1], dtype=tf.float64)
         interpolated = (alpha * real) + ((1 - alpha) * fake)
 
@@ -291,69 +273,46 @@ class TadGAN(Model):
     def call(self, data: tuple, training=None, mask=None) -> tuple:
         X, y = data
         z_ = self.encoder(X)
-        best_mse, best_y_hat = None, None
-        for generator in self.generators:
-            y_hat = generator(z_)
-            mse = MeanSquaredError()(y, y_hat)
-            if best_mse is None or mse < best_mse:
-                best_mse, best_y_hat = mse, y_hat
-        y_hat = best_y_hat
+        y_hat = self.generator(z_)
         critic = self.critic_x(y)
         return y_hat, critic
 
     @tf.function
     def train_step(self, data: tuple) -> dict:
         X_train, y_train = data
-        batch_size = X_train.get_shape()[0]
+        batch_size = tf.shape(X_train)[0]
         minibatch_size = batch_size // self.iterations_critic
-        u_train = tf.random.uniform((batch_size,), maxval=self.num_generators, dtype=tf.int64)
+        z_shape = (minibatch_size, self.latent_shape[0], self.latent_shape[1])
 
+        # Wasserstein GAN formulation.
         fake = tf.ones((minibatch_size, 1), dtype=tf.float64)
         real = -tf.ones((minibatch_size, 1), dtype=tf.float64)
 
-        batch_g_loss, batch_cx_loss, batch_cz_loss = [], [], []
+        batch_cx_loss, batch_cz_loss, batch_eg_loss = [], [], []
 
-        # Train the critics
-        for j in range(self.iterations_critic):
-            x = X_train[j * minibatch_size: (j + 1) * minibatch_size]
-            y = y_train[j * minibatch_size: (j + 1) * minibatch_size]
-            z = tf.random.normal(shape=(minibatch_size, self.latent_shape[0],
-                                        self.latent_shape[1]), dtype=tf.float64)
-            u = u_train[j * minibatch_size: (j + 1) * minibatch_size]
+        # Train the critics more than encoder-generator.
+        for i in range(self.iterations_critic):
+            x = X_train[i * minibatch_size: (i + 1) * minibatch_size]
+            y = y_train[i * minibatch_size: (i + 1) * minibatch_size]
+            z = tf.random.normal(shape=z_shape, dtype=tf.float64)
 
-            # Train critic x
+            # Train critic x.
             with tf.GradientTape() as tape:
-                tensors = {'y': [], 'cx_real': [], 'x_': [], 'cx_fake': []}
+                x_ = self.generator(z, training=True)
+                cx_real = self.critic_x(y, training=True)
+                cx_fake = self.critic_x(x_, training=True)
 
-                for i in range(self.num_generators):
-                    cx_real = self.critic_x(y[u == i], training=True)
-                    x_ = self.generators[i](z[u == i], training=True)
-                    cx_fake = self.critic_x(x_, training=True)
+                cx_real_loss = self._wasserstein_loss(real, cx_real)
+                cx_fake_loss = self._wasserstein_loss(fake, cx_fake)
+                cx_gp = self._gradient_penalty_loss(y, x_, self.critic_x)
+                cx_loss = cx_real_loss + cx_fake_loss + 10 * cx_gp
 
-                    tensors['x_'].append(x_)
-                    tensors['cx_real'].append(cx_real)
-                    tensors['y'].append(y[u == i])
-                    tensors['cx_fake'].append(cx_fake)
-                tensors = {k: tf.concat(v, 0) for k, v in tensors.items()}
-
-                cx_real_loss = self._wasserstein_loss(real, tensors['cx_real'])
-                cx_fake_loss = self._wasserstein_loss(fake, tensors['cx_fake'])
-                cx_gp = self._gradient_penalty_loss(tensors['y'], tensors['x_'],
-                                                    self.critic_x, minibatch_size)
-
-                cx_gen = self.critic_x_classifier(tensors['x_'])
-                cx_c_loss = SparseCategoricalCrossentropy()(u, cx_gen)
-
-                cx_loss = cx_real_loss + cx_fake_loss + 10 * cx_gp + cx_c_loss
-
-            trainable_variables = self.critic_x_base.trainable_variables + \
-                                  self.critic_x.trainable_variables[-2:] + \
-                                  self.critic_x_classifier.trainable_variables[-2:]
+            trainable_variables = self.critic_x.trainable_variables
             cx_grads = tape.gradient(cx_loss, trainable_variables)
             self.critic_x_optimizer.apply_gradients(zip(cx_grads, trainable_variables))
-            batch_cx_loss.append([cx_loss, cx_real_loss, cx_fake_loss, cx_gp, cx_c_loss])
+            batch_cx_loss.append([cx_loss, cx_real_loss, cx_fake_loss, cx_gp])
 
-            # Train critic z
+            # Train critic z.
             with tf.GradientTape() as tape:
                 z_ = self.encoder(x, training=True)
                 cz_real = self.critic_z(z, training=True)
@@ -361,72 +320,57 @@ class TadGAN(Model):
 
                 cz_real_loss = self._wasserstein_loss(real, cz_real)
                 cz_fake_loss = self._wasserstein_loss(fake, cz_fake)
-                cz_gp = self._gradient_penalty_loss(z, z_, self.critic_z, minibatch_size)
+                cz_gp = self._gradient_penalty_loss(z, z_, self.critic_z)
                 cz_loss = cz_real_loss + cz_fake_loss + 10 * cz_gp
 
-            cz_grads = tape.gradient(cz_loss, self.critic_z.trainable_variables)
-            self.critic_z_optimizer.apply_gradients(zip(cz_grads, self.critic_z.trainable_variables))
+            trainable_variables = self.critic_z.trainable_variables
+            cz_grads = tape.gradient(cz_loss, trainable_variables)
+            self.critic_z_optimizer.apply_gradients(zip(cz_grads, trainable_variables))
             batch_cz_loss.append([cz_loss, cz_real_loss, cz_fake_loss, cz_gp])
 
-        # Train encoder generator
+        # Train encoder-generator.
+        z = tf.random.normal(shape=z_shape, dtype=tf.float64)
         with tf.GradientTape() as tape:
-            tensors = {'y': [], 'cx_fake': [], 'cz_fake': [], 'x_rec_': []}
+            x_ = self.generator(z, training=True)
+            cx_fake = self.critic_x(x_, training=True)
+            z_ = self.encoder(x, training=True)
+            cz_fake = self.critic_z(z_, training=True)
+            x_rec_ = self.generator(z_, training=True)
 
-            for i in range(self.num_generators):
-                x_ = self.generators[i](z[u == i], training=True)
-                cx_fake = self.critic_x(x_, training=True)
-                z_ = self.encoder(x[u == i], training=True)
-                cz_fake = self.critic_z(z_, training=True)
-                x_rec_ = self.generators[i](z_, training=True)
+            eg_cx_fake_loss = self._wasserstein_loss(real, cx_fake)
+            eg_cz_fake_loss = self._wasserstein_loss(real, cz_fake)
+            eg_mse = MeanSquaredError()(y, x_rec_)
+            eg_loss = eg_cx_fake_loss + eg_cz_fake_loss + 10 * eg_mse
 
-                tensors['y'].append(y[u == i])
-                tensors['cx_fake'].append(cx_fake)
-                tensors['cz_fake'].append(cz_fake)
-                tensors['x_rec_'].append(x_rec_)
-            tensors = {k: tf.concat(v, 0) for k, v in tensors.items()}
+        trainable_variables = self.encoder.trainable_variables + self.generator.trainable_variables
+        eg_grads = tape.gradient(eg_loss, trainable_variables)
+        self.encoder_generator_optimizer.apply_gradients(zip(eg_grads, trainable_variables))
 
-            # Encoder Generator Loss
-            eg_x_loss = self._wasserstein_loss(real, tensors['cx_fake'])
-            eg_z_loss = self._wasserstein_loss(real, tensors['cz_fake'])
-            eg_mse = MeanSquaredError()(tensors['y'], tensors['x_rec_'])
-
-            cx_gen = self.critic_x_classifier(tensors['x_rec_'])
-            cx_c_loss = SparseCategoricalCrossentropy()(u, cx_gen)
-
-            eg_loss = eg_x_loss + eg_z_loss + 10 * eg_mse + self.beta * cx_c_loss
-
-        # Get the gradients for the encoder and generator(s).
-        trainable_variables = self.encoder.trainable_variables \
-                              + self.generator_base.trainable_variables
-        for generators in self.generators:
-            trainable_variables += generators.trainable_variables[-2:]
-        encoder_generator_grads = tape.gradient(eg_loss, trainable_variables)
-        self.encoder_generator_optimizer.apply_gradients(
-            zip(encoder_generator_grads, trainable_variables))
-
+        # Recording losses.
         batch_cx_loss = np.mean(np.array(batch_cx_loss), axis=0)
         batch_cz_loss = np.mean(np.array(batch_cz_loss), axis=0)
-        batch_eg_loss = (eg_loss, eg_x_loss, eg_z_loss, eg_mse, cx_c_loss)
+        batch_eg_loss = (eg_loss, eg_cx_fake_loss, eg_cz_fake_loss, eg_mse)
         output = self._format_losses([batch_cx_loss, batch_cz_loss, batch_eg_loss])
+
         return output
 
     @tf.function
     def test_step(self, data) -> dict:
         X, y = data
         batch_size = tf.shape(X)[0]
+        z_shape = (batch_size, self.latent_shape[0], self.latent_shape[1])
+        z = tf.random.normal(shape=z_shape, dtype=tf.float64)
 
         fake = tf.ones((batch_size, 1), dtype=tf.float64)
         real = -tf.ones((batch_size, 1), dtype=tf.float64)
 
-        z = tf.random.normal(shape=(batch_size, self.latent_shape[0],
-                                    self.latent_shape[1]), dtype=tf.float64)
         # Critic x loss
-        x_ = tf.reduce_mean([generator(z) for generator in self.generators], 0)
+        x_ = self.generator(z)
         cx_real = self.critic_x(y)
         cx_fake = self.critic_x(x_)
         cx_real_loss = self._wasserstein_loss(real, cx_real)
         cx_fake_loss = self._wasserstein_loss(fake, cx_fake)
-        cx_gp = self._gradient_penalty_loss(y, x_, self.critic_x, batch_size)
+        cx_gp = self._gradient_penalty_loss(y, x_, self.critic_x)
         cx_loss = cx_real_loss + cx_fake_loss + 10 * cx_gp
 
         # Critic z loss
@@ -435,20 +379,20 @@ class TadGAN(Model):
         cz_fake = self.critic_z(z_)
         cz_real_loss = self._wasserstein_loss(real, cz_real)
         cz_fake_loss = self._wasserstein_loss(fake, cz_fake)
-        cz_gp = self._gradient_penalty_loss(z, z_, self.critic_z, batch_size)
+        cz_gp = self._gradient_penalty_loss(z, z_, self.critic_z)
         cz_loss = cz_real_loss + cz_fake_loss + 10 * cz_gp
 
-        # Encoder Generator Loss
-        x_rec_ = tf.reduce_mean([generator(z_) for generator in self.generators], 0)
-        eg_x_loss = self._wasserstein_loss(real, cx_fake)
-        eg_z_loss = self._wasserstein_loss(real, cz_fake)
+        # Encoder-Generator Loss
+        x_rec_ = self.generator(z_)
+        eg_cx_fake_loss = self._wasserstein_loss(real, cx_fake)
+        eg_cz_fake_loss = self._wasserstein_loss(real, cz_fake)
         eg_mse = MeanSquaredError()(y, x_rec_)
-        eg_loss = eg_x_loss + eg_z_loss + 10 * eg_mse
+        eg_loss = eg_cx_fake_loss + eg_cz_fake_loss + 10 * eg_mse
 
         batch_loss = [
             [cx_loss, cx_real_loss, cx_fake_loss, cx_gp],
             [cz_loss, cz_real_loss, cz_fake_loss, cz_gp],
-            [eg_loss, eg_x_loss, eg_z_loss, eg_mse]
+            [eg_loss, eg_cx_fake_loss, eg_cz_fake_loss, eg_mse]
         ]
         output = self._format_losses(batch_loss)
 
@@ -496,8 +440,7 @@ class TadGAN(Model):
         # Fit the model using TensorFlow's fit function.
         self.fit_history = super().fit(train_data, validation_data=valid, epochs=self.epochs,
                                        verbose=self.verbose, callbacks=callbacks,
-                                       batch_size=self.batch_size, shuffle=self.shuffle
-                                       )
+                                       batch_size=self.batch_size, shuffle=self.shuffle)
         self.fitted = True
 
     def predict(self, X: ndarray, y: Optional[ndarray] = None) -> tuple:
