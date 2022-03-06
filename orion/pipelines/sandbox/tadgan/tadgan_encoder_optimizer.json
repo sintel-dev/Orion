@@ -23,7 +23,7 @@
         },
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "target_column": 0,
-            "window_size": 1000,
+            "window_size": 100,
             "target_size": 1
         },
         "orion.primitives.timeseries_preprocessing.slice_array_by_dims": {
@@ -38,21 +38,7 @@
                     "class": "orion.primitives.attention_layers.Encoder",
                     "parameters": {
                         "num_layers": "num_layers",
-                        "d_model": "d_model",
-                        "num_heads": "num_heads"
-                    }
-                },
-                {
-                    "class": "tensorflow.keras.layers.AvgPool1D",
-                    "parameters": {
-                        "strides": 2
-                    }
-                },
-                {
-                    "class": "orion.primitives.attention_layers.Encoder",
-                    "parameters": {
-                        "num_layers": "num_layers",
-                        "d_model": "d_model",
+                        "d_model": "input_dim",
                         "num_heads": "num_heads"
                     }
                 },
