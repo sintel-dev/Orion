@@ -212,11 +212,107 @@ LOCAL=0
 #GPU=1
 
 
+# -----INPUT SIZE EXPERIMENTS------
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_25_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_25_gpu'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_25_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_25_gpu'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_50_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_50_gpu'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_50_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_50_gpu'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_200_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_200_gpu'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_200_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_200_gpu'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_400_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_400_gpu'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_400_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_400_gpu'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_encoder_downsample_optimizer_25_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_downsample_optimizer_25'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_encoder_downsample_optimizer_25_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_downsample_optimizer_25'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_encoder_downsample_optimizer_50_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_downsample_optimizer_50'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_encoder_downsample_optimizer_50_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_downsample_optimizer_50'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_encoder_downsample_optimizer_200_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_downsample_optimizer_200'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_encoder_downsample_optimizer_200_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_downsample_optimizer_200'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_encoder_downsample_optimizer_400_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_downsample_optimizer_400'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_encoder_downsample_optimizer_400_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_downsample_optimizer_400'}"
+#GPU=1
+
+
 # pipelines = {
-#     'tadgan': 'tadgan_encoder_downsample_1000',
-#     'tadgan': 'tadgan_encoder_downsample_optimizer_1000',
 #     'tadgan': 'tadsgan'
-#     'tadgan': 'tadgan_2.0_complete_encoder'
 # }
 
 echo "$EXPERIMENT_NAME"
