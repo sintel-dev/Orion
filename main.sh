@@ -185,7 +185,31 @@ LOCAL=0
 #GPU=1
 
 
-# -----RESHAPE EXPERIMENTS------
+# -----MULTI-TO-MULTI EXPERIMENTS------
+
+#cp orion/primitives/tadgan_2d.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_2d_lstm_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_2d_lstm'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_2d.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_2d_lstm_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_2d_lstm'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_2d.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_2d_encoder_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_2d_encoder'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_2d.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_2d_encoder_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_2d_encoder'}"
+#GPU=1
 
 
 # pipelines = {
