@@ -91,6 +91,18 @@ LOCAL=0
 #PIPELINES="{'tadgan':'tadgan_encoder_optimizer'}"
 #GPU=1
 
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_encoder_embedding_optimizer_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_embedding_optimizer'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_encoder_embedding_optimizer_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder_embedding_optimizer'}"
+#GPU=1
+
 
 # -----ENCODER DOWNSAMPLE EXPERIMENTS------
 
