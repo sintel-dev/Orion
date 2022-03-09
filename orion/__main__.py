@@ -2,7 +2,6 @@
 # coding: utf-8
 
 import argparse
-import getpass
 import logging
 import warnings
 
@@ -44,13 +43,6 @@ def get_parser():
                       help='Name of the logfile. If not given, log to stdout.')
     base.add_argument('-v', '--verbose', action='count', default=0,
                       help='Be verbose. Use -vv for increased verbosity.')
-
-    common = argparse.ArgumentParser(add_help=False, parents=[base])
-    common.add_argument('-D', '--database', default='orion',
-                        help='Name of the database to connect to. Defaults to "orion"')
-
-    common_user = argparse.ArgumentParser(add_help=False, parents=[common])
-    common_user.add_argument('-u', '--user', default=getpass.getuser(), help='User identifier')
 
     parser = argparse.ArgumentParser(description='Orion Command Line Interface.')
     parser.set_defaults(function=None)
