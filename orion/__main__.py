@@ -10,7 +10,6 @@ import tabulate
 
 from orion.analysis import get_available_templates
 from orion.benchmark import benchmark
-from orion.data import load_signal
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 
 warnings.filterwarnings("ignore")
@@ -73,7 +72,6 @@ def get_parser():
     evaluate.add_argument('--no-holdout', dest='holdout', action='store_false', default=None,
                           help='Do not holdout test data curing training.')
     evaluate.set_defaults(function=_evaluate)
-
 
     group = evaluate.add_mutually_exclusive_group(required=True)
     group.add_argument('-p', '--pipeline', default=[], action='append',
