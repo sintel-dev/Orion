@@ -10,5 +10,4 @@ In this section you will find a detailed specification of all the public functio
 
    orion
    evaluation
-   db
    prim

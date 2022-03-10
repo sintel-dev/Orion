@@ -127,7 +127,6 @@ You can find the scores of each pipeline on every signal recorded in the [detail
 Additional resources that might be of interest:
 * Learn about [benchmarking pipelines](BENCHMARK.md).
 * Read about [pipeline evaluation](orion/evaluation/README.md).
-* More about [database design](DATABASE.md).
 * Find out more about [TadGAN](https://arxiv.org/pdf/2009.07769v3.pdf).
 
 # Citation
