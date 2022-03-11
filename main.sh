@@ -28,6 +28,20 @@ LOCAL=0
 #GPU=1
 
 
+# -----TRANSFORMER DYNAMIC THRESHOLD EXPERIMENTS------
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_transformer_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'transformer_dynamic_threshold'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_transformer_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'transformer_dynamic_threshold'}"
+#GPU=1
+
+
 # -----BASE 2.0 + ATTENTION LAYER EXPERIMENTS------
 #cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="U_tadgan_2.0_attention"
