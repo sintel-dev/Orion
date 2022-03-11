@@ -149,8 +149,7 @@ def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
         start = datetime.utcnow()
         pipeline = _load_pipeline(pipeline, hyperparameter)
         save_output = cache_path + '_log.pkl' if cache_path else cache_path
-        anomalies = analyze(pipeline, train, test, save_output=save_output)
-        # anomalies = analyze(pipeline, train, test, labels=truth, save_output=save_output)
+        anomalies = analyze(pipeline, train, test, labels=truth, save_output=save_output)
         elapsed = datetime.utcnow() - start
 
         scores = {

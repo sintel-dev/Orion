@@ -1,0 +1,40 @@
+{
+    "name": "orion.primitives.timeseries_preprocessing.mask_labels",
+    "contributors": [
+        "Lawrence Wong <lcwong@mit.edu>"
+    ],
+    "documentation": "",
+    "description": "mask anomaly labels",
+    "classifiers": {
+        "type": "preprocessor",
+        "subtype": "transformer"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.timeseries_preprocessing.mask_labels",
+    "produce": {
+        "args": [
+            {
+                "name": "labels",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "labels",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "mode": {
+                "type": "str",
+                "default": "random_noise"
+            },
+            "p": {
+                "type": "float",
+                "default": 0.5
+            }
+        }
+    }
+}

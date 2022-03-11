@@ -36,12 +36,13 @@ def _load_pipeline(pipeline, hyperparams=None):
     return pipeline
 
 
-def _run_pipeline(pipeline, train, test, save_output):
+def _run_pipeline(pipeline, train, test, truth, save_output):
     LOGGER.debug("Fitting the pipeline")
-    pipeline.fit(train)
+    pipeline.fit(train, timestamp=train['timestamp'], anomalies=truth)
 
     LOGGER.debug("Finding events")
-    output = pipeline.predict(test, output_=['default', 'model_info'])
+    output = pipeline.predict(test, timestamp=train['timestamp'], anomalies=truth,
+                              output_=['default', 'model_info'])
     if save_output:
         with open(save_output, 'wb') as f:
             pickle.dump(output, f)
@@ -59,13 +60,13 @@ def _build_events_df(events):
     return events
 
 
-def analyze(pipeline, train, test=None, hyperparams=None, save_output=None):
+def analyze(pipeline, train, test=None, hyperparams=None, labels=None, save_output=None):
     if test is None:
         test = train
 
     if not isinstance(pipeline, MLPipeline):
         pipeline = _load_pipeline(pipeline, hyperparams)
 
-    events = _run_pipeline(pipeline, train, test, save_output)
+    events = _run_pipeline(pipeline, train, test, labels, save_output)
 
     return _build_events_df(events)

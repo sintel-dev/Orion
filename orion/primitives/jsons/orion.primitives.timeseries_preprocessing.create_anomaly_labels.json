@@ -1,0 +1,40 @@
+{
+    "name": "orion.primitives.timeseries_preprocessing.create_anomaly_labels",
+    "contributors": [
+        "Lawrence Wong <lcwong@mit.edu>"
+    ],
+    "documentation": "",
+    "description": "create labels directly for time series mode",
+    "classifiers": {
+        "type": "preprocessor",
+        "subtype": "transformer"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.timeseries_preprocessing.create_anomaly_labels",
+    "produce": {
+        "args": [
+            {
+                "name": "labels",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "labels",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "mode": {
+                "type": "str",
+                "default": "binary"
+            },
+            "threshold": {
+                "type": "float",
+                "default": 0.5
+            }
+        }
+    }
+}

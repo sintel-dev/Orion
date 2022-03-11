@@ -10,5 +10,19 @@
     "orion.primitives.tadgan.score_anomalies#1": {
         "rec_error_type": "dtw",
         "comb": "mult"
+    },
+    "outputs": {
+        "default": [
+            {
+                "name": "events",
+                "variable": "orion.primitives.timeseries_anomalies.find_anomalies#1.y"
+            }
+        ],
+        "model_info": [
+            {
+                "name": "fit_history",
+                "variable": "orion.primitives.tadgan.TadGAN#1.fit_history"
+            }
+        ]
     }
 }

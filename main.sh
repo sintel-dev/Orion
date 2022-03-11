@@ -311,9 +311,27 @@ LOCAL=0
 #GPU=1
 
 
-# pipelines = {
-#     'tadgan': 'tadsgan'
-# }
+# -----SEMI-SUPERVISED EXPERIMENTS------
+
+#EXPERIMENT_NAME="U_tadgan_2.0_semi_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan_semi':'tadgan_semi_gpu'}"
+#GPU=1
+
+#EXPERIMENT_NAME="U_tadgan_2.0_semi_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan_semi':'tadgan_semi_gpu'}"
+#GPU=1
+
+#EXPERIMENT_NAME="U_tadgan_2.0_semi_encoder_downsample_optimizer_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan_semi':'tadgan_semi_encoder_downsample_optimizer'}"
+#GPU=1
+
+#EXPERIMENT_NAME="M_tadgan_2.0_semi_encoder_downsample_optimizer_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan_semi':'tadgan_semi_encoder_downsample_optimizer'}"
+#GPU=1
 
 echo "$EXPERIMENT_NAME"
 if [[ $LOCAL = 1 ]]; then

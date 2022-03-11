@@ -1,0 +1,32 @@
+{
+    "name": "orion.primitives.timeseries_preprocessing.expand_anomalies",
+    "contributors": [
+        "Lawrence Wong <lcwong@mit.edu>"
+    ],
+    "documentation": "",
+    "description": "expands anomaly to match with given index",
+    "classifiers": {
+        "type": "preprocessor",
+        "subtype": "transformer"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.timeseries_preprocessing.expand_anomalies",
+    "produce": {
+        "args": [
+            {
+                "name": "timestamp",
+                "type": "list"
+            },
+            {
+                "name": "anomalies",
+                "type": "pd.DataFrame"
+            }
+        ],
+        "output": [
+            {
+                "name": "labels",
+                "type": "pd.Dataframe"
+            }
+        ]
+    }
+}

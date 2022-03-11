@@ -89,3 +89,51 @@ def fillna(X, value=None, method=None, axis=None, limit=None, downcast=None):
         X_ = X_.fillna(value=value, method=fill, axis=axis, limit=limit, downcast=downcast)
 
     return X_.values
+
+
+def expand_anomalies(timestamp: list, anomalies: pd.DataFrame) -> pd.DataFrame:
+    """Create labels from given anomalies."""
+    labels = []
+
+    for i in timestamp:
+        label = 1
+        for start, end in zip(anomalies.start, anomalies.end):
+            if start <= i <= end:
+                label = 2
+                break
+        labels.append(label)
+
+    df = pd.DataFrame()
+    df['timestamp'] = timestamp
+    df['labels'] = labels
+    return df
+
+
+def mask_labels(labels: pd.DataFrame, mode: str = 'random_noise', p: float = .5) -> pd.DataFrame:
+    if mode == 'random_noise':
+        labels['labels'][np.random.choice([0, 1], size=(len(labels),), p=[p, 1 - p]) == 0] = 0
+
+    return labels
+
+
+def create_anomaly_labels(labels: np.array, mode: str = 'binary', threshold: float = 0.5):
+    final_labels = []
+    num_steps = labels.shape[0]
+
+    if mode == 'binary':
+        for label in labels:
+            final_label = 2
+            label = label.flatten()
+
+            exceed_threshold = (np.sum(label == 2) >= num_steps * threshold).astype(int)
+            if not exceed_threshold:
+                final_label = np.bincount(label).argmax()
+            final_labels.append(final_label)
+
+    else:
+        final_labels = labels
+
+    return np.array(final_labels)
+
+
+
