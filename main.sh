@@ -104,6 +104,20 @@ LOCAL=0
 #GPU=1
 
 
+# -----TIME ENCODER (1:1) EXPERIMENTS------
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0_time_encoder_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_time_encoder'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_tadgan_2.0_time_encoder_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_time_encoder'}"
+#GPU=1
+
+
 # -----ENCODER DOWNSAMPLE EXPERIMENTS------
 
 #cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
