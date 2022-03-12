@@ -206,7 +206,8 @@ class Encoder(tf.keras.layers.Layer):
 
     def __init__(self, d_model: int = None, num_heads: int = None, dff: int = None,
                  rate: float = 0.1, num_layers: int = 2, time2vec_dim: int = 2,
-                 skip_connection_strength: float = 0.9, **kwargs):
+                 skip_connection_strength: float = 0.9, return_sequences: bool = False,
+                 **kwargs):
         super(Encoder, self).__init__()
 
         self.d_model = d_model
@@ -216,6 +217,7 @@ class Encoder(tf.keras.layers.Layer):
         self.num_layers = num_layers
         self.time2vec_dim = time2vec_dim
         self.skip_connection_strength = skip_connection_strength
+        self.return_sequences = return_sequences
 
         self.enc_layers = None
         self.layer_norm = tf.keras.layers.LayerNormalization(epsilon=1e-6)
@@ -237,7 +239,7 @@ class Encoder(tf.keras.layers.Layer):
             x = self.enc_layers[i](x, training, mask)
             x = ((1.0 - self.skip_connection_strength) * x) + (
                 self.skip_connection_strength * prev_x)
-        return x
+        return x if self.return_sequences else x[:, -1, :]
 
     def get_config(self):
         config = super().get_config().copy()
@@ -249,5 +251,6 @@ class Encoder(tf.keras.layers.Layer):
             'num_layers': self.num_layers,
             'time2vec_dim': self.time2vec_dim,
             'skip_connection_strength': self.skip_connection_strength,
+            'return_sequences': self.return_sequences,
         })
         return config

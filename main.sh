@@ -2,6 +2,20 @@
 
 LOCAL=0
 
+# -----BASE 2.0 SPEED UP EXPERIMENTS------
+#cp orion/primitives/tadgan_speedup.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan'}"
+#GPU=0
+
+#cp orion/primitives/tadgan_speedup.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_tadgan_2.0"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'tadgan':'tadgan_encoder'}"
+#GPU=0
+
+
 # -----BASE 2.0 EXPERIMENTS------
 #cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="U_tadgan_2.0"
@@ -39,6 +53,18 @@ LOCAL=0
 #EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_transformer_gpu"
 #DATASETS="multivariate_datasets"
 #PIPELINES="{'lstm_dynamic_threshold':'transformer_dynamic_threshold'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_transformer_v2_gpu"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'transformer_dynamic_threshold_v2'}"
+#GPU=1
+
+#cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_transformer_v2_gpu"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'transformer_dynamic_threshold_v2'}"
 #GPU=1
 
 
