@@ -29,7 +29,9 @@
             "layers": [
                 {
                     "class": "orion.primitives.time_transformer_layers.Encoder",
-                    "parameters": {}
+                    "parameters": {
+                        "return_sequences": true
+                    }
                 },
                 {
                     "class": "tensorflow.keras.layers.Flatten",
