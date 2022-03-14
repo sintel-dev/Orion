@@ -113,7 +113,7 @@ We run the benchmark on **11** datasets with their known grounth truth. We recor
 
 | Pipeline                  |  Outperforms ARIMA |
 |---------------------------|--------------------|
-| TadGAN                    |          8         |
+| TadGAN                    |          7         |
 | LSTM Dynamic Thresholding |          7         |
 | LSTM Autoencoder          |          7         |
 | Dense Autoencoder         |          7         |
@@ -127,7 +127,6 @@ You can find the scores of each pipeline on every signal recorded in the [detail
 Additional resources that might be of interest:
 * Learn about [benchmarking pipelines](BENCHMARK.md).
 * Read about [pipeline evaluation](orion/evaluation/README.md).
-* More about [database design](DATABASE.md).
 * Find out more about [TadGAN](https://arxiv.org/pdf/2009.07769v3.pdf).
 
 # Citation
