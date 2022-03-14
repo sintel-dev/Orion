@@ -209,13 +209,19 @@ class MADE(nn.Module):
                  activation='relu', input_order='sequential', input_degrees=None):
         """
         Args:
-            input_size -- scalar; dim of inputs
-            hidden_size -- scalar; dim of hidden layers
-            n_hidden -- scalar; number of hidden layers
-            activation -- str; activation function to use
-            input_order -- str or tensor; variable order for creating the autoregressive masks (sequential|random)
-                            or the order flipped from the previous layer in a stack of mades
-            conditional -- bool; whether model is conditional
+            input_size (int):
+                dim of inputs
+            hidden_size (int):
+                dim of hidden layers
+            n_hidden (int):
+                number of hidden layers
+            activation (str):
+                activation function to use
+            input_order (str or tensor):
+                variable order for creating the autoregressive masks (sequential|random)
+                or the order flipped from the previous layer in a stack of mades
+            conditional (bool):
+                whether model is conditional
         """
         super().__init__()
         # base distribution for calculation of log prob under the model
