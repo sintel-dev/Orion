@@ -74,9 +74,6 @@ development_requires = [
     'coverage>=4.5.1,<6',
     'tox>=2.9.1,<4',
     'invoke',
-
-    # Documentation style
-    'pydocstyle==3.0.0,<4',
 ]
 
 setup(

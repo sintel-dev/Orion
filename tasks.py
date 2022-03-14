@@ -22,6 +22,9 @@ def install_minimum(c):
     started = False
     for line in lines:
         if started:
+            if line.startswith('#'): # ignore comment
+                continue
+            
             if line == ']':
                 started = False
                 continue
