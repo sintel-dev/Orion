@@ -51,7 +51,7 @@
                     }
                 },
                 {
-                    "class": "orion.primitives.attention_layers.AttentionLayer",
+                    "class": "orion.primitives.attention_layers.BahdanauAttention",
                     "parameters": {
                         "return_sequences": true
                     }
@@ -110,7 +110,7 @@
                     }
                 },
                 {
-                    "class": "orion.primitives.attention_layers.AttentionLayer",
+                    "class": "orion.primitives.attention_layers.BahdanauAttention",
                     "parameters": {
                         "return_sequences": true
                     }
@@ -141,7 +141,7 @@
                     }
                 },
                 {
-                    "class": "orion.primitives.attention_layers.AttentionLayer",
+                    "class": "orion.primitives.attention_layers.BahdanauAttention",
                     "parameters": {
                         "return_sequences": true
                     }
