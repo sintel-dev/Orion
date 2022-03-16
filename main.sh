@@ -43,20 +43,7 @@ LOCAL=0
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer'}"
 #GPU=1
 
-# -----BASE 2.0 SPEED UP EXPERIMENTS------
-#cp orion/primitives/tadgan_speedup.py orion/primitives/tadgan.py
-#EXPERIMENT_NAME="U_tadgan_2.0"
-#DATASETS="univariate_datasets"
-#PIPELINES="{'tadgan':'tadgan'}"
-#GPU=0
-
-#cp orion/primitives/tadgan_speedup.py orion/primitives/tadgan.py
-#EXPERIMENT_NAME="U_tadgan_2.0"
-#DATASETS="univariate_datasets"
-#PIPELINES="{'tadgan':'tadgan_encoder'}"
-#GPU=0
-
-# -----BASE 2.0 EXPERIMENTS------ CHECKED
+# ==========[TADGAN 2.0]==========
 #cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="U_tadgan_2.0"
 #DATASETS="univariate_datasets"
@@ -81,7 +68,7 @@ LOCAL=0
 #PIPELINES="{'tadgan':'tadgan_gpu'}"
 #GPU=1
 
-# -----BASE 2.0 + ATTENTION LAYER EXPERIMENTS------ CHECKED
+# ==========[TADGAN 2.0 ATTENTION]==========
 #cp orion/primitives/tadgan_org.py orion/primitives/tadgan.py
 #EXPERIMENT_NAME="U_tadgan_2.0_attention"
 #DATASETS="univariate_datasets"
