@@ -5,7 +5,7 @@ LOCAL=0
 # ==========[TRANSFORMER DYNAMIC THRESHOLD]==========
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0"
 #DATASETS="univariate_datasets"
-#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold'}"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_viz'}"
 #GPU=1
 
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_attention"
