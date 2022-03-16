@@ -134,7 +134,6 @@ def _sort_leaderboard(df, rank, metrics):
 
 def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
                      test_split=False, detrend=False, pipeline_path=None, cache_path=None):
-
     train, test = _load_signal(signal, test_split)
     truth = load_anomalies(signal)
 
@@ -149,7 +148,9 @@ def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
         start = datetime.utcnow()
         pipeline = _load_pipeline(pipeline, hyperparameter)
         save_output = cache_path + '_log.pkl' if cache_path else cache_path
-        anomalies = analyze(pipeline, train, test, labels=truth, save_output=save_output)
+        if signal in ['WADI', 'SWaT']:
+            save_output = None
+        anomalies = analyze(pipeline, train, test, save_output=save_output)
         elapsed = datetime.utcnow() - start
 
         scores = {
