@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL=1
+LOCAL=0
 
 # ==========[TRANSFORMER DYNAMIC THRESHOLD]==========
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0"
