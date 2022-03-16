@@ -2,7 +2,9 @@
 """
 Tensorflow implementation of transformer with time series specific changes.
 
-https://www.tensorflow.org/text/tutorials/transformer
+References:
+    - https://machinelearningmastery.com/adding-a-custom-attention-layer-to-recurrent-neural-network-in-keras/
+    - https://www.tensorflow.org/text/tutorials/transformer
 """
 
 import numpy as np
@@ -266,7 +268,7 @@ class Encoder(tf.keras.layers.Layer):
         for i in range(self.num_layers):
             x = self.enc_layers[i](x, training, mask)
         # (batch_size, input_seq_len, d_model)
-        return x if self.return_sequences else tf.squeeze(x[:, -1, :])
+        return x if self.return_sequences else x[:, -1, :]
 
     def get_config(self):
         config = super().get_config().copy()
@@ -431,11 +433,7 @@ class Transformer(tf.keras.layers.Layer):
 
 
 class BahdanauAttention(tf.keras.layers.Layer):
-    """Implementation of Bahdanau Attention.
-
-    References:
-        - https://machinelearningmastery.com/adding-a-custom-attention-layer-to-recurrent-neural-network-in-keras/
-    """
+    """Implementation of Bahdanau Attention."""
 
     def __init__(self, return_sequences: bool = True):
         self.return_sequences = return_sequences
