@@ -239,7 +239,7 @@ class Encoder(tf.keras.layers.Layer):
             x = self.enc_layers[i](x, training, mask)
             x = ((1.0 - self.skip_connection_strength) * x) + (
                 self.skip_connection_strength * prev_x)
-        return x if self.return_sequences else x[:, -1, :]
+        return x if self.return_sequences else tf.squeeze(x[:, -1, :])
 
     def get_config(self):
         config = super().get_config().copy()

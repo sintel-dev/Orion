@@ -242,7 +242,7 @@ class Encoder(tf.keras.layers.Layer):
     def __init__(self, num_layers: int, d_model: int, num_heads: int, dff: int = None,
                  maximum_position_encoding: int = 10000, rate: float = 0.1,
                  include_positional_encoding: bool = True,
-                 return_last_position: bool = False, **kwargs):
+                 return_sequences: bool = False, **kwargs):
         super(Encoder, self).__init__()
 
         self.d_model = d_model
@@ -251,7 +251,7 @@ class Encoder(tf.keras.layers.Layer):
         self.dff = d_model * 4 if dff is None else dff
         self.include_positional_encoding = include_positional_encoding
         self.maximum_position_encoding = maximum_position_encoding
-        self.return_last_position = return_last_position
+        self.return_sequences = return_sequences
         self.rate = rate
 
         self.pos_encoding = PositionalEncoding(self.d_model, self.maximum_position_encoding, rate)
@@ -266,7 +266,7 @@ class Encoder(tf.keras.layers.Layer):
         for i in range(self.num_layers):
             x = self.enc_layers[i](x, training, mask)
         # (batch_size, input_seq_len, d_model)
-        return x[:, 0, :] if self.return_last_position else x
+        return x if self.return_sequences else tf.squeeze(x[:, -1, :])
 
     def get_config(self):
         config = super().get_config().copy()
@@ -430,34 +430,38 @@ class Transformer(tf.keras.layers.Layer):
         return config
 
 
-class AttentionLayer(tf.keras.layers.Layer):
-    """Attention layer over LSTM."""
+class BahdanauAttention(tf.keras.layers.Layer):
+    """Implementation of Bahdanau Attention.
+
+    References:
+        - https://machinelearningmastery.com/adding-a-custom-attention-layer-to-recurrent-neural-network-in-keras/
+    """
 
     def __init__(self, return_sequences: bool = True):
         self.return_sequences = return_sequences
-        super(AttentionLayer, self).__init__()
+        self.W = None
+        self.b = None
+        super(BahdanauAttention, self).__init__()
 
     def build(self, input_shape: tuple):
-        self.att_weight = self.add_weight(shape=(input_shape[-1], 1),
-                                          initializer="normal", name="att_weight")
-        self.att_bias = self.add_weight(shape=(input_shape[1], 1),
-                                        initializer="zeros", name="att_bias")
-        super(AttentionLayer, self).build(input_shape)
+        self.W = self.add_weight(shape=(input_shape[-1], 1), trainable=True,
+                                 initializer="normal", name="attention_weight")
+        self.b = self.add_weight(shape=(input_shape[1], 1), trainable=True,
+                                 initializer="zeros", name="attention_bias")
+        super(BahdanauAttention, self).build(input_shape)
 
-    def call(self, X):
-        e = K.tanh(K.dot(X, self.att_weight) + self.att_bias)
-        a = K.softmax(e, axis=1)
-        output = X * a
+    def call(self, X, training=True, mask=None):
+        e = K.tanh(K.dot(X, self.W) + self.b)
+        alpha = K.softmax(e, axis=1)
+        context = X * alpha
 
         if self.return_sequences:
-            return output
-
-        return K.sum(output, axis=1)
+            return context
+        return K.sum(context, axis=1)
 
     def get_config(self):
         config = super().get_config().copy()
         config.update({
             'return_sequences': self.return_sequences,
         })
-
         return config
