@@ -28,7 +28,7 @@
             "epochs": 35,
             "layers": [
                 {
-                    "class": "orion.primitives.time_transformer_layers.Encoder",
+                    "class": "orion.primitives.time_series_transformer.Encoder",
                     "parameters": {
                         "return_sequences": false
                     }
