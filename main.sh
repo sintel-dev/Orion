@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL=0
+LOCAL=1
 
 # ==========[TRANSFORMER DYNAMIC THRESHOLD]==========
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0"
@@ -23,6 +23,11 @@ LOCAL=0
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder'}"
 #GPU=1
 
+#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_timeseries_encoder_embedding"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_embedding'}"
+#GPU=1
+
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_one_layer"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_one_layer'}"
@@ -41,6 +46,11 @@ LOCAL=0
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_timeseries_encoder_one_layer"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer'}"
+#GPU=1
+
+#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_timeseries_encoder_one_layer_embedding"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer_embedding'}"
 #GPU=1
 
 # ==========[TADGAN 2.0]==========
