@@ -8,8 +8,18 @@ LOCAL=0
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_viz'}"
 #GPU=1
 
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_viz'}"
+#GPU=1
+
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_attention"
 #DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_attention'}"
+#GPU=1
+
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_attention"
+#DATASETS="multivariate_datasets"
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_attention'}"
 #GPU=1
 
@@ -18,18 +28,18 @@ LOCAL=0
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_encoder'}"
 #GPU=1
 
-#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_timeseries_encoder"
-#DATASETS="univariate_datasets"
-#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder'}"
-#GPU=1
-
-#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_timeseries_encoder_embedding"
-#DATASETS="univariate_datasets"
-#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_embedding'}"
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_encoder"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_encoder'}"
 #GPU=1
 
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_one_layer"
 #DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_one_layer'}"
+#GPU=1
+
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_one_layer"
+#DATASETS="multivariate_datasets"
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_one_layer'}"
 #GPU=1
 
@@ -38,8 +48,18 @@ LOCAL=0
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_attention_one_layer'}"
 #GPU=1
 
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_attention_one_layer"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_attention_one_layer'}"
+#GPU=1
+
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_encoder_one_layer"
 #DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_encoder_one_layer'}"
+#GPU=1
+
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_encoder_one_layer"
+#DATASETS="multivariate_datasets"
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_encoder_one_layer'}"
 #GPU=1
 
@@ -48,8 +68,18 @@ LOCAL=0
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer'}"
 #GPU=1
 
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_timeseries_encoder_one_layer"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer'}"
+#GPU=1
+
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_timeseries_encoder_one_layer_embedding"
 #DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer_embedding'}"
+#GPU=1
+
+#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_timeseries_encoder_one_layer_embedding"
+#DATASETS="multivariate_datasets"
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer_embedding'}"
 #GPU=1
 

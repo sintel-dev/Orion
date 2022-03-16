@@ -36,7 +36,7 @@ def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True):
     if not smooth:
         return errors
 
-    smoothing_window = int(smoothing_window * len(y))
+    smoothing_window = max(1, int(len(y)*smoothing_window))
 
     return pd.Series(errors).ewm(span=smoothing_window).mean().values
 
