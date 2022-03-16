@@ -36,7 +36,7 @@
                 {
                     "class": "keras.layers.Dropout",
                     "parameters": {
-                        "rate": "dropout_2_rate"
+                        "rate": "dropout_1_rate"
                     }
                 },
                 {
