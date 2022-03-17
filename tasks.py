@@ -22,14 +22,14 @@ def install_minimum(c):
     started = False
     for line in lines:
         if started:
-            if line.startswith('#'): # ignore comment
-                continue
-            
             if line == ']':
                 started = False
                 continue
 
             line = line.strip()
+            if line.startswith('#'): # ignore comment
+                continue
+                
             line = re.sub(r',?<=?[\d.]*,?', '', line)
             line = re.sub(r'>=?', '==', line)
             line = re.sub(r"""['",]""", '', line)
