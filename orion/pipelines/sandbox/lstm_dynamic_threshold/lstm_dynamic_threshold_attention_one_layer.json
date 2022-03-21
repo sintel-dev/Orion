@@ -90,6 +90,10 @@
             {
                 "name": "index",
                 "variable": "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1.target_index"
+            },
+            {
+                "name": "errors",
+                "variable": "orion.primitives.timeseries_errors.regression_errors#1.errors"
             }
         ]
     }
