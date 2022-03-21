@@ -97,18 +97,18 @@ LOCAL=0
 #PIPELINES="{'lstm_autoencoder':'lstm_autoencoder_viz'}"
 #GPU=1
 
-# ==========[LSTM VARIATIONAL AUTOENCODERS]==========
-#EXPERIMENT_NAME="U_lstm_autoencoder_2.0"
+# ==========[VARIATIONAL AUTOENCODERS]==========
+#EXPERIMENT_NAME="U_vae_2.0"
 #DATASETS="univariate_datasets"
-#PIPELINES="{'lstm_autoencoder':'lstm_autoencoder_viz'}"
+#PIPELINES="{'vae':'vae_viz'}"
 #GPU=1
 
-#EXPERIMENT_NAME="M_lstm_autoencoder_2.0"
+#EXPERIMENT_NAME="M_vae_2.0"
 #DATASETS="multivariate_datasets"
-#PIPELINES="{'lstm_autoencoder':'lstm_autoencoder_viz'}"
+#PIPELINES="{'vae':'vae_viz'}"
 #GPU=1
 
-# ==========[VAE REGRESSOR THRESHOLD]==========
+# ==========[REGRESSION + RECONSTRUCTION MIXTURE]==========
 #EXPERIMENT_NAME="U_vae_reg_2.0_mean"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'vae_reg':'vae_reg'}"
