@@ -10,6 +10,7 @@ at https://github.com/EnyanDai/GANF/blob/main/models/GANF.py
 import logging
 import os
 import random
+from inspect import signature
 
 import numpy as np
 import pandas as pd
@@ -213,7 +214,7 @@ class GANFModel(object):
     def __init__(self, name='ganf', seed=18, n_blocks=1, n_components=1, hidden_size=32,
                  n_hidden=1, batch_norm=True, batch_size=512, dropout=0.0, weight_decay=5e-4,
                  epochs=1, learning_rate=2e-3, log_interval=5, max_iter=20, verbose=False,
-                 model_path=None):
+                 cuda=None, model_path=None):
         self.name = name
         self.seed = seed
         self.n_blocks = n_blocks
@@ -229,6 +230,8 @@ class GANFModel(object):
         self.log_interval = log_interval
         self.max_iter = max_iter
         self.verbose = verbose
+        self.cuda = cuda or torch.cuda.is_available()
+        self.model_path = model_path
 
         # defaults
         self.timestamp_column = None
@@ -237,6 +240,7 @@ class GANFModel(object):
         self.mean = None
         self.std = None
         self.A = None
+        self._fitted = False
 
         # create model
         self.model = GANF(
@@ -251,9 +255,25 @@ class GANFModel(object):
         if model_path is not None:
             LOGGER.info("Loading model from {}".format(model_path))
             self.model.load_state_dict(torch.load(model_path))
+            self._fitted = True
+
+    def __repr__(self):
+        indent = 4
+        attr_list = list(signature(self.__init__).parameters)
+
+        attrs_str = ',\n'.join(
+            '{indent}{attr_name}={attr_val!s}'.format(
+                indent=' ' * indent,
+                attr_name=attr,
+                attr_val=getattr(self, attr)
+            ) for attr in attr_list
+        )
+
+        return '{clsname}(\n{attrs_str}\n)'.format(
+            clsname=type(self).__name__, attrs_str=attrs_str)
 
     def _fit(self, train_loader, valid_loader, optimizer, iteration, rho,
-             alpha, save_path, device, verbose, loss_best=None):
+             alpha, save_path, device, loss_best=None):
         loss_best = loss_best or False
 
         for epoch in tqdm(range(self.epochs)):
@@ -287,19 +307,19 @@ class GANFModel(object):
                 loss_val = np.concatenate(loss_val)
                 loss_val = np.nan_to_num(loss_val)
 
-                if verbose and hasattr(valid_loader.dataset, 'label'):
+                if self.verbose and hasattr(valid_loader.dataset, 'label'):
                     roc_val = roc_auc_score(
                         np.asarray(valid_loader.dataset.label.values, dtype=int), loss_val)
 
                     print('[{}] Epoch: {}/{}, valid ROC AUC: {}'.format(
                         iteration, epoch, self.epochs, roc_val))
 
-            if verbose:
+            if self.verbose:
                 # will print 0 for valid if not initiated
                 print('[{}] Epoch: {}/{}, train -log_prob: {:.2f}, valid -log_prob: {:.2f}'.format(
                     iteration, epoch, self.epochs, np.mean(loss_train), np.mean(loss_val)))
 
-        if verbose:
+        if self.verbose:
             print('rho: {}, alpha {}, h {}'.format(rho, alpha, h.item()))
 
         if loss_best and np.mean(loss_val) < loss_best:
@@ -379,14 +399,13 @@ class GANFModel(object):
         # ------------------------------------------------------------------------------
         # Seeding
         # ------------------------------------------------------------------------------
-        cuda = torch.cuda.is_available()
-        device = torch.device("cuda" if cuda else "cpu")
+        device = torch.device("cuda" if self.cuda else "cpu")
 
         # seed
         random.seed(self.seed)
         np.random.seed(self.seed)
         torch.manual_seed(self.seed)
-        if cuda:
+        if self.cuda:
             torch.cuda.manual_seed(self.seed)
 
         self.model.to(device)
@@ -404,8 +423,9 @@ class GANFModel(object):
         init = torch.zeros([self.channels, self.channels])
         init = xavier_uniform_(init).abs()
         init = init.fill_diagonal_(0.0)
+        # self.A = init.clone().detach().to(device).requires_grad_(True) # .to(device)
         self.A = torch.tensor(init, requires_grad=True, device=device)
-
+        print(self.A.is_leaf)
         # ------------------------------------------------------------------------------
         # Saving directory
         # ------------------------------------------------------------------------------
@@ -464,7 +484,7 @@ class GANFModel(object):
             loss_best=loss_best
         )
 
-    def predict(self, data, loss=False):
+    def predict(self, data, return_loss=False):
         """Predict values using the initialized object.
 
         Args:
@@ -476,6 +496,9 @@ class GANFModel(object):
                 * Predicted values for each input sequence.
                 * Test loss value
         """
+        data[self.timestamp_column] = pd.to_datetime(data[self.timestamp_column])
+        data = data.set_index(self.timestamp_column)
+
         if self.target_column in data.columns:
             data = data.drop(self.target_column, axis=1)
 
@@ -484,8 +507,7 @@ class GANFModel(object):
 
         test_loader = DataLoader(Signal(test), batch_size=self.batch_size, shuffle=False)
 
-        cuda = torch.cuda.is_available()
-        device = torch.device("cuda" if cuda else "cpu")
+        device = torch.device("cuda" if self.cuda else "cpu")
 
         self.model.eval()
         loss_test = []
@@ -494,12 +516,11 @@ class GANFModel(object):
                 x = x.to(device)
                 loss = -self.model.test(x, self.A.data).cpu().numpy()
                 loss_test.append(loss)
-                print(loss)
 
-                break
+        print(len(loss_test))
 
         loss_test = np.concatenate(loss_test)
         loss_test = np.nan_to_num(loss_test)
 
-        if loss:
+        if return_loss:
             return np.mean(loss_test)
