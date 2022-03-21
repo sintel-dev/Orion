@@ -30,6 +30,8 @@
                 {
                     "class": "orion.primitives.attention_layers.Encoder",
                     "parameters": {
+                        "d_model": "lstm_1_units",
+                        "num_heads": 5,
                         "return_sequences": false
                     }
                 },
