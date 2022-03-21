@@ -1,0 +1,50 @@
+{
+    "primitives": [
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate",
+        "sklearn.preprocessing.MinMaxScaler",
+        "pandas.isnull",
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
+        "keras.Sequential.LSTMTimeSeriesRegressor",
+        "orion.primitives.timeseries_errors.regression_errors",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
+    ],
+    "init_params": {
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "time_column": "timestamp",
+            "interval": 21600,
+            "method": "mean"
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [
+                -1,
+                1
+            ]
+        },
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 250,
+            "drop_windows": true
+        },
+        "keras.Sequential.LSTMTimeSeriesRegressor": {
+            "epochs": 35
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size_portion": 0.33,
+            "window_step_size_portion": 0.1,
+            "fixed_threshold": true
+        }
+    },
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "target_index"
+        }
+    },
+    "output_names": {
+        "pandas.isnull#1": {
+            "y": "drop"
+        },
+        "keras.Sequential.LSTMTimeSeriesRegressor#1": {
+            "y": "y_hat"
+        }
+    }
+}

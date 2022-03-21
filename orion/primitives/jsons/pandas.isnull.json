@@ -1,0 +1,28 @@
+{
+    "name": "pandas.isnull",
+    "contributors": [
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "documentation": "https://pandas.pydata.org/docs/reference/api/pandas.isnull.html",
+    "description": "Detect missing values for an array-like object.",
+    "classifiers": {
+        "type": "helper"
+    },
+    "modalities": [],
+    "primitive": "pandas.isnull",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "keyword": "obj",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    }
+}
