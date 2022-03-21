@@ -52,8 +52,16 @@
         ],
         "model_info": [
             {
+                "name": "y",
+                "variable": "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1.y"
+            },
+            {
                 "name": "y_hat",
                 "variable": "keras.Sequential.LSTMTimeSeriesRegressor#1.y_hat"
+            },
+            {
+                "name": "index",
+                "variable": "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1.target_index"
             }
         ]
     }
