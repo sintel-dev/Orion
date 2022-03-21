@@ -2,6 +2,24 @@
 
 LOCAL=0
 
+# ==========[BASELINE ARIMA]==========
+#EXPERIMENT_NAME="U_arima_2.0"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'arima':'arima_viz'}"
+#GPU=1
+
+
+# ==========[VAE REGRESSOR THRESHOLD]==========
+#EXPERIMENT_NAME="U_vae_reg_2.0_mean"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'vae_reg':'vae_reg'}"
+#GPU=1
+
+#EXPERIMENT_NAME="U_vae_reg_2.0_250"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'vae_reg':'vae_reg_250'}"
+#GPU=1
+
 # ==========[TRANSFORMER DYNAMIC THRESHOLD]==========
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0"
 #DATASETS="univariate_datasets"
@@ -36,6 +54,21 @@ LOCAL=0
 #EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_one_layer"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_one_layer'}"
+#GPU=1
+
+#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_one_layer_hide_100"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_one_layer_hide_100'}"
+#GPU=1
+
+#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_one_layer_v2"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_one_layer_v2'}"
+#GPU=1
+
+#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_one_layer_v2_hide_100"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_one_layer_v2_hide_100'}"
 #GPU=1
 
 #EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_one_layer"
