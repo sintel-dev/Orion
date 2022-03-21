@@ -2,12 +2,18 @@
 
 LOCAL=0
 
-# ==========[BASELINE ARIMA]==========
+# ==========[BASELINE ARIMA 2.0]==========
 #EXPERIMENT_NAME="U_arima_2.0"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'arima':'arima_viz'}"
 #GPU=1
 
+#TODO: Update ARIMA model in mlprimitives to support exog variables.
+#TODO: Add pipeline files for multivariate datasets.
+#EXPERIMENT_NAME="M_arima_2.0"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'arima':'arima_viz'}"
+#GPU=1
 
 # ==========[VAE REGRESSOR THRESHOLD]==========
 #EXPERIMENT_NAME="U_vae_reg_2.0_mean"
