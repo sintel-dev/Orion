@@ -86,6 +86,28 @@ LOCAL=0
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer_embedding'}"
 #GPU=1
 
+# ==========[LSTM AUTOENCODERS]==========
+#EXPERIMENT_NAME="U_lstm_autoencoder_2.0"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_autoencoder':'lstm_autoencoder_viz'}"
+#GPU=1
+
+#EXPERIMENT_NAME="M_lstm_autoencoder_2.0"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'lstm_autoencoder':'lstm_autoencoder_viz'}"
+#GPU=1
+
+# ==========[LSTM VARIATIONAL AUTOENCODERS]==========
+#EXPERIMENT_NAME="U_lstm_autoencoder_2.0"
+#DATASETS="univariate_datasets"
+#PIPELINES="{'lstm_autoencoder':'lstm_autoencoder_viz'}"
+#GPU=1
+
+#EXPERIMENT_NAME="M_lstm_autoencoder_2.0"
+#DATASETS="multivariate_datasets"
+#PIPELINES="{'lstm_autoencoder':'lstm_autoencoder_viz'}"
+#GPU=1
+
 # ==========[VAE REGRESSOR THRESHOLD]==========
 #EXPERIMENT_NAME="U_vae_reg_2.0_mean"
 #DATASETS="univariate_datasets"
