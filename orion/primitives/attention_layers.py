@@ -196,9 +196,9 @@ class PositionalEncoding(tf.keras.layers.Layer):
 
 
 class EncoderLayer(tf.keras.layers.Layer):
-    """Consist of Multi-head attention and point wise feed forward networks. Each of these sublayers
-    has a residual connection around it followed by a layer normalization. Residual connections help
-    in avoiding the vanishing gradient problem in deep networks."""
+    """Consist of Multi-head attention and point wise feed forward networks. Each of these
+    sublayers has a residual connection around it followed by a layer normalization. Residual
+    connections help in avoiding the vanishing gradient problem in deep networks."""
 
     def __init__(self, d_model: int, num_heads: int, dff: int, rate: float = 0.1, **kwargs):
         super(EncoderLayer, self).__init__()
@@ -244,23 +244,24 @@ class Encoder(tf.keras.layers.Layer):
     def __init__(self, d_model: int = None, num_heads: int = None, num_layers: int = 2,
                  dff: int = None, maximum_position_encoding: int = 10000, rate: float = 0.1,
                  return_sequences: bool = False, **kwargs):
-        super(Encoder, self).__init__(trainable=True, name='Encoder')
+        super(Encoder, self).__init__(trainable=True)
 
         self.d_model = d_model
         self.num_layers = num_layers
         self.num_heads = num_heads
-        self.embedding = tf.keras.layers.Dense(d_model)
         self.dff = dff
         self.maximum_position_encoding = maximum_position_encoding
         self.return_sequences = return_sequences
         self.rate = rate
 
+        self.embedding = None
         self.pos_encoding = None
         self.enc_layers = None
         self.dropout = tf.keras.layers.Dropout(rate)
 
     def build(self, input_shape):
         self.d_model = self.d_model if self.d_model else input_shape[-1]
+        self.embedding = tf.keras.layers.Dense(self.d_model)
         self.pos_encoding = PositionalEncoding(self.d_model, self.maximum_position_encoding, self.rate)
         self.num_heads = self.num_heads if self.num_heads else 1
         self.dff = self.dff if self.dff else 4 * self.d_model
@@ -348,7 +349,7 @@ class Decoder(tf.keras.layers.Layer):
     def __init__(self, d_model: int = None, num_heads: int = None, num_layers: int = 2,
                  dff: int = None, maximum_position_encoding: int = 10000, rate: float = 0.1,
                  **kwargs):
-        super(Decoder, self).__init__(trainable=True, name='Decoder')
+        super(Decoder, self).__init__(trainable=True)
 
         self.d_model = d_model
         self.num_heads = num_heads
@@ -357,12 +358,14 @@ class Decoder(tf.keras.layers.Layer):
         self.rate = rate
         self.dff = dff
 
+        self.embedding = None
         self.pos_encoding = None
         self.dec_layers = None
         self.dropout = tf.keras.layers.Dropout(rate)
 
     def build(self, input_shape):
         self.d_model = self.d_model if self.d_model else input_shape[-1]
+        self.embedding = tf.keras.layers.Dense(self.d_model)
         self.pos_encoding = PositionalEncoding(self.d_model, self.maximum_position_encoding, self.rate)
         self.num_heads = self.num_heads if self.num_heads else 1
         self.dff = self.dff if self.dff else 4 * self.d_model
@@ -371,6 +374,7 @@ class Decoder(tf.keras.layers.Layer):
 
     def call(self, x, enc_output, look_ahead_mask, training=True, mask=None):
         attention_weights = {}
+        x = self.embedding(x)
         x = self.pos_encoding(x)
 
         for i in range(self.num_layers):

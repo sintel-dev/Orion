@@ -14,7 +14,7 @@ tf.keras.backend.set_floatx('float64')
 
 class Time2Vec(tf.keras.layers.Layer):
     def __init__(self, kernel_size: int = 1):
-        super(Time2Vec, self).__init__(trainable=True, name='Time2VecLayer')
+        super(Time2Vec, self).__init__(trainable=True)
         self.kernel_size = kernel_size
 
         # Trend & Periodic
@@ -57,7 +57,7 @@ class EncoderLayer(tf.keras.layers.Layer):
     connections help in avoiding the vanishing gradient problem in deep networks."""
 
     def __init__(self, d_model: int, num_heads: int, dff: int, rate: float = 0.1, **kwargs):
-        super(EncoderLayer, self).__init__(trainable=True, name='EncoderLayer')
+        super(EncoderLayer, self).__init__(trainable=True)
         self.d_model = d_model
         self.num_heads = num_heads
         self.dff = dff
@@ -95,9 +95,8 @@ class EncoderLayer(tf.keras.layers.Layer):
 class Encoder(tf.keras.layers.Layer):
     def __init__(self, d_model: int = None, num_heads: int = None, dff: int = None,
                  rate: float = 0.1, num_layers: int = 2, time2vec_dim: int = 2,
-                 skip_connection_strength: float = 0.9, return_sequences: bool = False,
-                 **kwargs):
-        super(Encoder, self).__init__(trainable=True, name='Encoder')
+                 skip_connection_strength: float = 0.9, return_sequences: bool = False, **kwargs):
+        super(Encoder, self).__init__(trainable=True)
 
         self.d_model = d_model
         self.num_heads = num_heads
@@ -108,19 +107,23 @@ class Encoder(tf.keras.layers.Layer):
         self.skip_connection_strength = skip_connection_strength
         self.return_sequences = return_sequences
 
+        self.embedding = None
         self.enc_layers = None
         self.layer_norm = tf.keras.layers.LayerNormalization(epsilon=1e-6)
         self.time_encoding = tf.keras.layers.TimeDistributed(Time2Vec(time2vec_dim - 1))
         self.dropout = tf.keras.layers.Dropout(rate)
 
     def build(self, input_shape):
-        self.d_model = self.d_model if self.d_model else input_shape[-1] * (self.time2vec_dim + 1)
+        self.d_model = self.d_model if self.d_model else input_shape[-1]
+        self.embedding = tf.keras.layers.Dense(self.d_model)
+        self.d_model *= (self.time2vec_dim + 1)
         self.num_heads = self.num_heads if self.num_heads else self.time2vec_dim + 1
         self.dff = self.dff if self.dff else 4 * self.d_model
         self.enc_layers = [EncoderLayer(self.d_model, self.num_heads, self.dff,
                                         self.rate) for _ in range(self.num_layers)]
 
     def call(self, x, training=True, mask=None):
+        x = self.embedding(x)
         x = tf.keras.layers.Concatenate(axis=-1)([x, self.time_encoding(x)])
         x = self.layer_norm(x)
         for i in range(self.num_layers):
@@ -140,6 +143,6 @@ class Encoder(tf.keras.layers.Layer):
             'num_layers': self.num_layers,
             'time2vec_dim': self.time2vec_dim,
             'skip_connection_strength': self.skip_connection_strength,
-            'return_sequences': self.return_sequences,
+            'return_sequences': self.return_sequences
         })
         return config

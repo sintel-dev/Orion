@@ -30,6 +30,7 @@
                 {
                     "class": "orion.primitives.time_series_transformer.Encoder",
                     "parameters": {
+                        "d_model": 30,
                         "return_sequences": false
                     }
                 },

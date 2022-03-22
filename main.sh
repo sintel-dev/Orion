@@ -76,16 +76,6 @@ LOCAL=0
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer'}"
 #GPU=1
 
-#EXPERIMENT_NAME="U_lstm_dynamic_threshold_2.0_timeseries_encoder_one_layer_embedding"
-#DATASETS="univariate_datasets"
-#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer_embedding'}"
-#GPU=1
-
-#EXPERIMENT_NAME="M_lstm_dynamic_threshold_2.0_timeseries_encoder_one_layer_embedding"
-#DATASETS="multivariate_datasets"
-#PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer_embedding'}"
-#GPU=1
-
 # ==========[LSTM AUTOENCODERS]==========
 #EXPERIMENT_NAME="U_lstm_autoencoder_2.0"
 #DATASETS="univariate_datasets"
