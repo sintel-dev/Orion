@@ -4,8 +4,12 @@
         "sklearn.preprocessing.MinMaxScaler",
         "pandas.isnull",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
+        "numpy.isin",
         "keras.Sequential.LSTMTimeSeriesRegressor",
+        "orion.primitives.timeseries_preprocessing.masked_array",
+        "orion.primitives.timeseries_preprocessing.masked_array",
         "orion.primitives.timeseries_errors.regression_errors",
+        "orion.primitives.timeseries_preprocessing.masked_array",
         "orion.primitives.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
@@ -24,9 +28,12 @@
             "target_column": 0,
             "window_size": 250,
             "drop_windows": true
-        },
-        "keras.Sequential.LSTMTimeSeriesRegressor": {
+        }, 
+        "keras.Sequential.LSTMTimeSeriesRegressor#1": {
             "epochs": 35
+        },
+        "orion.primitives.timeseries_preprocessing.masked_array#3": {
+            "reshape": [-1]
         },
         "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "window_size_portion": 0.33,
@@ -35,16 +42,38 @@
         }
     },
     "input_names": {
-        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
-            "index": "target_index"
+        "numpy.isin#1": {
+            "element": "index",
+            "test_elements": "target_index"
+        },
+        "orion.primitives.timeseries_preprocessing.masked_array#1": {
+            "values": "y"
+        },
+        "orion.primitives.timeseries_preprocessing.masked_array#2": {
+            "values": "y_hat"
+        },
+        "orion.primitives.timeseries_preprocessing.masked_array#3": {
+            "values": "errors"
         }
     },
     "output_names": {
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "index": "dropped_index"
+        },
         "pandas.isnull#1": {
             "y": "drop"
         },
         "keras.Sequential.LSTMTimeSeriesRegressor#1": {
             "y": "y_hat"
+        },
+        "orion.primitives.timeseries_preprocessing.masked_array#2": {
+            "y": "y_hat"
+        },
+        "orion.primitives.timeseries_preprocessing.masked_array#3": {
+            "y": "errors"
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "y": "anomalies"
         }
     }
 }

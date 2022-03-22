@@ -1,0 +1,38 @@
+{
+    "name": "orion.primitives.timeseries_preprocessing.masked_array",
+    "contributors": [
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "description": "Create a NaN array and fill masked location with values.",
+    "classifiers": {
+        "type": "preprocessing"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.timeseries_preprocessing.masked_array",
+    "produce": {
+        "args": [
+            {
+                "name": "mask",
+                "type": "ndarray"
+            },
+            {
+                "name": "values",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "reshape": {
+                "type": "tuple",
+                "default": null
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "name": "numpy.isin",
+    "contributors": [
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "documentation": "https://numpy.org/doc/stable/reference/generated/numpy.isin.html",
+    "description": "Calculates element in test_elements, broadcasting over element only. Returns a boolean array of the same shape as element that is True where an element of element is in test_elements and False otherwise.",
+    "classifiers": {
+        "type": "helper"
+    },
+    "modalities": [],
+    "primitive": "numpy.isin",
+    "produce": {
+        "args": [
+            {
+                "name": "element",
+                "type": "ndarray"
+            },
+            {
+                "name": "test_elements",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "mask",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "assume_unique": {
+                "type": "bool",
+                "default": false
+            },
+            "invert": {
+                "type": "bool",
+                "default": false
+            }
+        }
+    }
+}
