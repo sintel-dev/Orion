@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
 
+
 def masked_array(mask, values, reshape=None):
     """Fill mask area with given value.
 
-    This function creates a new ndarray filled with NaN, and fills the 
+    This function creates a new ndarray filled with NaN, and fills the
     specified mask locations with the given value.
 
     Args:
@@ -17,8 +18,8 @@ def masked_array(mask, values, reshape=None):
 
     Returns:
         ndarray:
-            Array of NaNs and values at masked location. 
-            
+            Array of NaNs and values at masked location.
+
     """
     array = np.empty(shape=(len(mask), 1))
     array[:] = np.nan
@@ -31,12 +32,13 @@ def masked_array(mask, values, reshape=None):
             values = values[mask]
 
         elif sum(mask) != len(values):
-            raise ValueError('Values length {} is inconsistent',
-                'with masked locations {}'.format(len(values), sum(mask)))
+            raise ValueError('Values length {} is inconsistent '.format(len(values)),
+                             'with masked locations {}'.format(sum(mask)))
 
     array[mask] = values
 
     return array
+
 
 def slice_array_by_dims(X, target_index, axis=0):
     """Slice an ndarray by given dimensions.
