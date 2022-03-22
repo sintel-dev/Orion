@@ -98,13 +98,23 @@ LOCAL=0
 #GPU=1
 
 # ==========[REGRESSION + RECONSTRUCTION MIXTURE]==========
-#EXPERIMENT_NAME="U_ae_reg_2.0_mean"
+#EXPERIMENT_NAME="U_ae_reg_2.0"
 #DATASETS="univariate_datasets"
+#PIPELINES="{'ae_reg':'ae_reg'}"
+#GPU=1
+
+#EXPERIMENT_NAME="M_ae_reg_2.0"
+#DATASETS="multivariate_datasets"
 #PIPELINES="{'ae_reg':'ae_reg'}"
 #GPU=1
 
 #EXPERIMENT_NAME="U_ae_reg_2.0_250"
 #DATASETS="univariate_datasets"
+#PIPELINES="{'ae_reg':'ae_reg_250'}"
+#GPU=1
+
+#EXPERIMENT_NAME="M_ae_reg_2.0_250"
+#DATASETS="multivariate_datasets
 #PIPELINES="{'ae_reg':'ae_reg_250'}"
 #GPU=1
 
