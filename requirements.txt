@@ -80,7 +80,7 @@ tabulate==0.8.9
 tblib==1.7.0
 tensorboard==2.2.2
 tensorboard-plugin-wit==1.8.1
-tensorflow==2.2.0
+tensorflow==2.5.3
 tensorflow-estimator==2.2.0
 termcolor==1.1.0
 threadpoolctl==3.1.0
