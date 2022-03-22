@@ -114,7 +114,7 @@ LOCAL=0
 #GPU=1
 
 #EXPERIMENT_NAME="M_ae_reg_2.0_250"
-#DATASETS="multivariate_datasets
+#DATASETS="multivariate_datasets"
 #PIPELINES="{'ae_reg':'ae_reg_250'}"
 #GPU=1
 
