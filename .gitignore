@@ -113,5 +113,6 @@ data/
 output/
 orion-jupyter.tar
 *.csv
+*.pkl
 
 .DS_Store
