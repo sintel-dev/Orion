@@ -98,14 +98,14 @@ LOCAL=0
 #GPU=1
 
 # ==========[REGRESSION + RECONSTRUCTION MIXTURE]==========
-#EXPERIMENT_NAME="U_vae_reg_2.0_mean"
+#EXPERIMENT_NAME="U_ae_reg_2.0_mean"
 #DATASETS="univariate_datasets"
-#PIPELINES="{'vae_reg':'vae_reg'}"
+#PIPELINES="{'ae_reg':'ae_reg'}"
 #GPU=1
 
-#EXPERIMENT_NAME="U_vae_reg_2.0_250"
+#EXPERIMENT_NAME="U_ae_reg_2.0_250"
 #DATASETS="univariate_datasets"
-#PIPELINES="{'vae_reg':'vae_reg_250'}"
+#PIPELINES="{'ae_reg':'ae_reg_250'}"
 #GPU=1
 
 # ==========[TADGAN 2.0]==========

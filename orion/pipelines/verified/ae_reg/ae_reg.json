@@ -1,0 +1,98 @@
+{
+    "primitives": [
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate",
+        "sklearn.impute.SimpleImputer",
+        "sklearn.preprocessing.MinMaxScaler",
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
+        "orion.primitives.ae_reg.AEReg",
+        "orion.primitives.ae_reg.score_anomalies",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
+    ],
+    "init_params": {
+        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "time_column": "timestamp",
+            "interval": 21600,
+            "method": "mean"
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [
+                -1,
+                1
+            ]
+        },
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 100,
+            "target_size": 1
+        },
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims": {
+            "target_index": 0,
+            "axis": 2
+        },
+        "orion.primitives.ae_reg.AEReg#1": {
+            "epochs": 35
+        },
+        "orion.primitives.ae_reg.score_anomalies#1": {
+            "comb": "reg"
+        }
+    },
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "t_index"
+        }
+    },
+    "output_names": {
+        "orion.primitives.ae_reg.AEReg#1": {
+            "y": "y_hat",
+            "t": "t_hat"
+        },
+        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "y": "t",
+            "index": "X_index",
+            "target_index": "t_index"
+        }
+    },
+    "outputs": {
+        "default": [
+            {
+                "name": "events",
+                "variable": "orion.primitives.timeseries_anomalies.find_anomalies#1.y"
+            }
+        ],
+        "model_info": [
+            {
+                "name": "y",
+                "variable": "orion.primitives.timeseries_preprocessing.slice_array_by_dims#1.y"
+            },
+            {
+                "name": "y_hat",
+                "variable": "orion.primitives.ae_reg.AEReg#1.y_hat"
+            },
+            {
+                "name": "index",
+                "variable": "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1.index"
+            },
+            {
+                "name": "t",
+                "variable": "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1.t"
+            },
+            {
+                "name": "t_hat",
+                "variable": "orion.primitives.ae_reg.AEReg#1.t_hat"
+            },
+            {
+                "name": "t_index",
+                "variable": "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1.t_index"
+            },
+            {
+                "name": "errors",
+                "variable": "orion.primitives.ae_reg.score_anomalies#1.errors"
+            },
+            {
+                "name": "fit_history",
+                "variable": "orion.primitives.ae_reg.AEReg#1.fit_history"
+            }
+        ]
+    }
+}

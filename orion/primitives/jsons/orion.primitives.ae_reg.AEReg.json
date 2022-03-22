@@ -1,16 +1,16 @@
 {
-    "name": "orion.primitives.vae.VAE",
+    "name": "orion.primitives.ae_reg.AEReg",
     "contributors": [
         "Lawrence Wong <lcwong@mit.edu>"
     ],
     "documentation": "",
-    "description": "VAE",
+    "description": "AE with Regression",
     "classifiers": {
         "type": "estimator",
         "subtype": "regressor"
     },
     "modalities": [],
-    "primitive": "orion.primitives.vae.VAE",
+    "primitive": "orion.primitives.ae_reg.AEReg",
     "fit": {
         "method": "fit",
         "args": [
@@ -20,6 +20,10 @@
             },
             {
                 "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "t",
                 "type": "ndarray"
             }
         ]
@@ -35,6 +39,14 @@
         "output": [
             {
                 "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "t",
+                "type": "ndarray"
+            },
+            {
+                "name": "fit_history",
                 "type": "ndarray"
             }
         ]
@@ -55,7 +67,7 @@
             },
             "latent_dim": {
                 "type": "int",
-                "default": 20
+                "default": 60
             },
             "learning_rate": {
                 "type": "float",
@@ -68,22 +80,6 @@
             "batch_size": {
                 "type": "int",
                 "default": 64
-            },
-            "shuffle": {
-                "type": "bool",
-                "default": true
-            },
-            "verbose": {
-                "type": "bool",
-                "default": true
-            },
-            "lstm_units": {
-                "type": "int",
-                "default": 60
-            },
-            "length": {
-                "type": "int",
-                "default": null
             },
             "callbacks": {
                 "type": "list",
@@ -102,6 +98,18 @@
                 "type": "float",
                 "default": 0.2
             },
+            "shuffle": {
+                "type": "bool",
+                "default": true
+            },
+            "verbose": {
+                "type": "bool",
+                "default": true
+            },
+            "length": {
+                "type": "int",
+                "default": null
+            },
             "output_dim": {
                 "type": "int",
                 "default": null
@@ -112,7 +120,7 @@
                     {
                         "class": "tensorflow.keras.layers.LSTM",
                         "parameters": {
-                            "units": "lstm_units",
+                            "units": "latent_dim",
                             "return_sequences": false
                         }
                     }
@@ -130,7 +138,7 @@
                     {
                         "class": "tensorflow.keras.layers.LSTM",
                         "parameters": {
-                            "units": "lstm_units",
+                            "units": "latent_dim",
                             "return_sequences": true
                         }
                     },

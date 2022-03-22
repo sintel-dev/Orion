@@ -1,0 +1,65 @@
+{
+    "name": "orion.primitives.ae_reg.score_anomalies",
+    "contributors": [
+        "Lawrence Wong <lcwong@mit.edu>"
+    ],
+    "description": "Compute an array of anomaly scores based on a combination of reconstruction error and critic output",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "feature_extractor"
+    },
+    "modalities": ["timeseries"],
+    "primitive": "orion.primitives.ae_reg.score_anomalies",
+    "produce": {
+        "args": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "y_hat",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            },
+            {
+                "name": "t",
+                "type": "ndarray"
+            },
+            {
+                "name": "t_hat",
+                "type": "ndarray"
+            },
+            {
+                "name": "t_index",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "errors",
+                "type": "ndarray"
+            },
+            {
+                "name": "true_index",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "tunable": {
+            "comb": {
+                "type": "str",
+                "default": "mult",
+                "options": ["mult", "sum", "rec", "reg"]
+            },
+            "lambda_rec": {
+                "type": "float",
+                "default": 0.5,
+                "range": [0.1, 0.9]
+            }
+        }
+    }
+}
