@@ -3,12 +3,5 @@
         "time_column": "timestamp",
         "interval": 21600,
         "method": "mean"
-    },
-    "orion.primitives.vae_reg.VAEReg#1": {
-        "epochs": 70
-    },
-    "orion.primitives.vae_reg.score_anomalies#1": {
-        "rec_error_type": "dtw",
-        "comb": "mult"
     }
 }
