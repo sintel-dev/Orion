@@ -107,6 +107,7 @@ ENV/
 
 # IDE
 .vscode/
+.idea/
 
 data/
 output/
