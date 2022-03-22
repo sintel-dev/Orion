@@ -76,7 +76,7 @@ LOCAL=0
 #PIPELINES="{'lstm_dynamic_threshold':'lstm_dynamic_threshold_timeseries_encoder_one_layer'}"
 #GPU=1
 
-# ==========[LSTM AUTOENCODERS]==========
+# ==========[AUTOENCODERS + VARIATIONS]==========
 #EXPERIMENT_NAME="U_lstm_autoencoder_2.0"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'lstm_autoencoder':'lstm_autoencoder_viz'}"
@@ -87,7 +87,6 @@ LOCAL=0
 #PIPELINES="{'lstm_autoencoder':'lstm_autoencoder_viz'}"
 #GPU=1
 
-# ==========[VARIATIONAL AUTOENCODERS]==========
 #EXPERIMENT_NAME="U_vae_2.0"
 #DATASETS="univariate_datasets"
 #PIPELINES="{'vae':'vae_viz'}"
