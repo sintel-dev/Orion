@@ -1,5 +1,6 @@
 {
     "primitives": [
+        "pandas.DataFrame.interpolate",
         "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate",
         "sklearn.preprocessing.MinMaxScaler",
         "pandas.isnull",
@@ -17,6 +18,10 @@
             "time_column": "timestamp",
             "interval": 21600,
             "method": "mean"
+        },
+        "pandas.DataFrame.interpolate#1": {
+            "method": "nearest",
+            "limit": 300
         },
         "sklearn.preprocessing.MinMaxScaler#1": {
             "feature_range": [

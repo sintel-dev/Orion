@@ -1,0 +1,57 @@
+{
+    "name": "pandas.DataFrame.interpolate",
+    "contributors": [
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "documentation": "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html",
+    "description": "Fill NaN values using an interpolation method.",
+    "classifiers": {
+        "type": "helper",
+        "subtype": "preprocessing"
+    },
+    "modalities": [],
+    "primitive": "pandas.DataFrame.interpolate",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "keyword": "self",
+                "type": "pandas.DataFrame"
+            }
+        ],
+        "output": [
+            {
+                "name": "X",
+                "type": "pandas.series or pandas.DataFrame"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "method": {
+                "type": "str",
+                "default": "linear"
+            },
+            "axis": {
+                "type": "int or str",
+                "default": 0
+            },
+            "limit": {
+                "type": "int",
+                "default": null
+            },
+            "limit_direction": {
+                "type": "str",
+                "default": null
+            },
+            "limit_area": {
+                "type": "str",
+                "default": null
+            },
+            "downcast": {
+                "type": "str",
+                "default": null
+            }
+        }
+    }
+}
