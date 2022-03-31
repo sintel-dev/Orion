@@ -1,6 +1,19 @@
 History
 =======
 
+## 0.3.0 - 2022-03-31
+
+This version deprecates the support of ``OrionDBExplorer``, which has been migrated to
+[sintel](https://github.com/signals-dev/Orion). As a result, ``Orion`` no longer requires
+mongoDB as a dependency.
+
+* Update dependency  - [Issue #283](https://github.com/signals-dev/Orion/issues/283) by @sarahmish
+* General housekeeping  - [Issue #278](https://github.com/signals-dev/Orion/issues/278) by @sarahmish
+* Fix tutorial testing issue - [Issue #276](https://github.com/signals-dev/Orion/issues/276) by @sarahmish
+* Migrate OrionExplorer to Sintel - [Issue #275](https://github.com/signals-dev/Orion/issues/275) by @dyuliu
+* LSTM viz JSON pipeline added - [Issue #271](https://github.com/signals-dev/Orion/issues/271) by @Hramir
+
+
 ## 0.2.1 - 2022-02-18
 
 This version introduces improvements and more testing.
