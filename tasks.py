@@ -27,6 +27,9 @@ def install_minimum(c):
                 continue
 
             line = line.strip()
+            if line.startswith('#'): # ignore comment
+                continue
+                
             line = re.sub(r',?<=?[\d.]*,?', '', line)
             line = re.sub(r'>=?', '==', line)
             line = re.sub(r"""['",]""", '', line)
