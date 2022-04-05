@@ -59,10 +59,6 @@
                 "type": "tuple",
                 "default": null
             },
-            "latent_shape": {
-                "type": "tuple",
-                "default": null
-            },
             "target_shape": {
                 "type": "tuple",
                 "default": null
