@@ -50,12 +50,10 @@ class TadGAN(Model):
             List containing layers of critic_x.
         layers_critic_z (list):
             List containing layers of critic_z.
-        shape (tuple):
+        input_shape (tuple):
             Optional. Tuple denoting the shape of an input sample.
         latent_dim (int):
             Optional. Integer denoting dimension of latent space. Default 20.
-        latent_shape (tuple):
-            Optional. Tuple denoting the shape of an latent sample.
         target_shape (tuple):
             Optional. Tuple denoting the shape of an output sample.
         encoder_input_shape (tuple):
@@ -81,7 +79,7 @@ class TadGAN(Model):
             Whether to shuffle the dataset for each epoch. Default True.
         validation_split (float):
             Number between 0 and 1. Fraction of the training data to be used as validation data.
-            Default 0.2.
+            Default 0.0.
         callbacks (tuple):
             Callbacks to apply during training. Default tuple().
         verbose (int):
@@ -94,10 +92,10 @@ class TadGAN(Model):
 
     def __init__(self, layers_encoder: list, layers_generator: list, layers_critic_x: list,
                  layers_critic_z: list, optimizer: str, input_shape: Optional[tuple] = None,
-                 latent_shape: Optional[tuple] = None, target_shape: Optional[tuple] = None,
-                 latent_dim: int = 20, learning_rate: float = 0.005, epochs: int = 2000,
+                 target_shape: Optional[tuple] = None, latent_dim: int = 20,
+                 learning_rate: float = 0.005, epochs: int = 50,
                  batch_size: int = 64, iterations_critic: int = 5, shuffle: bool = True,
-                 callbacks: tuple = (), validation_ratio: float = 0.2,
+                 callbacks: tuple = (), validation_ratio: float = 0.0,
                  detailed_losses: bool = True, verbose: Union[int, bool] = True,
                  **hyperparameters):
         """Initialize the TadGAN model."""
@@ -110,7 +108,6 @@ class TadGAN(Model):
         # Optional model hyperparameters.
         self.shape = input_shape
         self.latent_dim = latent_dim
-        self.latent_shape = latent_shape
         self.target_shape = target_shape
         self.hyperparameters = hyperparameters
 
@@ -180,7 +177,7 @@ class TadGAN(Model):
         # Infers the shape.
         self.shape = self.shape or shape
         self.target_shape = self.target_shape or target_shape
-        self.latent_shape = self.latent_shape or (self.latent_dim, output_dim)
+        self.latent_shape = (self.latent_dim, output_dim)
 
         kwargs.update({
             'shape': self.shape,
@@ -225,9 +222,11 @@ class TadGAN(Model):
             for i in range(len(losses)):
                 for j in range(len(losses[i])):
                     output[LOSS_NAMES[i][j]] = losses[i][j]
+
         else:
             for i in range(len(losses)):
                 output[LOSS_NAMES[i][0]] = losses[i][0]
+
         return output
 
     def compile(self, **kwargs):
@@ -397,7 +396,8 @@ class TadGAN(Model):
                 Optional. Additional inputs.
         """
         # Infer dimensions and compile model.
-        y = X.copy() if y is None else y
+        if y is None:
+            y = X.copy()
         X, y = X.astype(np.float64), y.astype(np.float64)
         if not self.fitted:
             kwargs = self._augment_hyperparameters(X, y, **kwargs)
@@ -435,21 +435,22 @@ class TadGAN(Model):
 
         Args:
             X (ndarray):
-                N-dimensional array containing the input encoder sequences.
+                N-dimensional array containing the input training sequences for the model.
             y (ndarray):
-                Optional. N-dimensional array containing the input critic x sequences.
+                N-dimensional array containing the target sequences we want to reconstruct.
         Returns:
             ndarray:
                 N-dimensional array containing the reconstructions for each input sequence.
             ndarray:
                 N-dimensional array containing the critic scores for each input sequence.
         """
-        y = X.copy() if y is None else y
+        if y is None:
+            y = X.copy()
         X, y = X.astype(np.float64), y.astype(np.float64)
         test_data = (X, y)
         y_hat, critic = self(test_data)
 
-        return y_hat.numpy(), critic.numpy(), y, self.fit_history.history
+        return y_hat.numpy(), critic.numpy()
 
 
 def _compute_critic_score(critics: ndarray, smooth_window: int) -> ndarray:
