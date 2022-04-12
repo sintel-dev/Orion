@@ -10,7 +10,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 
-from orion.primitives.timeseries_errors import regression_errors, reconstruction_errors
+from orion.primitives.timeseries_errors import reconstruction_errors, regression_errors
 
 LOGGER = logging.getLogger(__name__)
 
