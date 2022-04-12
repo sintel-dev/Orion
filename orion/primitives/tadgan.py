@@ -3,7 +3,7 @@
 import logging
 import math
 import tempfile
-from typing import Union, Optional
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -389,9 +389,9 @@ class TadGAN(Model):
 
         Args:
             X (ndarray):
-                N-dimensional array containing the input encoder sequences.
+                N-dimensional array containing the input inference sequences for the model.
             y (ndarray):
-                Optional. N-dimensional array containing the input critic x sequences.
+                N-dimensional array containing the target sequences we want to reconstruct.
             **kwargs (dict):
                 Optional. Additional inputs.
         """
@@ -435,7 +435,7 @@ class TadGAN(Model):
 
         Args:
             X (ndarray):
-                N-dimensional array containing the input training sequences for the model.
+                N-dimensional array containing the input inference sequences for the model.
             y (ndarray):
                 N-dimensional array containing the target sequences we want to reconstruct.
         Returns:
