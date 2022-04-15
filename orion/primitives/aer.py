@@ -144,7 +144,7 @@ class AER(object):
             loss_weights=[self.reg_ratio / 2, 1 - self.reg_ratio, self.reg_ratio / 2],
         )
 
-    def fit(self, X: np.ndarray, y: np.ndarray, **kwargs):
+    def fit(self, X: np.ndarray, y: np.ndarray = None, **kwargs):
         """Fit the model.
 
         Args:
@@ -153,6 +153,9 @@ class AER(object):
             y (ndarray):
                 N-dimensional array containing the output sequences we want to reconstruct.
         """
+        if y is None:
+            y = X.copy()  # Reconstruct the same input.
+
         X = X[:, 1:-1, :]
         ry, y, fy = y[:, 0], y[:, 1:-1], y[:, -1]
 
