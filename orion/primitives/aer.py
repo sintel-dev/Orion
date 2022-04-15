@@ -198,7 +198,12 @@ class AER(object):
 
 def bi_regression_errors(y: ndarray, ry_hat: ndarray, fy_hat: ndarray,
                          smoothing_window: float = 0.01, smooth: bool = True, mask: bool = True):
-    """Compute an array of absolute errors comparing predictions and expected output.
+    """Compute an array of absolute errors comparing the forward and reverse predictions with
+    the expected output.
+
+    Anomaly scores are created in the forward and reverse directions. Scores in overlapping indices
+    are averaged while scores in non-overlapping indices are taken directly from either forward or
+    reverse anomaly scores.
 
     If smooth is True, apply EWMA to the resulting array of errors.
 
