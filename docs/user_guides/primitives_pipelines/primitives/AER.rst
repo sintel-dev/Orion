@@ -42,10 +42,10 @@ argument                    type                description
     import numpy as np
     from mlprimitives import load_primitive
 
-    X = np.array([1] * 100).reshape(1, -1, 1)
+    X = np.ones((64, 100, 1))
     y = X[:,:, [0]] # signal to reconstruct from X (channel 0)
     primitive = load_primitive('orion.primitives.aer.AER',
-        arguments={"X": X, "y": y, "epochs": 5, "batch_size": 1})
+        arguments={"X": X, "y": y, "epochs": 1, "batch_size": 1})
 
     primitive.fit()
     ry, y, fy = primitive.produce(X=X)

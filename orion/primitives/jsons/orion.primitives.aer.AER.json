@@ -102,10 +102,10 @@
                 "type": "list",
                 "default": [
                     {
-                        "class": "keras.layers.Bidirectional",
+                        "class": "tensorflow.keras.layers.Bidirectional",
                         "parameters": {
                             "layer": {
-                                "class": "keras.layers.LSTM",
+                                "class": "tensorflow.keras.layers.LSTM",
                                 "parameters": {
                                     "units": "lstm_units",
                                     "return_sequences": false
@@ -126,10 +126,10 @@
                         }
                     },
                     {
-                        "class": "keras.layers.Bidirectional",
+                        "class": "tensorflow.keras.layers.Bidirectional",
                         "parameters": {
                             "layer": {
-                                "class": "keras.layers.LSTM",
+                                "class": "tensorflow.keras.layers.LSTM",
                                 "parameters": {
                                     "units": "lstm_units",
                                     "return_sequences": true
@@ -139,10 +139,10 @@
                         }
                     },
                     {
-                        "class": "keras.layers.TimeDistributed",
+                        "class": "tensorflow.keras.layers.TimeDistributed",
                         "parameters": {
                             "layer": {
-                                "class": "keras.layers.Dense",
+                                "class": "tensorflow.keras.layers.Dense",
                                 "parameters": {
                                     "units": 1
                                 }
