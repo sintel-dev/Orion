@@ -223,6 +223,7 @@ def bi_regression_errors(y: ndarray, ry_hat: ndarray, fy_hat: ndarray,
         mask (bool): bool = True
             Optional. Mask anomaly score errors in the beginning.
             If not given, `True` is used.
+
     Returns:
         ndarray:
             Array of errors.
@@ -278,6 +279,7 @@ def score_anomalies(y: ndarray, ry_hat: ndarray, y_hat: ndarray, fy_hat: ndarray
         lambda_rec (float):
             Optional. Used if `comb="sum"` as a lambda weighted sum to combine
             scores. If not given, 0.5 is used.
+
     Returns:
         ndarray:
             Array of errors.
