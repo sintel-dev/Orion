@@ -218,6 +218,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="primitives/AER.html">
+       AER
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="primitives/score_anomalies.html">
        score anomalies
       </a>
@@ -443,7 +448,10 @@ in the subdirectories inside the <code class="docutils literal notranslate"><spa
 <tr class="row-odd"><td><p>Dense AE</p></td>
 <td><p>Autoencoder based pipeline with Dense layers</p></td>
 </tr>
-<tr class="row-even"><td><p>Azure</p></td>
+<tr class="row-even"><td><p>AER</p></td>
+<td><p>Autoencoder with Regression based pipeline</p></td>
+</tr>
+<tr class="row-odd"><td><p>Azure</p></td>
 <td><p>Azure API for <a class="reference external" href="https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/">Anomaly Detector</a></p></td>
 </tr>
 </tbody>
@@ -519,31 +527,31 @@ Next, we test the new pipeline/hyperparameters in the benchmark and verify that 
 <span class="go"> 64/200 [========&gt;.....................] - ETA: 2s - loss: 0.4166 - mse: 0.4166</span>
 <span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3906 - mse: 0.3906</span>
 <span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3967 - mse: 0.3967</span>
-<span class="go">200/200 [==============================] - 3s 13ms/step - loss: 0.3949 - mse: 0.3949 - val_loss: 0.4182 - val_mse: 0.4182</span>
+<span class="go">200/200 [==============================] - 2s 11ms/step - loss: 0.3949 - mse: 0.3949 - val_loss: 0.4182 - val_mse: 0.4182</span>
 <span class="go">Epoch 2/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 1s - loss: 0.3894 - mse: 0.3894</span>
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3894 - mse: 0.3894</span>
 <span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.4189 - mse: 0.4189</span>
 <span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.4003 - mse: 0.4003</span>
-<span class="go">200/200 [==============================] - 2s 9ms/step - loss: 0.3926 - mse: 0.3926 - val_loss: 0.4222 - val_mse: 0.4222</span>
+<span class="go">200/200 [==============================] - 1s 7ms/step - loss: 0.3926 - mse: 0.3926 - val_loss: 0.4222 - val_mse: 0.4222</span>
 <span class="go">Epoch 3/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 1s - loss: 0.3753 - mse: 0.3753</span>
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3753 - mse: 0.3753</span>
 <span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.4022 - mse: 0.4022</span>
 <span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3938 - mse: 0.3938</span>
-<span class="go">200/200 [==============================] - 2s 9ms/step - loss: 0.3922 - mse: 0.3922 - val_loss: 0.4230 - val_mse: 0.4230</span>
+<span class="go">200/200 [==============================] - 2s 8ms/step - loss: 0.3922 - mse: 0.3922 - val_loss: 0.4230 - val_mse: 0.4230</span>
 <span class="go">Epoch 4/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 1s - loss: 0.3836 - mse: 0.3836</span>
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3836 - mse: 0.3836</span>
 <span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3858 - mse: 0.3858</span>
 <span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3894 - mse: 0.3894</span>
-<span class="go">200/200 [==============================] - 2s 10ms/step - loss: 0.3932 - mse: 0.3932 - val_loss: 0.4203 - val_mse: 0.4203</span>
+<span class="go">200/200 [==============================] - 1s 7ms/step - loss: 0.3932 - mse: 0.3932 - val_loss: 0.4203 - val_mse: 0.4203</span>
 <span class="go">Epoch 5/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 1s - loss: 0.3807 - mse: 0.3807</span>
+<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3807 - mse: 0.3807</span>
 <span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3947 - mse: 0.3947</span>
 <span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3878 - mse: 0.3878</span>
-<span class="go">200/200 [==============================] - 2s 9ms/step - loss: 0.3957 - mse: 0.3957 - val_loss: 0.4183 - val_mse: 0.4183</span>
+<span class="go">200/200 [==============================] - 1s 7ms/step - loss: 0.3957 - mse: 0.3957 - val_loss: 0.4183 - val_mse: 0.4183</span>
 
 <span class="go"> 64/250 [======&gt;.......................] - ETA: 1s</span>
 <span class="go">128/250 [==============&gt;...............] - ETA: 0s</span>
