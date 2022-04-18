@@ -87,10 +87,6 @@
                 "type": "bool",
                 "default": true
             },
-            "validation_ratio": {
-                "type": "float",
-                "default": 0.0
-            },
             "detailed_losses": {
                 "type": "bool",
                 "default": true
