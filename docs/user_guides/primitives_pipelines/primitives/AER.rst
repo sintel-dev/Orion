@@ -1,6 +1,6 @@
 .. highlight:: shell
 
-TadGAN
+AER
 ~~~~~~
 
 **path**: ``orion.primitives.aer.AER``
@@ -30,9 +30,9 @@ argument                    type                description
 **output**
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
- ``ry_hat``                 ``numpy.ndarray``    n-dimensional array containing the regression for each input sequence (forward)
- ``y_hat``                  ``numpy.ndarray``    n-dimensional array containing the reconstructions for each input sequence
  ``ry_hat``                 ``numpy.ndarray``    n-dimensional array containing the regression for each input sequence (reverse)
+ ``y_hat``                  ``numpy.ndarray``    n-dimensional array containing the reconstructions for each input sequence
+ ``fy_hat``                 ``numpy.ndarray``    n-dimensional array containing the regression for each input sequence (forward)
 ========================== =================== =================================================================================================
 
 
