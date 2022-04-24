@@ -112,7 +112,6 @@ class TadGAN:
         self.shuffle = shuffle
         self.verbose = verbose
         self.detailed_losses = detailed_losses
-        self.fit_history = None
         self.fitted = False
 
     def __getstate__(self):
