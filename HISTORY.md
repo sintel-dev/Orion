@@ -1,12 +1,21 @@
 History
 =======
 
+## 0.3.1 - 2022-04-26
+
+This version introduce a new pipeline, namely ``AER``, an AutoEncoder Regressor model.
+
+### Issues resolved
+* Add AER Model - [Issue #286](https://github.com/signals-dev/Orion/issues/286) by @lcwong0928
+
+
 ## 0.3.0 - 2022-03-31
 
 This version deprecates the support of ``OrionDBExplorer``, which has been migrated to
 [sintel](https://github.com/signals-dev/Orion). As a result, ``Orion`` no longer requires
 mongoDB as a dependency.
 
+### Issues resolved
 * Update dependency  - [Issue #283](https://github.com/signals-dev/Orion/issues/283) by @sarahmish
 * General housekeeping  - [Issue #278](https://github.com/signals-dev/Orion/issues/278) by @sarahmish
 * Fix tutorial testing issue - [Issue #276](https://github.com/signals-dev/Orion/issues/276) by @sarahmish

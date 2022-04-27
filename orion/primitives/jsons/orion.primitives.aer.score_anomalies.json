@@ -1,0 +1,63 @@
+{
+    "name": "orion.primitives.aer.score_anomalies",
+    "contributors": [
+        "Lawrence Wong <lcwong@mit.edu>"
+    ],
+    "description": "anomaly scores combining regression and reconstruction errors",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "feature_extractor"
+    },
+    "modalities": ["timeseries"],
+    "primitive": "orion.primitives.aer.score_anomalies",
+    "produce": {
+        "args": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "ry_hat",
+                "type": "ndarray"
+            },
+            {
+                "name": "y_hat",
+                "type": "ndarray"
+            },
+            {
+                "name": "fy_hat",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "errors",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "tunable": {
+            "comb": {
+                "type": "str",
+                "default": "mult",
+                "options": ["mult", "sum", "rec", "reg"]
+            },
+            "lambda_rec": {
+                "type": "float",
+                "default": 0.5,
+                "range": [0.1, 0.9]
+            },
+            "mask": {
+                "type": "bool",
+                "default": true,
+                "options": [true, false]
+            },
+            "rec_error_type": {
+                "type": "str",
+                "default": "point",
+                "options": ["point", "area", "dtw"]
+            }
+        }
+    }
+}
