@@ -3,7 +3,8 @@ FROM python:3.6
 EXPOSE 8888
 
 RUN mkdir /app
-COPY setup.py /app
+COPY setup.cfg /app
+COPY pyproject.toml /app
 RUN pip install -e /app && pip install jupyter
 
 COPY orion /app/orion

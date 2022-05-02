@@ -1,3 +1,13 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "pytest-runner"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.tox]
+legacy_tox_ini = """
 [tox]
 envlist = lint, docs, py3{6,7}-{readme,pytest,minimum,tutorials}
 
@@ -21,3 +31,12 @@ commands =
     minimum: invoke  minimum
     tutorials: invoke tutorials
     invoke rmdir --path {envdir}
+"""
+
+[tool.isort]
+include_trailing_comment = true
+line_length = 99
+lines_between_types = 0
+multi_line_output = 4
+not_skip = "__init__.py"
+use_parentheses = true

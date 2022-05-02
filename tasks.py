@@ -15,8 +15,8 @@ def pytest(c):
 
 @task
 def install_minimum(c):
-    with open('setup.py', 'r') as setup_py:
-        lines = setup_py.read().splitlines()
+    with open('setup.cfg', 'r') as setup_cfg:
+        lines = setup_cfg.read().splitlines()
 
     versions = []
     started = False
