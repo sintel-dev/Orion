@@ -1,37 +1,9 @@
 [build-system]
 requires = [
     "setuptools",
-    "wheel",
-    "pytest-runner"
+    "wheel"
 ]
 build-backend = "setuptools.build_meta"
-
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = lint, docs, py3{6,7}-{readme,pytest,minimum,tutorials}
-
-[testenv]
-skipsdist = false
-skip_install = false
-deps = 
-    invoke
-    readme: rundoc
-    tutorials: jupyter
-extras = 
-    lint: dev
-    docs: dev
-    pytest: test
-    minimum: test
-commands =
-    docs: /usr/bin/env make docs
-    lint: invoke lint
-    readme: invoke readme
-    pytest: invoke pytest
-    minimum: invoke  minimum
-    tutorials: invoke tutorials
-    invoke rmdir --path {envdir}
-"""
 
 [tool.isort]
 include_trailing_comment = true
