@@ -26,7 +26,7 @@ A machine learning library for unsupervised time series anomaly detection.
 | :octocat: **[Repository]**          | The link to the Github Repository of this library.                   |
 | :scroll: **[License]**              | The repository is published under the MIT License.                   |
 | :keyboard: **[Development Status]** | This software is in its Pre-Alpha stage.                             |
-| :thought_balloon: **[Community]**   | Join our Slack Workspace for announcements and discussions.          |
+| [![][Slack Logo] **Community**][Community]    | Join our Slack Workspace for announcements and discussions.          |
 
 [Website]: https://sintel.dev/
 [Documentation]: https://sintel-dev.github.io/Orion
@@ -35,6 +35,7 @@ A machine learning library for unsupervised time series anomaly detection.
 [License]: https://github.com/sintel-dev/Orion/blob/master/LICENSE
 [Development Status]: https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha
 [Community]: https://join.slack.com/t/sintel-space/shared_invite/zt-q147oimb-4HcphcxPfDAM0O9_4PaUtw
+[Slack Logo]: https://github.com/sintel-dev/Orion/master/docs/images/slack.png
 
 # Overview
 
@@ -148,7 +149,21 @@ Additional resources that might be of interest:
 
 # Citation
 
-If you use **Orion** for your research, please consider citing the following paper:
+If you use **Orion** which is part of the **Sintel** ecosystem for your research, please consider citing the following paper:
+
+Sarah Alnegheimish, Dongyu Liu, Carles Sala, Laure Berti-Equille, Kalyan Veeramachaneni. [Sintel: A Machine Learning Framework to Extract Insights from Signals](https://arxiv.org/pdf/2204.09108.pdf).
+```
+@article{alnegheimish2022sintel,
+  title={Sintel: A Machine Learning Framework to Extract Insights from Signals},
+  author={Alnegheimish, Sarah and Liu, Dongyu and Sala, Carles and Berti-Equille, Laure and Veeramachaneni, Kalyan},
+  journal={arXiv preprint arXiv:2204.09108},
+  year={2022}
+}
+```
+
+
+
+If you use **TadGAN** for your research, please consider citing the following paper:
 
 Alexander Geiger, Dongyu Liu, Sarah Alnegheimish, Alfredo Cuesta-Infante, Kalyan Veeramachaneni. [TadGAN - Time Series Anomaly Detection Using Generative Adversarial Networks](https://arxiv.org/pdf/2009.07769v3.pdf).
 
