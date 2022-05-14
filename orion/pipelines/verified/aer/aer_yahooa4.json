@@ -1,0 +1,10 @@
+{
+    "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "time_column": "timestamp",
+        "interval": 1,
+        "method": "mean"
+    },
+    "orion.primitives.aer.score_anomalies#1": {
+        "comb": "reg"
+    }
+}

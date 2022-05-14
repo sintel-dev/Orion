@@ -1,7 +1,39 @@
 History
 =======
 
+## 0.3.1 - 2022-04-26
+
+This version introduce a new pipeline, namely ``AER``, an AutoEncoder Regressor model.
+
+### Issues resolved
+* Add AER Model - [Issue #286](https://github.com/signals-dev/Orion/issues/286) by @lcwong0928
+
+
+## 0.3.0 - 2022-03-31
+
+This version deprecates the support of ``OrionDBExplorer``, which has been migrated to
+[sintel](https://github.com/signals-dev/Orion). As a result, ``Orion`` no longer requires
+mongoDB as a dependency.
+
+### Issues resolved
+* Update dependency  - [Issue #283](https://github.com/signals-dev/Orion/issues/283) by @sarahmish
+* General housekeeping  - [Issue #278](https://github.com/signals-dev/Orion/issues/278) by @sarahmish
+* Fix tutorial testing issue - [Issue #276](https://github.com/signals-dev/Orion/issues/276) by @sarahmish
+* Migrate OrionExplorer to Sintel - [Issue #275](https://github.com/signals-dev/Orion/issues/275) by @dyuliu
+* LSTM viz JSON pipeline added - [Issue #271](https://github.com/signals-dev/Orion/issues/271) by @Hramir
+
+
+## 0.2.1 - 2022-02-18
+
+This version introduces improvements and more testing.
+
+### Issues resolved
+* Adjusting builds for TadGAN - [Issue #261](https://github.com/signals-dev/Orion/issues/261) by @sarahmish
+* Testing tutorials, dependencies, and OS - [Issue #251](https://github.com/signals-dev/Orion/issues/251) by @sarahmish
+
+
 ## 0.2.0 - 2021-10-11
+
 This version supports multivariate timeseries as input. In addition to minor improvements
 and maintenance.
 

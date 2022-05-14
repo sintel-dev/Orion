@@ -72,7 +72,7 @@ class Orion:
             self._fitted == other._fitted
         )
 
-    def fit(self, data: pd.DataFrame):
+    def fit(self, data: pd.DataFrame, **kwargs):
         """Fit the pipeline to the given data.
 
         Args:
@@ -80,8 +80,10 @@ class Orion:
                 Input data, passed as a ``pandas.DataFrame`` containing
                 exactly two columns: timestamp and value.
         """
-        self._mlpipeline = self._get_mlpipeline()
-        self._mlpipeline.fit(data)
+        if not self._fitted:
+            self._mlpipeline = self._get_mlpipeline()
+
+        self._mlpipeline.fit(data, **kwargs)
         self._fitted = True
 
     def _get_outputs_spec(self):
@@ -102,13 +104,13 @@ class Orion:
 
         return events
 
-    def _detect(self, method, data, visualization=False):
+    def _detect(self, method, data, visualization=False, **kwargs):
         if visualization:
             outputs_spec, visualization_names = self._get_outputs_spec()
         else:
             outputs_spec = 'default'
 
-        outputs = method(data, output_=outputs_spec)
+        outputs = method(data, output_=outputs_spec, **kwargs)
 
         if visualization:
             if visualization_names:
@@ -147,7 +149,8 @@ class Orion:
         """
         return self._detect(self._mlpipeline.predict, data, visualization)
 
-    def fit_detect(self, data: pd.DataFrame, visualization: bool = False) -> pd.DataFrame:
+    def fit_detect(self, data: pd.DataFrame, visualization: bool = False,
+                   **kwargs) -> pd.DataFrame:
         """Fit the pipeline to the data and then detect anomalies.
 
         This method is functionally equivalent to calling ``fit(data)``
@@ -175,8 +178,10 @@ class Orion:
                 tuple containing the events DataFrame followed by the
                 visualization outputs dict.
         """
-        self._mlpipeline = self._get_mlpipeline()
-        result = self._detect(self._mlpipeline.fit, data, visualization)
+        if not self._fitted:
+            self._mlpipeline = self._get_mlpipeline()
+
+        result = self._detect(self._mlpipeline.fit, data, visualization, **kwargs)
         self._fitted = True
 
         return result
@@ -246,7 +251,9 @@ class Orion:
         if not fit:
             method = self._mlpipeline.predict
         else:
-            mlpipeline = self._get_mlpipeline()
+            if not self._fitted:
+                mlpipeline = self._get_mlpipeline()
+
             if train_data is not None:
                 # Fit first and then predict
                 mlpipeline.fit(train_data)
