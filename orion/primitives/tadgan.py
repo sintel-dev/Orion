@@ -338,7 +338,7 @@ class TadGAN:
 
         Args:
             X (ndarray):
-                N-dimensional array containing the input inference sequences for the model.
+                N-dimensional array containing the input training sequences for the model.
             y (ndarray):
                 N-dimensional array containing the target sequences we want to reconstruct.
             **kwargs (dict):
@@ -362,7 +362,7 @@ class TadGAN:
 
         Args:
             X (ndarray):
-                N-dimensional array containing the input inference sequences for the model.
+                N-dimensional array containing the input training sequences for the model.
             y (ndarray):
                 N-dimensional array containing the target sequences we want to reconstruct.
         Returns:
