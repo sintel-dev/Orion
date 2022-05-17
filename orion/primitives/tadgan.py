@@ -83,6 +83,32 @@ class TadGAN:
         **hyperparameters (dict):
             Optional. Dictionary containing any additional inputs.
     """
+    @staticmethod
+    def _wasserstein_loss(y_true, y_pred):
+        return tf.reduce_mean(y_true * y_pred)
+
+    @staticmethod
+    def _gradient_penalty_loss_wrapper(critic):
+        def _gradient_penalty_loss(real, fake):
+            # Random weighted average to create interpolated signals.
+            batch_size = tf.shape(real)[0]
+            alpha = tf.random.uniform([batch_size, 1, 1], dtype=tf.float64)
+            interpolated = (alpha * real) + ((1 - alpha) * fake)
+
+            # Get the critic output for this interpolated signal.
+            with tf.GradientTape() as gp_tape:
+                gp_tape.watch(interpolated)
+                validity_interpolated = critic(interpolated)
+
+            # Calculate the gradients w.r.t to this interpolated signal.
+            grads = gp_tape.gradient(validity_interpolated, [interpolated])[0]
+
+            # Calculate the norm of the gradients.
+            norm = tf.sqrt(tf.reduce_sum(tf.square(grads), axis=np.arange(1, len(grads.shape))))
+            gradient_penalty = tf.reduce_mean((norm - 1.0) ** 2)
+            return gradient_penalty
+
+        return _gradient_penalty_loss
 
     def __init__(self, layers_encoder: list, layers_generator: list, layers_critic_x: list,
                  layers_critic_z: list, optimizer: str, input_shape: Optional[tuple] = None,
@@ -195,33 +221,6 @@ class TadGAN:
                 output[LOSS_NAMES[i][0]] = losses[i][0]
 
         return output
-
-    @staticmethod
-    def _wasserstein_loss(y_true, y_pred):
-        return tf.reduce_mean(y_true * y_pred)
-
-    @staticmethod
-    def _gradient_penalty_loss_wrapper(critic):
-        def _gradient_penalty_loss(real, fake):
-            # Random weighted average to create interpolated signals.
-            batch_size = tf.shape(real)[0]
-            alpha = tf.random.uniform([batch_size, 1, 1], dtype=tf.float64)
-            interpolated = (alpha * real) + ((1 - alpha) * fake)
-
-            # Get the critic output for this interpolated signal.
-            with tf.GradientTape() as gp_tape:
-                gp_tape.watch(interpolated)
-                validity_interpolated = critic(interpolated)
-
-            # Calculate the gradients w.r.t to this interpolated signal.
-            grads = gp_tape.gradient(validity_interpolated, [interpolated])[0]
-
-            # Calculate the norm of the gradients.
-            norm = tf.sqrt(tf.reduce_sum(tf.square(grads), axis=np.arange(1, len(grads.shape))))
-            gradient_penalty = tf.reduce_mean((norm - 1.0) ** 2)
-            return gradient_penalty
-
-        return _gradient_penalty_loss
 
     def _build_tadgan(self, **kwargs) -> None:
         hyperparameters = self.hyperparameters.copy()
