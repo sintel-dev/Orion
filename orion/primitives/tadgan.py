@@ -243,7 +243,7 @@ class TadGAN:
 
         x = tf.keras.Input(shape=self.shape)
         y = tf.keras.Input(shape=self.target_shape)
-        z = tf.keras.Input(shape=(self.latent_dim, 1))
+        z = tf.keras.Input(shape=self.latent_shape)
 
         self.generator.trainable = False
         self.encoder.trainable = False
