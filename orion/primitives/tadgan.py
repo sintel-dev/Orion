@@ -84,6 +84,18 @@ class TadGAN:
             Optional. Dictionary containing any additional inputs.
     """
     @staticmethod
+    def _build_model(hyperparameters: dict, layers: list,
+                     input_shape: tuple, name: str) -> Model:
+        x = tf.keras.layers.Input(shape=input_shape)
+        model = tf.keras.Sequential(name=name)
+
+        for layer in layers:
+            built_layer = build_layer(layer, hyperparameters)
+            model.add(built_layer)
+
+        return Model(x, model(x))
+
+    @staticmethod
     def _wasserstein_loss(y_true, y_pred):
         return tf.reduce_mean(y_true * y_pred)
 
@@ -167,18 +179,6 @@ class TadGAN:
                 state[network] = tf.keras.models.load_model(fd.name)
 
         self.__dict__ = state
-
-    @classmethod
-    def _build_model(cls, hyperparameters: dict, layers: list,
-                     input_shape: tuple, name: str) -> Model:
-        x = tf.keras.layers.Input(shape=input_shape)
-        model = tf.keras.Sequential(name=name)
-
-        for layer in layers:
-            built_layer = build_layer(layer, hyperparameters)
-            model.add(built_layer)
-
-        return Model(x, model(x))
 
     def _augment_hyperparameters(self, X: ndarray, y: ndarray, **kwargs) -> dict:
         shape = np.asarray(X)[0].shape
