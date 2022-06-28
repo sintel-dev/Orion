@@ -32,6 +32,7 @@ install_requires = [
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
+    'protobuf<4',
 ]
 
 setup_requires = [
