@@ -25,6 +25,7 @@ argument                type                description
  ``callbacks``          ``list``            list of callbacks to apply during training
  ``validation_split``   ``float``           float between 0 and 1. Fraction of the training data to be used as validation data. Default is 0.2
  ``batch_size``         ``int``             number of samples per gradient update. Default is 64
+ ``window_size``        ``int``             integer denoting the size of the window per input sample
  ``input_shape``        ``tuple``           tuple denoting the shape of an input sample
  ``target_shape``       ``tuple``           tuple denoting the shape of an output sample
  ``optimizer``          ``str``             string (name of optimizer) or optimizer instance. Default is ``keras.optimizers.Adam``
@@ -52,7 +53,7 @@ argument                type                description
 
     primitive = load_primitive('keras.Sequential.DenseSeq2Seq', 
         arguments={"X": X, "y": X, "input_shape":(100, 1), "target_shape":(100, 1), 
-                   "batch_size": 1, "validation_split": 0, "epochs": 5})
+                   "window_size": 100, "batch_size": 1, "validation_split": 0, "epochs": 5})
 
     primitive.fit()
     pred = primitive.produce(X=X)
