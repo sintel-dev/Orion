@@ -117,6 +117,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.3.2.dev0',
+    version='0.3.2.dev1',
     zip_safe=False,
 )
