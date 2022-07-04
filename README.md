@@ -11,7 +11,7 @@
 [![PyPi Shield](https://img.shields.io/pypi/v/orion-ml.svg)](https://pypi.python.org/pypi/orion-ml)
 [![Tests](https://github.com/sintel-dev/Orion/workflows/Run%20Tests/badge.svg)](https://github.com/sintel-dev/Orion/actions?query=workflow%3A%22Run+Tests%22+branch%3Amaster)
 [![Downloads](https://pepy.tech/badge/orion-ml)](https://pepy.tech/project/orion-ml)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/sintel-dev/Orion/master?filepath=notebooks)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/sintel-dev/Orion/master?filepath=tutorials)
 
 # Orion
 
@@ -152,14 +152,15 @@ If you use **Orion** which is part of the **Sintel** ecosystem for your research
 
 Sarah Alnegheimish, Dongyu Liu, Carles Sala, Laure Berti-Equille, Kalyan Veeramachaneni. [Sintel: A Machine Learning Framework to Extract Insights from Signals](https://arxiv.org/pdf/2204.09108.pdf).
 ```
-@article{alnegheimish2022sintel,
+@inproceedings{alnegheimish2022sintel,
   title={Sintel: A Machine Learning Framework to Extract Insights from Signals},
   author={Alnegheimish, Sarah and Liu, Dongyu and Sala, Carles and Berti-Equille, Laure and Veeramachaneni, Kalyan},
-  journal={arXiv preprint arXiv:2204.09108},
+  booktitle={Proceedings of the 2022 International Conference on Management of Data},
+  publisher={Association for Computing Machinery},
+  series = {SIGMOD '22},
   year={2022}
 }
 ```
-
 
 
 If you use **TadGAN** for your research, please consider citing the following paper:
