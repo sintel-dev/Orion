@@ -32,6 +32,7 @@ install_requires = [
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
+    'protobuf<4',
 ]
 
 setup_requires = [
@@ -116,6 +117,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.3.1',
+    version='0.3.2.dev1',
     zip_safe=False,
 )

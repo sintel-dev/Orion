@@ -192,7 +192,8 @@ class AER(object):
                 N-dimensional array containing the regression for each input sequence (reverse).
         """
         X = X[:, 1:-1, :]
-        ry, y, fy = self.aer_model.predict(X)
+        x_ = self.decoder.predict(self.encoder.predict(X))
+        ry, y, fy = x_[:, 0], x_[:, 1:-1], x_[:, -1]
         return ry, y, fy
 
 
