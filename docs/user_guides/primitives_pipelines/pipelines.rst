@@ -93,6 +93,8 @@ This is the list of pipelines available so far, which will grow over time:
 +----------+------------------------------------------------------+
 | Dense AE | Autoencoder based pipeline with Dense layers         |
 +----------+------------------------------------------------------+
+| AER      | Autoencoder with Regression based pipeline           |
++----------+------------------------------------------------------+
 | Azure    | Azure API for `Anomaly Detector`_                    |
 +----------+------------------------------------------------------+
 
@@ -112,7 +114,7 @@ We store a pipeline ``json`` within the pipeline subfolder. In addition, the hyp
 	    ├── arima.json
 	    └── arima_dataset.json
 
-.. note:: 
+.. note::
 	the pipeline name must follow the subfolder name.
 
 Verified Pipelines
@@ -146,7 +148,7 @@ Since pipelines are composed of :ref:`primitives`, you can discover the interpre
 
     np.random.seed(0)
     custom_data = pd.DataFrame({"timestamp": np.arange(0, 150000, 300),
-                                "value": np.random.randint(0, 10, 500)})    
+                                "value": np.random.randint(0, 10, 500)})
 
     hyperparameters = {
         "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {

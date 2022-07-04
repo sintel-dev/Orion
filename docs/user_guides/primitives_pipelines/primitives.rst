@@ -11,7 +11,7 @@ Preprocessing
 
 .. toctree::
     :maxdepth: 1
-    
+
     primitives/time_segments_aggregate.rst
     primitives/intervals_to_mask.rst
     primitives/rolling_window_sequences.rst
@@ -30,13 +30,14 @@ Modeling
     primitives/LSTMSeq2Seq.rst
     primitives/DenseSeq2Seq.rst
     primitives/TadGAN.rst
+    primitives/AER.rst
 
 Postprocessing
 --------------
 
 .. toctree::
     :maxdepth: 1
-    
+
     primitives/score_anomalies.rst
     primitives/reconstruction_errors.rst
     primitives/regression_errors.rst

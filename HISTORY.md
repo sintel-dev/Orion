@@ -1,6 +1,39 @@
 History
 =======
 
+## 0.3.2 - 2022-07-04
+
+This version fixes some of the issues in ``aer``, ``ae``, and ``tadgan`` pipelines.
+
+### Issues resolved
+
+* Fix AER model predict error after loading – [Issue #304](https://github.com/signals-dev/Orion/issues/304) by @lcwong0928
+* Update AE to work with any `window_size` – [Issue #300](https://github.com/signals-dev/Orion/issues/300) by @sarahmish
+* Updated tadgan_viz.json – [Issue #292](https://github.com/signals-dev/Orion/issues/292) by @Hramir
+
+
+## 0.3.1 - 2022-04-26
+
+This version introduce a new pipeline, namely ``AER``, an AutoEncoder Regressor model.
+
+### Issues resolved
+* Add AER Model - [Issue #286](https://github.com/signals-dev/Orion/issues/286) by @lcwong0928
+
+
+## 0.3.0 - 2022-03-31
+
+This version deprecates the support of ``OrionDBExplorer``, which has been migrated to
+[sintel](https://github.com/signals-dev/Orion). As a result, ``Orion`` no longer requires
+mongoDB as a dependency.
+
+### Issues resolved
+* Update dependency  - [Issue #283](https://github.com/signals-dev/Orion/issues/283) by @sarahmish
+* General housekeeping  - [Issue #278](https://github.com/signals-dev/Orion/issues/278) by @sarahmish
+* Fix tutorial testing issue - [Issue #276](https://github.com/signals-dev/Orion/issues/276) by @sarahmish
+* Migrate OrionExplorer to Sintel - [Issue #275](https://github.com/signals-dev/Orion/issues/275) by @dyuliu
+* LSTM viz JSON pipeline added - [Issue #271](https://github.com/signals-dev/Orion/issues/271) by @Hramir
+
+
 ## 0.2.1 - 2022-02-18
 
 This version introduces improvements and more testing.
