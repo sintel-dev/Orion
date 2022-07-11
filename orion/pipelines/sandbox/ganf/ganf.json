@@ -12,5 +12,10 @@
             "window_step_size_portion": 0.1,
             "fixed_threshold": true
         }
+    },
+    "output_names": {
+        "orion.primitives.ganf.GANFModel#1": {
+            "y": "errors"
+        }
     }
 }

@@ -1,0 +1,114 @@
+{
+    "name": "orion.primitives.ganf.GANFModel",
+    "contributors": [
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "documentation": "https://arxiv.org/pdf/2202.07857.pdf",
+    "description": "graph-augmented normalizing flows model",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.ganf.GANFModel",
+    "fit": {
+        "method": "fit",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "n_components": {
+                "type": "int",
+                "default": 1
+            },
+            "name": {
+                "type": "str",
+                "default": "ganf"
+            },
+            "seed": {
+                "type": "int",
+                "default": 18
+            },
+            "n_blocks": {
+                "type": "int",
+                "default": 1
+            },
+            "hidden_size": {
+                "type": "int",
+                "default": 32
+            },
+            "n_hidden": {
+                "type": "int",
+                "default": 1
+            },
+            "batch_norm": {
+                "type": "bool",
+                "default": true
+            },
+            "batch_size": {
+                "type": "int",
+                "default": 512
+            },
+            "dropout": {
+                "type": "float",
+                "default": 0.0
+            },
+            "weight_decay": {
+                "type": "float",
+                "default": 0.0005
+            },
+            "epochs": {
+                "type": "int",
+                "default": 1
+            },
+            "learning_rate": {
+                "type": "float",
+                "default": 0.002
+            },
+            "log_interval": {
+                "type": "int",
+                "default": 5
+            },
+            "max_iter": {
+                "type": "int",
+                "default": 20
+            },
+            "verbose": {
+                "type": "bool",
+                "default": false
+            },
+            "cuda": {
+                "type": "bool",
+                "default": false
+            },
+            "model_path": {
+                "type": "str",
+                "default": null
+            }
+        }
+    }
+}

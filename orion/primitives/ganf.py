@@ -40,7 +40,9 @@ class Signal(Dataset):
         self.window_size = window_size
         self.stride_size = stride_size
         self.unit = unit
-        self.data, self.idx, self.label = self.preprocess(df, label)
+        self.data, self.idx, self.timestamps, self.label = self.preprocess(df, label)
+        self.timestamps = self.timestamps.to_numpy().astype(
+            'datetime64[{}]'.format(unit)).astype(np.int64)
 
     def preprocess(self, df, label):
         start_idx = np.arange(0, len(df) - self.window_size, self.stride_size)
@@ -48,11 +50,12 @@ class Signal(Dataset):
 
         delta_time = df.index[end_idx] - df.index[start_idx]
         idx_mask = delta_time == pd.Timedelta(self.window_size, unit=self.unit)
+        indices = start_idx[idx_mask]
 
         if self.has_labels:
-            return df.values, start_idx[idx_mask], label[start_idx[idx_mask]]
+            return df.values, indices, df.index[indices], label[indices]
 
-        return df.values, start_idx[idx_mask], None
+        return df.values, indices, df.index[indices], None
 
     def __len__(self):
         return len(self.idx)
@@ -335,12 +338,12 @@ class GANFModel(object):
 
         return h
 
-    def fit(self, data, timestamp_column='timestamp', target_column='label', valid_split=0.2,
+    def fit(self, X, timestamp_column='timestamp', target_column='label', valid_split=0.2,
             output_dir='./checkpoint/model'):
         """Train GANF model.
 
         Args:
-            data (pands.DataFrame):
+            X (pands.DataFrame):
                 A dataframe with ``timestamp`` and feature columns used for training.
             timestamp_column (str):
                 Name of the ``timestamp`` column.
@@ -358,25 +361,25 @@ class GANFModel(object):
         # ------------------------------------------------------------------------------
         # Prepare data
         # ------------------------------------------------------------------------------
-        data[timestamp_column] = pd.to_datetime(data[timestamp_column])
-        data = data.set_index(timestamp_column)
+        X.loc[:, timestamp_column] = pd.to_datetime(X[timestamp_column])
+        X = X.set_index(timestamp_column)
 
         labels = None
-        if target_column in data.columns:
-            target = data.pop(target_column)
-            values_to_categories = dict(enumerate(pd.unique(target)))
-            categories_to_values = {
+        if target_column in X.columns:
+            target = X.pop(target_column)
+            self.values_to_categories = dict(enumerate(pd.unique(target)))
+            self.categories_to_values = {
                 category: value
-                for value, category in values_to_categories.items()
+                for value, category in self.values_to_categories.items()
             }
-            labels = pd.Series(target).map(categories_to_values)
+            labels = pd.Series(target).map(self.categories_to_values)
             labels.index = target.index
 
         # normalize data
-        self.mean = data.mean(axis=0)
-        self.std = data.std(axis=0)
+        self.mean = X.mean(axis=0)
+        self.std = X.std(axis=0)
 
-        features = (data - self.mean) / self.std
+        features = (X - self.mean) / self.std
         features = features.dropna(axis=1)
         self.channels = len(features.columns)
 
@@ -384,7 +387,7 @@ class GANFModel(object):
         valid_loader = None
         # split data
         if valid_split > 0:
-            valid_size = int(len(data) * valid_split)
+            valid_size = int(len(X) * valid_split)
             train = features.iloc[: -valid_size]
             valid = features.iloc[-valid_size:]
 
@@ -484,43 +487,49 @@ class GANFModel(object):
             loss_best=loss_best
         )
 
-    def predict(self, data, return_loss=False):
+    def predict(self, X, report_auroc=True):
         """Predict values using the initialized object.
 
         Args:
-            data (ndarray):
+            X (ndarray):
                 N-dimensional array containing the input sequences for the model.
 
         Returns:
-            (list, float):
+            (list, list):
                 * Predicted values for each input sequence.
-                * Test loss value
+                * Index
         """
-        data[self.timestamp_column] = pd.to_datetime(data[self.timestamp_column])
-        data = data.set_index(self.timestamp_column)
+        X[self.timestamp_column] = pd.to_datetime(X[self.timestamp_column])
+        X = X.set_index(self.timestamp_column)
 
-        if self.target_column in data.columns:
-            data = data.drop(self.target_column, axis=1)
+        if self.target_column in X.columns:
+            target = X.pop(self.target_column)
+            labels = pd.Series(target).map(self.categories_to_values)
+        else:
+            if report_auroc:
+                raise ValueError("Need column {} to report AUROC.".format(self.target_column))
 
-        test = (data - self.mean) / self.std
+        test = (X - self.mean) / self.std
         test = test.dropna(axis=1)
 
-        test_loader = DataLoader(Signal(test), batch_size=self.batch_size, shuffle=False)
+        test_loader = DataLoader(Signal(test, labels), batch_size=self.batch_size, shuffle=False)
 
         device = torch.device("cuda" if self.cuda else "cpu")
 
         self.model.eval()
         loss_test = []
         with torch.no_grad():
-            for x in test_loader:
+            for x, *y in test_loader:
                 x = x.to(device)
                 loss = -self.model.test(x, self.A.data).cpu().numpy()
                 loss_test.append(loss)
 
-        print(len(loss_test))
-
         loss_test = np.concatenate(loss_test)
-        loss_test = np.nan_to_num(loss_test)
 
-        if return_loss:
-            return np.mean(loss_test)
+        if report_auroc:
+            ground_truth = np.asarray(test_loader.dataset.label.values, dtype=int)
+            roc_test = roc_auc_score(ground_truth, loss_test)
+            print("AUROC score = {}".format(roc_test))
+
+        index = test_loader.dataset.timestamps
+        return loss_test, index
