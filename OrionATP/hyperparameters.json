@@ -1,0 +1,8 @@
+{
+    "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "interval": 43200
+    },
+    "statsmodels.tsa.arima_model.Arima#1": {
+            "steps": 1
+    }
+}

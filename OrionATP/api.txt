@@ -1,0 +1,3 @@
+https://sandbox.iexapis.com/stable/stock/TSLA/chart/5y/?token=Tpk_059b97af715d417d9f49f50b51b1c448
+date
+close

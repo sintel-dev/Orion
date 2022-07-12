@@ -1,0 +1,4 @@
+pip==22.1.2
+streamlit
+orion-ml
+plotly
