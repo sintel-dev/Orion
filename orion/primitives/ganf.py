@@ -29,7 +29,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Signal(Dataset):
-    def __init__(self, df, label=None, window_size=60, stride_size=10, unit='s'):
+    def __init__(self, df, label=None, window_size=60, stride_size=10, unit='s', interval=1):
         super(Signal, self).__init__()
         if label is None:
             self.has_labels = False
@@ -40,20 +40,19 @@ class Signal(Dataset):
         self.window_size = window_size
         self.stride_size = stride_size
         self.unit = unit
+        self.interval = interval
         self.data, self.idx, self.timestamps, self.label = self.preprocess(df, label)
-        self.timestamps = self.timestamps.to_numpy().astype(
-            'datetime64[{}]'.format(unit)).astype(np.int64)
 
     def preprocess(self, df, label):
         start_idx = np.arange(0, len(df) - self.window_size, self.stride_size)
         end_idx = np.arange(self.window_size, len(df), self.stride_size)
 
         delta_time = df.index[end_idx] - df.index[start_idx]
-        idx_mask = delta_time == pd.Timedelta(self.window_size, unit=self.unit)
+        idx_mask = delta_time == self.window_size * self.interval
         indices = start_idx[idx_mask]
 
         if self.has_labels:
-            return df.values, indices, df.index[indices], label[indices]
+            return df.values, indices, df.index[indices], np.array(label)[indices]
 
         return df.values, indices, df.index[indices], None
 
@@ -65,9 +64,6 @@ class Signal(Dataset):
         start = self.idx[index]
         end = start + self.window_size
         data = self.data[start:end].reshape([self.window_size, -1, 1])
-
-        if self.has_labels:
-            return torch.FloatTensor(data).transpose(0, 1), self.label[index]
 
         return torch.FloatTensor(data).transpose(0, 1)
 
@@ -184,8 +180,20 @@ class GANFModel(object):
     Args:
         name (str):
             Name of the model.
-        seed (int):
-            Random seed to fix in training.
+        timestamp_column (str):
+            Name of the ``timestamp`` column.
+        target_column (str):
+            Name of the ``label`` column.
+        window_size (int):
+            Window size of each sample.
+        stride_size (int):
+            Stride size between samples.
+        unit (str):
+            String representing the unit of timestamps.
+        interval (int):
+            The time gap between one sample and another.
+        input_size (int):
+            Input size for the network.
         n_blocks (int):
             Number of blocks to stack in a model (MADE in MAF; Coupling+BN in RealNVP).
         n_components (int):
@@ -198,28 +206,47 @@ class GANFModel(object):
             Whether to use batch norm or not.
         batch_size (int):
             Number of example per epoch.
+        dropout (float):
+            Dropout value of the network.
         weight_decay (float):
             Weight decay rate for Adam.
         epochs (int):
             Number of iterations to train the model.
-        lr (float):
-            Learning rate.
+        learning_rate (float):
+            Learning rate for the optimizer.
         log_interval (int):
             How often to show loss statistics and save samples.
         max_iter (int):
             Maximum number of evaluations to find ``h``.
         verbose (bool):
             Whether to be on verbose mode or not.
+        cuda (bool):
+            Whether to use GPU or not.
+        seed (int):
+            Random seed to fix in training.
+        valid_split (float):
+            A float to split data dataframe to validation set. Data needs to contain a label
+            column. Use ``target_column`` to change the target column name.
         model_path (str):
             Path to load model if any.
+        output_dir (str):
+            Path to folder where to save the model.
     """
 
-    def __init__(self, name='ganf', seed=18, n_blocks=1, n_components=1, hidden_size=32,
-                 n_hidden=1, batch_norm=True, batch_size=512, dropout=0.0, weight_decay=5e-4,
-                 epochs=1, learning_rate=2e-3, log_interval=5, max_iter=20, verbose=False,
-                 cuda=None, model_path=None):
+    def __init__(self, name='ganf', timestamp_column='timestamp', target_column='label',
+                 window_size=60, stride_size=10, unit='s', interval=1, input_size=1, n_blocks=1,
+                 n_components=1, hidden_size=32, n_hidden=1, batch_norm=True, batch_size=512,
+                 dropout=0.0, weight_decay=5e-4, epochs=1, learning_rate=2e-3, log_interval=5,
+                 max_iter=20, verbose=False, cuda=None, seed=18, validation_split=0.2,
+                 valid_split=0.2, model_path=None, output_dir='./checkpoint/model'):
         self.name = name
-        self.seed = seed
+        self.timestamp_column = timestamp_column
+        self.target_column = target_column
+        self.window_size = window_size
+        self.stride_size = stride_size
+        self.unit = unit
+        self.interval = interval
+        self.input_size = input_size
         self.n_blocks = n_blocks
         self.n_components = n_components
         self.hidden_size = hidden_size
@@ -233,12 +260,13 @@ class GANFModel(object):
         self.log_interval = log_interval
         self.max_iter = max_iter
         self.verbose = verbose
+        self.seed = seed
         self.cuda = cuda or torch.cuda.is_available()
+        self.valid_split = valid_split
         self.model_path = model_path
+        self.output_dir = output_dir
 
         # defaults
-        self.timestamp_column = None
-        self.target_column = None
         self.channels = None
         self.mean = None
         self.std = None
@@ -248,7 +276,7 @@ class GANFModel(object):
         # create model
         self.model = GANF(
             n_blocks=self.n_blocks,
-            input_size=1,
+            input_size=self.input_size,
             hidden_size=self.hidden_size,
             n_hidden=self.n_hidden,
             dropout=self.dropout,
@@ -302,7 +330,7 @@ class GANFModel(object):
                 self.model.eval()
                 loss_val = []
                 with torch.no_grad():
-                    for x, *y in valid_loader:
+                    for x in valid_loader:
                         x = x.to(device)
                         loss = -self.model.test(x, self.A.data).cpu().numpy()
                         loss_val.append(loss)
@@ -310,9 +338,9 @@ class GANFModel(object):
                 loss_val = np.concatenate(loss_val)
                 loss_val = np.nan_to_num(loss_val)
 
-                if self.verbose and hasattr(valid_loader.dataset, 'label'):
+                if self.verbose and getattr(valid_loader.dataset, 'has_labels'):
                     roc_val = roc_auc_score(
-                        np.asarray(valid_loader.dataset.label.values, dtype=int), loss_val)
+                        np.asarray(valid_loader.dataset.label, dtype=int), loss_val)
 
                     print('[{}] Epoch: {}/{}, valid ROC AUC: {}'.format(
                         iteration, epoch, self.epochs, roc_val))
@@ -338,35 +366,12 @@ class GANFModel(object):
 
         return h
 
-    def fit(self, X, timestamp_column='timestamp', target_column='label', valid_split=0.2,
-            output_dir='./checkpoint/model'):
-        """Train GANF model.
-
-        Args:
-            X (pands.DataFrame):
-                A dataframe with ``timestamp`` and feature columns used for training.
-            timestamp_column (str):
-                Name of the ``timestamp`` column.
-            target_column (str):
-                Name of the ``label`` column.
-            valid_split (float):
-                A float to split data dataframe to validation set. Data needs to contain a label
-                column. Use ``target_column`` to change the target column name.
-            output_dir (str):
-                Path to folder where to save the model.
-        """
-        self.timestamp_column = timestamp_column
-        self.target_column = target_column
-
-        # ------------------------------------------------------------------------------
-        # Prepare data
-        # ------------------------------------------------------------------------------
-        X.loc[:, timestamp_column] = pd.to_datetime(X[timestamp_column])
-        X = X.set_index(timestamp_column)
+    def _prepare_data(self, X):
+        X = X.set_index(self.timestamp_column)
 
         labels = None
-        if target_column in X.columns:
-            target = X.pop(target_column)
+        if self.target_column in X.columns:
+            target = X.pop(self.target_column)
             self.values_to_categories = dict(enumerate(pd.unique(target)))
             self.categories_to_values = {
                 category: value
@@ -385,9 +390,10 @@ class GANFModel(object):
 
         train = features
         valid_loader = None
+
         # split data
-        if valid_split > 0:
-            valid_size = int(len(X) * valid_split)
+        if self.valid_split > 0:
+            valid_size = int(len(X) * self.valid_split)
             train = features.iloc[: -valid_size]
             valid = features.iloc[-valid_size:]
 
@@ -395,9 +401,38 @@ class GANFModel(object):
                 labels = labels.iloc[-valid_size:]
 
             valid_loader = DataLoader(
-                Signal(valid, labels), batch_size=self.batch_size, shuffle=False)
+                Signal(
+                    valid,
+                    labels,
+                    self.window_size,
+                    self.stride_size,
+                    self.unit,
+                    self.interval),
+                batch_size=self.batch_size,
+                shuffle=False
+            )
 
-        train_loader = DataLoader(Signal(train), batch_size=self.batch_size, shuffle=True)
+        train_loader = DataLoader(
+            Signal(train, None, self.window_size, self.stride_size, self.unit, self.interval),
+            batch_size=self.batch_size,
+            shuffle=True
+        )
+
+        return train_loader, valid_loader
+
+    def fit(self, X):
+        """Train GANF model.
+
+        Args:
+            X (pands.DataFrame):
+                A dataframe with ``timestamp`` and feature columns used for training.
+        """
+
+        # ------------------------------------------------------------------------------
+        # Prepare data
+        # ------------------------------------------------------------------------------
+
+        train_loader, valid_loader = self._prepare_data(X)
 
         # ------------------------------------------------------------------------------
         # Seeding
@@ -426,13 +461,12 @@ class GANFModel(object):
         init = torch.zeros([self.channels, self.channels])
         init = xavier_uniform_(init).abs()
         init = init.fill_diagonal_(0.0)
-        # self.A = init.clone().detach().to(device).requires_grad_(True) # .to(device)
         self.A = torch.tensor(init, requires_grad=True, device=device)
-        print(self.A.is_leaf)
+
         # ------------------------------------------------------------------------------
         # Saving directory
         # ------------------------------------------------------------------------------
-        save_path = os.path.join(output_dir, self.name)
+        save_path = os.path.join(self.output_dir, self.name)
         if not os.path.exists(save_path):
             os.makedirs(save_path)
 
@@ -487,7 +521,7 @@ class GANFModel(object):
             loss_best=loss_best
         )
 
-    def predict(self, X, report_auroc=True):
+    def predict(self, X):
         """Predict values using the initialized object.
 
         Args:
@@ -499,27 +533,31 @@ class GANFModel(object):
                 * Predicted values for each input sequence.
                 * Index
         """
-        X[self.timestamp_column] = pd.to_datetime(X[self.timestamp_column])
         X = X.set_index(self.timestamp_column)
 
         if self.target_column in X.columns:
             target = X.pop(self.target_column)
             labels = pd.Series(target).map(self.categories_to_values)
+            report_auroc = True
         else:
-            if report_auroc:
-                raise ValueError("Need column {} to report AUROC.".format(self.target_column))
+            labels = None
+            report_auroc = False
 
         test = (X - self.mean) / self.std
         test = test.dropna(axis=1)
 
-        test_loader = DataLoader(Signal(test, labels), batch_size=self.batch_size, shuffle=False)
+        test_loader = DataLoader(
+            Signal(test, labels, self.window_size, self.stride_size, self.unit, self.interval),
+            batch_size=self.batch_size,
+            shuffle=False
+        )
 
         device = torch.device("cuda" if self.cuda else "cpu")
 
         self.model.eval()
         loss_test = []
         with torch.no_grad():
-            for x, *y in test_loader:
+            for x in test_loader:
                 x = x.to(device)
                 loss = -self.model.test(x, self.A.data).cpu().numpy()
                 loss_test.append(loss)
@@ -527,7 +565,7 @@ class GANFModel(object):
         loss_test = np.concatenate(loss_test)
 
         if report_auroc:
-            ground_truth = np.asarray(test_loader.dataset.label.values, dtype=int)
+            ground_truth = np.asarray(test_loader.dataset.label, dtype=int)
             roc_test = roc_auc_score(ground_truth, loss_test)
             print("AUROC score = {}".format(roc_test))
 

@@ -49,9 +49,37 @@
                 "type": "str",
                 "default": "ganf"
             },
+            "timestamp_column": {
+                "type": "str",
+                "default": "timestamp"
+            },
+            "target_column": {
+                "type": "str",
+                "default": "label"
+            },
             "seed": {
                 "type": "int",
                 "default": 18
+            },
+            "window_size": {
+                "type": "int",
+                "default": 60
+            },
+            "stride_size": {
+                "type": "int",
+                "default": 10
+            },
+            "unit": {
+                "type": "str",
+                "default": "s"
+            },
+            "interval": {
+                "type": "int",
+                "default": 1
+            },
+            "input_size": {
+                "type": "int",
+                "default": 1
             },
             "n_blocks": {
                 "type": "int",
@@ -105,9 +133,17 @@
                 "type": "bool",
                 "default": false
             },
+            "validation_split": {
+                "type": "float",
+                "default": 0.2
+            },
             "model_path": {
                 "type": "str",
                 "default": null
+            },
+            "output_dir": {
+                "type": "str",
+                "default": "./checkpoint/model"
             }
         }
     }

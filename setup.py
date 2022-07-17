@@ -27,7 +27,7 @@ install_requires = [
     'Keras>=2.1.6,<2.4',
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
-    'torch>=1.11,<1.13',
+    'torch>=1.10,<1.13',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6<1.4',
 
