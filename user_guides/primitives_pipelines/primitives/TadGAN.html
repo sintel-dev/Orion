@@ -430,17 +430,17 @@
 
 <span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <span class="go">Epoch: 1/5, [Dx loss: [ 8.1564751e+00 -2.8269568e-02 -1.2753400e-03  8.1860197e-01]] [Dz loss: [ 1.5643368  -0.23620689  0.0099258   0.17906179]] [G loss: [1.0159907e+01 2.7486266e-04 9.8272383e-02 1.0061361e+00]]</span>
-<span class="go">Epoch: 2/5, [Dx loss: [ 8.1122799e+00  2.5430264e-02 -5.7639816e-04  8.0874264e-01]] [Dz loss: [ 1.6766577   0.5785153  -0.23322849  0.13313708]] [G loss: [1.00375595e+01 1.62660016e-03 6.98878914e-02 9.96604562e-01]]</span>
-<span class="go">Epoch: 3/5, [Dx loss: [ 7.8373466e+00 -1.0367728e-01  2.3249544e-03  7.9386985e-01]] [Dz loss: [ 2.9572906   1.3475574  -0.10729401  0.17170271]] [G loss: [ 9.8960066e+00 -3.9700684e-03  7.8387380e-02  9.8215896e-01]]</span>
-<span class="go">Epoch: 4/5, [Dx loss: [ 7.6840506  -0.12672277  0.00894971  0.78018236]] [Dz loss: [ 3.069877   -0.06610671 -0.16400656  0.32999903]] [G loss: [ 9.2343445  -0.01001632  0.15142427  0.90929365]]</span>
-<span class="go">Epoch: 5/5, [Dx loss: [ 7.4018717e+00 -2.4671654e-01  5.4216441e-03  7.6431668e-01]] [Dz loss: [ 3.2588894   0.63274634 -0.16586015  0.27920032]] [G loss: [ 8.784364   -0.0199058  -0.03976697  0.8844036 ]]</span>
+<span class="go">Epoch: 2/5, [Dx loss: [ 8.1122799e+00  2.5430264e-02 -5.7639816e-04  8.0874264e-01]] [Dz loss: [ 1.6766577   0.5785153  -0.23322849  0.13313708]] [G loss: [1.0037482e+01 1.5826018e-03 6.9854617e-02 9.9660456e-01]]</span>
+<span class="go">Epoch: 3/5, [Dx loss: [ 7.8248177e+00 -1.0765485e-01  2.4232497e-03  7.9300493e-01]] [Dz loss: [ 2.9578063   1.347339   -0.10729899  0.17177662]] [G loss: [ 9.896642e+00 -4.145731e-03  7.847432e-02  9.822313e-01]]</span>
+<span class="go">Epoch: 4/5, [Dx loss: [ 7.6695747  -0.13101332  0.00913733  0.77914506]] [Dz loss: [ 3.0698705  -0.06618145 -0.16412571  0.33001775]] [G loss: [ 9.235229   -0.01033833  0.15157706  0.909399  ]]</span>
+<span class="go">Epoch: 5/5, [Dx loss: [ 7.3809795e+00 -2.5241375e-01  5.7032239e-03  7.6276898e-01]] [Dz loss: [ 3.2601674   0.6328457  -0.16581921  0.2793141 ]] [G loss: [ 8.786275   -0.02030257 -0.03958205  0.884616  ]]</span>
 
 <span class="gp">In [7]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
 <span class="gp">In [8]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.10, critic score 0.32</span>
+<span class="go">average reconstructed value: 0.10, critic score 0.33</span>
 </pre></div>
 </div>
 </div>
