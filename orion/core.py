@@ -72,6 +72,20 @@ class Orion:
             self._fitted == other._fitted
         )
 
+    def __repr__(self):
+        hyperparameters = None
+        if self._hyperparameters is not None:
+            hyperparameters = '\n'.join(
+                '    {}: {}'.format(step, value) for step, value in self._hyperparameters.items())
+
+        return (
+            'Orion({})\n'
+            'hyperparameters:\n{}\n'
+        ).format(
+            self._pipeline,
+            hyperparameters
+        )
+
     def fit(self, data: pd.DataFrame, **kwargs):
         """Fit the pipeline to the given data.
 
