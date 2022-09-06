@@ -55,10 +55,11 @@ development_requires = [
     'm2r2>=0.2.5,<0.3',
     'nbsphinx>=0.5.0,<0.7',
     'Sphinx>=3,<3.3',
-    'pydata-sphinx-theme',
+    'pydata-sphinx-theme<0.5',
     'autodocsumm>=0.1.10,<1',
+    'markupsafe<2.1.0',
     'ipython>=6.5,<7.5',
-    'Jinja2<3.1',
+    'Jinja2>=2,<3',
 
     # style check
     'flake8>=3.7.7,<4',
