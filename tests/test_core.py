@@ -2,6 +2,7 @@ import os
 
 import numpy as np
 import pandas as pd
+from mlblocks import MLPipeline
 from mlblocks.discovery import load_pipeline
 
 from orion.core import Orion
@@ -16,6 +17,23 @@ def test_repr_hyperparameters():
     orion = Orion('dummy', {"orion.primitives.detectors.ThresholdDetector#1": {"ratio": 0.5}})
     hyper = "    orion.primitives.detectors.ThresholdDetector#1: {'ratio': 0.5}"
     assert repr(orion) == 'Orion(dummy)\nhyperparameters:\n{}\n'.format(hyper)
+
+
+def test_repr_mlpipeline():
+    mlpipeline = MLPipeline('dummy')
+    orion = Orion(mlpipeline)
+    primitives = [
+        "orion.primitives.estimators.MeanEstimator",
+        "orion.primitives.detectors.ThresholdDetector",
+        "orion.primitives.intervals.build_anomaly_intervals"
+    ]
+    assert repr(orion) == 'Orion({})\nhyperparameters:\nNone\n'.format(primitives)
+
+
+def test_repr_dict():
+    pipeline = load_pipeline('dummy')
+    orion = Orion(pipeline)
+    assert repr(orion) == 'Orion({})\nhyperparameters:\nNone\n'.format(pipeline)
 
 
 class TestOrion:

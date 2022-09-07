@@ -73,7 +73,11 @@ class Orion:
         )
 
     def __repr__(self):
+        pipeline = self._pipeline
         hyperparameters = None
+        if isinstance(pipeline, MLPipeline):
+            pipeline = self._pipeline.to_dict()['primitives']
+
         if self._hyperparameters is not None:
             hyperparameters = '\n'.join(
                 '    {}: {}'.format(step, value) for step, value in self._hyperparameters.items())
@@ -82,7 +86,7 @@ class Orion:
             'Orion({})\n'
             'hyperparameters:\n{}\n'
         ).format(
-            self._pipeline,
+            pipeline,
             hyperparameters
         )
 
