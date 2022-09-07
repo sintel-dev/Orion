@@ -78,6 +78,9 @@ class Orion:
         if isinstance(pipeline, MLPipeline):
             pipeline = self._pipeline.to_dict()['primitives']
 
+        elif isinstance(pipeline, dict):
+            pipeline = self._pipeline['primitives']
+
         if self._hyperparameters is not None:
             hyperparameters = '\n'.join(
                 '    {}: {}'.format(step, value) for step, value in self._hyperparameters.items())

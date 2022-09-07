@@ -33,7 +33,12 @@ def test_repr_mlpipeline():
 def test_repr_dict():
     pipeline = load_pipeline('dummy')
     orion = Orion(pipeline)
-    assert repr(orion) == 'Orion({})\nhyperparameters:\nNone\n'.format(pipeline)
+    primitives = [
+        "orion.primitives.estimators.MeanEstimator",
+        "orion.primitives.detectors.ThresholdDetector",
+        "orion.primitives.intervals.build_anomaly_intervals"
+    ]
+    assert repr(orion) == 'Orion({})\nhyperparameters:\nNone\n'.format(primitives)
 
 
 class TestOrion:
