@@ -7,6 +7,17 @@ from mlblocks.discovery import load_pipeline
 from orion.core import Orion
 
 
+def test_repr():
+    orion = Orion('dummy')
+    assert repr(orion) == 'Orion(dummy)\nhyperparameters:\nNone\n'
+
+
+def test_repr_hyperparameters():
+    orion = Orion('dummy', {"orion.primitives.detectors.ThresholdDetector#1": {"ratio": 0.5}})
+    hyper = "    orion.primitives.detectors.ThresholdDetector#1: {'ratio': 0.5}"
+    assert repr(orion) == 'Orion(dummy)\nhyperparameters:\n{}\n'.format(hyper)
+
+
 class TestOrion:
 
     @classmethod
