@@ -7,38 +7,39 @@ from mlblocks.discovery import load_pipeline
 
 from orion.core import Orion
 
+REPR = 'Orion:\n{}\nhyperparameters:\n{}\n'
+
 
 def test_repr():
     orion = Orion('dummy')
-    assert repr(orion) == 'Orion(dummy)\nhyperparameters:\nNone\n'
+    assert repr(orion) == REPR.format('    dummy', 'None')
 
 
 def test_repr_hyperparameters():
     orion = Orion('dummy', {"orion.primitives.detectors.ThresholdDetector#1": {"ratio": 0.5}})
     hyper = "    orion.primitives.detectors.ThresholdDetector#1: {'ratio': 0.5}"
-    assert repr(orion) == 'Orion(dummy)\nhyperparameters:\n{}\n'.format(hyper)
+    assert repr(orion) == REPR.format('    dummy', hyper)
 
 
 def test_repr_mlpipeline():
     mlpipeline = MLPipeline('dummy')
     orion = Orion(mlpipeline)
-    primitives = [
-        "orion.primitives.estimators.MeanEstimator",
-        "orion.primitives.detectors.ThresholdDetector",
-        "orion.primitives.intervals.build_anomaly_intervals"
-    ]
-    assert repr(orion) == 'Orion({})\nhyperparameters:\nNone\n'.format(primitives)
+    primitives = "    orion.primitives.estimators.MeanEstimator\n" \
+                 "    orion.primitives.detectors.ThresholdDetector\n" \
+                 "    orion.primitives.intervals.build_anomaly_intervals"
+
+    print(repr(orion))
+    assert repr(orion) == REPR.format(primitives, 'None')
 
 
 def test_repr_dict():
     pipeline = load_pipeline('dummy')
     orion = Orion(pipeline)
-    primitives = [
-        "orion.primitives.estimators.MeanEstimator",
-        "orion.primitives.detectors.ThresholdDetector",
-        "orion.primitives.intervals.build_anomaly_intervals"
-    ]
-    assert repr(orion) == 'Orion({})\nhyperparameters:\nNone\n'.format(primitives)
+    primitives = "    orion.primitives.estimators.MeanEstimator\n" \
+                 "    orion.primitives.detectors.ThresholdDetector\n" \
+                 "    orion.primitives.intervals.build_anomaly_intervals"
+
+    assert repr(orion) == REPR.format(primitives, 'None')
 
 
 class TestOrion:
