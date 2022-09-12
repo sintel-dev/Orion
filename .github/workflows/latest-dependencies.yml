@@ -1,5 +1,8 @@
 name: Latest Dependency Checker
 on:
+  push:
+    branch:
+      - issue320-depchecker
   schedule:
     - cron: '0 * * * *'
   workflow_dispatch:
@@ -22,9 +25,9 @@ jobs:
       with:
         token: ${{ secrets.REPO_SCOPED_TOKEN }}
         commit-message: Update latest dependencies
-        title: Automated Latest Dependency Updates
+        title: [**TEST DO NOT MERGE **] Automated Latest Dependency Updates
         body: "This is an auto-generated PR with **latest** dependency updates."
         branch: latest-dep-update
         branch-suffix: short-commit-hash
-        base: master
+        base: issue320-depchecker
         team-reviewers: core
