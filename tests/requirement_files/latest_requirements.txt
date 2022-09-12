@@ -1,0 +1,12 @@
+Keras==2.3.1
+Keras-Applications==1.0.8
+Keras-Preprocessing==1.1.2
+mlblocks==0.3.4
+mlprimitives==0.2.5
+numba==0.50.1
+numpy==1.16.6
+pandas==0.24.2
+pyts==0.10.0
+scikit-learn==0.20.4
+tensorflow==1.15.5
+tensorflow-estimator==1.15.1
