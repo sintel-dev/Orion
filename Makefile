@@ -304,9 +304,8 @@ docker-jupyter-package: docker-jupyter-save ## Build the docker-jupyter image an
 	docker/package.sh
 
 
-# DEP TARGETS
+# DEPENDENCY TARGETS
 
 .PHONY: checkdeps
 checkdeps: # Save the currently installed versions of the dependencies as the latest versions 
-	$(eval allow_list='mlblocks|mlprimitives|pandas|numpy|tensorflow|Keras|scikit-learn|numba|pyts')
-	pip freeze | grep -v "sintel-dev/Orion.git" | grep -E $(allow_list) > $(OUTPUT_PATH)
+	invoke checkdeps $(OUTPUT_PATH)
