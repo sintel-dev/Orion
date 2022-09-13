@@ -15,11 +15,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.7
-    - name: Update dependencies
+    - name: Install package
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install -e .[test]
-        make checkdeps OUTPUT_PATH=tests/requirement_files/latest_requirements.txt
+        pip install --upgrade pip
+        pip install invoke .[test]
+    - name: Update dependencies
+      run: make checkdeps OUTPUT_PATH=tests/requirement_files/latest_requirements.txt
     - name: Create pull request
       uses: peter-evans/create-pull-request@v3
       with:
