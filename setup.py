@@ -111,7 +111,7 @@ setup(
     long_description_content_type='text/markdown',
     name='orion-ml',
     packages=find_packages(include=['orion', 'orion.*']),
-    python_requires='>=3.6,<3.8',
+    python_requires='>=3.6,<3.9',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,

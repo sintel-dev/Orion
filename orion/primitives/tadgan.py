@@ -31,11 +31,12 @@ def build_layer(layer: dict, hyperparameters: dict):
     # TODO: Upgrade to using tf.keras.layers.Wrapper in mlprimitives.
     if issubclass(layer_class, tf.keras.layers.Wrapper):
         layer_kwargs['layer'] = build_layer(layer_kwargs['layer'], hyperparameters)
+
     for key, value in layer_kwargs.items():
         if isinstance(value, str):
             layer_kwargs[key] = hyperparameters.get(value, value)
-    return layer_class(**layer_kwargs)
 
+    return layer_class(**layer_kwargs)
 
 class TadGAN:
     """TadGAN model for time series reconstruction.
@@ -213,9 +214,10 @@ class TadGAN:
         output = dict()
         if self.detailed_losses:
             for i in range(len(losses)):
+                if not isinstance(losses[i], list):
+                    losses[i] = [losses[i]]
                 for j in range(len(losses[i])):
                     output[LOSS_NAMES[i][j]] = losses[i][j]
-
         else:
             for i in range(len(losses)):
                 output[LOSS_NAMES[i][0]] = losses[i][0]
@@ -305,6 +307,7 @@ class TadGAN:
         for epoch in range(1, self.epochs + 1):
             if self.shuffle:
                 np.random.shuffle(indices)
+
             x_shuffled = X_train[indices]
             y_shuffled = y_train[indices]
             epoch_cx_loss, epoch_cz_loss, epoch_eg_loss = [], [], []

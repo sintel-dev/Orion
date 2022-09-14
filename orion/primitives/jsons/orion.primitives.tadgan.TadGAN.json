@@ -89,7 +89,7 @@
             },
             "detailed_losses": {
                 "type": "bool",
-                "default": true
+                "default": false
             },
             "verbose": {
                 "type": "bool",
