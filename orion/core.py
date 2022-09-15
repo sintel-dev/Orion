@@ -72,6 +72,31 @@ class Orion:
             self._fitted == other._fitted
         )
 
+    def __repr__(self):
+        if isinstance(self._pipeline, MLPipeline):
+            pipeline = '\n'.join(
+                '    {}'.format(primitive) for primitive in self._pipeline.to_dict()['primitives'])
+
+        elif isinstance(self._pipeline, dict):
+            pipeline = '\n'.join(
+                '    {}'.format(primitive) for primitive in self._pipeline['primitives'])
+
+        else:
+            pipeline = '    {}'.format(self._pipeline)
+
+        hyperparameters = None
+        if self._hyperparameters is not None:
+            hyperparameters = '\n'.join(
+                '    {}: {}'.format(step, value) for step, value in self._hyperparameters.items())
+
+        return (
+            'Orion:\n{}\n'
+            'hyperparameters:\n{}\n'
+        ).format(
+            pipeline,
+            hyperparameters
+        )
+
     def fit(self, data: pd.DataFrame, **kwargs):
         """Fit the pipeline to the given data.
 

@@ -38,6 +38,7 @@ def build_layer(layer: dict, hyperparameters: dict):
 
     return layer_class(**layer_kwargs)
 
+
 class TadGAN:
     """TadGAN model for time series reconstruction.
 
