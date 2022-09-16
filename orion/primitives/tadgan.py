@@ -81,7 +81,7 @@ class TadGAN:
         verbose (int):
             Verbosity mode where 0 = silent, 1 = progress bar, 2 = one line per epoch. Default 0.
         detailed_losses (bool):
-            Whether to output all loss values in verbose mode. Default True.
+            Whether to output all loss values in verbose mode. Default False.
         **hyperparameters (dict):
             Optional. Dictionary containing any additional inputs.
     """
@@ -128,7 +128,7 @@ class TadGAN:
                  layers_critic_z: list, optimizer: str, input_shape: Optional[tuple] = None,
                  target_shape: Optional[tuple] = None, latent_dim: int = 20,
                  learning_rate: float = 0.005, epochs: int = 50, batch_size: int = 64,
-                 iterations_critic: int = 5, shuffle: bool = True, detailed_losses: bool = True,
+                 iterations_critic: int = 5, shuffle: bool = True, detailed_losses: bool = False,
                  verbose: Union[int, bool] = True, **hyperparameters):
         """Initialize the TadGAN model."""
         super(TadGAN, self).__init__()
