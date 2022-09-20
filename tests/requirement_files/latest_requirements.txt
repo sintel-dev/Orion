@@ -8,7 +8,7 @@ mlprimitives==0.2.5
 numba==0.50.1
 numpy==1.16.6
 pandas==0.24.2
-protobuf==3.12.2
+protobuf==3.15.0
 pyts==0.10.0
 s3fs==0.4.2
 scikit-learn==0.20.4
