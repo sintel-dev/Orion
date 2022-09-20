@@ -1,0 +1,31 @@
+name: Latest Dependency Checker
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    - name: Install package
+      run: |
+        pip install --upgrade pip
+        pip install invoke .[test]
+    - name: Update dependencies
+      run: make checkdeps OUTPUT_PATH=tests/requirement_files/latest_requirements.txt
+    - name: Create pull request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.REPO_SCOPED_TOKEN }}
+        commit-message: Update latest dependencies
+        title: Automated Latest Dependency Updates
+        body: "This is an auto-generated PR with **latest** dependency updates."
+        branch: latest-dep-update
+        branch-suffix: short-commit-hash
+        base: master
+        team-reviewers: core

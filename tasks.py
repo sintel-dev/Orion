@@ -83,6 +83,36 @@ def lint(c):
     c.run('isort -c --recursive orion tests')
 
 
+@task
+def checkdeps(c, path):
+    with open('setup.py', 'r') as setup_py:
+        lines = setup_py.read().splitlines()
+
+    packages = []
+    started = False
+    for line in lines:
+        if started:
+            if line == ']':
+                started = False
+                continue
+
+            line = line.strip()
+            if line.startswith('#') or not line: # ignore comment
+                continue
+                
+            line = re.split(r'>?=?<?', line)[0]
+            line = re.sub(r"""['",]""", '', line)
+            packages.append(line)
+
+        elif line.startswith('install_requires = ['):
+            started = True
+
+    c.run(
+        f'pip freeze | grep -v \"sintel-dev/Orion.git\" | '
+        f'grep -E \'{"|".join(packages)}\' > {path}'
+    )
+
+
 def remove_readonly(func, path, _):
     "Clear the readonly bit and reattempt the removal"
     os.chmod(path, stat.S_IWRITE)
