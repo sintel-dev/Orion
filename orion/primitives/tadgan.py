@@ -22,13 +22,17 @@ LOGGER = logging.getLogger(__name__)
 
 
 class RandomWeightedAverage(_Merge):
+    def __init__(self, batch_size):
+        super(RandomWeightedAverage, self).__init__()
+        self.batch_size = batch_size
+
     def _merge_function(self, inputs):
         """
         Args:
             inputs[0] x     original input
             inputs[1] x_    predicted input
         """
-        alpha = K.random_uniform((64, 1, 1))
+        alpha = K.random_uniform((self.batch_size, 1, 1))
         return (alpha * inputs[0]) + ((1 - alpha) * inputs[1])
 
 
@@ -194,7 +198,7 @@ class TadGAN(object):
         fake_x = self.critic_x(x_)
         valid_x = self.critic_x(y)
 
-        interpolated_x = RandomWeightedAverage()([y, x_])
+        interpolated_x = RandomWeightedAverage(self.batch_size)([y, x_])
         validity_interpolated_x = self.critic_x(interpolated_x)
         partial_gp_loss_x = partial(self._gradient_penalty_loss, averaged_samples=interpolated_x)
         partial_gp_loss_x.__name__ = 'gradient_penalty'
@@ -206,7 +210,7 @@ class TadGAN(object):
 
         fake_z = self.critic_z(z_)
         valid_z = self.critic_z(z)
-        interpolated_z = RandomWeightedAverage()([z, z_])
+        interpolated_z = RandomWeightedAverage(self.batch_size)([z, z_])
         validity_interpolated_z = self.critic_z(interpolated_z)
         partial_gp_loss_z = partial(self._gradient_penalty_loss, averaged_samples=interpolated_z)
         partial_gp_loss_z.__name__ = 'gradient_penalty'

@@ -29,6 +29,7 @@
         "keras.Sequential.LSTMSeq2Seq#1": {
             "epochs": 35,
             "verbose": false,
+            "window_size": 100,
             "input_shape": [100, 1],
             "target_shape": [100, 1]
         },

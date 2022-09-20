@@ -1,6 +1,17 @@
 History
 =======
 
+## 0.3.2 - 2022-07-04
+
+This version fixes some of the issues in ``aer``, ``ae``, and ``tadgan`` pipelines.
+
+### Issues resolved
+
+* Fix AER model predict error after loading – [Issue #304](https://github.com/signals-dev/Orion/issues/304) by @lcwong0928
+* Update AE to work with any `window_size` – [Issue #300](https://github.com/signals-dev/Orion/issues/300) by @sarahmish
+* Updated tadgan_viz.json – [Issue #292](https://github.com/signals-dev/Orion/issues/292) by @Hramir
+
+
 ## 0.3.1 - 2022-04-26
 
 This version introduce a new pipeline, namely ``AER``, an AutoEncoder Regressor model.

@@ -32,6 +32,7 @@ install_requires = [
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
+    'protobuf<4',
 ]
 
 setup_requires = [
@@ -54,10 +55,11 @@ development_requires = [
     'm2r2>=0.2.5,<0.3',
     'nbsphinx>=0.5.0,<0.7',
     'Sphinx>=3,<3.3',
-    'pydata-sphinx-theme',
+    'pydata-sphinx-theme<0.5',
     'autodocsumm>=0.1.10,<1',
+    'markupsafe<2.1.0',
     'ipython>=6.5,<7.5',
-    'Jinja2<3.1',
+    'Jinja2>=2,<3',
 
     # style check
     'flake8>=3.7.7,<4',
@@ -116,6 +118,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.3.2.dev0',
+    version='0.3.3.dev0',
     zip_safe=False,
 )

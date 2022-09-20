@@ -70,6 +70,10 @@
                 "type": "int",
                 "default": 64
             },
+            "window_size": {
+                "type": "int",
+                "default": 250
+            },
             "input_shape": {
                 "type": "tuple",
                 "default": [
@@ -117,7 +121,7 @@
                     {
                         "class": "keras.layers.RepeatVector",
                         "parameters": {
-                            "n": 100
+                            "n": "window_size"
                         }
                     },
                     {

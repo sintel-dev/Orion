@@ -70,6 +70,10 @@
                 "type": "int",
                 "default": 64
             },
+            "window_size": {
+                "type": "int",
+                "default": 250
+            },
             "input_shape": {
                 "type": "tuple",
                 "default": [
@@ -155,7 +159,7 @@
                     {
                         "class": "keras.layers.Dense",
                         "parameters": {
-                            "units": 100,
+                            "units": "window_size",
                             "activation": "linear"
                         }
                     },

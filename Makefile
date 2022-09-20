@@ -302,3 +302,10 @@ docker-jupyter-stop: ## Stop the orion-jupyter daemon
 .PHONY: docker-distribute
 docker-jupyter-package: docker-jupyter-save ## Build the docker-jupyter image and package it for distribution
 	docker/package.sh
+
+
+# DEPENDENCY TARGETS
+
+.PHONY: checkdeps
+checkdeps: # Save the currently installed versions of the dependencies as the latest versions 
+	invoke checkdeps $(OUTPUT_PATH)
