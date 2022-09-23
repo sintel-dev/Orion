@@ -3,53 +3,46 @@
 import logging
 import math
 import tempfile
-from functools import partial
+from typing import Optional, Union
 
-import keras
 import numpy as np
 import pandas as pd
-from keras import backend as K
-from keras.layers import Input
-from keras.layers.merge import _Merge
-from keras.models import Model
-from mlprimitives.adapters.keras import build_layer
+import tensorflow as tf
 from mlprimitives.utils import import_object
+from numpy import ndarray
 from scipy import stats
+from tensorflow.keras import Model
 
 from orion.primitives.timeseries_errors import reconstruction_errors
 
 LOGGER = logging.getLogger(__name__)
+tf.keras.backend.set_floatx('float64')
+
+LOSS_NAMES = [
+    ['cx_loss', 'cx_real', 'cx_fake', 'cx_gp'],
+    ['cz_loss', 'cz_real', 'cz_fake', 'cz_gp'],
+    ['eg_loss', 'eg_cx_fake', 'eg_cz_fake', 'eg_mse']
+]
 
 
-class RandomWeightedAverage(_Merge):
-    def __init__(self, batch_size):
-        super(RandomWeightedAverage, self).__init__()
-        self.batch_size = batch_size
+def build_layer(layer: dict, hyperparameters: dict):
+    layer_class = import_object(layer['class'])
+    layer_kwargs = layer['parameters'].copy()
+    # TODO: Upgrade to using tf.keras.layers.Wrapper in mlprimitives.
+    if issubclass(layer_class, tf.keras.layers.Wrapper):
+        layer_kwargs['layer'] = build_layer(layer_kwargs['layer'], hyperparameters)
 
-    def _merge_function(self, inputs):
-        """
-        Args:
-            inputs[0] x     original input
-            inputs[1] x_    predicted input
-        """
-        alpha = K.random_uniform((self.batch_size, 1, 1))
-        return (alpha * inputs[0]) + ((1 - alpha) * inputs[1])
+    for key, value in layer_kwargs.items():
+        if isinstance(value, str):
+            layer_kwargs[key] = hyperparameters.get(value, value)
+
+    return layer_class(**layer_kwargs)
 
 
-class TadGAN(object):
+class TadGAN:
     """TadGAN model for time series reconstruction.
 
     Args:
-        shape (tuple):
-            Tuple denoting the shape of an input sample.
-        encoder_input_shape (tuple):
-            Shape of encoder input.
-        generator_input_shape (tuple):
-            Shape of generator input.
-        critic_x_input_shape (tuple):
-            Shape of critic_x input.
-        critic_z_input_shape (tuple):
-            Shape of critic_z input.
         layers_encoder (list):
             List containing layers of encoder.
         layers_generator (list):
@@ -58,26 +51,113 @@ class TadGAN(object):
             List containing layers of critic_x.
         layers_critic_z (list):
             List containing layers of critic_z.
+        input_shape (tuple):
+            Optional. Tuple denoting the shape of an input sample.
+        latent_dim (int):
+            Optional. Integer denoting dimension of latent space. Default 20.
+        target_shape (tuple):
+            Optional. Tuple denoting the shape of an output sample.
+        encoder_input_shape (tuple):
+            Shape of encoder input.
+        generator_input_shape (tuple):
+            Shape of generator input.
+        critic_x_input_shape (tuple):
+            Shape of critic_x input.
+        critic_z_input_shape (tuple):
+            Shape of critic_z input.
         optimizer (str):
             String denoting the keras optimizer.
         learning_rate (float):
             Optional. Float denoting the learning rate of the optimizer. Default 0.005.
         epochs (int):
-            Optional. Integer denoting the number of epochs. Default 2000.
+            Optional. Integer denoting the number of epochs. Default 50.
         latent_dim (int):
             Optional. Integer denoting dimension of latent space. Default 20.
-        batch_size (int):
-            Integer denoting the batch size. Default 64.
         iterations_critic (int):
             Optional. Integer denoting the number of critic training steps per one
             Generator/Encoder training step. Default 5.
-        hyperparameters (dictionary):
+        shuffle (bool):
+            Whether to shuffle the dataset for each epoch. Default True.
+        verbose (int):
+            Verbosity mode where 0 = silent, 1 = progress bar, 2 = one line per epoch. Default 0.
+        detailed_losses (bool):
+            Whether to output all loss values in verbose mode. Default False.
+        **hyperparameters (dict):
             Optional. Dictionary containing any additional inputs.
     """
+    @staticmethod
+    def _build_model(hyperparameters: dict, layers: list,
+                     input_shape: tuple, name: str) -> Model:
+        x = tf.keras.layers.Input(shape=input_shape)
+        model = tf.keras.Sequential(name=name)
+
+        for layer in layers:
+            built_layer = build_layer(layer, hyperparameters)
+            model.add(built_layer)
+
+        return Model(x, model(x))
+
+    @staticmethod
+    def _wasserstein_loss(y_true, y_pred):
+        return tf.reduce_mean(y_true * y_pred)
+
+    @staticmethod
+    def _gradient_penalty_loss_wrapper(critic):
+        def _gradient_penalty_loss(real, fake):
+            # Random weighted average to create interpolated signals.
+            batch_size = tf.shape(real)[0]
+            alpha = tf.random.uniform([batch_size, 1, 1], dtype=tf.float64)
+            interpolated = (alpha * real) + ((1 - alpha) * fake)
+
+            # Get the critic output for this interpolated signal.
+            with tf.GradientTape() as gp_tape:
+                gp_tape.watch(interpolated)
+                validity_interpolated = critic(interpolated)
+
+            # Calculate the gradients w.r.t to this interpolated signal.
+            grads = gp_tape.gradient(validity_interpolated, [interpolated])[0]
+
+            # Calculate the norm of the gradients.
+            norm = tf.sqrt(tf.reduce_sum(tf.square(grads), axis=np.arange(1, len(grads.shape))))
+            gradient_penalty = tf.reduce_mean((norm - 1.0) ** 2)
+            return gradient_penalty
+
+        return _gradient_penalty_loss
+
+    def __init__(self, layers_encoder: list, layers_generator: list, layers_critic_x: list,
+                 layers_critic_z: list, optimizer: str, input_shape: Optional[tuple] = None,
+                 target_shape: Optional[tuple] = None, latent_dim: int = 20,
+                 learning_rate: float = 0.005, epochs: int = 50, batch_size: int = 64,
+                 iterations_critic: int = 5, shuffle: bool = True, detailed_losses: bool = False,
+                 verbose: Union[int, bool] = True, **hyperparameters):
+        """Initialize the TadGAN model."""
+        super(TadGAN, self).__init__()
+
+        # Required model hyperparameters to construct model.
+        self.layers_encoder, self.layers_generator = layers_encoder, layers_generator
+        self.layers_critic_x, self.layers_critic_z = layers_critic_x, layers_critic_z
+
+        # Optional model hyperparameters.
+        self.shape = input_shape
+        self.latent_dim = latent_dim
+        self.target_shape = target_shape
+        self.hyperparameters = hyperparameters
+
+        # Model training hyperparameters.
+        self.learning_rate = learning_rate
+        self.optimizer = optimizer
+        self.epochs = epochs
+        self.batch_size = batch_size
+        self.iterations_critic = iterations_critic
+        self.shuffle = shuffle
+        self.verbose = verbose
+        self.detailed_losses = detailed_losses
+        self.fitted = False
 
     def __getstate__(self):
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
-        modules = ['optimizer', 'critic_x_model', 'critic_z_model', 'encoder_generator_model']
+        modules = ['critic_x_model', 'critic_z_model', 'encoder_generator_model',
+                   'critic_x_optimizer', 'critic_z_optimizer', 'encoder_generator_optimizer']
 
         state = self.__dict__.copy()
 
@@ -86,138 +166,113 @@ class TadGAN(object):
 
         for network in networks:
             with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=False) as fd:
-                keras.models.save_model(state.pop(network), fd.name, overwrite=True)
-
+                tf.keras.models.save_model(state.pop(network), fd.name, overwrite=True)
                 state[network + '_str'] = fd.read()
 
         return state
 
-    def __setstate__(self, state):
+    def __setstate__(self, state: dict):
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
         for network in networks:
             with tempfile.NamedTemporaryFile(suffix='.hdf5', delete=False) as fd:
                 fd.write(state.pop(network + '_str'))
                 fd.flush()
 
-                state[network] = keras.models.load_model(fd.name)
+                state[network] = tf.keras.models.load_model(fd.name)
 
         self.__dict__ = state
 
-    def _build_model(self, hyperparameters, layers, input_shape):
-        x = Input(shape=input_shape)
-        model = keras.models.Sequential()
-
-        for layer in layers:
-            built_layer = build_layer(layer, hyperparameters)
-            model.add(built_layer)
-
-        return Model(x, model(x))
-
-    def _setdefault(self, kwargs, key, value):
-        if key in kwargs:
-            return
-
-        if key in self.hyperparameters and self.hyperparameters[key] is None:
-            kwargs[key] = value
-
-    def _wasserstein_loss(self, y_true, y_pred):
-        return K.mean(y_true * y_pred)
-
-    def _gradient_penalty_loss(self, y_true, y_pred, averaged_samples):
-        gradients = K.gradients(y_pred, averaged_samples)[0]
-        gradients_sqr = K.square(gradients)
-        gradients_sqr_sum = K.sum(gradients_sqr, axis=np.arange(1, len(gradients_sqr.shape)))
-        gradient_l2_norm = K.sqrt(gradients_sqr_sum)
-        gradient_penalty = K.square(1 - gradient_l2_norm)
-        return K.mean(gradient_penalty)
-
-    def __init__(self, layers_encoder, layers_generator, layers_critic_x, layers_critic_z,
-                 optimizer, input_shape=(100, 1), target_shape=(100, 1), latent_dim=20,
-                 learning_rate=0.0005, epochs=2000, batch_size=64, iterations_critic=5,
-                 **hyperparameters):
-
-        self.shape = input_shape
-        self.epochs = epochs
-        self.batch_size = batch_size
-        self.latent_dim = latent_dim
-        self.latent_shape = (latent_dim, 1)
-        self.target_shape = target_shape
-        self.iterations_critic = iterations_critic
-
-        self.layers_encoder, self.layers_generator = layers_encoder, layers_generator
-        self.layers_critic_x, self.layers_critic_z = layers_critic_x, layers_critic_z
-
-        self.optimizer = import_object(optimizer)(learning_rate)
-
-        self.hyperparameters = hyperparameters
-        self._fitted = False
-
-    def _augment_hyperparameters(self, X, y, kwargs):
+    def _augment_hyperparameters(self, X: ndarray, y: ndarray, **kwargs) -> dict:
         shape = np.asarray(X)[0].shape
-        length = shape[0]
+        length, input_dim = shape
         target_shape = np.asarray(y)[0].shape
+        output_dim = target_shape[1]
 
-        # to infer the shape
+        # Infers the shape.
         self.shape = self.shape or shape
         self.target_shape = self.target_shape or target_shape
+        self.latent_shape = (self.latent_dim, output_dim)
 
-        self._setdefault(kwargs, 'generator_reshape_dim', length // 2)
-        self._setdefault(kwargs, 'generator_reshape_shape', (length // 2, 1))
-        self._setdefault(kwargs, 'encoder_reshape_shape', self.latent_shape)
-
+        kwargs.update({
+            'shape': self.shape,
+            'target_shape': self.target_shape,
+            'input_dim': input_dim,
+            'output_dim': output_dim,
+            'generator_reshape_dim': length // 2,
+            'generator_reshape_shape': (length // 2, output_dim),
+            'encoder_reshape_shape': self.latent_shape
+        })
         return kwargs
 
-    def _set_shapes(self):
+    def _set_shapes(self) -> None:
         self.encoder_input_shape = self.shape
         self.generator_input_shape = self.latent_shape
         self.critic_x_input_shape = self.target_shape
         self.critic_z_input_shape = self.latent_shape
 
-    def _build_tadgan(self, **kwargs):
+    def _format_losses(self, losses: list) -> dict:
+        """Format losses into dictionary mapping metric names to their current value."""
+        output = dict()
+        if self.detailed_losses:
+            for i in range(len(losses)):
+                if not isinstance(losses[i], list):
+                    losses[i] = [losses[i]]
+                for j in range(len(losses[i])):
+                    output[LOSS_NAMES[i][j]] = losses[i][j]
+        else:
+            for i in range(len(losses)):
+                output[LOSS_NAMES[i][0]] = losses[i][0]
+
+        return output
+
+    def _build_tadgan(self, **kwargs) -> None:
         hyperparameters = self.hyperparameters.copy()
         hyperparameters.update(kwargs)
 
-        self.encoder = self._build_model(hyperparameters, self.layers_encoder,
-                                         self.encoder_input_shape)
-        self.generator = self._build_model(hyperparameters, self.layers_generator,
-                                           self.generator_input_shape)
-        self.critic_x = self._build_model(hyperparameters, self.layers_critic_x,
-                                          self.critic_x_input_shape)
-        self.critic_z = self._build_model(hyperparameters, self.layers_critic_z,
-                                          self.critic_z_input_shape)
+        # Models
+        self.encoder = self._build_model(
+            hyperparameters, self.layers_encoder, self.encoder_input_shape, name='encoder')
+        self.generator = self._build_model(
+            hyperparameters, self.layers_generator, self.generator_input_shape, name='generator')
+        self.critic_x = self._build_model(
+            hyperparameters, self.layers_critic_x, self.critic_x_input_shape, name='critic_x')
+        self.critic_z = self._build_model(
+            hyperparameters, self.layers_critic_z, self.critic_z_input_shape, name='critic_z')
+
+        # Optimizers
+        self.critic_x_optimizer = import_object(self.optimizer)(self.learning_rate)
+        self.critic_z_optimizer = import_object(self.optimizer)(self.learning_rate)
+        self.encoder_generator_optimizer = import_object(self.optimizer)(self.learning_rate)
+
+        x = tf.keras.Input(shape=self.shape)
+        y = tf.keras.Input(shape=self.target_shape)
+        z = tf.keras.Input(shape=self.latent_shape)
 
         self.generator.trainable = False
         self.encoder.trainable = False
 
-        x = Input(shape=self.shape)
-        y = Input(shape=self.target_shape)
-        z = Input(shape=(self.latent_dim, 1))
-
+        # Critic x model
         x_ = self.generator(z)
-        z_ = self.encoder(x)
-        fake_x = self.critic_x(x_)
-        valid_x = self.critic_x(y)
-
-        interpolated_x = RandomWeightedAverage(self.batch_size)([y, x_])
-        validity_interpolated_x = self.critic_x(interpolated_x)
-        partial_gp_loss_x = partial(self._gradient_penalty_loss, averaged_samples=interpolated_x)
-        partial_gp_loss_x.__name__ = 'gradient_penalty'
-        self.critic_x_model = Model(inputs=[y, z], outputs=[valid_x, fake_x,
-                                                            validity_interpolated_x])
-        self.critic_x_model.compile(loss=[self._wasserstein_loss, self._wasserstein_loss,
-                                          partial_gp_loss_x], optimizer=self.optimizer,
+        cx_real = self.critic_x(y)
+        cx_fake = self.critic_x(x_)
+        self.critic_x_model = Model(inputs=[y, z], outputs=[cx_real, cx_fake, x_])
+        self.critic_x_model.compile(loss=[self._wasserstein_loss,
+                                          self._wasserstein_loss,
+                                          self._gradient_penalty_loss_wrapper(self.critic_x)
+                                          ],
+                                    optimizer=self.critic_x_optimizer,
                                     loss_weights=[1, 1, 10])
 
-        fake_z = self.critic_z(z_)
-        valid_z = self.critic_z(z)
-        interpolated_z = RandomWeightedAverage(self.batch_size)([z, z_])
-        validity_interpolated_z = self.critic_z(interpolated_z)
-        partial_gp_loss_z = partial(self._gradient_penalty_loss, averaged_samples=interpolated_z)
-        partial_gp_loss_z.__name__ = 'gradient_penalty'
-        self.critic_z_model = Model(inputs=[x, z], outputs=[valid_z, fake_z,
-                                                            validity_interpolated_z])
-        self.critic_z_model.compile(loss=[self._wasserstein_loss, self._wasserstein_loss,
-                                          partial_gp_loss_z], optimizer=self.optimizer,
+        # Critic z model
+        z_ = self.encoder(x)
+        cz_real = self.critic_z(z)
+        cz_fake = self.critic_z(z_)
+        self.critic_z_model = Model(inputs=[x, z], outputs=[cz_real, cz_fake, z_])
+        self.critic_z_model.compile(loss=[self._wasserstein_loss,
+                                          self._wasserstein_loss,
+                                          self._gradient_penalty_loss_wrapper(self.critic_z)
+                                          ],
+                                    optimizer=self.critic_z_optimizer,
                                     loss_weights=[1, 1, 10])
 
         self.critic_x.trainable = False
@@ -225,88 +280,94 @@ class TadGAN(object):
         self.generator.trainable = True
         self.encoder.trainable = True
 
-        z_gen = Input(shape=(self.latent_dim, 1))
-        x_gen_ = self.generator(z_gen)
-        x_gen = Input(shape=self.shape)
-        z_gen_ = self.encoder(x_gen)
-        x_gen_rec = self.generator(z_gen_)
-        fake_gen_x = self.critic_x(x_gen_)
-        fake_gen_z = self.critic_z(z_gen_)
+        x_ = self.generator(z)
+        cx_fake = self.critic_x(x_)
+        z_ = self.encoder(x)
+        cz_fake = self.critic_z(z_)
+        x_rec_ = self.generator(z_)
 
-        self.encoder_generator_model = Model([x_gen, z_gen], [fake_gen_x, fake_gen_z, x_gen_rec])
-        self.encoder_generator_model.compile(loss=[self._wasserstein_loss, self._wasserstein_loss,
-                                                   'mse'], optimizer=self.optimizer,
+        self.encoder_generator_model = Model([x, z], [cx_fake, cz_fake, x_rec_])
+        self.encoder_generator_model.compile(loss=[self._wasserstein_loss,
+                                                   self._wasserstein_loss,
+                                                   'mse'
+                                                   ],
+                                             optimizer=self.encoder_generator_optimizer,
                                              loss_weights=[1, 1, 10])
 
-    def _fit(self, X, target):
-        fake = np.ones((self.batch_size, 1))
-        valid = -np.ones((self.batch_size, 1))
-        delta = np.ones((self.batch_size, 1))
+    def _fit(self, data: tuple):
+        X_train, y_train = data
+        minibatch_size = self.batch_size * self.iterations_critic
+        num_minibatch = X_train.shape[0] // minibatch_size
+        z_shape = (self.batch_size, self.latent_shape[0], self.latent_shape[1])
 
-        indices = np.arange(X.shape[0])
+        # Wasserstein GAN formulation.
+        fake = tf.ones((self.batch_size, 1), dtype=tf.float64)
+        real = -tf.ones((self.batch_size, 1), dtype=tf.float64)
+
+        indices = np.arange(X_train.shape[0])
         for epoch in range(1, self.epochs + 1):
-            np.random.shuffle(indices)
-            X_ = X[indices]
-            y_ = target[indices]
+            if self.shuffle:
+                np.random.shuffle(indices)
 
-            epoch_g_loss = []
-            epoch_cx_loss = []
-            epoch_cz_loss = []
+            x_shuffled = X_train[indices]
+            y_shuffled = y_train[indices]
+            epoch_cx_loss, epoch_cz_loss, epoch_eg_loss = [], [], []
 
-            minibatches_size = self.batch_size * self.iterations_critic
-            num_minibatches = int(X_.shape[0] // minibatches_size)
-
-            for i in range(num_minibatches):
-                minibatch = X_[i * minibatches_size: (i + 1) * minibatches_size]
-                y_minibatch = y_[i * minibatches_size: (i + 1) * minibatches_size]
+            for i in range(num_minibatch):
+                x_minibatch = x_shuffled[i * minibatch_size: (i + 1) * minibatch_size]
+                y_minibatch = y_shuffled[i * minibatch_size: (i + 1) * minibatch_size]
 
                 for j in range(self.iterations_critic):
-                    x = minibatch[j * self.batch_size: (j + 1) * self.batch_size]
+                    x = x_minibatch[j * self.batch_size: (j + 1) * self.batch_size]
                     y = y_minibatch[j * self.batch_size: (j + 1) * self.batch_size]
-                    z = np.random.normal(size=(self.batch_size, self.latent_dim, 1))
+                    z = tf.random.normal(shape=z_shape, dtype=tf.float64)
                     epoch_cx_loss.append(
-                        self.critic_x_model.train_on_batch([y, z], [valid, fake, delta]))
+                        self.critic_x_model.train_on_batch([y, z], [real, fake, y]))
                     epoch_cz_loss.append(
-                        self.critic_z_model.train_on_batch([x, z], [valid, fake, delta]))
+                        self.critic_z_model.train_on_batch([x, z], [real, fake, z]))
 
-                epoch_g_loss.append(
-                    self.encoder_generator_model.train_on_batch([x, z], [valid, valid, y]))
+                epoch_eg_loss.append(
+                    self.encoder_generator_model.train_on_batch([x, z], [real, real, y]))
 
-            cx_loss = np.mean(np.array(epoch_cx_loss), axis=0)
-            cz_loss = np.mean(np.array(epoch_cz_loss), axis=0)
-            g_loss = np.mean(np.array(epoch_g_loss), axis=0)
-            print('Epoch: {}/{}, [Dx loss: {}] [Dz loss: {}] [G loss: {}]'.format(
-                epoch, self.epochs, cx_loss, cz_loss, g_loss))
+            epoch_cx_loss = np.round(np.mean(np.array(epoch_cx_loss), axis=0), 4)
+            epoch_cz_loss = np.round(np.mean(np.array(epoch_cz_loss), axis=0), 4)
+            epoch_eg_loss = np.round(np.mean(np.array(epoch_eg_loss), axis=0), 4)
+            losses = self._format_losses([epoch_cx_loss, epoch_cz_loss, epoch_eg_loss])
+            if self.verbose:
+                print('Epoch: {}/{}, Losses: {}'.format(epoch, self.epochs, losses))
 
-    def fit(self, X, y=None, **kwargs):
-        """Fit the TadGAN.
+    def fit(self, X: ndarray, y: Optional[ndarray] = None, **kwargs) -> None:
+        """Fit the TadGAN model.
 
         Args:
             X (ndarray):
                 N-dimensional array containing the input training sequences for the model.
             y (ndarray):
                 N-dimensional array containing the target sequences we want to reconstruct.
+            **kwargs (dict):
+                Optional. Additional inputs.
         """
         if y is None:
-            y = X.copy()  # reconstruct the same input
+            y = X.copy()
+        X, y = X.astype(np.float64), y.astype(np.float64)
 
-        if not self._fitted:
-            self._augment_hyperparameters(X, y, kwargs)
+        # Infer dimensions and compile model.
+        if not self.fitted:
+            kwargs = self._augment_hyperparameters(X, y, **kwargs)
             self._set_shapes()
             self._build_tadgan(**kwargs)
 
-        self._fit(X, y)
-        self._fitted = True
+        self._fit((X, y))
+        self.fitted = True
 
-    def predict(self, X, y=None):
-        """Predict values using the initialized object.
+    def predict(self, X: ndarray, y: Optional[ndarray] = None) -> tuple:
+        """Predict using TadGAN model.
 
         Args:
             X (ndarray):
-                N-dimensional array containing the input sequences for the model.
+                N-dimensional array containing the input training sequences for the model.
             y (ndarray):
                 N-dimensional array containing the target sequences we want to reconstruct.
-
         Returns:
             ndarray:
                 N-dimensional array containing the reconstructions for each input sequence.
@@ -314,7 +375,8 @@ class TadGAN(object):
                 N-dimensional array containing the critic scores for each input sequence.
         """
         if y is None:
-            y = X.copy()  # reconstruct the same input
+            y = X.copy()
+        X, y = X.astype(np.float64), y.astype(np.float64)
 
         z_ = self.encoder.predict(X)
         y_hat = self.generator.predict(z_)
@@ -323,7 +385,7 @@ class TadGAN(object):
         return y_hat, critic
 
 
-def _compute_critic_score(critics, smooth_window):
+def _compute_critic_score(critics: ndarray, smooth_window: int) -> ndarray:
     """Compute an array of anomaly scores.
 
     Args:
@@ -350,9 +412,11 @@ def _compute_critic_score(critics, smooth_window):
     return z_scores
 
 
-def score_anomalies(y, y_hat, critic, index, score_window=10, critic_smooth_window=None,
-                    error_smooth_window=None, smooth=True, rec_error_type="point", comb="mult",
-                    lambda_rec=0.5):
+def score_anomalies(y: ndarray, y_hat: ndarray, critic: ndarray, index: ndarray,
+                    score_window: int = 10, critic_smooth_window: int = None,
+                    error_smooth_window: int = None, smooth: bool = True,
+                    rec_error_type: str = "point", comb: str = "mult",
+                    lambda_rec: float = 0.5) -> tuple:
     """Compute an array of anomaly scores.
 
     Anomaly scores are calculated using a combination of reconstruction error and critic score.
