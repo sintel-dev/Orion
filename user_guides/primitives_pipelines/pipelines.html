@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Pipelines &#8212; Orion 0.3.3.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -220,7 +221,7 @@
               
               <div>
                 
-  <div class="section" id="pipelines">
+  <section id="pipelines">
 <span id="id1"></span><h1>Pipelines<a class="headerlink" href="#pipelines" title="Permalink to this headline">¶</a></h1>
 <p>The main component in the Orion project are the <strong>Orion Pipelines</strong>, which consist of <a class="reference external" href="https://mlbazaar.github.io/MLBlocks/advanced_usage/pipelines.html">MLBlocks Pipelines</a> specialized in detecting anomalies in time series.</p>
 <p>As <code class="docutils literal notranslate"><span class="pre">MLPipeline</span></code> instances, <strong>Orion Pipelines</strong>:</p>
@@ -231,7 +232,7 @@
 <li><p>have <em>hyperparameters</em> that can be <em>tuned</em> to improve their anomaly detection performance</p></li>
 <li><p>can be stored as a JSON file that includes all the primitives that compose them, as well as other required configuration options.</p></li>
 </ul>
-<div class="section" id="pipeline-representation">
+<section id="pipeline-representation">
 <h2>Pipeline Representation<a class="headerlink" href="#pipeline-representation" title="Permalink to this headline">¶</a></h2>
 <p>As previously mentioned, a pipeline is composed of a sequence of <a class="reference internal" href="primitives.html#primitives"><span class="std std-ref">Primitives</span></a>. In Orion, we store pipelines as annotated <strong>JSON</strong> files.
 Let’s view the structure of a pipeline JSON for anomaly detection in <a class="reference external" href="https://github.com/sintel-dev/Orion/tree/master/orion/pipelines">orion/pipelines</a>. For example let’s consider the <a class="reference external" href="https://github.com/sintel-dev/Orion/blob/master/orion/pipelines/verified/arima/arima.json">ARIMA</a> pipeline. There are four main categories defined in the JSON:</p>
@@ -278,8 +279,8 @@ Let’s view the structure of a pipeline JSON for anomaly detection in <a class=
 </div>
 <p>Then <code class="docutils literal notranslate"><span class="pre">orion.detect(..,</span> <span class="pre">visualization=True)</span></code> will return two outputs: the first output being the detected anomalies, and the second output is a dictionary containing the specified outputs in <code class="docutils literal notranslate"><span class="pre">visualization</span></code>. You can read more about the specifications of <a class="reference internal" href="../../api_reference/orion.html#orion"><span class="std std-ref">orion</span></a> API.</p>
 <p>To read more about the intricacies of composing a pipeline, please refer to <a class="reference external" href="https://mlbazaar.github.io/MLBlocks/advanced_usage/pipelines.html">MLBlocks Pipelines</a>.</p>
-</div>
-<div class="section" id="current-available-pipelines">
+</section>
+<section id="current-available-pipelines">
 <h2>Current Available Pipelines<a class="headerlink" href="#current-available-pipelines" title="Permalink to this headline">¶</a></h2>
 <p>In the <strong>Orion Project</strong>, the pipelines are included as <strong>JSON</strong> files, which can be found
 in the subdirectories inside the <code class="docutils literal notranslate"><span class="pre">orion/pipelines</span></code> folder.</p>
@@ -319,8 +320,8 @@ in the subdirectories inside the <code class="docutils literal notranslate"><spa
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="pipeline-storage">
+</section>
+<section id="pipeline-storage">
 <h2>Pipeline Storage<a class="headerlink" href="#pipeline-storage" title="Permalink to this headline">¶</a></h2>
 <p>For each pipeline, there is a dedicated folder that stores:
 * the pipeline itself
@@ -338,8 +339,8 @@ in the subdirectories inside the <code class="docutils literal notranslate"><spa
 <p class="admonition-title">Note</p>
 <p>the pipeline name must follow the subfolder name.</p>
 </div>
-</div>
-<div class="section" id="verified-pipelines">
+</section>
+<section id="verified-pipelines">
 <h2>Verified Pipelines<a class="headerlink" href="#verified-pipelines" title="Permalink to this headline">¶</a></h2>
 <p>In <strong>Orion</strong>, we organize pipelines into <em>verified</em> and <em>sandbox</em>. The distinction between verified and sandbox is kept until several tests and verifications are made. We consider two cases when pipelines are inspected before transferring:</p>
 <ul class="simple">
@@ -349,8 +350,8 @@ in the subdirectories inside the <code class="docutils literal notranslate"><spa
 <p>In both of these cases, the user is expected to open a new <em>PR</em> and pass tests before considering its merge and storage in sandbox.
 Next, we test the new pipeline/hyperparameters in the benchmark and verify that they perform as expected and indicated by the user. Once these checks have passed, we make the transfer.</p>
 <p>To know more about our process in contributing and testing, read our <a class="reference internal" href="../../developer_guides/contributing.html#contributing"><span class="std std-ref">Contributing</span></a> guidelines and <a class="reference internal" href="../benchmarking.html#benchmarking"><span class="std std-ref">Benchmarking</span></a>.</p>
-</div>
-<div class="section" id="pipelines-for-custom-data">
+</section>
+<section id="pipelines-for-custom-data">
 <h2>Pipelines for Custom Data<a class="headerlink" href="#pipelines-for-custom-data" title="Permalink to this headline">¶</a></h2>
 <p>To use a pipeline on your own data, first you need to make sure that it follows the data format described in <a class="reference internal" href="../data.html#data"><span class="std std-ref">Data</span></a>. Additionally, some hyperparameter changes in the pipeline might be necessary.</p>
 <p>Since pipelines are composed of <a class="reference internal" href="primitives.html#primitives"><span class="std std-ref">Primitives</span></a>, you can discover the interpretation of each hyperparameter by visiting the primitive’s documentation. One of the most used primitives is <code class="docutils literal notranslate"><span class="pre">time_segments_aggregate</span></code> which makes your signal equi-spaced. You need to set the <code class="docutils literal notranslate"><span class="pre">interval</span></code> hyperparameter to the frequency of your data. For example, if your data has a frequency of 5 minutes then <code class="docutils literal notranslate"><span class="pre">interval=300</span></code> would be most appropriate since we are dealing with second intervals. A hands on example is shown here:</p>
@@ -384,46 +385,45 @@ Next, we test the new pipeline/hyperparameters in the benchmark and verify that 
 <span class="gp">   ...: </span>
 
 <span class="gp">In [8]: </span><span class="n">orion</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">custom_data</span><span class="p">)</span>
-<span class="go">Train on 200 samples, validate on 50 samples</span>
 <span class="go">Epoch 1/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 1s - loss: 0.4166 - mse: 0.4166</span>
-<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3906 - mse: 0.3906</span>
-<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3968 - mse: 0.3968</span>
-<span class="go">200/200 [==============================] - 2s 10ms/step - loss: 0.3950 - mse: 0.3950 - val_loss: 0.4187 - val_mse: 0.4187</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.4285 - mse: 0.4285</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.4043 - mse: 0.4043</span>
+<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3964 - mse: 0.3964</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3943 - mse: 0.3943</span>
+<span class="go">4/4 [==============================] - 2s 558ms/step - loss: 0.3943 - mse: 0.3943 - val_loss: 0.4186 - val_mse: 0.4186</span>
 <span class="go">Epoch 2/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3893 - mse: 0.3893</span>
-<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.4187 - mse: 0.4187</span>
-<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.4003 - mse: 0.4003</span>
-<span class="go">200/200 [==============================] - 1s 6ms/step - loss: 0.3926 - mse: 0.3926 - val_loss: 0.4225 - val_mse: 0.4225</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.3647 - mse: 0.3647</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.3554 - mse: 0.3554</span>
+<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3926 - mse: 0.3926</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3929 - mse: 0.3929</span>
+<span class="go">4/4 [==============================] - 2s 410ms/step - loss: 0.3929 - mse: 0.3929 - val_loss: 0.4199 - val_mse: 0.4199</span>
 <span class="go">Epoch 3/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3752 - mse: 0.3752</span>
-<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.4022 - mse: 0.4022</span>
-<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3939 - mse: 0.3939</span>
-<span class="go">200/200 [==============================] - 1s 7ms/step - loss: 0.3922 - mse: 0.3922 - val_loss: 0.4231 - val_mse: 0.4231</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.4289 - mse: 0.4289</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.4041 - mse: 0.4041</span>
+<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3880 - mse: 0.3880</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3936 - mse: 0.3936</span>
+<span class="go">4/4 [==============================] - 2s 420ms/step - loss: 0.3936 - mse: 0.3936 - val_loss: 0.4210 - val_mse: 0.4210</span>
 <span class="go">Epoch 4/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3836 - mse: 0.3836</span>
-<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3858 - mse: 0.3858</span>
-<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3894 - mse: 0.3894</span>
-<span class="go">200/200 [==============================] - 1s 7ms/step - loss: 0.3931 - mse: 0.3931 - val_loss: 0.4202 - val_mse: 0.4202</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.4119 - mse: 0.4119</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.4003 - mse: 0.4003</span>
+<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3908 - mse: 0.3908</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3938 - mse: 0.3938</span>
+<span class="go">4/4 [==============================] - 2s 421ms/step - loss: 0.3938 - mse: 0.3938 - val_loss: 0.4219 - val_mse: 0.4219</span>
 <span class="go">Epoch 5/5</span>
 
-<span class="go"> 64/200 [========&gt;.....................] - ETA: 0s - loss: 0.3807 - mse: 0.3807</span>
-<span class="go">128/200 [==================&gt;...........] - ETA: 0s - loss: 0.3946 - mse: 0.3946</span>
-<span class="go">192/200 [===========================&gt;..] - ETA: 0s - loss: 0.3879 - mse: 0.3879</span>
-<span class="go">200/200 [==============================] - 1s 7ms/step - loss: 0.3957 - mse: 0.3957 - val_loss: 0.4182 - val_mse: 0.4182</span>
-
-<span class="go"> 64/250 [======&gt;.......................] - ETA: 0s</span>
-<span class="go">128/250 [==============&gt;...............] - ETA: 0s</span>
-<span class="go">192/250 [======================&gt;.......] - ETA: 0s</span>
-<span class="go">250/250 [==============================] - 1s 2ms/step</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.3792 - mse: 0.3792</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.3841 - mse: 0.3841</span>
+<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3905 - mse: 0.3905</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3923 - mse: 0.3923</span>
+<span class="go">4/4 [==============================] - 2s 410ms/step - loss: 0.3923 - mse: 0.3923 - val_loss: 0.4215 - val_mse: 0.4215</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>

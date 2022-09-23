@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Quickstart &#8212; Orion 0.3.3.dev0 documentation</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -188,11 +189,11 @@
               
               <div>
                 
-  <div class="section" id="quickstart">
+  <section id="quickstart">
 <span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
 <p>In the following steps we will show a short guide about how to run one of the <strong>Orion Pipelines</strong>
 on one of the signals from the <strong>Demo Dataset</strong>.</p>
-<div class="section" id="load-the-data">
+<section id="load-the-data">
 <h2>1. Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
 <p>In the first step we will load the <strong>S-1</strong> signal from the <strong>Demo Dataset</strong>.</p>
 <p>We will do so in two parts, we will use the first part to fit the
@@ -213,8 +214,8 @@ pipeline and the second one to detect anomalies.</p>
 </pre></div>
 </div>
 <p>The output will be a table that contains two columns <cite>timestamp</cite> and <cite>value</cite>.</p>
-</div>
-<div class="section" id="detect-anomalies-using-orion">
+</section>
+<section id="detect-anomalies-using-orion">
 <h2>2. Detect anomalies using Orion<a class="headerlink" href="#detect-anomalies-using-orion" title="Permalink to this headline">¶</a></h2>
 <p>Once we have the data, let us try to use an Orion pipeline to analyze it and search for anomalies.</p>
 <p>In order to do so, we will have to create an instance of the <cite>orion.Orion</cite> class.</p>
@@ -260,11 +261,11 @@ Output format described above:</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="n">anomalies</span>
 <span class="gh">Out[11]: </span><span class="go"></span>
 <span class="go">        start         end  severity</span>
-<span class="go">0  1398405600  1400198400  0.583373</span>
+<span class="go">0  1398427200  1400198400   0.52304</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="evaluate-the-performance-of-your-pipeline">
+</section>
+<section id="evaluate-the-performance-of-your-pipeline">
 <h2>3. Evaluate the performance of your pipeline<a class="headerlink" href="#evaluate-the-performance-of-your-pipeline" title="Permalink to this headline">¶</a></h2>
 <p>In this next step we will load some already known anomalous intervals and evaluate how
 good our anomaly detection was by comparing those with our detected intervals.</p>
@@ -285,16 +286,16 @@ good our anomaly detection was by comparing those with our detected intervals.</
 
 <span class="gp">In [16]: </span><span class="n">scores</span>
 <span class="gh">Out[16]: </span><span class="go"></span>
-<span class="go">accuracy     0.950341</span>
-<span class="go">f1           0.313208</span>
-<span class="go">recall       0.185682</span>
+<span class="go">accuracy     0.950205</span>
+<span class="go">f1           0.310019</span>
+<span class="go">recall       0.183445</span>
 <span class="go">precision    1.000000</span>
 <span class="go">dtype: float64</span>
 </pre></div>
 </div>
 <p>The output will be a <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> containing a collection of scores indicating how the predictions were.</p>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>

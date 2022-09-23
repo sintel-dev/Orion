@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Data &#8212; Orion 0.3.3.dev0 documentation</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -206,12 +207,12 @@
               
               <div>
                 
-  <div class="section" id="data">
+  <section id="data">
 <span id="id1"></span><h1>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
 <p>Orion takes a time series signal and produces an interval of expected anomalies. The input to the framework is a univariate time series and the output is a table denoting the start and end timestamp of the anomalies.</p>
-<div class="section" id="data-format">
+<section id="data-format">
 <h2>Data Format<a class="headerlink" href="#data-format" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="input">
+<section id="input">
 <h3>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
 <p>Orion Pipelines work on time Series that are provided as a single table of telemetry
 observations with two columns:</p>
@@ -246,8 +247,8 @@ observations with two columns:</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="output">
+</section>
+<section id="output">
 <h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
 <p>The output of the Orion Pipelines is another table that contains the detected anomalous
 intervals and that has at least two columns:</p>
@@ -279,16 +280,16 @@ severity of the detected anomaly.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="dataset-we-use-in-this-library">
+</section>
+</section>
+<section id="dataset-we-use-in-this-library">
 <h2>Dataset we use in this library<a class="headerlink" href="#dataset-we-use-in-this-library" title="Permalink to this headline">¶</a></h2>
 <p>For development, evaluation of pipelines, we include a dataset which includes several signals already formatted as expected by the Orion Pipelines.</p>
 <p>This formatted dataset can be browsed and downloaded directly from the <a class="reference external" href="https://d3-ai-orion.s3.amazonaws.com/index.html">d3-ai-orion AWS S3 Bucket</a>.</p>
 <p>This dataset is adapted from the one used for the experiments in the <a class="reference external" href="https://arxiv.org/abs/1802.04431">Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper</a>. Original source data is available for download <a class="reference external" href="https://s3-us-west-2.amazonaws.com/telemanom/data.zip">here</a>.</p>
 <p>We thank NASA for making this data available for public use.</p>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>

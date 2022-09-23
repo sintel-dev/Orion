@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>orion.primitives.tadgan.TadGAN &#8212; Orion 0.3.3.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -209,39 +210,43 @@
               
               <div>
                 
-  <div class="section" id="orion-primitives-tadgan-tadgan">
+  <section id="orion-primitives-tadgan-tadgan">
 <h1>orion.primitives.tadgan.TadGAN<a class="headerlink" href="#orion-primitives-tadgan-tadgan" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="orion.primitives.tadgan.TadGAN">
-<em class="property">class </em><code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">TadGAN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">input_shape</span><span class="o">=</span><span class="default_value">100, 1</span></em>, <em class="sig-param"><span class="n">target_shape</span><span class="o">=</span><span class="default_value">100, 1</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.0005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">2000</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">orion.primitives.tadgan.</code><code class="sig-name descname">TadGAN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">input_shape</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target_shape</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">shuffle</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">detailed_losses</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN" title="Permalink to this definition">¶</a></dt>
 <dd><p>TadGAN model for time series reconstruction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> (<em>tuple</em>) – Tuple denoting the shape of an input sample.</p></li>
-<li><p><strong>encoder_input_shape</strong> (<em>tuple</em>) – Shape of encoder input.</p></li>
-<li><p><strong>generator_input_shape</strong> (<em>tuple</em>) – Shape of generator input.</p></li>
-<li><p><strong>critic_x_input_shape</strong> (<em>tuple</em>) – Shape of critic_x input.</p></li>
-<li><p><strong>critic_z_input_shape</strong> (<em>tuple</em>) – Shape of critic_z input.</p></li>
 <li><p><strong>layers_encoder</strong> (<em>list</em>) – List containing layers of encoder.</p></li>
 <li><p><strong>layers_generator</strong> (<em>list</em>) – List containing layers of generator.</p></li>
 <li><p><strong>layers_critic_x</strong> (<em>list</em>) – List containing layers of critic_x.</p></li>
 <li><p><strong>layers_critic_z</strong> (<em>list</em>) – List containing layers of critic_z.</p></li>
+<li><p><strong>input_shape</strong> (<em>tuple</em>) – Optional. Tuple denoting the shape of an input sample.</p></li>
+<li><p><strong>latent_dim</strong> (<em>int</em>) – Optional. Integer denoting dimension of latent space. Default 20.</p></li>
+<li><p><strong>target_shape</strong> (<em>tuple</em>) – Optional. Tuple denoting the shape of an output sample.</p></li>
+<li><p><strong>encoder_input_shape</strong> (<em>tuple</em>) – Shape of encoder input.</p></li>
+<li><p><strong>generator_input_shape</strong> (<em>tuple</em>) – Shape of generator input.</p></li>
+<li><p><strong>critic_x_input_shape</strong> (<em>tuple</em>) – Shape of critic_x input.</p></li>
+<li><p><strong>critic_z_input_shape</strong> (<em>tuple</em>) – Shape of critic_z input.</p></li>
 <li><p><strong>optimizer</strong> (<em>str</em>) – String denoting the keras optimizer.</p></li>
 <li><p><strong>learning_rate</strong> (<em>float</em>) – Optional. Float denoting the learning rate of the optimizer. Default 0.005.</p></li>
-<li><p><strong>epochs</strong> (<em>int</em>) – Optional. Integer denoting the number of epochs. Default 2000.</p></li>
-<li><p><strong>latent_dim</strong> (<em>int</em>) – Optional. Integer denoting dimension of latent space. Default 20.</p></li>
-<li><p><strong>batch_size</strong> (<em>int</em>) – Integer denoting the batch size. Default 64.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em>) – Optional. Integer denoting the number of epochs. Default 50.</p></li>
+<li><p><strong>latent_dim</strong> – Optional. Integer denoting dimension of latent space. Default 20.</p></li>
 <li><p><strong>iterations_critic</strong> (<em>int</em>) – Optional. Integer denoting the number of critic training steps per one
 Generator/Encoder training step. Default 5.</p></li>
-<li><p><strong>hyperparameters</strong> (<em>dictionary</em>) – Optional. Dictionary containing any additional inputs.</p></li>
+<li><p><strong>shuffle</strong> (<em>bool</em>) – Whether to shuffle the dataset for each epoch. Default True.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Verbosity mode where 0 = silent, 1 = progress bar, 2 = one line per epoch. Default 0.</p></li>
+<li><p><strong>detailed_losses</strong> (<em>bool</em>) – Whether to output all loss values in verbose mode. Default False.</p></li>
+<li><p><strong>**hyperparameters</strong> (<em>dict</em>) – Optional. Dictionary containing any additional inputs.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="orion.primitives.tadgan.TadGAN.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">input_shape</span><span class="o">=</span><span class="default_value">100, 1</span></em>, <em class="sig-param"><span class="n">target_shape</span><span class="o">=</span><span class="default_value">100, 1</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.0005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">2000</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers_encoder</span></em>, <em class="sig-param"><span class="n">layers_generator</span></em>, <em class="sig-param"><span class="n">layers_critic_x</span></em>, <em class="sig-param"><span class="n">layers_critic_z</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">input_shape</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target_shape</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">latent_dim</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.005</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">64</span></em>, <em class="sig-param"><span class="n">iterations_critic</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">shuffle</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">detailed_losses</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">hyperparameters</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/tadgan.html#TadGAN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.tadgan.TadGAN.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the TadGAN model.</p>
 </dd></dl>
 
 <p class="rubric">Methods</p>
@@ -252,19 +257,19 @@ Generator/Encoder training step. Default 5.</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#orion.primitives.tadgan.TadGAN.__init__" title="orion.primitives.tadgan.TadGAN.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(layers_encoder, layers_generator, …)</p></td>
-<td><p>Initialize self.</p></td>
+<td><p>Initialize the TadGAN model.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[, y])</p></td>
-<td><p>Fit the TadGAN.</p></td>
+<td><p>Fit the TadGAN model.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X[, y])</p></td>
-<td><p>Predict values using the initialized object.</p></td>
+<td><p>Predict using TadGAN model.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
 
               </div>

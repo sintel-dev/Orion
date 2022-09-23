@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Evaluation &#8212; Orion 0.3.3.dev0 documentation</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -210,10 +211,10 @@
               
               <div>
                 
-  <div class="section" id="evaluation">
+  <section id="evaluation">
 <span id="evaluation-doc"></span><h1>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h1>
 <p>When evaluating a pipeline, we rely on two main arguments: <em>known anomalies</em>, and <em>detected anomalies</em>.</p>
-<div class="section" id="types-of-anomalies">
+<section id="types-of-anomalies">
 <h2>Types of anomalies<a class="headerlink" href="#types-of-anomalies" title="Permalink to this headline">¶</a></h2>
 <p>There are two approaches to defined anomalies:</p>
 <ul class="simple">
@@ -233,8 +234,8 @@
 <p>We have created an evaluator for both types.
 We also provide a suite of transformation functions in <code class="docutils literal notranslate"><span class="pre">utils.py</span></code> to help with converting one type to another.</p>
 <p>View the <a class="reference external" href="https://github.com/sintel-dev/Orion/tree/master/orion/evaluation">Evaluation sub-package</a> to see the metrics provided in <strong>Orion</strong>.</p>
-</div>
-<div class="section" id="how-do-we-score-anomalies">
+</section>
+<section id="how-do-we-score-anomalies">
 <h2>How do we score anomalies?<a class="headerlink" href="#how-do-we-score-anomalies" title="Permalink to this headline">¶</a></h2>
 <p>We use two main approaches to compare detected anomalies with the ground truth:</p>
 <ol class="arabic simple">
@@ -274,7 +275,7 @@ We also provide a suite of transformation functions in <code class="docutils lit
 </pre></div>
 </div>
 <p>So, what is the score?</p>
-<div class="section" id="weighted-segment">
+<section id="weighted-segment">
 <h3>Weighted segment<a class="headerlink" href="#weighted-segment" title="Permalink to this headline">¶</a></h3>
 <p>Weighted segment based evaluation is a strict approach which weighs each segment by its actual time duration. It is valuable to use when you want to detect the exact segment of the anomaly, without any slackness. It first segments the signal into partitions based on the ground truth and detected sequences. Then it makes a segment to segment comparison and records true positive, true negative, false positive, and false negative accordingly. The overall score is weighted by the duration of each segment.</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">orion.evaluation.contextual</span> <span class="kn">import</span> <span class="n">contextual_f1_score</span>
@@ -285,8 +286,8 @@ We also provide a suite of transformation functions in <code class="docutils lit
 <span class="gh">Out[6]: </span><span class="go">0.12184891031572705</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="overlapping-segment">
+</section>
+<section id="overlapping-segment">
 <h3>Overlapping segment<a class="headerlink" href="#overlapping-segment" title="Permalink to this headline">¶</a></h3>
 <p>We look for overlap between detected anomalies and ground truth anomalies.</p>
 <p>In this methodology, we are more concerned with whether or not we were able to find an anomaly; even just a part of it. It records:</p>
@@ -301,9 +302,9 @@ We also provide a suite of transformation functions in <code class="docutils lit
 </pre></div>
 </div>
 <p>You can read more about our step-by-step process in our evaluation by visiting the <a class="reference external" href="https://github.com/sintel-dev/Orion/tree/master/orion/evaluation">Evaluation sub-package</a></p>
-</div>
-</div>
-<div class="section" id="evaluate-the-performance-of-your-pipeline">
+</section>
+</section>
+<section id="evaluate-the-performance-of-your-pipeline">
 <h2>Evaluate the performance of your pipeline<a class="headerlink" href="#evaluate-the-performance-of-your-pipeline" title="Permalink to this headline">¶</a></h2>
 <p>We can use the same dataset we saw in the <a class="reference internal" href="../getting_started/quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a></p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [8]: </span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_signal</span>
@@ -352,15 +353,15 @@ We also provide a suite of transformation functions in <code class="docutils lit
 <p>The output will be a <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> containing a collection of scores indicating how the predictions were:</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [17]: </span><span class="n">scores</span>
 <span class="gh">Out[17]: </span><span class="go"></span>
-<span class="go">accuracy     0.966791</span>
-<span class="go">f1           0.497765</span>
-<span class="go">recall       0.373602</span>
-<span class="go">precision    0.745536</span>
+<span class="go">accuracy     0.968959</span>
+<span class="go">f1           0.546763</span>
+<span class="go">recall       0.425056</span>
+<span class="go">precision    0.766129</span>
 <span class="go">dtype: float64</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>

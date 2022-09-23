@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Database Schema &#8212; Orion 0.3.3.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -304,14 +305,14 @@
               
               <div>
                 
-  <div class="section" id="database-schema">
+  <section id="database-schema">
 <h1>Database Schema<a class="headerlink" href="#database-schema" title="Permalink to this headline">¶</a></h1>
 <p>The <strong>Orion Database</strong> contains the following collections and fields:</p>
-<div class="section" id="dataset">
+<section id="dataset">
 <h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
 <p>A <strong>Dataset</strong> represents a group of Signals that are grouped together under a common name,
 which is usually defined by an external entity.</p>
-<div class="section" id="fields">
+<section id="fields">
 <h3>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Dataset object</p></li>
@@ -320,14 +321,14 @@ which is usually defined by an external entity.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Dataset Object</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Dataset Object was inserted</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="signal">
+</section>
+</section>
+<section id="signal">
 <h2>Signal<a class="headerlink" href="#signal" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>Signal</strong> collection contains all the required details to be able to load the observations
 from a timeseries signal, as well as some metadata about it, such as the minimum and maximum
 timestamps that want to be used or the user that registered it.</p>
-<div class="section" id="id1">
+<section id="id1">
 <h3>Fields<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Signal object</p></li>
@@ -341,15 +342,15 @@ timestamps that want to be used or the user that registered it.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Signal Object</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Signal Object was inserted</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="template">
+</section>
+</section>
+<section id="template">
 <h2>Template<a class="headerlink" href="#template" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>Template</strong> collection contains all the pipeline templates from which the
 pipelines that later on will be used to run an experiments are generated.
 The template includes all the default hyperparameter values, as well as the tunable hyperparameter
 ranges.</p>
-<div class="section" id="id2">
+<section id="id2">
 <h3>Fields<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Template object</p></li>
@@ -358,13 +359,13 @@ ranges.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Pipeline Template Object</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Pipeline Object was inserted</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="pipeline">
+</section>
+</section>
+<section id="pipeline">
 <h2>Pipeline<a class="headerlink" href="#pipeline" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>Pipeline</strong> collection contains all the pipelines registered in the system, including
 their details, such as the list of primitives and all the configured hyperparameter values.</p>
-<div class="section" id="id3">
+<section id="id3">
 <h3>Fields<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Pipeline object</p></li>
@@ -374,14 +375,14 @@ their details, such as the list of primitives and all the configured hyperparame
 <li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Pipeline Object</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Pipeline Object was inserted</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="experiment">
+</section>
+</section>
+<section id="experiment">
 <h2>Experiment<a class="headerlink" href="#experiment" title="Permalink to this headline">¶</a></h2>
 <p>An <strong>Experiment</strong> is associated with a Dataset, a subset of its Signals and a Template,
 and represents a collection of Dataruns, executions of Pipelines generated from the Experiment
 Template over its Signals Set.</p>
-<div class="section" id="id4">
+<section id="id4">
 <h3>Fields<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Experiment object</p></li>
@@ -393,16 +394,16 @@ Template over its Signals Set.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Experiment Object</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Experiment Object was inserted</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="datarun">
+</section>
+</section>
+<section id="datarun">
 <h2>Datarun<a class="headerlink" href="#datarun" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>Datarun</strong> objects represent single executions of an <strong>Experiment</strong>,
 and contain all the information about the environment and context where this execution
 took place, which potentially allows to later on reproduce the results in a new environment.</p>
 <p>It also contains information about whether the execution was successful or not, when it started
 and ended, and the number of events that were found in this experiment.</p>
-<div class="section" id="id5">
+<section id="id5">
 <h3>Fields<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Datarun object</p></li>
@@ -417,16 +418,16 @@ and ended, and the number of events that were found in this experiment.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">status</span> <span class="pre">(String)</span></code>: Whether the Datarun is still running, finished successfully or failed</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Datarun Object was inserted</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="signalrun">
+</section>
+</section>
+<section id="signalrun">
 <h2>Signalrun<a class="headerlink" href="#signalrun" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>Signalrun</strong> objects represent single executions of a <strong>Pipeline</strong> on a <strong>Signal</strong> within a
 Datarun.</p>
 <p>It contains information about whether the execution was successful or not, when it started
 and ended, the number of events that were found by the Pipeline, and where the model and
 metrics are stored.</p>
-<div class="section" id="id6">
+<section id="id6">
 <h3>Fields<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Datarun object</p></li>
@@ -440,13 +441,13 @@ metrics are stored.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">status</span> <span class="pre">(String)</span></code>: Whether the Signalrun is still running, finished successfully or failed</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Datarun Object was inserted</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="event">
+</section>
+</section>
+<section id="event">
 <h2>Event<a class="headerlink" href="#event" title="Permalink to this headline">¶</a></h2>
 <p>Each one of the anomalies detected by the pipelines is stored as an <strong>Event</strong>, which
 contains the details about the start time, the stop time and the severity score.</p>
-<div class="section" id="id7">
+<section id="id7">
 <h3>Fields<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Event object</p></li>
@@ -459,12 +460,12 @@ contains the details about the start time, the stop time and the severity score.
 <li><p><code class="docutils literal notranslate"><span class="pre">num_annotations</span> <span class="pre">(int)</span></code>: Number of Annotation associated to this Event.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Event Object was inserted</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="event-interaction">
+</section>
+</section>
+<section id="event-interaction">
 <h2>Event Interaction<a class="headerlink" href="#event-interaction" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>Event Interaction</strong> collection records all the interaction history related to events.</p>
-<div class="section" id="id8">
+<section id="id8">
 <h3>Fields<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Interaction object</p></li>
@@ -475,14 +476,14 @@ contains the details about the start time, the stop time and the severity score.
 <li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user who interacted with the target Object</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Event Interaction Object was inserted</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="annotation">
+</section>
+</section>
+<section id="annotation">
 <h2>Annotation<a class="headerlink" href="#annotation" title="Permalink to this headline">¶</a></h2>
 <p>Each Event can have multiple <strong>Annotations</strong>, from one or more users.
 <strong>Annotations</strong> are expected to be inserted by the domain experts after the Datarun has
 finished and they analyze the results.</p>
-<div class="section" id="id9">
+<section id="id9">
 <h3>Fields<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_id</span> <span class="pre">(ObjectID)</span></code>: Unique Identifier of this Comment object</p></li>
@@ -492,9 +493,9 @@ finished and they analyze the results.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">created_by</span> <span class="pre">(String)</span></code>: Identifier of the user that created this Annotation Object</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">insert_time</span> <span class="pre">(DateTime)</span></code>: Time when this Annotation Object was inserted</p></li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
               </div>

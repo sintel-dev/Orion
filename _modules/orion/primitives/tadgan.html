@@ -157,53 +157,46 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">keras</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">K</span>
-<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Input</span>
-<span class="kn">from</span> <span class="nn">keras.layers.merge</span> <span class="kn">import</span> <span class="n">_Merge</span>
-<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
-<span class="kn">from</span> <span class="nn">mlprimitives.adapters.keras</span> <span class="kn">import</span> <span class="n">build_layer</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="kn">from</span> <span class="nn">mlprimitives.utils</span> <span class="kn">import</span> <span class="n">import_object</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="kn">import</span> <span class="n">Model</span>
 
 <span class="kn">from</span> <span class="nn">orion.primitives.timeseries_errors</span> <span class="kn">import</span> <span class="n">reconstruction_errors</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">set_floatx</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+
+<span class="n">LOSS_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">&#39;cx_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;cx_real&#39;</span><span class="p">,</span> <span class="s1">&#39;cx_fake&#39;</span><span class="p">,</span> <span class="s1">&#39;cx_gp&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;cz_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;cz_real&#39;</span><span class="p">,</span> <span class="s1">&#39;cz_fake&#39;</span><span class="p">,</span> <span class="s1">&#39;cz_gp&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;eg_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;eg_cx_fake&#39;</span><span class="p">,</span> <span class="s1">&#39;eg_cz_fake&#39;</span><span class="p">,</span> <span class="s1">&#39;eg_mse&#39;</span><span class="p">]</span>
+<span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">RandomWeightedAverage</span><span class="p">(</span><span class="n">_Merge</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">RandomWeightedAverage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+<span class="k">def</span> <span class="nf">build_layer</span><span class="p">(</span><span class="n">layer</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="n">layer_class</span> <span class="o">=</span> <span class="n">import_object</span><span class="p">(</span><span class="n">layer</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">])</span>
+    <span class="n">layer_kwargs</span> <span class="o">=</span> <span class="n">layer</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># TODO: Upgrade to using tf.keras.layers.Wrapper in mlprimitives.</span>
+    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">layer_class</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
+        <span class="n">layer_kwargs</span><span class="p">[</span><span class="s1">&#39;layer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_layer</span><span class="p">(</span><span class="n">layer_kwargs</span><span class="p">[</span><span class="s1">&#39;layer&#39;</span><span class="p">],</span> <span class="n">hyperparameters</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_merge_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args:</span>
-<span class="sd">            inputs[0] x     original input</span>
-<span class="sd">            inputs[1] x_    predicted input</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">alpha</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">layer_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">layer_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">layer_class</span><span class="p">(</span><span class="o">**</span><span class="n">layer_kwargs</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="TadGAN"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.tadgan.TadGAN.html#orion.primitives.tadgan.TadGAN">[docs]</a><span class="k">class</span> <span class="nc">TadGAN</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="TadGAN"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.tadgan.TadGAN.html#orion.primitives.tadgan.TadGAN">[docs]</a><span class="k">class</span> <span class="nc">TadGAN</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;TadGAN model for time series reconstruction.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        shape (tuple):</span>
-<span class="sd">            Tuple denoting the shape of an input sample.</span>
-<span class="sd">        encoder_input_shape (tuple):</span>
-<span class="sd">            Shape of encoder input.</span>
-<span class="sd">        generator_input_shape (tuple):</span>
-<span class="sd">            Shape of generator input.</span>
-<span class="sd">        critic_x_input_shape (tuple):</span>
-<span class="sd">            Shape of critic_x input.</span>
-<span class="sd">        critic_z_input_shape (tuple):</span>
-<span class="sd">            Shape of critic_z input.</span>
 <span class="sd">        layers_encoder (list):</span>
 <span class="sd">            List containing layers of encoder.</span>
 <span class="sd">        layers_generator (list):</span>
@@ -212,26 +205,113 @@
 <span class="sd">            List containing layers of critic_x.</span>
 <span class="sd">        layers_critic_z (list):</span>
 <span class="sd">            List containing layers of critic_z.</span>
+<span class="sd">        input_shape (tuple):</span>
+<span class="sd">            Optional. Tuple denoting the shape of an input sample.</span>
+<span class="sd">        latent_dim (int):</span>
+<span class="sd">            Optional. Integer denoting dimension of latent space. Default 20.</span>
+<span class="sd">        target_shape (tuple):</span>
+<span class="sd">            Optional. Tuple denoting the shape of an output sample.</span>
+<span class="sd">        encoder_input_shape (tuple):</span>
+<span class="sd">            Shape of encoder input.</span>
+<span class="sd">        generator_input_shape (tuple):</span>
+<span class="sd">            Shape of generator input.</span>
+<span class="sd">        critic_x_input_shape (tuple):</span>
+<span class="sd">            Shape of critic_x input.</span>
+<span class="sd">        critic_z_input_shape (tuple):</span>
+<span class="sd">            Shape of critic_z input.</span>
 <span class="sd">        optimizer (str):</span>
 <span class="sd">            String denoting the keras optimizer.</span>
 <span class="sd">        learning_rate (float):</span>
 <span class="sd">            Optional. Float denoting the learning rate of the optimizer. Default 0.005.</span>
 <span class="sd">        epochs (int):</span>
-<span class="sd">            Optional. Integer denoting the number of epochs. Default 2000.</span>
+<span class="sd">            Optional. Integer denoting the number of epochs. Default 50.</span>
 <span class="sd">        latent_dim (int):</span>
 <span class="sd">            Optional. Integer denoting dimension of latent space. Default 20.</span>
-<span class="sd">        batch_size (int):</span>
-<span class="sd">            Integer denoting the batch size. Default 64.</span>
 <span class="sd">        iterations_critic (int):</span>
 <span class="sd">            Optional. Integer denoting the number of critic training steps per one</span>
 <span class="sd">            Generator/Encoder training step. Default 5.</span>
-<span class="sd">        hyperparameters (dictionary):</span>
+<span class="sd">        shuffle (bool):</span>
+<span class="sd">            Whether to shuffle the dataset for each epoch. Default True.</span>
+<span class="sd">        verbose (int):</span>
+<span class="sd">            Verbosity mode where 0 = silent, 1 = progress bar, 2 = one line per epoch. Default 0.</span>
+<span class="sd">        detailed_losses (bool):</span>
+<span class="sd">            Whether to output all loss values in verbose mode. Default False.</span>
+<span class="sd">        **hyperparameters (dict):</span>
 <span class="sd">            Optional. Dictionary containing any additional inputs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_build_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">layers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                     <span class="n">input_shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
+            <span class="n">built_layer</span> <span class="o">=</span> <span class="n">build_layer</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">built_layer</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_wasserstein_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">y_true</span> <span class="o">*</span> <span class="n">y_pred</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_gradient_penalty_loss_wrapper</span><span class="p">(</span><span class="n">critic</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_gradient_penalty_loss</span><span class="p">(</span><span class="n">real</span><span class="p">,</span> <span class="n">fake</span><span class="p">):</span>
+            <span class="c1"># Random weighted average to create interpolated signals.</span>
+            <span class="n">batch_size</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">real</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">([</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="n">interpolated</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">real</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">fake</span><span class="p">)</span>
+
+            <span class="c1"># Get the critic output for this interpolated signal.</span>
+            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">gp_tape</span><span class="p">:</span>
+                <span class="n">gp_tape</span><span class="o">.</span><span class="n">watch</span><span class="p">(</span><span class="n">interpolated</span><span class="p">)</span>
+                <span class="n">validity_interpolated</span> <span class="o">=</span> <span class="n">critic</span><span class="p">(</span><span class="n">interpolated</span><span class="p">)</span>
+
+            <span class="c1"># Calculate the gradients w.r.t to this interpolated signal.</span>
+            <span class="n">grads</span> <span class="o">=</span> <span class="n">gp_tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">validity_interpolated</span><span class="p">,</span> <span class="p">[</span><span class="n">interpolated</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># Calculate the norm of the gradients.</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">grads</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">grads</span><span class="o">.</span><span class="n">shape</span><span class="p">))))</span>
+            <span class="n">gradient_penalty</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">((</span><span class="n">norm</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">gradient_penalty</span>
+
+        <span class="k">return</span> <span class="n">_gradient_penalty_loss</span>
+
+<div class="viewcode-block" id="TadGAN.__init__"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.tadgan.TadGAN.html#orion.primitives.tadgan.TadGAN.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layers_encoder</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">layers_generator</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">layers_critic_x</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                 <span class="n">layers_critic_z</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">target_shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+                 <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.005</span><span class="p">,</span> <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+                 <span class="n">iterations_critic</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">detailed_losses</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">verbose</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the TadGAN model.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TadGAN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Required model hyperparameters to construct model.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers_encoder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_generator</span> <span class="o">=</span> <span class="n">layers_encoder</span><span class="p">,</span> <span class="n">layers_generator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_z</span> <span class="o">=</span> <span class="n">layers_critic_x</span><span class="p">,</span> <span class="n">layers_critic_z</span>
+
+        <span class="c1"># Optional model hyperparameters.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">input_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span> <span class="o">=</span> <span class="n">latent_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_shape</span> <span class="o">=</span> <span class="n">target_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters</span>
+
+        <span class="c1"># Model training hyperparameters.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations_critic</span> <span class="o">=</span> <span class="n">iterations_critic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="o">=</span> <span class="n">shuffle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">detailed_losses</span> <span class="o">=</span> <span class="n">detailed_losses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">False</span></div>
 
     <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">networks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;critic_x&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_z&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder&#39;</span><span class="p">,</span> <span class="s1">&#39;generator&#39;</span><span class="p">]</span>
-        <span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_x_model&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_z_model&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder_generator_model&#39;</span><span class="p">]</span>
+        <span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;critic_x_model&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_z_model&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder_generator_model&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;critic_x_optimizer&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_z_optimizer&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder_generator_optimizer&#39;</span><span class="p">]</span>
 
         <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
@@ -240,138 +320,113 @@
 
         <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
-                <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">network</span><span class="p">),</span> <span class="n">fd</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
+                <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">network</span><span class="p">),</span> <span class="n">fd</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">state</span><span class="p">[</span><span class="n">network</span> <span class="o">+</span> <span class="s1">&#39;_str&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">state</span>
 
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">networks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;critic_x&#39;</span><span class="p">,</span> <span class="s1">&#39;critic_z&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder&#39;</span><span class="p">,</span> <span class="s1">&#39;generator&#39;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
                 <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">network</span> <span class="o">+</span> <span class="s1">&#39;_str&#39;</span><span class="p">))</span>
                 <span class="n">fd</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
-                <span class="n">state</span><span class="p">[</span><span class="n">network</span><span class="p">]</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">state</span><span class="p">[</span><span class="n">network</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">state</span>
 
-    <span class="k">def</span> <span class="nf">_build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">)</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
-
-        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
-            <span class="n">built_layer</span> <span class="o">=</span> <span class="n">build_layer</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">)</span>
-            <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">built_layer</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">_setdefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">return</span>
-
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">def</span> <span class="nf">_wasserstein_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">K</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_true</span> <span class="o">*</span> <span class="n">y_pred</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_gradient_penalty_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">averaged_samples</span><span class="p">):</span>
-        <span class="n">gradients</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">averaged_samples</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">gradients_sqr</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
-        <span class="n">gradients_sqr_sum</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gradients_sqr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">gradients_sqr</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
-        <span class="n">gradient_l2_norm</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gradients_sqr_sum</span><span class="p">)</span>
-        <span class="n">gradient_penalty</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">gradient_l2_norm</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">K</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">gradient_penalty</span><span class="p">)</span>
-
-<div class="viewcode-block" id="TadGAN.__init__"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.tadgan.TadGAN.html#orion.primitives.tadgan.TadGAN.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layers_encoder</span><span class="p">,</span> <span class="n">layers_generator</span><span class="p">,</span> <span class="n">layers_critic_x</span><span class="p">,</span> <span class="n">layers_critic_z</span><span class="p">,</span>
-                 <span class="n">optimizer</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">target_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">latent_dim</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-                 <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">iterations_critic</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">hyperparameters</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">input_shape</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span> <span class="o">=</span> <span class="n">latent_dim</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latent_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">latent_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target_shape</span> <span class="o">=</span> <span class="n">target_shape</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">iterations_critic</span> <span class="o">=</span> <span class="n">iterations_critic</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">layers_encoder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_generator</span> <span class="o">=</span> <span class="n">layers_encoder</span><span class="p">,</span> <span class="n">layers_generator</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_z</span> <span class="o">=</span> <span class="n">layers_critic_x</span><span class="p">,</span> <span class="n">layers_critic_z</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">import_object</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)(</span><span class="n">learning_rate</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fitted</span> <span class="o">=</span> <span class="kc">False</span></div>
-
-    <span class="k">def</span> <span class="nf">_augment_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_augment_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
-        <span class="n">length</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">length</span><span class="p">,</span> <span class="n">input_dim</span> <span class="o">=</span> <span class="n">shape</span>
         <span class="n">target_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">output_dim</span> <span class="o">=</span> <span class="n">target_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="c1"># to infer the shape</span>
+        <span class="c1"># Infers the shape.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_shape</span> <span class="ow">or</span> <span class="n">target_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latent_shape</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setdefault</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s1">&#39;generator_reshape_dim&#39;</span><span class="p">,</span> <span class="n">length</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setdefault</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s1">&#39;generator_reshape_shape&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">length</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setdefault</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s1">&#39;encoder_reshape_shape&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_shape</span><span class="p">)</span>
-
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="s1">&#39;target_shape&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_shape</span><span class="p">,</span>
+            <span class="s1">&#39;input_dim&#39;</span><span class="p">:</span> <span class="n">input_dim</span><span class="p">,</span>
+            <span class="s1">&#39;output_dim&#39;</span><span class="p">:</span> <span class="n">output_dim</span><span class="p">,</span>
+            <span class="s1">&#39;generator_reshape_dim&#39;</span><span class="p">:</span> <span class="n">length</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s1">&#39;generator_reshape_shape&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">length</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">),</span>
+            <span class="s1">&#39;encoder_reshape_shape&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_shape</span>
+        <span class="p">})</span>
         <span class="k">return</span> <span class="n">kwargs</span>
 
-    <span class="k">def</span> <span class="nf">_set_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_set_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">encoder_input_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generator_input_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_input_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_input_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_shape</span>
 
-    <span class="k">def</span> <span class="nf">_build_tadgan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_format_losses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">losses</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Format losses into dictionary mapping metric names to their current value.&quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">detailed_losses</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">losses</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">losses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">losses</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+                    <span class="n">output</span><span class="p">[</span><span class="n">LOSS_NAMES</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]]</span> <span class="o">=</span> <span class="n">losses</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)):</span>
+                <span class="n">output</span><span class="p">[</span><span class="n">LOSS_NAMES</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">losses</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="k">def</span> <span class="nf">_build_tadgan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">hyperparameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">hyperparameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_encoder</span><span class="p">,</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">encoder_input_shape</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_generator</span><span class="p">,</span>
-                                           <span class="bp">self</span><span class="o">.</span><span class="n">generator_input_shape</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_x</span><span class="p">,</span>
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_input_shape</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_z</span><span class="p">,</span>
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_input_shape</span><span class="p">)</span>
+        <span class="c1"># Models</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span>
+            <span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_encoder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_input_shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;encoder&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span>
+            <span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_generator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator_input_shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;generator&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span>
+            <span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_input_shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;critic_x&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">(</span>
+            <span class="n">hyperparameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_critic_z</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_input_shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;critic_z&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Optimizers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_optimizer</span> <span class="o">=</span> <span class="n">import_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_optimizer</span> <span class="o">=</span> <span class="n">import_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_optimizer</span> <span class="o">=</span> <span class="n">import_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target_shape</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_shape</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="n">x</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target_shape</span><span class="p">)</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-
+        <span class="c1"># Critic x model</span>
         <span class="n">x_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-        <span class="n">z_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">fake_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">x_</span><span class="p">)</span>
-        <span class="n">valid_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-
-        <span class="n">interpolated_x</span> <span class="o">=</span> <span class="n">RandomWeightedAverage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)([</span><span class="n">y</span><span class="p">,</span> <span class="n">x_</span><span class="p">])</span>
-        <span class="n">validity_interpolated_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">interpolated_x</span><span class="p">)</span>
-        <span class="n">partial_gp_loss_x</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gradient_penalty_loss</span><span class="p">,</span> <span class="n">averaged_samples</span><span class="o">=</span><span class="n">interpolated_x</span><span class="p">)</span>
-        <span class="n">partial_gp_loss_x</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="s1">&#39;gradient_penalty&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">valid_x</span><span class="p">,</span> <span class="n">fake_x</span><span class="p">,</span>
-                                                            <span class="n">validity_interpolated_x</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
-                                          <span class="n">partial_gp_loss_x</span><span class="p">],</span> <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
+        <span class="n">cx_real</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">cx_fake</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">x_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">cx_real</span><span class="p">,</span> <span class="n">cx_fake</span><span class="p">,</span> <span class="n">x_</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">_gradient_penalty_loss_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">)</span>
+                                          <span class="p">],</span>
+                                    <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_x_optimizer</span><span class="p">,</span>
                                     <span class="n">loss_weights</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 
-        <span class="n">fake_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span>
-        <span class="n">valid_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-        <span class="n">interpolated_z</span> <span class="o">=</span> <span class="n">RandomWeightedAverage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)([</span><span class="n">z</span><span class="p">,</span> <span class="n">z_</span><span class="p">])</span>
-        <span class="n">validity_interpolated_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">interpolated_z</span><span class="p">)</span>
-        <span class="n">partial_gp_loss_z</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gradient_penalty_loss</span><span class="p">,</span> <span class="n">averaged_samples</span><span class="o">=</span><span class="n">interpolated_z</span><span class="p">)</span>
-        <span class="n">partial_gp_loss_z</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="s1">&#39;gradient_penalty&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">valid_z</span><span class="p">,</span> <span class="n">fake_z</span><span class="p">,</span>
-                                                            <span class="n">validity_interpolated_z</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
-                                          <span class="n">partial_gp_loss_z</span><span class="p">],</span> <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
+        <span class="c1"># Critic z model</span>
+        <span class="n">z_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">cz_real</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">cz_fake</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">cz_real</span><span class="p">,</span> <span class="n">cz_fake</span><span class="p">,</span> <span class="n">z_</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">_gradient_penalty_loss_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">)</span>
+                                          <span class="p">],</span>
+                                    <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_z_optimizer</span><span class="p">,</span>
                                     <span class="n">loss_weights</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
@@ -379,88 +434,94 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="n">z_gen</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">x_gen_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">z_gen</span><span class="p">)</span>
-        <span class="n">x_gen</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="n">z_gen_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x_gen</span><span class="p">)</span>
-        <span class="n">x_gen_rec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">z_gen_</span><span class="p">)</span>
-        <span class="n">fake_gen_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">x_gen_</span><span class="p">)</span>
-        <span class="n">fake_gen_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">z_gen_</span><span class="p">)</span>
+        <span class="n">x_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">cx_fake</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_x</span><span class="p">(</span><span class="n">x_</span><span class="p">)</span>
+        <span class="n">z_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">cz_fake</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_z</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span>
+        <span class="n">x_rec_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">([</span><span class="n">x_gen</span><span class="p">,</span> <span class="n">z_gen</span><span class="p">],</span> <span class="p">[</span><span class="n">fake_gen_x</span><span class="p">,</span> <span class="n">fake_gen_z</span><span class="p">,</span> <span class="n">x_gen_rec</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
-                                                   <span class="s1">&#39;mse&#39;</span><span class="p">],</span> <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">cx_fake</span><span class="p">,</span> <span class="n">cz_fake</span><span class="p">,</span> <span class="n">x_rec_</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
+                                                   <span class="bp">self</span><span class="o">.</span><span class="n">_wasserstein_loss</span><span class="p">,</span>
+                                                   <span class="s1">&#39;mse&#39;</span>
+                                                   <span class="p">],</span>
+                                             <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_optimizer</span><span class="p">,</span>
                                              <span class="n">loss_weights</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-        <span class="n">fake</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">valid</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">minibatch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations_critic</span>
+        <span class="n">num_minibatch</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">minibatch_size</span>
+        <span class="n">z_shape</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># Wasserstein GAN formulation.</span>
+        <span class="n">fake</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">real</span> <span class="o">=</span> <span class="o">-</span><span class="n">tf</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-            <span class="n">X_</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
-            <span class="n">y_</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span><span class="p">:</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
 
-            <span class="n">epoch_g_loss</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">epoch_cx_loss</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">epoch_cz_loss</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">x_shuffled</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+            <span class="n">y_shuffled</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+            <span class="n">epoch_cx_loss</span><span class="p">,</span> <span class="n">epoch_cz_loss</span><span class="p">,</span> <span class="n">epoch_eg_loss</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
 
-            <span class="n">minibatches_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations_critic</span>
-            <span class="n">num_minibatches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">X_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">minibatches_size</span><span class="p">)</span>
-
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_minibatches</span><span class="p">):</span>
-                <span class="n">minibatch</span> <span class="o">=</span> <span class="n">X_</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">minibatches_size</span><span class="p">:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">minibatches_size</span><span class="p">]</span>
-                <span class="n">y_minibatch</span> <span class="o">=</span> <span class="n">y_</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">minibatches_size</span><span class="p">:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">minibatches_size</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_minibatch</span><span class="p">):</span>
+                <span class="n">x_minibatch</span> <span class="o">=</span> <span class="n">x_shuffled</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">minibatch_size</span><span class="p">:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">minibatch_size</span><span class="p">]</span>
+                <span class="n">y_minibatch</span> <span class="o">=</span> <span class="n">y_shuffled</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">minibatch_size</span><span class="p">:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">minibatch_size</span><span class="p">]</span>
 
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterations_critic</span><span class="p">):</span>
-                    <span class="n">x</span> <span class="o">=</span> <span class="n">minibatch</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">x_minibatch</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
                     <span class="n">y</span> <span class="o">=</span> <span class="n">y_minibatch</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
-                    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                    <span class="n">z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">z_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
                     <span class="n">epoch_cx_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_model</span><span class="o">.</span><span class="n">train_on_batch</span><span class="p">([</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="n">fake</span><span class="p">,</span> <span class="n">delta</span><span class="p">]))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">critic_x_model</span><span class="o">.</span><span class="n">train_on_batch</span><span class="p">([</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">real</span><span class="p">,</span> <span class="n">fake</span><span class="p">,</span> <span class="n">y</span><span class="p">]))</span>
                     <span class="n">epoch_cz_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_model</span><span class="o">.</span><span class="n">train_on_batch</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="n">fake</span><span class="p">,</span> <span class="n">delta</span><span class="p">]))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">critic_z_model</span><span class="o">.</span><span class="n">train_on_batch</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">real</span><span class="p">,</span> <span class="n">fake</span><span class="p">,</span> <span class="n">z</span><span class="p">]))</span>
 
-                <span class="n">epoch_g_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_model</span><span class="o">.</span><span class="n">train_on_batch</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">y</span><span class="p">]))</span>
+                <span class="n">epoch_eg_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">encoder_generator_model</span><span class="o">.</span><span class="n">train_on_batch</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">real</span><span class="p">,</span> <span class="n">real</span><span class="p">,</span> <span class="n">y</span><span class="p">]))</span>
 
-            <span class="n">cx_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch_cx_loss</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">cz_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch_cz_loss</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">g_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch_g_loss</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch: </span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">, [Dx loss: </span><span class="si">{}</span><span class="s1">] [Dz loss: </span><span class="si">{}</span><span class="s1">] [G loss: </span><span class="si">{}</span><span class="s1">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">cx_loss</span><span class="p">,</span> <span class="n">cz_loss</span><span class="p">,</span> <span class="n">g_loss</span><span class="p">))</span>
+            <span class="n">epoch_cx_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch_cx_loss</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">epoch_cz_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch_cz_loss</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">epoch_eg_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch_eg_loss</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">losses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_losses</span><span class="p">([</span><span class="n">epoch_cx_loss</span><span class="p">,</span> <span class="n">epoch_cz_loss</span><span class="p">,</span> <span class="n">epoch_eg_loss</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch: </span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">, Losses: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">losses</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fit the TadGAN.</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Fit the TadGAN model.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            X (ndarray):</span>
 <span class="sd">                N-dimensional array containing the input training sequences for the model.</span>
 <span class="sd">            y (ndarray):</span>
 <span class="sd">                N-dimensional array containing the target sequences we want to reconstruct.</span>
+<span class="sd">            **kwargs (dict):</span>
+<span class="sd">                Optional. Additional inputs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># reconstruct the same input</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fitted</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_augment_hyperparameters</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Infer dimensions and compile model.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_augment_hyperparameters</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_shapes</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_build_tadgan</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fitted</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Predict values using the initialized object.</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Predict using TadGAN model.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            X (ndarray):</span>
-<span class="sd">                N-dimensional array containing the input sequences for the model.</span>
+<span class="sd">                N-dimensional array containing the input training sequences for the model.</span>
 <span class="sd">            y (ndarray):</span>
 <span class="sd">                N-dimensional array containing the target sequences we want to reconstruct.</span>
-
 <span class="sd">        Returns:</span>
 <span class="sd">            ndarray:</span>
 <span class="sd">                N-dimensional array containing the reconstructions for each input sequence.</span>
@@ -468,7 +529,8 @@
 <span class="sd">                N-dimensional array containing the critic scores for each input sequence.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># reconstruct the same input</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
         <span class="n">z_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span>
@@ -477,7 +539,7 @@
         <span class="k">return</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">critic</span></div>
 
 
-<span class="k">def</span> <span class="nf">_compute_critic_score</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">smooth_window</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_compute_critic_score</span><span class="p">(</span><span class="n">critics</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">smooth_window</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
 
 <span class="sd">    Args:</span>
@@ -504,9 +566,11 @@
     <span class="k">return</span> <span class="n">z_scores</span>
 
 
-<div class="viewcode-block" id="score_anomalies"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.tadgan.score_anomalies.html#orion.primitives.tadgan.score_anomalies">[docs]</a><span class="k">def</span> <span class="nf">score_anomalies</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">critic</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">score_window</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">critic_smooth_window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">error_smooth_window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="o">=</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="n">comb</span><span class="o">=</span><span class="s2">&quot;mult&quot;</span><span class="p">,</span>
-                    <span class="n">lambda_rec</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<div class="viewcode-block" id="score_anomalies"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.tadgan.score_anomalies.html#orion.primitives.tadgan.score_anomalies">[docs]</a><span class="k">def</span> <span class="nf">score_anomalies</span><span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">critic</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span>
+                    <span class="n">score_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">critic_smooth_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">error_smooth_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">smooth</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="n">rec_error_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="n">comb</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mult&quot;</span><span class="p">,</span>
+                    <span class="n">lambda_rec</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Compute an array of anomaly scores.</span>
 
 <span class="sd">    Anomaly scores are calculated using a combination of reconstruction error and critic score.</span>

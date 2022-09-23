@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Benchmarking &#8212; Orion 0.3.3.dev0 documentation</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -208,14 +209,14 @@
               
               <div>
                 
-  <div class="section" id="benchmarking">
+  <section id="benchmarking">
 <span id="id1"></span><h1>Benchmarking<a class="headerlink" href="#benchmarking" title="Permalink to this headline">¶</a></h1>
 <p>We provide a benchmarking framework to enable users to compare multiple pipelines against each other. The evaluation metrics are documented within pipeline evaluation, please visit <a class="reference internal" href="evaluation_doc.html#evaluation-doc"><span class="std std-ref">Evaluation</span></a> to read more about it.</p>
-<div class="section" id="releases">
+<section id="releases">
 <h2>Releases<a class="headerlink" href="#releases" title="Permalink to this headline">¶</a></h2>
 <p>In every release, we run Orion benchmark. We maintain an up-to-date leaderboard with the current scoring of the verified pipelines according to the benchmarking procedure.</p>
 <p>Results obtained during benchmarking as well as previous releases can be found within <a class="reference external" href="https://github.com/sintel-dev/Orion/tree/master/benchmark/results">benchmark/results</a> folder as CSV files. Summarized results can also be browsed in the following <a class="reference external" href="https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing">summary Google Sheets document</a> as well as the <a class="reference external" href="https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing">details Google Sheets document</a>.</p>
-<div class="section" id="leaderboard">
+<section id="leaderboard">
 <h3>Leaderboard<a class="headerlink" href="#leaderboard" title="Permalink to this headline">¶</a></h3>
 <p>We run the benchmark on <strong>11</strong> datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline.</p>
 <table class="table">
@@ -250,9 +251,9 @@
 </tbody>
 </table>
 <p>To view a list of all available pipelines, visit <a class="reference internal" href="primitives_pipelines/pipelines.html#pipelines"><span class="std std-ref">Pipelines</span></a> page.</p>
-</div>
-</div>
-<div class="section" id="process">
+</section>
+</section>
+<section id="process">
 <h2>Process<a class="headerlink" href="#process" title="Permalink to this headline">¶</a></h2>
 <p>We evaluate the performance of pipelines by following a series of executions. From a high level, we can view the process as:</p>
 <ol class="arabic simple">
@@ -262,7 +263,7 @@
 <li><p>Average the score obtained for each metric and pipeline across all the signals.</p></li>
 <li><p>Finally, we rank our pipelines sorting them by one of the computed scores.</p></li>
 </ol>
-<div class="section" id="benchmark-function">
+<section id="benchmark-function">
 <h3>Benchmark function<a class="headerlink" href="#benchmark-function" title="Permalink to this headline">¶</a></h3>
 <p>The complete evaluation process is directly available using the
 <code class="docutils literal notranslate"><span class="pre">orion.benchmark.benchmark</span></code> function.</p>
@@ -282,9 +283,9 @@
 </div>
 <p>For further details about all the arguments and possibilities that the <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> function offers please refer to the <a class="reference external" href="https://github.com/sintel-dev/Orion/blob/master/BENCHMARK.md">Orion benchmark
 documentation</a></p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
               </div>
