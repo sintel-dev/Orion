@@ -176,7 +176,7 @@ Alexander Geiger, Dongyu Liu, Sarah Alnegheimish, Alfredo Cuesta-Infante, Kalyan
   author={Geiger, Alexander and Liu, Dongyu and Alnegheimish, Sarah and Cuesta-Infante, Alfredo and Veeramachaneni, Kalyan},
   booktitle={2020 IEEE International Conference on Big Data (IEEE BigData)},
   pages={33-43},
-  doi={10.1109/BigData50022.2020.9378139}
+  doi={10.1109/BigData50022.2020.9378139},
   organization={IEEE},
   year={2020}
 }
