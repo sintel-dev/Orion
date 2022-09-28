@@ -150,13 +150,16 @@ Additional resources that might be of interest:
 
 If you use **Orion** which is part of the **Sintel** ecosystem for your research, please consider citing the following paper:
 
-Sarah Alnegheimish, Dongyu Liu, Carles Sala, Laure Berti-Equille, Kalyan Veeramachaneni. [Sintel: A Machine Learning Framework to Extract Insights from Signals](https://arxiv.org/pdf/2204.09108.pdf).
+Sarah Alnegheimish, Dongyu Liu, Carles Sala, Laure Berti-Equille, Kalyan Veeramachaneni. [Sintel: A Machine Learning Framework to Extract Insights from Signals](https://dl.acm.org/doi/pdf/10.1145/3514221.3517910).
 ```
 @inproceedings{alnegheimish2022sintel,
   title={Sintel: A Machine Learning Framework to Extract Insights from Signals},
-  author={Alnegheimish, Sarah and Liu, Dongyu and Sala, Carles and Berti-Equille, Laure and Veeramachaneni, Kalyan},
+  author={Alnegheimish, Sarah and Liu, Dongyu and Sala, Carles and Berti-Equille, Laure and Veeramachaneni, Kalyan},  
   booktitle={Proceedings of the 2022 International Conference on Management of Data},
+  pages = {1855–1865},
+  numpages = {11},
   publisher={Association for Computing Machinery},
+  doi = {10.1145/3514221.3517910},
   series = {SIGMOD '22},
   year={2022}
 }
@@ -172,6 +175,8 @@ Alexander Geiger, Dongyu Liu, Sarah Alnegheimish, Alfredo Cuesta-Infante, Kalyan
   title={TadGAN: Time Series Anomaly Detection Using Generative Adversarial Networks},
   author={Geiger, Alexander and Liu, Dongyu and Alnegheimish, Sarah and Cuesta-Infante, Alfredo and Veeramachaneni, Kalyan},
   booktitle={2020 IEEE International Conference on Big Data (IEEE BigData)},
+  pages={33-43},
+  doi={10.1109/BigData50022.2020.9378139}
   organization={IEEE},
   year={2020}
 }
