@@ -22,7 +22,7 @@ install_requires = [
     'mlprimitives>=0.3.2,<0.4',
     'numpy>=1.17.1,<1.19',
     'pandas>=1,<2',
-    'scikit-learn>=0.21',
+    'scikit-learn>=0.21.1',
     'tabulate>=0.8.3,<0.9',
     "tensorflow>=2,<2.5,<2;python_version<'3.8'",
     "tensorflow>=2.2,<2.5,<2;python_version>='3.8'",
