@@ -69,6 +69,7 @@ development_requires = [
     # fix style issues
     'autoflake>=1.2,<2',
     'autopep8>=1.4.3,<2',
+    'importlib-metadata<5',
 
     # distribute on PyPI
     'twine>=1.10.0,<4',
