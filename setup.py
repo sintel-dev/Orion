@@ -17,14 +17,14 @@ except IOError:
 
 
 install_requires = [
+    "tensorflow>=2.0,<2.5;python_version<'3.8'",
+    "tensorflow>=2.2,<2.5;python_version>='3.8'",
     's3fs>=0.2.2,<0.5',
     'mlblocks>=0.4.1,<0.5',
     'mlprimitives>=0.3.2,<0.4',
-    'numpy>=1.17.1,<1.21',
-    "tensorflow>=2.0,<2.5;python_version<'3.8'",
-    "tensorflow>=2.3,<2.5;python_version>='3.8'",
+    'numpy>=1.17.4,<1.21',
     'pandas>=1,<2',
-    'scikit-learn>=0.21.1',
+    'scikit-learn>=0.22',
     'tabulate>=0.8.3,<0.9',
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
