@@ -18,12 +18,11 @@ except IOError:
 
 install_requires = [
     's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.4.0,<0.5',
+    'mlblocks>=0.4.1,<0.5',
     'mlprimitives>=0.3.2,<0.4',
-    "numpy>=1.17.1,<1.19;python_version<'3.8'",
-    "numpy>=1.20.0,<2;python_version>='3.8'",
+    'numpy>=1.17.1,<1.21',
     "tensorflow>=2.0,<2.5;python_version<'3.8'",
-    "tensorflow>=2.2.0,<2.5;python_version>='3.8'",
+    "tensorflow>=2.3,<2.5;python_version>='3.8'",
     'pandas>=1,<2',
     'scikit-learn>=0.21.1',
     'tabulate>=0.8.3,<0.9',
@@ -71,6 +70,7 @@ development_requires = [
     # fix style issues
     'autoflake>=1.2,<2',
     'autopep8>=1.4.3,<2',
+    'importlib-metadata<5',
 
     # distribute on PyPI
     'twine>=1.10.0,<4',

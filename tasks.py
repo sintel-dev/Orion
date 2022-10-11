@@ -1,5 +1,7 @@
 import glob
+import operator
 import os
+import platform
 import re
 import shutil
 import stat
@@ -8,9 +10,29 @@ from pathlib import Path
 from invoke import task
 
 
+COMPARISONS = {
+    '>=': operator.ge,
+    '>': operator.gt,
+    '<': operator.lt,
+    '<=': operator.le
+}
+
+
 @task
 def pytest(c):
     c.run('python -m pytest --cov=orion')
+
+
+def _get_version(line):
+    python_version_match = re.search(r"python_version(<=?|>=?)\'(\d\.?)+\'", line)
+    if python_version_match:
+        python_version = python_version_match.group(0)
+        comparison = re.search(r'(>=?|<=?)', python_version).group(0)
+        version_number = python_version.split(comparison)[-1].replace("'", "")
+        comparison_function = COMPARISONS[comparison]
+        return comparison_function(platform.python_version(), version_number)
+
+    return True
 
 
 @task
@@ -29,10 +51,24 @@ def install_minimum(c):
             line = line.strip()
             if line.startswith('#'): # ignore comment
                 continue
+
+            if 'python_version' in line:
+                python_version = re.search(r"python_version(<=?|>=?)\'(\d\.?)+\'", line)
+                operation = python_version.group(1)
+                version_number = python_version.group(0).split(operation)[-1].replace("'", "")
+                if COMPARISONS[operation](platform.python_version(), version_number):
+                    line = line.split(";")[0]
+                else:
+                    continue
                 
-            line = re.sub(r',?<=?[\d.]*,?', '', line)
-            line = re.sub(r'>=?', '==', line)
             line = re.sub(r"""['",]""", '', line)
+            line = re.sub(r'>=?', '==', line)
+            if '==' in line:
+                line = re.sub(r',?<=?[\d.]*,?', '', line)
+            
+            elif re.search(r',?<=?[\d.]*,?', line):
+                line = f"'{line}'"
+
             versions.append(line)
 
         elif line.startswith('install_requires = ['):
