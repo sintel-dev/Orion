@@ -23,18 +23,6 @@ def pytest(c):
     c.run('python -m pytest --cov=orion')
 
 
-def _get_version(line):
-    python_version_match = re.search(r"python_version(<=?|>=?)\'(\d\.?)+\'", line)
-    if python_version_match:
-        python_version = python_version_match.group(0)
-        comparison = re.search(r'(>=?|<=?)', python_version).group(0)
-        version_number = python_version.split(comparison)[-1].replace("'", "")
-        comparison_function = COMPARISONS[comparison]
-        return comparison_function(platform.python_version(), version_number)
-
-    return True
-
-
 @task
 def install_minimum(c):
     with open('setup.py', 'r') as setup_py:
