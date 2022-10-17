@@ -72,7 +72,7 @@ def tutorials(c):
             continue
         if '.ipynb_checkpoints' not in ipynb_file:
             c.run((
-                'jupyter nbconvert --execute --ExecutePreprocessor.timeout=3600 '
+                'jupyter nbconvert --execute --ExecutePreprocessor.timeout=4200 '
                 f'--to=html --stdout {ipynb_file}'
             ), hide='out')
 
@@ -81,6 +81,36 @@ def tutorials(c):
 def lint(c):
     c.run('flake8 orion tests')
     c.run('isort -c --recursive orion tests')
+
+
+@task
+def checkdeps(c, path):
+    with open('setup.py', 'r') as setup_py:
+        lines = setup_py.read().splitlines()
+
+    packages = []
+    started = False
+    for line in lines:
+        if started:
+            if line == ']':
+                started = False
+                continue
+
+            line = line.strip()
+            if line.startswith('#') or not line: # ignore comment
+                continue
+                
+            line = re.split(r'>?=?<?', line)[0]
+            line = re.sub(r"""['",]""", '', line)
+            packages.append(line)
+
+        elif line.startswith('install_requires = ['):
+            started = True
+
+    c.run(
+        f'pip freeze | grep -v \"sintel-dev/Orion.git\" | '
+        f'grep -E \'{"|".join(packages)}\' > {path}'
+    )
 
 
 def remove_readonly(func, path, _):
