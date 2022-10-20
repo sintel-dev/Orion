@@ -40,6 +40,7 @@ def install_minimum(c):
             if line.startswith('#'): # ignore comment
                 continue
 
+            # get specific package version based on declared python version
             if 'python_version' in line:
                 python_version = re.search(r"python_version(<=?|>=?)\'(\d\.?)+\'", line)
                 operation = python_version.group(1)
