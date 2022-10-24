@@ -36,6 +36,10 @@
                 "type": "bool",
                 "default": true
             },
+            "mask": {
+                "type": "bool",
+                "default": false
+            },
             "smoothing_window": {
                 "type": "float",
                 "default": 0.01,
