@@ -10,7 +10,8 @@ from pyts.metrics import dtw
 from scipy import integrate
 
 
-def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True, mask=False):
+def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True,
+                      masking_window=0.01, mask=False):
     """Compute an array of absolute errors comparing predictions and expected output.
 
     If smooth is True, apply EWMA to the resulting array of errors.
@@ -43,7 +44,7 @@ def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True, mask=False):
     errors = pd.Series(errors).ewm(span=smoothing_window).mean().values
 
     if mask:
-        mask_length = int(0.01 * len(errors))
+        mask_length = int(masking_window * len(errors))
         errors[:mask_length] = min(errors)
     return errors
 
