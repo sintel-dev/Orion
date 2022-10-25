@@ -3,7 +3,7 @@
 Implementation of VAE.
 
 References
-    - https://stackoverflow.com/questions/63987125/keras-lstm-vae-variational-autoencoder-for-time-series-anamoly-detection
+    - https://stackoverflow.com/questions/63987125/keras-lstm-vae-variational-autoencoder-for-time-series-anamoly-detection # noqa: E501
     - https://github.com/twairball/keras_lstm_vae/blob/master/lstm_vae/vae.py
 """
 import logging
