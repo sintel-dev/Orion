@@ -27,6 +27,9 @@ def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True,
         smooth (bool):
             Optional. Indicates whether the returned errors should be smoothed with EWMA.
             If not given, `True` is used.
+        masking_window (float):
+            Optional. Size of the masking window, expressed as a proportion of the total
+            length of y. If not given, 0.01 is used.
         mask (bool):
             Optional. Mask the start of anomaly scores.
             If not given, `False` is used.
