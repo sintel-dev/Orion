@@ -214,7 +214,7 @@
 <h1>orion.primitives.timeseries_errors.regression_errors<a class="headerlink" href="#orion-primitives-timeseries-errors-regression-errors" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="orion.primitives.timeseries_errors.regression_errors">
-<code class="sig-prename descclassname">orion.primitives.timeseries_errors.</code><code class="sig-name descname">regression_errors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">y_hat</span></em>, <em class="sig-param"><span class="n">smoothing_window</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">smooth</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/timeseries_errors.html#regression_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_errors.regression_errors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">orion.primitives.timeseries_errors.</code><code class="sig-name descname">regression_errors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">y_hat</span></em>, <em class="sig-param"><span class="n">smoothing_window</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">smooth</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">masking_window</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">mask</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/orion/primitives/timeseries_errors.html#regression_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#orion.primitives.timeseries_errors.regression_errors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute an array of absolute errors comparing predictions and expected output.</p>
 <p>If smooth is True, apply EWMA to the resulting array of errors.</p>
 <dl class="field-list simple">
@@ -226,6 +226,10 @@
 length of y. If not given, 0.01 is used.</p></li>
 <li><p><strong>smooth</strong> (<em>bool</em>) – Optional. Indicates whether the returned errors should be smoothed with EWMA.
 If not given, <cite>True</cite> is used.</p></li>
+<li><p><strong>masking_window</strong> (<em>float</em>) – Optional. Size of the masking window, expressed as a proportion of the total
+length of y. If not given, 0.01 is used.</p></li>
+<li><p><strong>mask</strong> (<em>bool</em>) – Optional. Mask the start of anomaly scores.
+If not given, <cite>False</cite> is used.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

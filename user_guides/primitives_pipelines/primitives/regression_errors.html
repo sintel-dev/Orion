@@ -205,9 +205,9 @@
 <p>see <a class="reference external" href="https://github.com/sintel-dev/Orion/blob/master/orion/primitives/jsons/orion.primitives.timeseries_errors.regression_errors.json">json</a>.</p>
 <table class="table">
 <colgroup>
-<col style="width: 23%" />
-<col style="width: 17%" />
-<col style="width: 61%" />
+<col style="width: 20%" />
+<col style="width: 15%" />
+<col style="width: 65%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>argument</p></td>
@@ -233,6 +233,14 @@
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">smoothing_window</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
 <td><p>size of the smoothing window, expressed as a proportion of the total</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mask</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>indicates whether the returned errors should be masked with the minimum error value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">masking_window</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>size of the masking window, expressed as a proportion of the total</p></td>
 </tr>
 <tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
 </tr>

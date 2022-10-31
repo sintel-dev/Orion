@@ -164,7 +164,8 @@
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">integrate</span>
 
 
-<div class="viewcode-block" id="regression_errors"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.timeseries_errors.regression_errors.html#orion.primitives.timeseries_errors.regression_errors">[docs]</a><span class="k">def</span> <span class="nf">regression_errors</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">smoothing_window</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="regression_errors"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.timeseries_errors.regression_errors.html#orion.primitives.timeseries_errors.regression_errors">[docs]</a><span class="k">def</span> <span class="nf">regression_errors</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">smoothing_window</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                      <span class="n">masking_window</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute an array of absolute errors comparing predictions and expected output.</span>
 
 <span class="sd">    If smooth is True, apply EWMA to the resulting array of errors.</span>
@@ -180,6 +181,12 @@
 <span class="sd">        smooth (bool):</span>
 <span class="sd">            Optional. Indicates whether the returned errors should be smoothed with EWMA.</span>
 <span class="sd">            If not given, `True` is used.</span>
+<span class="sd">        masking_window (float):</span>
+<span class="sd">            Optional. Size of the masking window, expressed as a proportion of the total</span>
+<span class="sd">            length of y. If not given, 0.01 is used.</span>
+<span class="sd">        mask (bool):</span>
+<span class="sd">            Optional. Mask the start of anomaly scores.</span>
+<span class="sd">            If not given, `False` is used.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray:</span>
@@ -190,9 +197,13 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">smooth</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">errors</span>
 
-    <span class="n">smoothing_window</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">smoothing_window</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="n">smoothing_window</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="n">smoothing_window</span><span class="p">))</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">span</span><span class="o">=</span><span class="n">smoothing_window</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
 
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">span</span><span class="o">=</span><span class="n">smoothing_window</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span></div>
+    <span class="k">if</span> <span class="n">mask</span><span class="p">:</span>
+        <span class="n">mask_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">masking_window</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">))</span>
+        <span class="n">errors</span><span class="p">[:</span><span class="n">mask_length</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">errors</span></div>
 
 
 <span class="k">def</span> <span class="nf">_point_wise_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">):</span>
