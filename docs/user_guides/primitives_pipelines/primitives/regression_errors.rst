@@ -10,7 +10,7 @@ regression errors
 see `json <https://github.com/sintel-dev/Orion/blob/master/orion/primitives/jsons/orion.primitives.timeseries_errors.regression_errors.json>`__.
 
 ========================== =================== ======================================================================
-argument                    type                description  
+argument                    type                description
 
 **parameters**
 ---------------------------------------------------------------------------------------------------------------------
@@ -21,8 +21,10 @@ argument                    type                description
 **hyperparameters**
 ---------------------------------------------------------------------------------------------------------------------
 
- ``smooth``                 ``bool``            indicates whether the returned errors should be smoothed with EWMA 
- ``smoothing_window``       ``float``           size of the smoothing window, expressed as a proportion of the total 
+ ``smooth``                 ``bool``            indicates whether the returned errors should be smoothed with EWMA
+ ``smoothing_window``       ``float``           size of the smoothing window, expressed as a proportion of the total
+ ``mask``                   ``bool``            indicates whether the returned errors should be masked with the minimum error value
+ ``masking_window``         ``float``           size of the masking window, expressed as a proportion of the total
 
 **output**
 ---------------------------------------------------------------------------------------------------------------------
