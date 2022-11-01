@@ -43,6 +43,8 @@ class VAE(object):
             String denoting the keras optimizer.
         input_shape (tuple):
             Optional. Tuple denoting the shape of an input sample.
+        output_shape (tuple):
+            Optional. Tuple denoting the shape of an output sample.
         learning_rate (float):
             Optional. Float denoting the learning rate of the optimizer. Default 0.005.
         epochs (int):
@@ -51,6 +53,14 @@ class VAE(object):
             Optional. Integer denoting dimension of latent space. Default 20.
         batch_size (int):
             Integer denoting the batch size. Default 64.
+        shuffle (bool):
+            Optional. Whether to shuffle the training data before each epoch Default True.
+        verbose (int):
+            Verbosity mode where 0 = silent, 1 = progress bar, 2 = one line per epoch. Default 0.
+        callbacks (list):
+            Optional. List of keras callbacks to apply during evaluation.
+        validation_split (float):
+            Optional. Fraction of the training data to be used as validation data. Default 0.
         hyperparameters (dictionary):
             Optional. Dictionary containing any additional inputs.
     """
