@@ -53,7 +53,7 @@ argument                    type                description
 
     primitive = load_primitive('orion.primitives.vae.VAE',
         arguments={"X": X, "y": X, "input_shape":(100, 1), "output_shape":(100, 1),
-                   "batch_size": 1, "epochs": 3})
+                   "validation_split": 0, "batch_size": 1, "epochs": 5})
 
     primitive.fit()
     pred = primitive.produce(X=X)
