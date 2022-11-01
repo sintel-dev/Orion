@@ -5,7 +5,7 @@ azure-cognitiveservices-anomalydetector==0.3.0
 azure-common==1.1.28
 azure-core==1.26.0
 beautifulsoup4==4.11.1
-botocore==1.27.96
+botocore==1.28.4
 cachetools==5.2.0
 certifi==2022.9.24
 charset-normalizer==2.1.1
@@ -14,6 +14,7 @@ cloudpickle==2.2.0
 coverage==6.5.0
 dask==2022.2.0
 distributed==2022.2.0
+exceptiongroup==1.0.0
 featuretools==0.22.0
 fsspec==2022.10.0
 gast==0.3.3
@@ -59,17 +60,16 @@ packaging==21.3
 pandas==1.3.5
 partd==1.3.0
 patsy==0.5.3
-Pillow==9.2.0
+Pillow==9.3.0
 pluggy==1.0.0
 prompt-toolkit==3.0.31
 protobuf==3.19.6
 psutil==5.9.3
-py==1.11.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 Pygments==2.13.0
 pyparsing==3.0.9
-pytest==7.1.3
+pytest==7.2.0
 pytest-cov==4.0.0
 python-dateutil==2.8.2
 python-louvain==0.13
@@ -97,7 +97,7 @@ tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
 tensorflow==2.3.4
 tensorflow-estimator==2.3.0
-termcolor==2.0.1
+termcolor==2.1.0
 threadpoolctl==3.1.0
 tifffile==2021.11.2
 tomli==2.0.1
@@ -112,4 +112,4 @@ wrapt==1.14.1
 xgboost==0.90
 XlsxWriter==3.0.3
 zict==2.2.0
-zipp==3.9.0
+zipp==3.10.0
