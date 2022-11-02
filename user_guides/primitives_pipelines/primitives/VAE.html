@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>ARIMA &#8212; Orion 0.3.3.dev0 documentation</title>
+    <title>VAE &#8212; Orion 0.3.3.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -40,8 +40,8 @@
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="LSTM" href="LSTMTimeSeriesRegressor.html" />
-    <link rel="prev" title="MinMaxScaler" href="MinMaxScaler.html" />
+    <link rel="next" title="score anomalies" href="score_anomalies.html" />
+    <link rel="prev" title="AER" href="AER.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -198,66 +198,48 @@
               
               <div>
                 
-  <section id="arima">
-<h1>ARIMA<a class="headerlink" href="#arima" title="Permalink to this headline">¶</a></h1>
-<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">statsmodels.tsa.arima_model.Arima</span></code></p>
-<p><strong>description</strong>: this is an Autoregressive Integrated Moving Average (ARIMA) prediction model.</p>
-<p>see <a class="reference external" href="https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/statsmodels.tsa.arima_model.Arima.json">json</a>.</p>
-<table class="table">
-<colgroup>
-<col style="width: 19%" />
-<col style="width: 18%" />
-<col style="width: 63%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>argument</p></td>
-<td><p>type</p></td>
-<td><p>description</p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
-<td><p>n-dimensional array containing the input sequences for the model</p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">steps</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td><p>number of forward steps to predict</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">p</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td><p>the number of autoregressive parameters to use</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">d</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td><p>the number of differences to use</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">q</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td><p>the number of moving average (MA) parameters to use</p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><p><strong>output</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
-<td><p>predicted values</p></td>
-</tr>
-</tbody>
-</table>
+  <section id="vae">
+<h1>VAE<a class="headerlink" href="#vae" title="Permalink to this headline">¶</a></h1>
+<p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">orion.primitives.vae.VAE</span></code></p>
+<p><strong>description</strong>: this is a reconstruction model using Variational AutoEncoder.</p>
+<p>see <a class="reference external" href="https://github.com/sintel-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.vae.VAE.json">json</a>.</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
 
-<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="gp">In [4]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;statsmodels.tsa.arima_model.Arima&#39;</span><span class="p">,</span>
-<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="p">})</span>
+<span class="gp">In [4]: </span><span class="n">primitive</span> <span class="o">=</span> <span class="n">load_primitive</span><span class="p">(</span><span class="s1">&#39;orion.primitives.vae.VAE&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;input_shape&quot;</span><span class="p">:(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;output_shape&quot;</span><span class="p">:(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">   ...: </span>               <span class="s2">&quot;validation_split&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
 <span class="gp">   ...: </span>
 
-<span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
-<span class="gh">Out[5]: </span><span class="go">array([[98.98976111]])</span>
+<span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="go">Epoch 1/5</span>
+
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 1.1074</span>
+<span class="go">1/1 [==============================] - 0s 376us/step - loss: 1.1074</span>
+<span class="go">Epoch 2/5</span>
+
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.9656</span>
+<span class="go">1/1 [==============================] - 0s 307us/step - loss: 0.9656</span>
+<span class="go">Epoch 3/5</span>
+
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.7362</span>
+<span class="go">1/1 [==============================] - 0s 281us/step - loss: 0.7362</span>
+<span class="go">Epoch 4/5</span>
+
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.7187</span>
+<span class="go">1/1 [==============================] - 0s 271us/step - loss: 0.7187</span>
+<span class="go">Epoch 5/5</span>
+
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.6326</span>
+<span class="go">1/1 [==============================] - 0s 285us/step - loss: 0.6326</span>
+
+<span class="gp">In [6]: </span><span class="n">pred</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+
+<span class="gp">In [7]: </span><span class="n">pred</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="gh">Out[7]: </span><span class="go">0.4099255303320981</span>
 </pre></div>
 </div>
 </section>
@@ -268,8 +250,8 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="MinMaxScaler.html" title="previous page">MinMaxScaler</a>
-    <a class='right-next' id="next-link" href="LSTMTimeSeriesRegressor.html" title="next page">LSTM</a>
+    <a class='left-prev' id="prev-link" href="AER.html" title="previous page">AER</a>
+    <a class='right-next' id="next-link" href="score_anomalies.html" title="next page">score anomalies</a>
 
               </div>
               

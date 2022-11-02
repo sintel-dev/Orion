@@ -93,6 +93,8 @@ This is the list of pipelines available so far, which will grow over time:
 +----------+------------------------------------------------------+
 | Dense AE | Autoencoder based pipeline with Dense layers         |
 +----------+------------------------------------------------------+
+| VAE      | Variational autoencoder                              |
++----------+------------------------------------------------------+
 | AER      | Autoencoder with Regression based pipeline           |
 +----------+------------------------------------------------------+
 | Azure    | Azure API for `Anomaly Detector`_                    |
