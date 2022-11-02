@@ -31,6 +31,7 @@ Modeling
     primitives/DenseSeq2Seq.rst
     primitives/TadGAN.rst
     primitives/AER.rst
+    primitives/VAE.rst
 
 Postprocessing
 --------------
