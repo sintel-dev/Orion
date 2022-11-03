@@ -17,14 +17,15 @@ except IOError:
 
 
 install_requires = [
+    "tensorflow>=2.0,<2.5;python_version<'3.8'",
+    "tensorflow>=2.2,<2.5;python_version>='3.8'",
     's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.4.0,<0.5',
+    'mlblocks>=0.4.1,<0.5',
     'mlprimitives>=0.3.2,<0.4',
-    'numpy>=1.17.1,<1.19',
+    'numpy>=1.17.4,<1.19',
     'pandas>=1,<2',
-    'scikit-learn>=0.21',
+    'scikit-learn>=0.22',
     'tabulate>=0.8.3,<0.9',
-    'tensorflow>=2,<2.5',
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
@@ -92,6 +93,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     description="Orion is a machine learning library built for unsupervised time series anomaly detection.",
     entry_points={
