@@ -1,0 +1,9 @@
+{
+    "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "time_column": "timestamp",
+        "interval": 21600
+    },
+    "orion.primitives.ganf.GANFModel#1": {
+        "interval": 21600
+    }
+}

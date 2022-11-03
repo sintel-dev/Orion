@@ -411,28 +411,32 @@ class GANFModel(object):
                 batch_size=self.batch_size,
                 shuffle=False
             )
-
+        
         train_loader = DataLoader(
             Signal(train, None, self.window_size, self.stride_size, self.unit, self.interval),
             batch_size=self.batch_size,
             shuffle=True
         )
 
+        print("training data length = {}".format(len(train_loader)))
+
         return train_loader, valid_loader
 
-    def fit(self, X):
+    def fit(self, X, index):
         """Train GANF model.
 
         Args:
             X (pands.DataFrame):
                 A dataframe with ``timestamp`` and feature columns used for training.
         """
+        df = pd.DataFrame(X)
+        df[self.timestamp_column] = index
 
         # ------------------------------------------------------------------------------
         # Prepare data
         # ------------------------------------------------------------------------------
 
-        train_loader, valid_loader = self._prepare_data(X)
+        train_loader, valid_loader = self._prepare_data(df)
 
         # ------------------------------------------------------------------------------
         # Seeding
@@ -521,7 +525,7 @@ class GANFModel(object):
             loss_best=loss_best
         )
 
-    def predict(self, X):
+    def predict(self, X, index):
         """Predict values using the initialized object.
 
         Args:
@@ -533,17 +537,20 @@ class GANFModel(object):
                 * Predicted values for each input sequence.
                 * Index
         """
-        X = X.set_index(self.timestamp_column)
+        df = pd.DataFrame(X)
+        df[self.timestamp_column] = index
 
-        if self.target_column in X.columns:
-            target = X.pop(self.target_column)
+        df = df.set_index(self.timestamp_column)
+
+        if self.target_column in df.columns:
+            target = df.pop(self.target_column)
             labels = pd.Series(target).map(self.categories_to_values)
             report_auroc = True
         else:
             labels = None
             report_auroc = False
 
-        test = (X - self.mean) / self.std
+        test = (df - self.mean) / self.std
         test = test.dropna(axis=1)
 
         test_loader = DataLoader(

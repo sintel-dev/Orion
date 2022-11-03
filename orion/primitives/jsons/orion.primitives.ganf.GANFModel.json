@@ -17,7 +17,11 @@
             {
                 "name": "X",
                 "type": "ndarray"
-            }
+            },
+	    {
+		"name": "index",
+		"type": "ndarray"
+	    }
         ]
     },
     "produce": {
@@ -26,7 +30,11 @@
             {
                 "name": "X",
                 "type": "ndarray"
-            }
+            },
+	    {
+		"name": "index",
+		"type": "ndarray"
+	    }
         ],
         "output": [
             {
