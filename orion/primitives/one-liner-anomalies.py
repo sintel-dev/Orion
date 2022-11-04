@@ -54,3 +54,4 @@ def detect_anomalies(X, thres, op, func=None, dim=None, arg=None):
     
     
     return []
+    
