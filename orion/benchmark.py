@@ -45,7 +45,7 @@ PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
 VERIFIED_PIPELINES = [
     'arima', 'lstm_dynamic_threshold', 'azure', 'tadgan',
-    'aer', 'lstm_autoencoder', 'dense_autoencoder'
+    'aer', 'lstm_autoencoder', 'dense_autoencoder', 'vae'
 ]
 
 VERIFIED_PIPELINES_GPU = {
@@ -55,7 +55,8 @@ VERIFIED_PIPELINES_GPU = {
     'tadgan': 'tadgan_without_dropout_gpu',
     'aer': 'aer',
     'lstm_autoencoder': 'lstm_autoencoder_gpu',
-    'dense_autoencoder': 'dense_autoencoder'
+    'dense_autoencoder': 'dense_autoencoder',
+    'vae': 'vae'
 }
 
 
