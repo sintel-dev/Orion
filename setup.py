@@ -17,14 +17,15 @@ except IOError:
 
 
 install_requires = [
+    "tensorflow>=2.0,<2.5;python_version<'3.8'",
+    "tensorflow>=2.2,<2.5;python_version>='3.8'",
     's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.3.3,<0.4',
-    'mlprimitives>=0.2.2,<0.3',
-    'numpy>=1.16,<1.17',
-    'pandas>=0.23.4,<0.25',
-    'scikit-learn>=0.20.1,<0.21',
+    'mlblocks>=0.4.1,<0.5',
+    'mlprimitives>=0.3.2,<0.4',
+    'numpy>=1.17.4,<1.19',
+    'pandas>=1,<2',
+    'scikit-learn>=0.22',
     'tabulate>=0.8.3,<0.9',
-    'Keras>=2.1.6,<2.4',
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
@@ -52,13 +53,15 @@ development_requires = [
     'watchdog>=0.8.3,<0.11',
 
     # docs
+    'docutils>=0.12,<0.18',
     'm2r2>=0.2.5,<0.3',
     'nbsphinx>=0.5.0,<0.7',
     'Sphinx>=3,<3.3',
-    'pydata-sphinx-theme',
+    'pydata-sphinx-theme<0.5',
     'autodocsumm>=0.1.10,<1',
+    'markupsafe<2.1.0',
     'ipython>=6.5,<7.5',
-    'Jinja2<3.1',
+    'Jinja2>=2,<3',
 
     # style check
     'flake8>=3.7.7,<4',
@@ -67,6 +70,7 @@ development_requires = [
     # fix style issues
     'autoflake>=1.2,<2',
     'autopep8>=1.4.3,<2',
+    'importlib-metadata<5',
 
     # distribute on PyPI
     'twine>=1.10.0,<4',
@@ -89,6 +93,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     description="Orion is a machine learning library built for unsupervised time series anomaly detection.",
     entry_points={
@@ -112,11 +117,11 @@ setup(
     long_description_content_type='text/markdown',
     name='orion-ml',
     packages=find_packages(include=['orion', 'orion.*']),
-    python_requires='>=3.6,<3.8',
+    python_requires='>=3.6,<3.9',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.3.2',
+    version='0.4.0.dev0',
     zip_safe=False,
 )

@@ -1,0 +1,152 @@
+{
+    "name": "orion.primitives.vae.VAE",
+    "contributors": [
+        "Lawrence Wong <lcwong@mit.edu>"
+    ],
+    "documentation": "",
+    "description": "VAE",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.vae.VAE",
+    "fit": {
+        "method": "fit",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "optimizer": {
+                "type": "str",
+                "default": "tensorflow.keras.optimizers.Adam"
+            },
+            "input_shape": {
+                "type": "tuple",
+                "default": null
+            },
+            "output_shape": {
+                "type": "tuple",
+                "default": null
+            },
+            "latent_dim": {
+                "type": "int",
+                "default": 20
+            },
+            "learning_rate": {
+                "type": "float",
+                "default": 0.001
+            },
+            "epochs": {
+                "type": "int",
+                "default": 35
+            },
+            "batch_size": {
+                "type": "int",
+                "default": 64
+            },
+            "shuffle": {
+                "type": "bool",
+                "default": true
+            },
+            "verbose": {
+                "type": "bool",
+                "default": true
+            },
+            "lstm_units": {
+                "type": "int",
+                "default": 60
+            },
+            "length": {
+                "type": "int",
+                "default": null
+            },
+            "callbacks": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "keras.callbacks.EarlyStopping",
+                        "args": {
+                            "monitor": "val_loss",
+                            "patience": 10,
+                            "min_delta": 0.0003
+                        }
+                    }
+                ]
+            },
+            "validation_split": {
+                "type": "float",
+                "default": 0.2
+            },
+            "output_dim": {
+                "type": "int",
+                "default": null
+            },
+            "layers_encoder": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "tensorflow.keras.layers.LSTM",
+                        "parameters": {
+                            "units": "lstm_units",
+                            "return_sequences": false
+                        }
+                    }
+                ]
+            },
+            "layers_generator": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "tensorflow.keras.layers.RepeatVector",
+                        "parameters": {
+                            "n": "length"
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.LSTM",
+                        "parameters": {
+                            "units": "lstm_units",
+                            "return_sequences": true
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.TimeDistributed",
+                        "parameters": {
+                            "layer": {
+                                "class": "tensorflow.keras.layers.Dense",
+                                "parameters": {
+                                    "units": "output_dim"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

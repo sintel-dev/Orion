@@ -10,7 +10,8 @@ from pyts.metrics import dtw
 from scipy import integrate
 
 
-def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True):
+def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True,
+                      masking_window=0.01, mask=False):
     """Compute an array of absolute errors comparing predictions and expected output.
 
     If smooth is True, apply EWMA to the resulting array of errors.
@@ -26,6 +27,12 @@ def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True):
         smooth (bool):
             Optional. Indicates whether the returned errors should be smoothed with EWMA.
             If not given, `True` is used.
+        masking_window (float):
+            Optional. Size of the masking window, expressed as a proportion of the total
+            length of y. If not given, 0.01 is used.
+        mask (bool):
+            Optional. Mask the start of anomaly scores.
+            If not given, `False` is used.
 
     Returns:
         ndarray:
@@ -36,9 +43,13 @@ def regression_errors(y, y_hat, smoothing_window=0.01, smooth=True):
     if not smooth:
         return errors
 
-    smoothing_window = int(smoothing_window * len(y))
+    smoothing_window = max(1, int(len(y)*smoothing_window))
+    errors = pd.Series(errors).ewm(span=smoothing_window).mean().values
 
-    return pd.Series(errors).ewm(span=smoothing_window).mean().values
+    if mask:
+        mask_length = int(masking_window * len(errors))
+        errors[:mask_length] = min(errors)
+    return errors
 
 
 def _point_wise_error(y, y_hat):

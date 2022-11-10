@@ -52,7 +52,7 @@ VERIFIED_PIPELINES_GPU = {
     'arima': 'arima',
     'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu',
     'azure': 'azure',
-    'tadgan': 'tadgan_gpu',
+    'tadgan': 'tadgan_without_dropout_gpu',
     'aer': 'aer',
     'lstm_autoencoder': 'lstm_autoencoder_gpu',
     'dense_autoencoder': 'dense_autoencoder'
