@@ -1,0 +1,32 @@
+{
+    "name": "diff_std_thres",
+    "primitive": "orion.primitives.timeseries_postprocessing.diff_std_thres",
+    "description": "Detects anomalies by calculating n-th order discrete difference",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray" 
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray" 
+            }
+        ]
+    }, 
+    "hyperparameters": {
+        "tunable": {
+            "thres": {
+                "type": "float",
+                "default": "0.1"
+            },
+            "op": {
+                "type": "str",
+                "default": ">",
+                "options": ["<", ">", "<=", ">=", "=="]
+            }
+        }
+    }
+}
