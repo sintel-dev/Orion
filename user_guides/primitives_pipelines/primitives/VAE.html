@@ -203,6 +203,101 @@
 <p><strong>path</strong>: <code class="docutils literal notranslate"><span class="pre">orion.primitives.vae.VAE</span></code></p>
 <p><strong>description</strong>: this is a reconstruction model using Variational AutoEncoder.</p>
 <p>see <a class="reference external" href="https://github.com/sintel-dev/Orion/tree/master/orion/primitives/jsons/orion.primitives.vae.VAE.json">json</a>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 10%" />
+<col style="width: 77%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>argument</p></td>
+<td><p>type</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>parameters</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional array containing the input sequences for the model</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>n-dimensional array containing the target sequences we want to reconstruct. Typically <code class="docutils literal notranslate"><span class="pre">y</span></code> is a signal from a selected set of channels from <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><strong>hyperparameters</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">epochs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of epochs to train the model. An epoch is an iteration over the entire X data provided</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>tuple denoting the shape of an input sample</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">output_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+<td><p>tuple denoting the shape of an output sample</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">latent_dim</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>integer denoting dimension of latent space. Default is 20.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>float denoting the learning rate of the optimizer. Default is 0.001</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>string (name of optimizer) or optimizer instance. Default is <code class="docutils literal notranslate"><span class="pre">keras.optimizers.Adam</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">batch_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of samples per gradient update. Default is 64</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">shuffle</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>whether to shuffle the training data before each epoch. Default is True.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>verbosity mode where 0 = silent, 1 = progress bar, 2 = one line per epoch. Default is 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lstm_units</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of neurons (dimensionality of the output space).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">length</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>equal to input_shape[0].</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">callbacks</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list of <code class="docutils literal notranslate"><span class="pre">keras.callbacks.Callback</span></code> instances. List of callbacks to apply during training.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">validation_split</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>fraction of the training data to be used as validation data. Default 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">output_dim</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>equal to output_shape[-1]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">layers_encoder</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list containing layers of encoder</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">layers_generator</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>list containing layers of generator</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><strong>output</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
+<td><p>predicted values</p></td>
+</tr>
+</tbody>
+</table>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
@@ -217,29 +312,29 @@
 <span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <span class="go">Epoch 1/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.9244</span>
-<span class="go">1/1 [==============================] - 0s 408us/step - loss: 0.9244</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 1.2356</span>
+<span class="go">1/1 [==============================] - 0s 426us/step - loss: 1.2356</span>
 <span class="go">Epoch 2/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.7730</span>
-<span class="go">1/1 [==============================] - 0s 364us/step - loss: 0.7730</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.8842</span>
+<span class="go">1/1 [==============================] - 0s 295us/step - loss: 0.8842</span>
 <span class="go">Epoch 3/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.7165</span>
-<span class="go">1/1 [==============================] - 0s 350us/step - loss: 0.7165</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.8994</span>
+<span class="go">1/1 [==============================] - 0s 283us/step - loss: 0.8994</span>
 <span class="go">Epoch 4/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.4537</span>
-<span class="go">1/1 [==============================] - 0s 361us/step - loss: 0.4537</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.6374</span>
+<span class="go">1/1 [==============================] - 0s 282us/step - loss: 0.6374</span>
 <span class="go">Epoch 5/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.5258</span>
-<span class="go">1/1 [==============================] - 0s 392us/step - loss: 0.5258</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.5275</span>
+<span class="go">1/1 [==============================] - 0s 278us/step - loss: 0.5275</span>
 
 <span class="gp">In [6]: </span><span class="n">pred</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
 <span class="gp">In [7]: </span><span class="n">pred</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="gh">Out[7]: </span><span class="go">0.385347433761635</span>
+<span class="gh">Out[7]: </span><span class="go">0.24944735770079066</span>
 </pre></div>
 </div>
 </section>
