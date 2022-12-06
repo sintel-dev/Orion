@@ -5,7 +5,7 @@ azure-cognitiveservices-anomalydetector==0.3.0
 azure-common==1.1.28
 azure-core==1.26.1
 beautifulsoup4==4.11.1
-botocore==1.29.16
+botocore==1.29.22
 cachetools==5.2.0
 certifi==2022.9.24
 charset-normalizer==2.1.1
@@ -18,11 +18,11 @@ exceptiongroup==1.0.4
 featuretools==0.22.0
 fsspec==2022.11.0
 gast==0.3.3
-google-auth==2.14.1
+google-auth==2.15.0
 google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
 graphviz==0.20.1
-grpcio==1.50.0
+grpcio==1.51.1
 h5py==2.10.0
 HeapDict==1.0.1
 idna==3.4
