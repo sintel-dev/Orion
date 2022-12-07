@@ -1,8 +1,9 @@
 | Pipeline                  |  Outperforms ARIMA |
 |---------------------------|--------------------|
-| AER					    |          11        |
-| TadGAN					|          8         |
-| LSTM Dynamic Thresholding |          7         |
-| LSTM Autoencoder			|          7         |
+| AER					    |          10        |
+| TadGAN					|          7         |
+| LSTM Dynamic Thresholding |          8         |
+| LSTM Autoencoder			|          6         |
 | Dense Autoencoder			|          6         |
+| VAE					    |          6         |
 | Azure						|          0         |
