@@ -152,7 +152,11 @@ class TadGAN:
         self.shuffle = shuffle
         self.verbose = verbose
         self.detailed_losses = detailed_losses
-        self.fitted = False
+        
+        self._fitted = False
+        self.fit_history_critic_x = []
+        self.fit_history_critic_z = []
+        self.fit_history_encoder_generator = []
 
     def __getstate__(self):
         networks = ['critic_x', 'critic_z', 'encoder', 'generator']
@@ -329,6 +333,10 @@ class TadGAN:
                 epoch_eg_loss.append(
                     self.encoder_generator_model.train_on_batch([x, z], [real, real, y]))
 
+            self.fit_history_critic_x.append(epoch_cx_loss)
+            self.fit_history_critic_z.append(epoch_cz_loss)
+            self.fit_history_encoder_generator.append(epoch_eg_loss)
+
             epoch_cx_loss = np.round(np.mean(np.array(epoch_cx_loss), axis=0), 4)
             epoch_cz_loss = np.round(np.mean(np.array(epoch_cz_loss), axis=0), 4)
             epoch_eg_loss = np.round(np.mean(np.array(epoch_eg_loss), axis=0), 4)
@@ -349,16 +357,17 @@ class TadGAN:
         """
         if y is None:
             y = X.copy()
+
         X, y = X.astype(np.float64), y.astype(np.float64)
 
         # Infer dimensions and compile model.
-        if not self.fitted:
+        if not self._fitted:
             kwargs = self._augment_hyperparameters(X, y, **kwargs)
             self._set_shapes()
             self._build_tadgan(**kwargs)
 
         self._fit((X, y))
-        self.fitted = True
+        self._fitted = True
 
     def predict(self, X: ndarray, y: Optional[ndarray] = None) -> tuple:
         """Predict using TadGAN model.
@@ -382,7 +391,13 @@ class TadGAN:
         y_hat = self.generator.predict(z_)
         critic = self.critic_x.predict(y)
 
-        return y_hat, critic
+        history = {
+            "critic_x": self.fit_history_critic_x,
+            "critic_z": self.fit_history_critic_z,
+            "encoder_generator": self.fit_history_encoder_generator
+        }
+
+        return y_hat, critic, history
 
 
 def _compute_critic_score(critics: ndarray, smooth_window: int) -> ndarray:

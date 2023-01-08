@@ -44,6 +44,10 @@
             {
                 "name": "fy_hat",
                 "type": "ndarray"
+            },
+            {
+                "name": "fit_history",
+                "type": "dict"
             }
         ]
     },

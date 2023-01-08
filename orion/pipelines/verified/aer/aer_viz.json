@@ -5,8 +5,8 @@
         "sklearn.preprocessing.MinMaxScaler",
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
         "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
-        "orion.primitives.tadgan.TadGAN",
-        "orion.primitives.tadgan.score_anomalies",
+        "orion.primitives.aer.AER",
+        "orion.primitives.aer.score_anomalies",
         "orion.primitives.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
@@ -30,15 +30,16 @@
             "target_index": 0,
             "axis": 2
         },
-        "orion.primitives.tadgan.TadGAN#1": {
-            "epochs": 35,
-            "input_shape":[100, 1],
-            "target_shape": [100, 1]
+        "orion.primitives.aer.AER#1": {
+            "epochs": 35
         },
-        "orion.primitives.tadgan.score_anomalies#1": {
-            "rec_error_type": "dtw"
+        "orion.primitives.aer.score_anomalies#1": {
+            "rec_error_type": "dtw",
+            "comb": "mult",
+            "mask": true,
+            "lambda_rec": 0.5
         },
-	"orion.primitives.timeseries_anomalies.find_anomalies#1": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "window_size_portion": 0.33,
             "window_step_size_portion": 0.1,
             "fixed_threshold": true
@@ -50,9 +51,6 @@
         }
     },
     "output_names": {
-        "orion.primitives.tadgan.TadGAN#1": {
-            "y": "y_hat"
-        },
         "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "index": "X_index",
             "target_index": "y_index"
@@ -67,12 +65,8 @@
         ],
         "visualization": [
             {
-                "name": "generated_timeseries",
-                "variable": "orion.primitives.tadgan.score_anomalies#1.predictions"
-            },
-            {
                 "name": "fit_history",
-                "variable": "orion.primitives.tadgan.TadGAN#1.fit_history"
+                "variable": "orion.primitives.aer.AER#1.fit_history"
             }
         ]
     }

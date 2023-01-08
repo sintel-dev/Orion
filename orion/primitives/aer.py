@@ -194,7 +194,7 @@ class AER(object):
         X = X[:, 1:-1, :]
         x_ = self.decoder.predict(self.encoder.predict(X))
         ry, y, fy = x_[:, 0], x_[:, 1:-1], x_[:, -1]
-        return ry, y, fy
+        return ry, y, fy, self.fit_history.history
 
 
 def bi_regression_errors(y: ndarray, ry_hat: ndarray, fy_hat: ndarray,
