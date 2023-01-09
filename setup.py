@@ -34,7 +34,9 @@ install_requires = [
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
     'protobuf<4',
-    'opencv-python<4.7', # fails on python 3.6
+    
+    # fails on python 3.6
+    'opencv-python<4.7',
 ]
 
 setup_requires = [
