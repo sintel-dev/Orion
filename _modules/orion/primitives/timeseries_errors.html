@@ -166,7 +166,7 @@
 
 <div class="viewcode-block" id="regression_errors"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.timeseries_errors.regression_errors.html#orion.primitives.timeseries_errors.regression_errors">[docs]</a><span class="k">def</span> <span class="nf">regression_errors</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">smoothing_window</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                       <span class="n">masking_window</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute an array of absolute errors comparing predictions and expected output.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute an array of absolute errors comparing predictions and expected output.</span>
 
 <span class="sd">    If smooth is True, apply EWMA to the resulting array of errors.</span>
 
@@ -207,7 +207,7 @@
 
 
 <span class="k">def</span> <span class="nf">_point_wise_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute point-wise error between predicted and expected values.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute point-wise error between predicted and expected values.</span>
 
 <span class="sd">    The computed error is calculated as the difference between predicted</span>
 <span class="sd">    and expected values with a rolling smoothing factor.</span>
@@ -226,7 +226,7 @@
 
 
 <span class="k">def</span> <span class="nf">_area_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">score_window</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute area error between predicted and expected values.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute area error between predicted and expected values.</span>
 
 <span class="sd">    The computed error is calculated as the area difference between predicted</span>
 <span class="sd">    and expected values with a smoothing factor.</span>
@@ -255,7 +255,7 @@
 
 
 <span class="k">def</span> <span class="nf">_dtw_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">score_window</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute dtw error between predicted and expected values.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute dtw error between predicted and expected values.</span>
 
 <span class="sd">    The computed error is calculated as the dynamic time warping distance</span>
 <span class="sd">    between predicted and expected values with a smoothing factor.</span>
@@ -303,7 +303,7 @@
 
 <div class="viewcode-block" id="reconstruction_errors"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.timeseries_errors.reconstruction_errors.html#orion.primitives.timeseries_errors.reconstruction_errors">[docs]</a><span class="k">def</span> <span class="nf">reconstruction_errors</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">score_window</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">smoothing_window</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
                           <span class="n">smooth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rec_error_type</span><span class="o">=</span><span class="s1">&#39;point&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute an array of reconstruction errors.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute an array of reconstruction errors.</span>
 
 <span class="sd">    Compute the discrepancies between the expected and the</span>
 <span class="sd">    predicted values according to the reconstruction error type.</span>

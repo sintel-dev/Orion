@@ -376,7 +376,7 @@
 
 
 <span class="k">def</span> <span class="nf">_run_on_dask</span><span class="p">(</span><span class="n">jobs</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Run the tasks in parallel using dask.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run the tasks in parallel using dask.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">dask</span>
     <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
@@ -401,7 +401,7 @@
 <div class="viewcode-block" id="benchmark"><a class="viewcode-back" href="../../api_reference/api/orion.benchmark.benchmark.html#orion.benchmark.benchmark">[docs]</a><span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">pipelines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">METRICS</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span>
               <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
               <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Run pipelines on the given datasets and evaluate the performance.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run pipelines on the given datasets and evaluate the performance.</span>
 
 <span class="sd">    The pipelines are used to analyze the given signals and later on the</span>
 <span class="sd">    detected anomalies are scored against the known anomalies using the</span>

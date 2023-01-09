@@ -230,7 +230,7 @@ internet connection that allows downloading the base image and the additional py
 <h2>Building the Orion Docker Image<a class="headerlink" href="#building-the-orion-docker-image" title="Permalink to this headline">¶</a></h2>
 <p>After having cloned the <strong>Orion</strong> repository, all you have to do in order to build the Orion Docker
 Image is running this command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make docker-jupyter-build
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>docker-jupyter-build
 </pre></div>
 </div>
 <p>After a few minutes, the new image, called <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code>, will have been built into the system
@@ -244,13 +244,13 @@ and will be ready to be used or distributed.</p>
 <p>The simplest way to distribute the recently created image is <a class="reference external" href="https://docs.docker.com/registry/">using a registry</a>.</p>
 <p>In order to do so, we will need to have write access to a public or private registry (remember to
 <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/login/">login</a>!) and execute these commands:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker tag orion-jupyter:latest your-registry-name:some-tag
-docker push your-registry-name:some-tag
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>tag<span class="w"> </span>orion-jupyter:latest<span class="w"> </span>your-registry-name:some-tag
+docker<span class="w"> </span>push<span class="w"> </span>your-registry-name:some-tag
 </pre></div>
 </div>
 <p>Afterwards, in the receiving machine:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker pull your-registry-name:some-tag
-docker tag your-registry-name:some-tag orion-jupyter:latest
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>pull<span class="w"> </span>your-registry-name:some-tag
+docker<span class="w"> </span>tag<span class="w"> </span>your-registry-name:some-tag<span class="w"> </span>orion-jupyter:latest
 </pre></div>
 </div>
 </section>
@@ -259,11 +259,11 @@ docker tag your-registry-name:some-tag orion-jupyter:latest
 <p>If the distribution of the image has to be done offline for any reason, it can be achieved
 using the following command.</p>
 <p>In the system that already has the image:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker save --output orion-jupyter.tar orion-jupyter
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>save<span class="w"> </span>--output<span class="w"> </span>orion-jupyter.tar<span class="w"> </span>orion-jupyter
 </pre></div>
 </div>
 <p>Then copy over the file <code class="docutils literal notranslate"><span class="pre">orion-jupyter.tar</span></code> to the new system and there, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker load --input orion-jupyter.tar
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>load<span class="w"> </span>--input<span class="w"> </span>orion-jupyter.tar
 </pre></div>
 </div>
 <p>After these commands, the <code class="docutils literal notranslate"><span class="pre">orion-jupyter</span></code> image should be available and ready to be used in the
@@ -278,7 +278,7 @@ new system.</p>
 <h3>Running orion-jupyter with the code<a class="headerlink" href="#running-orion-jupyter-with-the-code" title="Permalink to this headline">¶</a></h3>
 <p>If the Orion source code is available in the system, running the image is as simple as running
 this command from within the root of the project:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make docker-jupyter-run
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>docker-jupyter-run
 </pre></div>
 </div>
 <p>This will start a jupyter notebook using the docker image, which you can access by pointing your
@@ -292,7 +292,7 @@ up in your <code class="docutils literal notranslate"><span class="pre">notebook
 <h3>Running orion-jupyter without the orion code<a class="headerlink" href="#running-orion-jupyter-without-the-orion-code" title="Permalink to this headline">¶</a></h3>
 <p>If the Orion source code is not available in the system and only the Docker Image is, you can
 still run the image by using this command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run -ti -p8888:8888 orion-jupyter
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>-p8888:8888<span class="w"> </span>orion-jupyter
 </pre></div>
 </div>
 <p>In this case, the code changes and the notebooks that you create within jupyter will stay

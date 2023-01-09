@@ -204,7 +204,7 @@ pipeline and the second one to detect anomalies.</p>
 <span class="gp">In [2]: </span><span class="n">train_data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1-train&#39;</span><span class="p">)</span>
 
 <span class="gp">In [3]: </span><span class="n">train_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[3]: </span><span class="go"></span>
+<span class="gh">Out[3]: </span>
 <span class="go">    timestamp     value</span>
 <span class="go">0  1222819200 -0.366359</span>
 <span class="go">1  1222840800 -0.394108</span>
@@ -259,9 +259,9 @@ pipeline and the second one to detect anomalies.</p>
 <p>The output of the previous command will be a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing a table in the detected anomalies
 Output format described above:</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="n">anomalies</span>
-<span class="gh">Out[11]: </span><span class="go"></span>
+<span class="gh">Out[11]: </span>
 <span class="go">        start         end  severity</span>
-<span class="go">0  1398405600  1400198400  0.609786</span>
+<span class="go">0  1398427200  1400198400  0.635866</span>
 </pre></div>
 </div>
 </section>
@@ -275,7 +275,7 @@ good our anomaly detection was by comparing those with our detected intervals.</
 <span class="gp">In [13]: </span><span class="n">ground_truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="s1">&#39;S-1&#39;</span><span class="p">)</span>
 
 <span class="gp">In [14]: </span><span class="n">ground_truth</span>
-<span class="gh">Out[14]: </span><span class="go"></span>
+<span class="gh">Out[14]: </span>
 <span class="go">        start         end</span>
 <span class="go">0  1398168000  1407823200</span>
 </pre></div>
@@ -285,10 +285,10 @@ good our anomaly detection was by comparing those with our detected intervals.</
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [15]: </span><span class="n">scores</span> <span class="o">=</span> <span class="n">orion</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">)</span>
 
 <span class="gp">In [16]: </span><span class="n">scores</span>
-<span class="gh">Out[16]: </span><span class="go"></span>
-<span class="go">accuracy     0.950341</span>
-<span class="go">f1           0.313208</span>
-<span class="go">recall       0.185682</span>
+<span class="gh">Out[16]: </span>
+<span class="go">accuracy     0.950205</span>
+<span class="go">f1           0.310019</span>
+<span class="go">recall       0.183445</span>
 <span class="go">precision    1.000000</span>
 <span class="go">dtype: float64</span>
 </pre></div>

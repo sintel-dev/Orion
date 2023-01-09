@@ -168,7 +168,7 @@
 
 
 <span class="k">def</span> <span class="nf">_convert_anomalies_to_contextual</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Convert list of timestamps to list of tuples.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Convert list of timestamps to list of tuples.</span>
 
 <span class="sd">    Convert a list of anomalies identified by timestamps,</span>
 <span class="sd">    to a list of tuples marking the start and end interval</span>
@@ -206,7 +206,7 @@
 
 
 <div class="viewcode-block" id="split_sequence"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.azure_anomaly_detector.split_sequence.html#orion.primitives.azure_anomaly_detector.split_sequence">[docs]</a><span class="k">def</span> <span class="nf">split_sequence</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">target_column</span><span class="p">,</span> <span class="n">sequence_size</span><span class="p">,</span> <span class="n">overlap_size</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Split sequences of time series data.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split sequences of time series data.</span>
 
 <span class="sd">    The function creates a list of input sequences by splitting the input sequence</span>
 <span class="sd">    into partitions with a specified size and pads it with values from previous</span>
@@ -253,7 +253,7 @@
 <div class="viewcode-block" id="detect_anomalies"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.azure_anomaly_detector.detect_anomalies.html#orion.primitives.azure_anomaly_detector.detect_anomalies">[docs]</a><span class="k">def</span> <span class="nf">detect_anomalies</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">overlap_size</span><span class="p">,</span> <span class="n">subscription_key</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">granularity</span><span class="p">,</span>
                      <span class="n">custom_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_anomaly_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sensitivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">timezone</span><span class="o">=</span><span class="s2">&quot;UTC&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Microsoft&#39;s Azure Anomaly Detection tool.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Microsoft&#39;s Azure Anomaly Detection tool.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        X (list):</span>

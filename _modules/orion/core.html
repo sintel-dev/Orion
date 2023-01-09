@@ -173,7 +173,7 @@
 
 
 <div class="viewcode-block" id="Orion"><a class="viewcode-back" href="../../api_reference/api/orion.Orion.html#orion.Orion">[docs]</a><span class="k">class</span> <span class="nc">Orion</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Orion Class.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Orion Class.</span>
 
 <span class="sd">    The Orion Class provides the main anomaly detection functionalities</span>
 <span class="sd">    of Orion and is responsible for the interaction with the underlying</span>
@@ -252,7 +252,7 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Orion.fit"><a class="viewcode-back" href="../../api_reference/api/orion.Orion.fit.html#orion.Orion.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fit the pipeline to the given data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the pipeline to the given data.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (DataFrame):</span>
@@ -305,7 +305,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_events_df</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Orion.detect"><a class="viewcode-back" href="../../api_reference/api/orion.Orion.detect.html#orion.Orion.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">visualization</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Detect anomalies in the given data..</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Detect anomalies in the given data..</span>
 
 <span class="sd">        If ``visualization=True``, also return the visualization</span>
 <span class="sd">        outputs from the MLPipeline object.</span>
@@ -330,7 +330,7 @@
 
     <span class="k">def</span> <span class="nf">fit_detect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">visualization</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                    <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Fit the pipeline to the data and then detect anomalies.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the pipeline to the data and then detect anomalies.</span>
 
 <span class="sd">        This method is functionally equivalent to calling ``fit(data)``</span>
 <span class="sd">        and later on ``detect(data)`` but with the difference that</span>
@@ -366,7 +366,7 @@
         <span class="k">return</span> <span class="n">result</span>
 
 <div class="viewcode-block" id="Orion.save"><a class="viewcode-back" href="../../api_reference/api/orion.Orion.save.html#orion.Orion.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Save this object using pickle.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save this object using pickle.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            path (str):</span>
@@ -379,7 +379,7 @@
 
 <div class="viewcode-block" id="Orion.load"><a class="viewcode-back" href="../../api_reference/api/orion.Orion.load.html#orion.Orion.load">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Load an Orion instance from a pickle file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load an Orion instance from a pickle file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            path (str):</span>
@@ -402,7 +402,7 @@
 
 <div class="viewcode-block" id="Orion.evaluate"><a class="viewcode-back" href="../../api_reference/api/orion.Orion.evaluate.html#orion.Orion.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">fit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">train_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">METRICS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Evaluate the performance against ground truth anomalies.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the performance against ground truth anomalies.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (DataFrame):</span>
