@@ -1,0 +1,37 @@
+{
+    "name": "rolling_std_thres",
+    "primitive": "orion.primitives.timeseries_postprocessing.rolling_std_thres",
+    "description": "Detects anomalies through moving standard deviation thresholding",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray" 
+            }
+
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray" 
+            }
+        ]
+    }, 
+    "hyperparameters": {
+        "tunable": {
+            "thres": {
+                "type": "float",
+                "default": 10
+            },
+            "op": {
+                "type": "str",
+                "default": ">",
+                "options": ["<", ">", "<=", ">=", "=="]
+            },
+            "window_size": {
+                "type": "int",
+                "default": "5"
+            }
+        }
+    }
+}

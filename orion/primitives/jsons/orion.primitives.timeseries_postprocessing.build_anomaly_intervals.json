@@ -1,0 +1,31 @@
+{
+    "name": "build_anomaly_intervals",
+    "primitive": "orion.primitives.timeseries_postprocessing.build_anomaly_intervals",
+    "description": "Builds anomaly intervals",
+    "produce": {
+        "args": [
+            {
+                "name": "y",
+                "type": "ndarray" 
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray" 
+            }
+        ]
+    }, 
+    "hyperparameters": {
+        "tunable": {
+            "severity": {
+                "type": "bool",
+                "default": true
+            },
+            "indices": {
+                "type": "bool",
+                "default": false
+            }
+        }
+    }
+}
