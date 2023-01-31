@@ -24,7 +24,7 @@ install_requires = [
     'mlprimitives>=0.3.2,<0.4',
     'numpy>=1.17.4,<1.19',
     'pandas>=1,<2',
-    'scikit-learn>=0.22',
+    'scikit-learn>=0.22,<1.2',
     'tabulate>=0.8.3,<0.9',
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
@@ -122,6 +122,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.4.0',
+    version='0.4.1.dev1',
     zip_safe=False,
 )
