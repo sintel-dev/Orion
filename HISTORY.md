@@ -1,6 +1,15 @@
 History
 =======
 
+## 0.4.1 - 2023-01-31
+
+### Issues resolved
+
+* Move VAE from sandbox to verified – [Issue #377](https://github.com/signals-dev/Orion/issues/377) by @sarahmish
+* Pin ``opencv`` – [Issue #372](https://github.com/signals-dev/Orion/issues/372) by @sarahmish
+* Pin ``scikit-learn`` – [Issue #367](https://github.com/signals-dev/Orion/issues/367) by @sarahmish
+* Fix VAE documentation – [Issue #360](https://github.com/signals-dev/Orion/issues/360) by @sarahmish
+
 ## 0.4.0 - 2022-11-08
 
 This version introduces several new enhancements:
