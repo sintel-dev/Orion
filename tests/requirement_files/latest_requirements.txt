@@ -5,13 +5,13 @@ azure-cognitiveservices-anomalydetector==0.3.0
 azure-common==1.1.28
 azure-core==1.26.2
 beautifulsoup4==4.11.1
-botocore==1.29.54
+botocore==1.29.59
 cachetools==5.3.0
 certifi==2022.12.7
 charset-normalizer==3.0.1
 click==7.1.2
 cloudpickle==2.2.1
-coverage==7.0.5
+coverage==7.1.0
 dask==2022.2.0
 distributed==2022.2.0
 exceptiongroup==1.1.0
@@ -26,7 +26,7 @@ grpcio==1.51.1
 h5py==2.10.0
 HeapDict==1.0.1
 idna==3.4
-imageio==2.24.0
+imageio==2.25.0
 importlib-metadata==6.0.0
 iniconfig==2.0.0
 invoke==2.0.0
@@ -45,7 +45,7 @@ Markdown==2.6.11
 markdown-rundoc==0.3.1
 MarkupSafe==2.1.2
 mlblocks==0.4.1
-mlprimitives==0.3.3
+mlprimitives==0.3.4
 msgpack==1.0.4
 msrest==0.7.1
 networkx==2.6.3
@@ -111,4 +111,4 @@ wrapt==1.14.1
 xgboost==0.90
 XlsxWriter==3.0.7
 zict==2.2.0
-zipp==3.11.0
+zipp==3.12.0
