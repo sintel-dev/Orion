@@ -137,7 +137,7 @@ def _find_threshold(errors, z_range):
         z, cost = best[0:2]
         if cost < best_cost:
             best_z = z[0]
-	best_cost = cost
+            best_cost = cost
 
     return mean + best_z * std
 
