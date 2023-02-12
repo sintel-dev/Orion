@@ -2,6 +2,12 @@ import operator
 import numpy as np
 import pandas as pd
 
+ops = {'>': operator.gt,
+       '<': operator.lt,
+       '>=': operator.ge,
+       '<=': operator.le,
+       '==': operator.eq}
+
 def extract_dimension(X, dim=None):
     """
     The function checks if the dataset being used is valid i.e has a length greater than 0 and contains the dimension required
@@ -56,12 +62,6 @@ def rolling_std_thres(X, thres, op = ">", window_size=5):
 
     """
         
-    ops = {'>': operator.gt,
-           '<': operator.lt,
-           '>=': operator.ge,
-           '<=': operator.le,
-           '==': operator.eq}
-
     a = X['value'].rolling(window=window_size).std().values
     idx_arr = [idx for idx in range(len(a)) if ops[op](a[idx],  thres)]
     return X.loc[idx_arr]
@@ -84,12 +84,6 @@ def diff_thres(X, thres = "0.1", op = ">"):
             Dataframe containing the timestamp and value of the flagged indices
 
     """
-    
-    ops = {'>': operator.gt,
-           '<': operator.lt,
-           '>=': operator.ge,
-           '<=': operator.le,
-           '==': operator.eq}
 
     a = np.diff(X['value'])
     idx_arr = [idx for idx in range(len(a)) if ops[op](a[idx],  thres)]
@@ -115,11 +109,6 @@ def thresholding(X, thres, op):
 
     """
     
-    ops = {'>': operator.gt,
-           '<': operator.lt,
-           '>=': operator.ge,
-           '<=': operator.le,
-           '==': operator.eq}
 
     a = X['value']
     idx_arr = [idx for idx in range(len(a)) if ops[op](a[idx],  thres)]
