@@ -432,6 +432,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fitted</span><span class="p">:</span>
                 <span class="n">mlpipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mlpipeline</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mlpipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mlpipeline</span>
 
             <span class="k">if</span> <span class="n">train_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># Fit first and then predict</span>
