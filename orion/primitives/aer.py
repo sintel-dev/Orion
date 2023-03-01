@@ -11,6 +11,7 @@ from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 
 from orion.primitives.timeseries_errors import reconstruction_errors, regression_errors
+from orion.primitives.utils import aggregate_rolling_window
 
 LOGGER = logging.getLogger(__name__)
 
@@ -286,15 +287,20 @@ def score_anomalies(y: ndarray, ry_hat: ndarray, y_hat: ndarray, fy_hat: ndarray
             Array of errors.
     """
 
-    reg_scores = bi_regression_errors(y, ry_hat, fy_hat,
-                                      smoothing_window=smoothing_window,
-                                      smooth=smooth,
-                                      mask=mask
-                                      )
-    rec_scores, _ = reconstruction_errors(y[:, 1:-1], y_hat,
-                                          smoothing_window=smoothing_window,
-                                          smooth=smooth,
-                                          rec_error_type=rec_error_type)
+    reg_scores = bi_regression_errors(
+        y, ry_hat, fy_hat,
+        smoothing_window=smoothing_window,
+        smooth=smooth,
+        mask=mask
+    )
+
+    rec_scores, _ = reconstruction_errors(
+        y[:, 1:-1], y_hat,
+        smoothing_window=smoothing_window,
+        smooth=smooth,
+        rec_error_type=rec_error_type
+    )
+
     mask_steps = int(smoothing_window * len(y)) if mask else 0
     rec_scores[:mask_steps] = min(rec_scores)
     rec_scores = np.concatenate([np.zeros(1), rec_scores, np.zeros(1)])
@@ -316,4 +322,9 @@ def score_anomalies(y: ndarray, ry_hat: ndarray, y_hat: ndarray, fy_hat: ndarray
     elif comb == "reg":
         scores = reg_scores
 
-    return scores
+    # reconstructing the signal
+    signal = y_hat.reshape(y_hat.shape[:2])
+    signal = np.concatenate([ry_hat, signal, fy_hat], axis=1)
+    reconstructed = aggregate_rolling_window(signal)
+
+    return scores, reconstructed

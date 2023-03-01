@@ -33,6 +33,10 @@
             {
                 "name": "errors",
                 "type": "ndarray"
+            },
+            {
+                "name": "reconstructed",
+                "type": "ndarray"
             }
         ]
     },
