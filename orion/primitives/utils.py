@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 
+
 def aggregate_rolling_window(y, aggregation="median"):
     """Aggregate a rolling window sequence.
 
@@ -22,5 +23,5 @@ def aggregate_rolling_window(y, aggregation="median"):
 
     method = getattr(np, aggregation)
 
-    signal = [method(y[::-1,:].diagonal(i)) for i in range(-num_windows+1, window_size)]
+    signal = [method(y[::-1, :].diagonal(i)) for i in range(-num_windows + 1, window_size)]
     return np.array(signal)
