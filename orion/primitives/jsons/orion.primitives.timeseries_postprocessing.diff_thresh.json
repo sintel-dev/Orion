@@ -1,6 +1,6 @@
 {
-    "name": "diff_thres",
-    "primitive": "orion.primitives.timeseries_postprocessing.diff_thres",
+    "name": "diff_thresh",
+    "primitive": "orion.primitives.timeseries_postprocessing.diff_thresh",
     "description": "Detects anomalies by calculating n-th order discrete difference",
     "produce": {
         "args": [
@@ -18,7 +18,7 @@
     }, 
     "hyperparameters": {
         "tunable": {
-            "thres": {
+            "thresh": {
                 "type": "float",
                 "default": "0.1"
             },

@@ -1,12 +1,12 @@
 {
     "primitives": [
         "orion.primitives.timeseries_postprocessing.extract_dimension",
-        "orion.primitives.timeseries_postprocessing.rolling_std_thres",
+        "orion.primitives.timeseries_postprocessing.rolling_std_thresh",
         "orion.primitives.timeseries_postprocessing.get_intervals"
     ], 
     "init_params": {
-        "orion.primitives.timeseries_postprocessing.rolling_std_thres#1": {
-            "thres": 10, 
+        "orion.primitives.timeseries_postprocessing.rolling_std_thresh#1": {
+            "thresh": 10, 
             "op": ">",
             "window_size": 5
         }, 
