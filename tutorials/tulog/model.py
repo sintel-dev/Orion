@@ -112,7 +112,7 @@ criticX = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -131,7 +131,7 @@ criticX = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -150,7 +150,7 @@ criticX = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -169,7 +169,7 @@ criticX = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -204,7 +204,7 @@ criticZ = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -222,7 +222,7 @@ criticZ = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
