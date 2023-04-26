@@ -7,7 +7,7 @@ MinMaxScaler
 
 **description**: this primitive transforms features by scaling each feature to a given range.
 
-see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/sklearn.preprocessing.MinMaxScaler.json>`__.
+see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/sklearn.preprocessing.MinMaxScaler.json>`__.
 
 ==================== =================== =============================================================================================================
 argument              type                description  
@@ -33,7 +33,7 @@ argument              type                description
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
     X = np.array(range(5)).reshape(-1, 1)
     primitive = load_primitive('sklearn.preprocessing.MinMaxScaler', 
