@@ -1,5 +1,5 @@
 {
-    "mlstar.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+    "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
         "time_column": "timestamp",
         "interval": 600,
         "method": "mean"
@@ -10,7 +10,7 @@
             1
         ]
     },
-    "mlstar.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+    "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
         "target_column": 0,
         "window_size": 250
     },

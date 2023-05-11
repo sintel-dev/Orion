@@ -4,7 +4,7 @@ import tempfile
 
 import numpy as np
 import tensorflow as tf
-from mlprimitives.utils import import_object
+from mlstars.utils import import_object
 from numpy import ndarray
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Input
