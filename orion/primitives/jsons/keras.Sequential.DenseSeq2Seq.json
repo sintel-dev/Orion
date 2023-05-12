@@ -10,7 +10,7 @@
         "subtype": "regressor"
     },
     "modalities": [],
-    "primitive": "mlstar.adapters.keras.Sequential",
+    "primitive": "mlstars.adapters.keras.Sequential",
     "fit": {
         "method": "fit",
         "args": [
