@@ -30,6 +30,7 @@ install_requires = [
     'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
+    'tqdm>=4.36.1',
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
