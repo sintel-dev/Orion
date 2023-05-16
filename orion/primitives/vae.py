@@ -15,7 +15,7 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 
-from mlprimitives.utils import import_object
+from mlstars.utils import import_object
 
 LOGGER = logging.getLogger(__name__)
 
