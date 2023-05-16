@@ -21,7 +21,7 @@ install_requires = [
     "tensorflow>=2.2,<2.5;python_version>='3.8'",
     's3fs>=0.2.2,<0.5',
     'mlblocks>=0.4.1,<0.5',
-    'ml-stars>=0.1.0,<0.2',
+    'ml-stars>=0.1.1.dev1,<0.2',
     'numpy>=1.17.4,<1.19',
     'pandas>=1,<2',
     'scikit-learn>=0.22,<1.2',
