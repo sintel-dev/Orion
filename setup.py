@@ -17,23 +17,28 @@ except IOError:
 
 
 install_requires = [
+    "tensorflow>=2.0,<2.5;python_version<'3.8'",
+    "tensorflow>=2.2,<2.5;python_version>='3.8'",
     's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.4.0,<0.5',
-    'mlprimitives>=0.3.2,<0.4',
-    'numpy>=1.17.1,<1.19',
+    'mlblocks>=0.4.1,<0.5',
+    'ml-stars>=0.1.1,<0.2',
+    'numpy>=1.17.4,<1.19',
     'pandas>=1,<2',
-    'scikit-learn>=0.21',
+    'scikit-learn>=0.22,<1.2',
     'tabulate>=0.8.3,<0.9',
-    'tensorflow>=2,<2.5',
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
     'torch>=1.10,<1.13',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
-    'xlsxwriter>=1.3.6<1.4',
+    'xlsxwriter>=1.3.6,<1.4',
+    'tqdm>=4.36.1',
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
     'protobuf<4',
+    
+    # fails on python 3.6
+    'opencv-python<4.7',
 ]
 
 setup_requires = [
@@ -93,6 +98,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     description="Orion is a machine learning library built for unsupervised time series anomaly detection.",
     entry_points={
@@ -121,6 +127,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.3.3.dev0',
+    version='0.4.2.dev0',
     zip_safe=False,
 )

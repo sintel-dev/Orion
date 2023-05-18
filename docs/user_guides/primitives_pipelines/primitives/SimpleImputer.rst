@@ -7,7 +7,7 @@ SimpleImputer
 
 **description**: this primitive is an imputation transformer for filling missing values.
 
-see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/sklearn.impute.SimpleImputer.json>`__.
+see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/sklearn.impute.SimpleImputer.json>`__.
 
 ==================== ========================================================= ==========================================
 argument              type                                                      description  
@@ -35,7 +35,7 @@ argument              type                                                      
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
     X = np.array([1] * 4 + [np.nan]).reshape(-1, 1)
     primitive = load_primitive('sklearn.impute.SimpleImputer', 

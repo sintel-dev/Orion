@@ -1,18 +1,18 @@
 {
     "primitives": [
-        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate",
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate",
         "sklearn.impute.SimpleImputer",
         "sklearn.preprocessing.MinMaxScaler",
-        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences",
         "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
         "orion.primitives.tadgan.TadGAN",
         "orion.primitives.tadgan.score_anomalies",
         "orion.primitives.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
-        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
             "time_column": "timestamp",
-            "interval": 1800,
+            "interval": 21600,
             "method": "mean"
         },
         "sklearn.preprocessing.MinMaxScaler#1": {
@@ -21,7 +21,7 @@
                 1
             ]
         },
-        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "target_column": 0,
             "window_size": 100,
             "target_size": 1
@@ -31,11 +31,124 @@
             "axis": 2
         },
         "orion.primitives.tadgan.TadGAN#1": {
-            "epochs": 5
+            "epochs": 5,
+            "layers_encoder": [
+                {
+                    "class": "tensorflow.keras.layers.Bidirectional",
+                    "parameters": {
+                        "layer": {
+                            "class": "tensorflow.keras.layers.LSTM",
+                            "parameters": {
+                                "units": "lstm_units",
+                                "return_sequences": true,
+                                "activation": "tanh",
+                                "recurrent_activation": "sigmoid",
+                                "use_bias": true,
+                                "recurrent_dropout": 0.0,
+                                "unroll": false
+                            }
+                        }
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Flatten",
+                    "parameters": {}
+                },
+                {
+                    "class": "tensorflow.keras.layers.Dense",
+                    "parameters": {
+                        "units": "dense_units"
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Reshape",
+                    "parameters": {
+                        "target_shape": "encoder_reshape_shape"
+                    }
+                }
+            ],
+            "layers_generator": [
+                {
+                    "class": "tensorflow.keras.layers.Flatten",
+                    "parameters": {}
+                },
+                {
+                    "class": "tensorflow.keras.layers.Dense",
+                    "parameters": {
+                        "units": "generator_reshape_dim"
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Reshape",
+                    "parameters": {
+                        "target_shape": "generator_reshape_shape"
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Bidirectional",
+                    "parameters": {
+                        "layer": {
+                            "class": "tensorflow.keras.layers.LSTM",
+                            "parameters": {
+                                "units": 64,
+                                "return_sequences": true,
+                                "dropout": 0.2,
+                                "activation": "tanh",
+                                "recurrent_activation": "sigmoid",
+                                "use_bias": true,
+                                "recurrent_dropout": 0.0,
+                                "unroll": false
+                            }
+                        },
+                        "merge_mode": "concat"
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.UpSampling1D",
+                    "parameters": {
+                        "size": 2
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Bidirectional",
+                    "parameters": {
+                        "layer": {
+                            "class": "tensorflow.keras.layers.LSTM",
+                            "parameters": {
+                                "units": 64,
+                                "return_sequences": true,
+                                "dropout": 0.2,
+                                "activation": "tanh",
+                                "recurrent_activation": "sigmoid",
+                                "use_bias": true,
+                                "recurrent_dropout": 0.0,
+                                "unroll": false
+                            }
+                        },
+                        "merge_mode": "concat"
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.TimeDistributed",
+                    "parameters": {
+                        "layer": {
+                            "class": "tensorflow.keras.layers.Dense",
+                            "parameters": {
+                                "units": 1
+                            }
+                        }
+                    }
+                },
+                {
+                    "class": "tensorflow.keras.layers.Activation",
+                    "parameters": {
+                        "activation": "tanh"
+                    }
+                }
+            ]
         },
         "orion.primitives.tadgan.score_anomalies#1": {
-            "error_smooth_window": 200,
-            "critic_smooth_window": 200
+            "rec_error_type": "dtw"
         },
         "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "window_size_portion": 0.33,
@@ -52,31 +165,9 @@
         "orion.primitives.tadgan.TadGAN#1": {
             "y": "y_hat"
         },
-        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "index": "X_index",
             "target_index": "y_index"
         }
-    },
-    "outputs": {
-        "default": [
-            {
-                "name": "events",
-                "variable": "orion.primitives.timeseries_anomalies.find_anomalies#1.y"
-            }
-        ],
-        "visualization": [
-            {
-                "name": "X",
-                "variable": "sklearn.preprocessing.MinMaxScaler#1.X"
-            },
-            {
-                "name": "X_hat",
-                "variable": "orion.primitives.tadgan.TadGAN#1.y_hat"
-            },
-            {
-                "name": "es",
-                "variable": "orion.primitives.tadgan.score_anomalies#1.errors"
-            }
-        ]
     }
 }

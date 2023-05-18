@@ -1,16 +1,16 @@
 {
     "primitives": [
-        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate",
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate",
         "sklearn.impute.SimpleImputer",
         "sklearn.preprocessing.MinMaxScaler",
-        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences",
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences",
         "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
         "keras.Sequential.DenseSeq2Seq",
         "orion.primitives.timeseries_errors.reconstruction_errors",
         "orion.primitives.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
-        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
             "time_column": "timestamp",
             "interval": 21600,
             "method": "mean"
@@ -18,7 +18,7 @@
         "sklearn.preprocessing.MinMaxScaler#1": {
             "feature_range": [-1, 1]
         },
-        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "target_column": 0,
             "window_size": 100            
         },
@@ -43,7 +43,7 @@
         "keras.Sequential.DenseSeq2Seq#1": {
             "y": "y_hat"
         },
-        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "index": "X_index",
             "target_index": "y_index"
         }

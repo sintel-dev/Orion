@@ -278,6 +278,8 @@ class Orion:
         else:
             if not self._fitted:
                 mlpipeline = self._get_mlpipeline()
+            else:
+                mlpipeline = self._mlpipeline
 
             if train_data is not None:
                 # Fit first and then predict

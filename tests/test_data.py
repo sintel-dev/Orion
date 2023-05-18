@@ -49,7 +49,7 @@ def test_download_new(exists_mock, read_csv_mock):
     # assert
     assert returned == read_csv_mock.return_value
 
-    expected_url = 'https://d3-ai-orion.s3.amazonaws.com/a_signal_name.csv'
+    expected_url = 'https://sintel-orion.s3.amazonaws.com/a_signal_name.csv'
     read_csv_mock.assert_called_once_with(expected_url)
 
     expected_filename = os.path.join(DATA_PATH, 'a_signal_name.csv')

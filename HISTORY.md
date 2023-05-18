@@ -1,6 +1,33 @@
 History
 =======
 
+## 0.4.1 - 2023-01-31
+
+### Issues resolved
+
+* Move VAE from sandbox to verified – [Issue #377](https://github.com/signals-dev/Orion/issues/377) by @sarahmish
+* Pin ``opencv`` – [Issue #372](https://github.com/signals-dev/Orion/issues/372) by @sarahmish
+* Pin ``scikit-learn`` – [Issue #367](https://github.com/signals-dev/Orion/issues/367) by @sarahmish
+* Fix VAE documentation – [Issue #360](https://github.com/signals-dev/Orion/issues/360) by @sarahmish
+
+## 0.4.0 - 2022-11-08
+
+This version introduces several new enhancements:
+
+* Support to python 3.8
+* Migrating to Tensorflow 2.0
+* New pipeline, namely ``VAE``, a Variational AutoEncoder model.
+
+### Issues resolved
+
+* Add python 3.8 – [Issue #342](https://github.com/signals-dev/Orion/issues/342) by @sarahmish
+* VAE (Variational Autoencoders) pipeline implementation – [Issue #349](https://github.com/signals-dev/Orion/issues/349) by @dyuliu
+* Add masking option for ``regression_errors`` – [Issue #352](https://github.com/signals-dev/Orion/issues/352) by @dyuliu
+* Changes in TadGAN for tensorflow 2.0 – [Issue #161](https://github.com/signals-dev/Orion/issues/161) by @lcwong0928
+* Add an automatic dependency checker – [Issue #320](https://github.com/signals-dev/Orion/issues/320) by @sarahmish
+* TadGAN ``batch_size`` cannot be changed – [Issue #313](https://github.com/signals-dev/Orion/issues/313) by @sarahmish
+
+
 ## 0.3.2 - 2022-07-04
 
 This version fixes some of the issues in ``aer``, ``ae``, and ``tadgan`` pipelines.

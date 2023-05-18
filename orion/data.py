@@ -24,7 +24,7 @@ DATA_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'data'
 )
-BUCKET = 'd3-ai-orion'
+BUCKET = 'sintel-orion'
 S3_URL = 'https://{}.s3.amazonaws.com/{}'
 
 NASA_SIGNALS = (

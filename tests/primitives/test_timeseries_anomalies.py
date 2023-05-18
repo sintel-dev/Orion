@@ -203,29 +203,29 @@ class FindAnomaliesTest(TestCase):
         self._run([0, 0, 0, 0], np.array([]))
 
     def test_find_anomalies_one_anomaly(self):
-        self._run([0, 0.5, 0.5, 0], np.array([[1., 4., 0.025]]))
+        self._run([0, 0.5, 0.5, 0], np.array([[1., 4., 0.5]]))
 
     def test_find_anomalies_open_start(self):
-        self._run([0.5, 0.5, 0, 0], np.array([[1., 3., 0.025]]))
+        self._run([0.5, 0.5, 0, 0], np.array([[1., 3., 0.5]]))
 
     def test_find_anomalies_open_end(self):
-        self._run([0, 0, 0.5, 0.5], np.array([[2., 4., 0.025]]))
+        self._run([0, 0, 0.5, 0.5], np.array([[2., 4., 0.5]]))
 
     def test_find_anomalies_two_anomalies(self):
-        self._run([0.5, 0, 0.5, 0], np.array([[1., 4., 0.025]]))
-        self._run([0, 0.5, 0, 0.5], np.array([[1., 4., 0.025]]))
+        self._run([0.5, 0, 0.5, 0], np.array([[1., 4., 0.5]]))
+        self._run([0, 0.5, 0, 0.5], np.array([[1., 4., 0.5]]))
 
     def test_find_anomalies_multiple_non_overlapping_thresholds(self):
         self._run([0, 0, 0.5, 0.5, 0, 0, 0.5, 0.5, 0, 0],
-                  np.array([[2., 4., 0.025], [6., 8., 0.025]]), index=self.INDEX_LONG,
+                  np.array([[2., 4., 0.5], [6., 8., 0.5]]), index=self.INDEX_LONG,
                   window_size=4, window_step_size=4)
 
     def test_find_anomalies_multiple_overlapping_thresholds(self):
-        self._run([0, 0, 0.5, 0.5, 0, 0, 0.5, 0.5, 0, 0], np.array([[2., 9., 0.025]]),
+        self._run([0, 0, 0.5, 0.5, 0, 0, 0.5, 0.5, 0, 0], np.array([[2., 9., 0.5]]),
                   index=self.INDEX_LONG, window_size=4, window_step_size=2)
 
     def test_find_anomalies_lower_threshold(self):
-        self._run([0.5, 0.5, 0, 0], np.array([[1., 4., 0.025]]), lower_threshold=True)
+        self._run([0.5, 0.5, 0, 0], np.array([[1., 4., 0.5]]), lower_threshold=True)
 
     def test_find_anomalies_fixed_threshold(self):
         self._run([0.5, 0.5, 0, 0], np.array([]), fixed_threshold=True)

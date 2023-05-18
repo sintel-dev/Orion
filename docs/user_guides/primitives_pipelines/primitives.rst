@@ -4,7 +4,7 @@
 Primitives
 ==========
 
-Primitives are data processing units. They are defined by the code that performs the actual processing and an annotated ``json`` file. To read more about primitives and their composition, visit `MLPrimitives <https://mlbazaar.github.io/MLPrimitives/>`__.
+Primitives are data processing units. They are defined by the code that performs the actual processing and an annotated ``json`` file. To read more about primitives and their composition, visit `mlstars <https://sintel-dev.github.io/ml-stars/>`__.
 
 Preprocessing
 -------------
@@ -31,6 +31,7 @@ Modeling
     primitives/DenseSeq2Seq.rst
     primitives/TadGAN.rst
     primitives/AER.rst
+    primitives/VAE.rst
 
 Postprocessing
 --------------

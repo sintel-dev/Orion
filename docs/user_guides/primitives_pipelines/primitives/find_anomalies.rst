@@ -39,7 +39,7 @@ argument                    type                 description
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
     primitive = load_primitive('orion.primitives.timeseries_anomalies.find_anomalies',
         arguments={"anomaly_padding": 1})

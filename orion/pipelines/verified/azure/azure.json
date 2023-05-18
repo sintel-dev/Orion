@@ -1,13 +1,13 @@
 {
     "primitives": [
-        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate",
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate",
         "sklearn.impute.SimpleImputer",
         "sklearn.preprocessing.MinMaxScaler",
         "orion.primitives.azure_anomaly_detector.split_sequence",
         "orion.primitives.azure_anomaly_detector.detect_anomalies"
     ],
     "init_params": {
-        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
             "time_column": "timestamp",
             "interval": 21600,
             "method": "mean"

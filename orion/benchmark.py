@@ -28,7 +28,7 @@ warnings.simplefilter('ignore')
 
 LOGGER = logging.getLogger(__name__)
 
-BUCKET = 'd3-ai-orion'
+BUCKET = 'sintel-orion'
 S3_URL = 'https://{}.s3.amazonaws.com/{}'
 
 BENCHMARK_PATH = os.path.join(os.path.join(
@@ -45,17 +45,18 @@ PIPELINE_DIR = os.path.join(os.path.dirname(__file__), 'pipelines', 'verified')
 
 VERIFIED_PIPELINES = [
     'arima', 'lstm_dynamic_threshold', 'azure', 'tadgan',
-    'aer', 'lstm_autoencoder', 'dense_autoencoder'
+    'aer', 'lstm_autoencoder', 'dense_autoencoder', 'vae'
 ]
 
 VERIFIED_PIPELINES_GPU = {
     'arima': 'arima',
-    'lstm_dynamic_threshold': 'lstm_dynamic_threshold_gpu',
+    'lstm_dynamic_threshold': 'lstm_dynamic_threshold',
     'azure': 'azure',
     'tadgan': 'tadgan_without_dropout_gpu',
     'aer': 'aer',
-    'lstm_autoencoder': 'lstm_autoencoder_gpu',
-    'dense_autoencoder': 'dense_autoencoder'
+    'lstm_autoencoder': 'lstm_autoencoder',
+    'dense_autoencoder': 'dense_autoencoder',
+    'vae': 'vae'
 }
 
 
