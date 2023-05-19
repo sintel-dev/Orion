@@ -35,7 +35,7 @@ argument            type                                                        
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
     X = np.array([1] * 4 + [np.nan]).reshape(-1, 1)
     primitive = load_primitive('orion.primitives.timeseries_preprocessing.fillna', 

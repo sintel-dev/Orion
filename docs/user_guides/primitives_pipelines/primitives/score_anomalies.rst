@@ -44,7 +44,7 @@ argument                    type                description
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
     primitive = load_primitive('orion.primitives.tadgan.score_anomalies', 
         arguments={"error_smooth_window": 10, "critic_smooth_window": 10,

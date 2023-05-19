@@ -8,7 +8,7 @@ The main component in the Orion project are the **Orion Pipelines**, which consi
 
 As ``MLPipeline`` instances, **Orion Pipelines**:
 
-* consist of a list of one or more `MLPrimitives <https://mlbazaar.github.io/MLPrimitives/>`__
+* consist of a list of one or more `mlstars <https://sintel-dev.github.io/ml-stars/>`__
 * can be *fitted* on some data and later on used to *predict* anomalies on more data
 * can be *scored* by comparing their predictions with some known anomalies
 * have *hyperparameters* that can be *tuned* to improve their anomaly detection performance
@@ -153,7 +153,7 @@ Since pipelines are composed of :ref:`primitives`, you can discover the interpre
                                 "value": np.random.randint(0, 10, 500)})
 
     hyperparameters = {
-        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
             "interval": 300
         },
         'keras.Sequential.LSTMTimeSeriesRegressor#1': {

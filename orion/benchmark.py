@@ -28,7 +28,7 @@ warnings.simplefilter('ignore')
 
 LOGGER = logging.getLogger(__name__)
 
-BUCKET = 'd3-ai-orion'
+BUCKET = 'sintel-orion'
 S3_URL = 'https://{}.s3.amazonaws.com/{}'
 
 BENCHMARK_PATH = os.path.join(os.path.join(

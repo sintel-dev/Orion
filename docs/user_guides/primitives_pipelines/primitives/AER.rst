@@ -40,7 +40,7 @@ argument                    type                description
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
     X = np.ones((64, 100, 1))
     y = X[:,:, [0]] # signal to reconstruct from X (channel 0)
