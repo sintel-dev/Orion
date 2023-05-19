@@ -37,7 +37,7 @@ argument                    type                description
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
     primitive = load_primitive('orion.primitives.timeseries_errors.regression_errors')
     y = np.array([[1]] * 100)

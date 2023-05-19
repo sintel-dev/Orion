@@ -197,7 +197,7 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">smooth</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">errors</span>
 
-    <span class="n">smoothing_window</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="n">smoothing_window</span><span class="p">))</span>
+    <span class="n">smoothing_window</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">smoothing_window</span><span class="p">))</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">span</span><span class="o">=</span><span class="n">smoothing_window</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
 
     <span class="k">if</span> <span class="n">mask</span><span class="p">:</span>

@@ -46,7 +46,7 @@ argument                    type                description
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
     X = np.array([1] * 100).reshape(1, -1, 1)
 

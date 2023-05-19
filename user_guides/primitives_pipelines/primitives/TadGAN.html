@@ -288,7 +288,7 @@
 </table>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlstars</span> <span class="kn">import</span> <span class="n">load_primitive</span>
 
 <span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -300,18 +300,18 @@
 <span class="gp">   ...: </span>
 
 <span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, Losses: {&#39;cx_loss&#39;: 8.8937, &#39;cz_loss&#39;: -0.1291, &#39;eg_loss&#39;: 9.7789}</span>
-<span class="go">Epoch: 2/5, Losses: {&#39;cx_loss&#39;: 8.3163, &#39;cz_loss&#39;: 0.399, &#39;eg_loss&#39;: 7.5867}</span>
-<span class="go">Epoch: 3/5, Losses: {&#39;cx_loss&#39;: 7.6456, &#39;cz_loss&#39;: 0.3685, &#39;eg_loss&#39;: 6.4693}</span>
-<span class="go">Epoch: 4/5, Losses: {&#39;cx_loss&#39;: 7.0552, &#39;cz_loss&#39;: 6.497, &#39;eg_loss&#39;: 4.6642}</span>
-<span class="go">Epoch: 5/5, Losses: {&#39;cx_loss&#39;: 6.2752, &#39;cz_loss&#39;: 10.3673, &#39;eg_loss&#39;: -1.5884}</span>
+<span class="go">Epoch: 1/5, Losses: {&#39;cx_loss&#39;: 8.4302, &#39;cz_loss&#39;: -0.8101, &#39;eg_loss&#39;: 10.0573}</span>
+<span class="go">Epoch: 2/5, Losses: {&#39;cx_loss&#39;: 8.1913, &#39;cz_loss&#39;: -0.4521, &#39;eg_loss&#39;: 9.647}</span>
+<span class="go">Epoch: 3/5, Losses: {&#39;cx_loss&#39;: 7.7018, &#39;cz_loss&#39;: 2.3503, &#39;eg_loss&#39;: 7.7327}</span>
+<span class="go">Epoch: 4/5, Losses: {&#39;cx_loss&#39;: 6.999, &#39;cz_loss&#39;: 3.8127, &#39;eg_loss&#39;: 5.9588}</span>
+<span class="go">Epoch: 5/5, Losses: {&#39;cx_loss&#39;: 6.7128, &#39;cz_loss&#39;: 5.6477, &#39;eg_loss&#39;: 3.835}</span>
 
 <span class="gp">In [7]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
 <span class="gp">In [8]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.33, critic score 0.96</span>
+<span class="go">average reconstructed value: 0.12, critic score 0.75</span>
 </pre></div>
 </div>
 </section>

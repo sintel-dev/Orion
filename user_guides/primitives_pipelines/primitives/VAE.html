@@ -300,7 +300,7 @@
 </table>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlprimitives</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlstars</span> <span class="kn">import</span> <span class="n">load_primitive</span>
 
 <span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -312,29 +312,29 @@
 <span class="gp">In [5]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <span class="go">Epoch 1/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 1.3297</span>
-<span class="go">1/1 [==============================] - 0s 525us/step - loss: 1.3297</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.9358</span>
+<span class="go">1/1 [==============================] - 0s 520us/step - loss: 0.9358</span>
 <span class="go">Epoch 2/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.9361</span>
-<span class="go">1/1 [==============================] - 0s 278us/step - loss: 0.9361</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.9753</span>
+<span class="go">1/1 [==============================] - 0s 381us/step - loss: 0.9753</span>
 <span class="go">Epoch 3/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.9290</span>
-<span class="go">1/1 [==============================] - 0s 310us/step - loss: 0.9290</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.7779</span>
+<span class="go">1/1 [==============================] - 0s 379us/step - loss: 0.7779</span>
 <span class="go">Epoch 4/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.7443</span>
-<span class="go">1/1 [==============================] - 0s 297us/step - loss: 0.7443</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.6144</span>
+<span class="go">1/1 [==============================] - 0s 384us/step - loss: 0.6144</span>
 <span class="go">Epoch 5/5</span>
 
-<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.7129</span>
-<span class="go">1/1 [==============================] - 0s 272us/step - loss: 0.7129</span>
+<span class="go">1/1 [==============================] - ETA: 0s - loss: 0.4822</span>
+<span class="go">1/1 [==============================] - 0s 386us/step - loss: 0.4822</span>
 
 <span class="gp">In [6]: </span><span class="n">pred</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
 <span class="gp">In [7]: </span><span class="n">pred</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="gh">Out[7]: </span><span class="go">0.3623770636906838</span>
+<span class="gh">Out[7]: </span><span class="go">0.2928306160360584</span>
 </pre></div>
 </div>
 </section>
