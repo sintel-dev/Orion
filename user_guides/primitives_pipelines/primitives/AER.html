@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>AER &#8212; Orion 0.4.2.dev0 documentation</title>
+    <title>AER &#8212; Orion 0.5.1.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -284,213 +284,204 @@
 
 <span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 
-<span class="go"> 1/51 [..............................] - ETA: 0s - loss: 1.1620 - tf_op_layer_strided_slice_loss: 1.1405 - tf_op_layer_strided_slice_1_loss: 1.1969 - tf_op_layer_strided_slice_2_loss: 1.1139</span>
-<span class="go"> 3/51 [&gt;.............................] - ETA: 0s - loss: 0.9246 - tf_op_layer_strided_slice_loss: 0.9708 - tf_op_layer_strided_slice_1_loss: 0.9058 - tf_op_layer_strided_slice_2_loss: 0.9158</span>
-<span class="go"> 5/51 [=&gt;............................] - ETA: 0s - loss: 0.7269 - tf_op_layer_strided_slice_loss: 0.8199 - tf_op_layer_strided_slice_1_loss: 0.6729 - tf_op_layer_strided_slice_2_loss: 0.7421</span>
-<span class="go"> 7/51 [===&gt;..........................] - ETA: 1s - loss: 0.5698 - tf_op_layer_strided_slice_loss: 0.6864 - tf_op_layer_strided_slice_1_loss: 0.4999 - tf_op_layer_strided_slice_2_loss: 0.5930</span>
-<span class="go"> 9/51 [====&gt;.........................] - ETA: 1s - loss: 0.4585 - tf_op_layer_strided_slice_loss: 0.5718 - tf_op_layer_strided_slice_1_loss: 0.3944 - tf_op_layer_strided_slice_2_loss: 0.4732</span>
-<span class="go">11/51 [=====&gt;........................] - ETA: 0s - loss: 0.3938 - tf_op_layer_strided_slice_loss: 0.4793 - tf_op_layer_strided_slice_1_loss: 0.3543 - tf_op_layer_strided_slice_2_loss: 0.3875</span>
-<span class="go">13/51 [======&gt;.......................] - ETA: 0s - loss: 0.3567 - tf_op_layer_strided_slice_loss: 0.4095 - tf_op_layer_strided_slice_1_loss: 0.3445 - tf_op_layer_strided_slice_2_loss: 0.3285</span>
-<span class="go">15/51 [=======&gt;......................] - ETA: 0s - loss: 0.3272 - tf_op_layer_strided_slice_loss: 0.3582 - tf_op_layer_strided_slice_1_loss: 0.3329 - tf_op_layer_strided_slice_2_loss: 0.2848</span>
-<span class="go">17/51 [=========&gt;....................] - ETA: 0s - loss: 0.2994 - tf_op_layer_strided_slice_loss: 0.3207 - tf_op_layer_strided_slice_1_loss: 0.3125 - tf_op_layer_strided_slice_2_loss: 0.2518</span>
-<span class="go">19/51 [==========&gt;...................] - ETA: 0s - loss: 0.2741 - tf_op_layer_strided_slice_loss: 0.2936 - tf_op_layer_strided_slice_1_loss: 0.2875 - tf_op_layer_strided_slice_2_loss: 0.2279</span>
-<span class="go">21/51 [===========&gt;..................] - ETA: 0s - loss: 0.2529 - tf_op_layer_strided_slice_loss: 0.2744 - tf_op_layer_strided_slice_1_loss: 0.2628 - tf_op_layer_strided_slice_2_loss: 0.2117</span>
-<span class="go">23/51 [============&gt;.................] - ETA: 0s - loss: 0.2358 - tf_op_layer_strided_slice_loss: 0.2605 - tf_op_layer_strided_slice_1_loss: 0.2407 - tf_op_layer_strided_slice_2_loss: 0.2011</span>
-<span class="go">25/51 [=============&gt;................] - ETA: 0s - loss: 0.2219 - tf_op_layer_strided_slice_loss: 0.2500 - tf_op_layer_strided_slice_1_loss: 0.2218 - tf_op_layer_strided_slice_2_loss: 0.1941</span>
-<span class="go">27/51 [==============&gt;...............] - ETA: 0s - loss: 0.2103 - tf_op_layer_strided_slice_loss: 0.2412 - tf_op_layer_strided_slice_1_loss: 0.2056 - tf_op_layer_strided_slice_2_loss: 0.1889</span>
-<span class="go">29/51 [================&gt;.............] - ETA: 0s - loss: 0.2002 - tf_op_layer_strided_slice_loss: 0.2331 - tf_op_layer_strided_slice_1_loss: 0.1917 - tf_op_layer_strided_slice_2_loss: 0.1843</span>
-<span class="go">31/51 [=================&gt;............] - ETA: 0s - loss: 0.1910 - tf_op_layer_strided_slice_loss: 0.2251 - tf_op_layer_strided_slice_1_loss: 0.1796 - tf_op_layer_strided_slice_2_loss: 0.1798</span>
-<span class="go">33/51 [==================&gt;...........] - ETA: 0s - loss: 0.1826 - tf_op_layer_strided_slice_loss: 0.2169 - tf_op_layer_strided_slice_1_loss: 0.1692 - tf_op_layer_strided_slice_2_loss: 0.1748</span>
-<span class="go">35/51 [===================&gt;..........] - ETA: 0s - loss: 0.1748 - tf_op_layer_strided_slice_loss: 0.2087 - tf_op_layer_strided_slice_1_loss: 0.1605 - tf_op_layer_strided_slice_2_loss: 0.1695</span>
-<span class="go">37/51 [====================&gt;.........] - ETA: 0s - loss: 0.1678 - tf_op_layer_strided_slice_loss: 0.2005 - tf_op_layer_strided_slice_1_loss: 0.1534 - tf_op_layer_strided_slice_2_loss: 0.1640</span>
-<span class="go">39/51 [=====================&gt;........] - ETA: 0s - loss: 0.1616 - tf_op_layer_strided_slice_loss: 0.1925 - tf_op_layer_strided_slice_1_loss: 0.1476 - tf_op_layer_strided_slice_2_loss: 0.1585</span>
-<span class="go">41/51 [=======================&gt;......] - ETA: 0s - loss: 0.1560 - tf_op_layer_strided_slice_loss: 0.1849 - tf_op_layer_strided_slice_1_loss: 0.1429 - tf_op_layer_strided_slice_2_loss: 0.1531</span>
-<span class="go">43/51 [========================&gt;.....] - ETA: 0s - loss: 0.1509 - tf_op_layer_strided_slice_loss: 0.1780 - tf_op_layer_strided_slice_1_loss: 0.1388 - tf_op_layer_strided_slice_2_loss: 0.1481</span>
-<span class="go">45/51 [=========================&gt;....] - ETA: 0s - loss: 0.1463 - tf_op_layer_strided_slice_loss: 0.1716 - tf_op_layer_strided_slice_1_loss: 0.1349 - tf_op_layer_strided_slice_2_loss: 0.1436</span>
-<span class="go">47/51 [==========================&gt;...] - ETA: 0s - loss: 0.1419 - tf_op_layer_strided_slice_loss: 0.1660 - tf_op_layer_strided_slice_1_loss: 0.1310 - tf_op_layer_strided_slice_2_loss: 0.1396</span>
-<span class="go">49/51 [===========================&gt;..] - ETA: 0s - loss: 0.1379 - tf_op_layer_strided_slice_loss: 0.1611 - tf_op_layer_strided_slice_1_loss: 0.1271 - tf_op_layer_strided_slice_2_loss: 0.1361</span>
-<span class="go">51/51 [==============================] - ETA: 0s - loss: 0.1341 - tf_op_layer_strided_slice_loss: 0.1568 - tf_op_layer_strided_slice_1_loss: 0.1232 - tf_op_layer_strided_slice_2_loss: 0.1332</span>
-<span class="go">51/51 [==============================] - 3s 53ms/step - loss: 0.1341 - tf_op_layer_strided_slice_loss: 0.1568 - tf_op_layer_strided_slice_1_loss: 0.1232 - tf_op_layer_strided_slice_2_loss: 0.1332 - val_loss: 0.0411 - val_tf_op_layer_strided_slice_loss: 0.0563 - val_tf_op_layer_strided_slice_1_loss: 0.0222 - val_tf_op_layer_strided_slice_2_loss: 0.0638</span>
+<span class="go"> 1/51 [..............................] - ETA: 0s - loss: 0.7292 - tf_op_layer_strided_slice_loss: 0.8648 - tf_op_layer_strided_slice_1_loss: 0.6665 - tf_op_layer_strided_slice_2_loss: 0.7189</span>
+<span class="go"> 4/51 [=&gt;............................] - ETA: 0s - loss: 0.4710 - tf_op_layer_strided_slice_loss: 0.6226 - tf_op_layer_strided_slice_1_loss: 0.3734 - tf_op_layer_strided_slice_2_loss: 0.5145</span>
+<span class="go"> 7/51 [===&gt;..........................] - ETA: 0s - loss: 0.3087 - tf_op_layer_strided_slice_loss: 0.4282 - tf_op_layer_strided_slice_1_loss: 0.2250 - tf_op_layer_strided_slice_2_loss: 0.3565</span>
+<span class="go">10/51 [====&gt;.........................] - ETA: 0s - loss: 0.2491 - tf_op_layer_strided_slice_loss: 0.3041 - tf_op_layer_strided_slice_1_loss: 0.2187 - tf_op_layer_strided_slice_2_loss: 0.2551</span>
+<span class="go">13/51 [======&gt;.......................] - ETA: 0s - loss: 0.2201 - tf_op_layer_strided_slice_loss: 0.2358 - tf_op_layer_strided_slice_1_loss: 0.2232 - tf_op_layer_strided_slice_2_loss: 0.1982</span>
+<span class="go">16/51 [========&gt;.....................] - ETA: 0s - loss: 0.1919 - tf_op_layer_strided_slice_loss: 0.1996 - tf_op_layer_strided_slice_1_loss: 0.2005 - tf_op_layer_strided_slice_2_loss: 0.1671</span>
+<span class="go">19/51 [==========&gt;...................] - ETA: 0s - loss: 0.1704 - tf_op_layer_strided_slice_loss: 0.1841 - tf_op_layer_strided_slice_1_loss: 0.1726 - tf_op_layer_strided_slice_2_loss: 0.1522</span>
+<span class="go">22/51 [===========&gt;..................] - ETA: 0s - loss: 0.1560 - tf_op_layer_strided_slice_loss: 0.1785 - tf_op_layer_strided_slice_1_loss: 0.1499 - tf_op_layer_strided_slice_2_loss: 0.1457</span>
+<span class="go">25/51 [=============&gt;................] - ETA: 0s - loss: 0.1454 - tf_op_layer_strided_slice_loss: 0.1752 - tf_op_layer_strided_slice_1_loss: 0.1325 - tf_op_layer_strided_slice_2_loss: 0.1414</span>
+<span class="go">28/51 [===============&gt;..............] - ETA: 0s - loss: 0.1363 - tf_op_layer_strided_slice_loss: 0.1705 - tf_op_layer_strided_slice_1_loss: 0.1190 - tf_op_layer_strided_slice_2_loss: 0.1365</span>
+<span class="go">31/51 [=================&gt;............] - ETA: 0s - loss: 0.1281 - tf_op_layer_strided_slice_loss: 0.1637 - tf_op_layer_strided_slice_1_loss: 0.1092 - tf_op_layer_strided_slice_2_loss: 0.1302</span>
+<span class="go">34/51 [===================&gt;..........] - ETA: 0s - loss: 0.1211 - tf_op_layer_strided_slice_loss: 0.1555 - tf_op_layer_strided_slice_1_loss: 0.1029 - tf_op_layer_strided_slice_2_loss: 0.1232</span>
+<span class="go">37/51 [====================&gt;.........] - ETA: 0s - loss: 0.1154 - tf_op_layer_strided_slice_loss: 0.1473 - tf_op_layer_strided_slice_1_loss: 0.0990 - tf_op_layer_strided_slice_2_loss: 0.1165</span>
+<span class="go">40/51 [======================&gt;.......] - ETA: 0s - loss: 0.1105 - tf_op_layer_strided_slice_loss: 0.1399 - tf_op_layer_strided_slice_1_loss: 0.0958 - tf_op_layer_strided_slice_2_loss: 0.1107</span>
+<span class="go">43/51 [========================&gt;.....] - ETA: 0s - loss: 0.1062 - tf_op_layer_strided_slice_loss: 0.1338 - tf_op_layer_strided_slice_1_loss: 0.0923 - tf_op_layer_strided_slice_2_loss: 0.1062</span>
+<span class="go">46/51 [==========================&gt;...] - ETA: 0s - loss: 0.1022 - tf_op_layer_strided_slice_loss: 0.1292 - tf_op_layer_strided_slice_1_loss: 0.0883 - tf_op_layer_strided_slice_2_loss: 0.1030</span>
+<span class="go">49/51 [===========================&gt;..] - ETA: 0s - loss: 0.0987 - tf_op_layer_strided_slice_loss: 0.1255 - tf_op_layer_strided_slice_1_loss: 0.0842 - tf_op_layer_strided_slice_2_loss: 0.1008</span>
+<span class="go">51/51 [==============================] - 2s 44ms/step - loss: 0.0966 - tf_op_layer_strided_slice_loss: 0.1234 - tf_op_layer_strided_slice_1_loss: 0.0816 - tf_op_layer_strided_slice_2_loss: 0.0996 - val_loss: 0.0442 - val_tf_op_layer_strided_slice_loss: 0.0711 - val_tf_op_layer_strided_slice_1_loss: 0.0175 - val_tf_op_layer_strided_slice_2_loss: 0.0708</span>
 
 <span class="gp">In [7]: </span><span class="n">ry</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
 <span class="gp">In [8]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reverse Prediction: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">Reconstructed Values: </span><span class="si">{}</span><span class="s2">, Forward Prediction: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ry</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fy</span><span class="p">))</span>
-<span class="go">Reverse Prediction: [[0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]</span>
-<span class="go"> [0.76268696]]</span>
-<span class="go">Reconstructed Values: [[[0.87285023]</span>
-<span class="go">  [0.95018723]</span>
-<span class="go">  [1.004936  ]</span>
+<span class="go">Reverse Prediction: [[0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]</span>
+<span class="go"> [0.73335964]]</span>
+<span class="go">Reconstructed Values: [[[0.82948902]</span>
+<span class="go">  [0.90032648]</span>
+<span class="go">  [0.95331371]</span>
 <span class="go">  ...</span>
-<span class="go">  [1.01546495]</span>
-<span class="go">  [0.95646207]</span>
-<span class="go">  [0.87091284]]</span>
+<span class="go">  [1.00185682]</span>
+<span class="go">  [0.94232621]</span>
+<span class="go">  [0.85669888]]</span>
 
-<span class="go"> [[0.87285023]</span>
-<span class="go">  [0.95018723]</span>
-<span class="go">  [1.004936  ]</span>
+<span class="go"> [[0.82948902]</span>
+<span class="go">  [0.90032648]</span>
+<span class="go">  [0.95331371]</span>
 <span class="go">  ...</span>
-<span class="go">  [1.01546495]</span>
-<span class="go">  [0.95646207]</span>
-<span class="go">  [0.87091284]]</span>
+<span class="go">  [1.00185682]</span>
+<span class="go">  [0.94232621]</span>
+<span class="go">  [0.85669888]]</span>
 
-<span class="go"> [[0.87285023]</span>
-<span class="go">  [0.95018723]</span>
-<span class="go">  [1.004936  ]</span>
+<span class="go"> [[0.82948902]</span>
+<span class="go">  [0.90032648]</span>
+<span class="go">  [0.95331371]</span>
 <span class="go">  ...</span>
-<span class="go">  [1.01546495]</span>
-<span class="go">  [0.95646207]</span>
-<span class="go">  [0.87091284]]</span>
+<span class="go">  [1.00185682]</span>
+<span class="go">  [0.94232621]</span>
+<span class="go">  [0.85669888]]</span>
 
 <span class="go"> ...</span>
 
-<span class="go"> [[0.87285023]</span>
-<span class="go">  [0.95018723]</span>
-<span class="go">  [1.004936  ]</span>
+<span class="go"> [[0.82948902]</span>
+<span class="go">  [0.90032648]</span>
+<span class="go">  [0.95331371]</span>
 <span class="go">  ...</span>
-<span class="go">  [1.01546495]</span>
-<span class="go">  [0.95646207]</span>
-<span class="go">  [0.87091284]]</span>
+<span class="go">  [1.00185682]</span>
+<span class="go">  [0.94232621]</span>
+<span class="go">  [0.85669888]]</span>
 
-<span class="go"> [[0.87285023]</span>
-<span class="go">  [0.95018723]</span>
-<span class="go">  [1.004936  ]</span>
+<span class="go"> [[0.82948902]</span>
+<span class="go">  [0.90032648]</span>
+<span class="go">  [0.95331371]</span>
 <span class="go">  ...</span>
-<span class="go">  [1.01546495]</span>
-<span class="go">  [0.95646207]</span>
-<span class="go">  [0.87091284]]</span>
+<span class="go">  [1.00185682]</span>
+<span class="go">  [0.94232621]</span>
+<span class="go">  [0.85669888]]</span>
 
-<span class="go"> [[0.87285023]</span>
-<span class="go">  [0.95018723]</span>
-<span class="go">  [1.004936  ]</span>
+<span class="go"> [[0.82948902]</span>
+<span class="go">  [0.90032648]</span>
+<span class="go">  [0.95331371]</span>
 <span class="go">  ...</span>
-<span class="go">  [1.01546495]</span>
-<span class="go">  [0.95646207]</span>
-<span class="go">  [0.87091284]]], Forward Prediction: [[0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]</span>
-<span class="go"> [0.74746961]]</span>
+<span class="go">  [1.00185682]</span>
+<span class="go">  [0.94232621]</span>
+<span class="go">  [0.85669888]]], Forward Prediction: [[0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]</span>
+<span class="go"> [0.73383924]]</span>
 </pre></div>
 </div>
 </section>
