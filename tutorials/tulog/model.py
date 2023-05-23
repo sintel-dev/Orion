@@ -2,15 +2,15 @@
 
 encoder = [
     {
-        "class": "keras.layers.Bidirectional",
+        "class": "tensorflow.keras.layers.LSTM",
         "parameters": {
-            "layer": {
-                "class": "keras.layers.LSTM",
-                "parameters": {
-                    "units": 100,
-                    "return_sequences": True
-                }
-            }
+            "units": 100,
+            "return_sequences": True,
+            "activation": "tanh",
+            "recurrent_activation": "sigmoid",
+            "use_bias": True,
+            "recurrent_dropout": 0.0,
+            "unroll": False
         }
     },
     {
@@ -49,15 +49,19 @@ generator = [
         }
     },
     {
-        "class": "keras.layers.Bidirectional",
+        "class": "tensorflow.keras.layers.Bidirectional",
         "parameters": {
             "layer": {
-                "class": "keras.layers.LSTM",
+                "class": "tensorflow.keras.layers.LSTM",
                 "parameters": {
                     "units": 64,
                     "return_sequences": True,
                     "dropout": 0.2,
-                    "recurrent_dropout": 0.2
+                    "activation": "tanh",
+                    "recurrent_activation": "sigmoid",
+                    "use_bias": True,
+                    "recurrent_dropout": 0.0,
+                    "unroll": False
                 }
             },
             "merge_mode": "concat"
@@ -70,15 +74,19 @@ generator = [
         }
     },
     {
-        "class": "keras.layers.Bidirectional",
+        "class": "tensorflow.keras.layers.Bidirectional",
         "parameters": {
             "layer": {
-            "class": "keras.layers.LSTM",
-            "parameters": {
-                "units": 64,
-                "return_sequences": True,
-                "dropout": 0.2,
-                "recurrent_dropout": 0.2
+                "class": "tensorflow.keras.layers.LSTM",
+                "parameters": {
+                    "units": 64,
+                    "return_sequences": True,
+                    "dropout": 0.2,
+                    "activation": "tanh",
+                    "recurrent_activation": "sigmoid",
+                    "use_bias": True,
+                    "recurrent_dropout": 0.0,
+                    "unroll": True
                 }
             },
             "merge_mode": "concat"
@@ -112,7 +120,7 @@ criticX = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -131,7 +139,7 @@ criticX = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -150,7 +158,7 @@ criticX = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -169,7 +177,7 @@ criticX = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -204,7 +212,7 @@ criticZ = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
@@ -222,7 +230,7 @@ criticZ = [
         }
     },
     {
-        "class": "keras.layers.advanced_activations.LeakyReLU",
+        "class": "keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }

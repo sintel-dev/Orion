@@ -18,14 +18,13 @@
 
 A machine learning library for unsupervised time series anomaly detection.
 
-| Important Links                     |                                                                      |
-| ----------------------------------- | -------------------------------------------------------------------- |
-| :computer: **[Website]**            | Check out the Sintel Website for more information about the project. |
-| :book: **[Documentation]**          | Quickstarts, User and Development Guides, and API Reference.         |
-| :star: **[Tutorials]**              | Checkout our notebooks                                               |
-| :octocat: **[Repository]**          | The link to the Github Repository of this library.                   |
-| :scroll: **[License]**              | The repository is published under the MIT License.                   |
-| :keyboard: **[Development Status]** | This software is in its Pre-Alpha stage.                             |
+| Important Links                               |                                                                      |
+| --------------------------------------------- | -------------------------------------------------------------------- |
+| :computer: **[Website]**                      | Check out the Sintel Website for more information about the project. |
+| :book: **[Documentation]**                    | Quickstarts, User and Development Guides, and API Reference.         |
+| :star: **[Tutorials]**                        | Checkout our notebooks                                               |
+| :octocat: **[Repository]**                    | The link to the Github Repository of this library.                   |
+| :scroll: **[License]**                        | The repository is published under the MIT License.                   |
 | [![][Slack Logo] **Community**][Community]    | Join our Slack Workspace for announcements and discussions.          |
 
 [Website]: https://sintel.dev/
@@ -33,7 +32,6 @@ A machine learning library for unsupervised time series anomaly detection.
 [Tutorials]: https://github.com/sintel-dev/Orion/tree/master/tutorials
 [Repository]: https://github.com/sintel-dev/Orion
 [License]: https://github.com/sintel-dev/Orion/blob/master/LICENSE
-[Development Status]: https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha
 [Community]: https://join.slack.com/t/sintel-space/shared_invite/zt-q147oimb-4HcphcxPfDAM0O9_4PaUtw
 [Slack Logo]: https://github.com/sintel-dev/Orion/blob/master/docs/images/slack.png
 
@@ -87,20 +85,20 @@ which should show a signal with `timestamp` and `value`.
 4  1222905600 -0.370746
 ```
 
-In this example we use `lstm_dynamic_threshold` pipeline and set some hyperparameters (in this case training epochs as 5).
+In this example we use `aer` pipeline and set some hyperparameters (in this case training epochs as 5).
 
 ```python3
 from orion import Orion
 
 hyperparameters = {
-    'keras.Sequential.LSTMTimeSeriesRegressor#1': {
+    'orion.primitives.aer.AER#1': {
         'epochs': 5,
         'verbose': True
     }
 }
 
 orion = Orion(
-    pipeline='lstm_dynamic_threshold',
+    pipeline='aer',
     hyperparameters=hyperparameters
 )
 
@@ -120,7 +118,7 @@ The output of the previous command will be a ``pandas.DataFrame`` containing a t
 
 ```
         start         end  severity
-0  1394323200  1399701600  0.673494
+0  1402012800  1403870400  0.122539
 ```
 
 # Leaderboard
@@ -132,11 +130,12 @@ We run the benchmark on **11** datasets with their known grounth truth. We recor
 |---------------------------|--------------------|
 | AER                       |         10         |
 | TadGAN                    |          7         |
-| LSTM Dynamic Thresholding |          8         |
+| LSTM Dynamic Thresholding |          7         |
 | LSTM Autoencoder          |          6         |
 | Dense Autoencoder         |          6         |
 | VAE                       |          6         |
-| Azure                     |          0         |
+| [GANF](https://arxiv.org/pdf/2202.07857.pdf)                                                  |          6         |
+| [Azure](https://azure.microsoft.com/en-us/products/cognitive-services/anomaly-detector/)      |          0         |
 
 
 You can find the scores of each pipeline on every signal recorded in the [details Google Sheets document](https://docs.google.com/spreadsheets/d/1HaYDjY-BEXEObbi65fwG0om5d8kbRarhpK4mvOZVmqU/edit?usp=sharing). The summarized results can also be browsed in the following [summary Google Sheets document](https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing).
@@ -150,23 +149,21 @@ Additional resources that might be of interest:
 
 # Citation
 
-If you use **Orion** which is part of the **Sintel** ecosystem for your research, please consider citing the following paper:
+If you use **AER** for your research, please consider citing the following paper:
 
-Sarah Alnegheimish, Dongyu Liu, Carles Sala, Laure Berti-Equille, Kalyan Veeramachaneni. [Sintel: A Machine Learning Framework to Extract Insights from Signals](https://dl.acm.org/doi/pdf/10.1145/3514221.3517910).
+Lawrence Wong, Dongyu Liu, Laure Berti-Equille, Sarah Alnegheimish, Kalyan Veeramachaneni. [AER: Auto-Encoder with Regression for Time Series Anomaly Detection](https://arxiv.org/pdf/2212.13558.pdf).
+
 ```
-@inproceedings{alnegheimish2022sintel,
-  title={Sintel: A Machine Learning Framework to Extract Insights from Signals},
-  author={Alnegheimish, Sarah and Liu, Dongyu and Sala, Carles and Berti-Equille, Laure and Veeramachaneni, Kalyan},  
-  booktitle={Proceedings of the 2022 International Conference on Management of Data},
-  pages = {1855–1865},
-  numpages = {11},
-  publisher={Association for Computing Machinery},
-  doi = {10.1145/3514221.3517910},
-  series = {SIGMOD '22},
+@inproceedings{wong2022aer,
+  title={AER: Auto-Encoder with Regression for Time Series Anomaly Detection},
+  author={Wong, Lawrence and Liu, Dongyu and Berti-Equille, Laure and Alnegheimish, Sarah and Veeramachaneni, Kalyan},
+  booktitle={2022 IEEE International Conference on Big Data (IEEE BigData)},
+  pages={1152-1161},
+  doi={10.1109/BigData55660.2022.10020857},
+  organization={IEEE},
   year={2022}
 }
 ```
-
 
 If you use **TadGAN** for your research, please consider citing the following paper:
 
@@ -181,5 +178,22 @@ Alexander Geiger, Dongyu Liu, Sarah Alnegheimish, Alfredo Cuesta-Infante, Kalyan
   doi={10.1109/BigData50022.2020.9378139},
   organization={IEEE},
   year={2020}
+}
+```
+
+If you use **Orion** which is part of the **Sintel** ecosystem for your research, please consider citing the following paper:
+
+Sarah Alnegheimish, Dongyu Liu, Carles Sala, Laure Berti-Equille, Kalyan Veeramachaneni. [Sintel: A Machine Learning Framework to Extract Insights from Signals](https://dl.acm.org/doi/pdf/10.1145/3514221.3517910).
+```
+@inproceedings{alnegheimish2022sintel,
+  title={Sintel: A Machine Learning Framework to Extract Insights from Signals},
+  author={Alnegheimish, Sarah and Liu, Dongyu and Sala, Carles and Berti-Equille, Laure and Veeramachaneni, Kalyan},  
+  booktitle={Proceedings of the 2022 International Conference on Management of Data},
+  pages={1855–1865},
+  numpages={11},
+  publisher={Association for Computing Machinery},
+  doi={10.1145/3514221.3517910},
+  series={SIGMOD '22},
+  year={2022}
 }
 ```

@@ -1,0 +1,73 @@
+{
+    "primitives": [
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate",
+        "sklearn.impute.SimpleImputer",
+        "sklearn.preprocessing.MinMaxScaler",
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences",
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
+        "orion.primitives.aer.AER",
+        "orion.primitives.aer.score_anomalies",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
+    ],
+    "init_params": {
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "time_column": "timestamp",
+            "interval": 21600,
+            "method": "mean"
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [
+                -1,
+                1
+            ]
+        },
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 100,
+            "target_size": 1
+        },
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims": {
+            "target_index": 0,
+            "axis": 2
+        },
+        "orion.primitives.aer.AER#1": {
+            "epochs": 35
+        },
+        "orion.primitives.aer.score_anomalies#1": {
+            "rec_error_type": "dtw",
+            "comb": "mult",
+            "mask": true,
+            "lambda_rec": 0.5
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size_portion": 0.33,
+            "window_step_size_portion": 0.1,
+            "fixed_threshold": true
+        }
+    },
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "index"
+        }
+    },
+    "output_names": {
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "index": "X_index",
+            "target_index": "y_index"
+        }
+    },
+    "outputs": {
+        "default": [
+            {
+                "name": "events",
+                "variable": "orion.primitives.timeseries_anomalies.find_anomalies#1.y"
+            }
+        ],
+        "visualization": [
+            {
+                "name": "generated_timeseries",
+                "variable": "orion.primitives.aer.AER#1.y_hat"
+            }
+        ]
+    }
+}

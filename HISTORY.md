@@ -1,6 +1,20 @@
 History
 =======
 
+## 0.5.0 - 2023-05-23
+
+This version uses ``ml-stars`` package instead of ``mlprimitives``.
+
+### Issues resolved
+
+* Migrate to ml-stars – [Issue #418](https://github.com/signals-dev/Orion/issues/418) by @sarahmish
+* Updating ``best_cost`` in ``find_anomalies`` primitive – [Issue #403](https://github.com/signals-dev/Orion/issues/403) by @sarahmish
+* Retire ``lstm_dynamic_threshold_gpu`` and ``lstm_autoencoder_gpu`` pipeline maintenance – [Issue #373](https://github.com/signals-dev/Orion/issues/373) by @sarahmish
+* Typo in xlsxwriter dependency specification – [Issue #394](https://github.com/signals-dev/Orion/issues/394) by @sarahmish
+* ``orion.evaluate`` uses fails when fitting – [Issue #384](https://github.com/signals-dev/Orion/issues/384) by @sarahmish
+* AER pipeline with visualization option – [Issue #379](https://github.com/signals-dev/Orion/issues/379) by @sarahmish
+
+
 ## 0.4.1 - 2023-01-31
 
 ### Issues resolved
@@ -9,6 +23,7 @@ History
 * Pin ``opencv`` – [Issue #372](https://github.com/signals-dev/Orion/issues/372) by @sarahmish
 * Pin ``scikit-learn`` – [Issue #367](https://github.com/signals-dev/Orion/issues/367) by @sarahmish
 * Fix VAE documentation – [Issue #360](https://github.com/signals-dev/Orion/issues/360) by @sarahmish
+
 
 ## 0.4.0 - 2022-11-08
 

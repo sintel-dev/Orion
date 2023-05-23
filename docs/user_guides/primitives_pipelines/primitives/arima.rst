@@ -7,7 +7,7 @@ ARIMA
 
 **description**: this is an Autoregressive Integrated Moving Average (ARIMA) prediction model.
 
-see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/statsmodels.tsa.arima_model.Arima.json>`__.
+see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/statsmodels.tsa.arima_model.Arima.json>`__.
 
 ==================== =================== ==================================================================
 argument              type                description  
@@ -35,7 +35,7 @@ argument              type                description
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
     X = np.array(range(100)).reshape(-1, 1)
     primitive = load_primitive('statsmodels.tsa.arima_model.Arima', 

@@ -8,7 +8,7 @@ from typing import Optional, Union
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from mlprimitives.utils import import_object
+from mlstars.utils import import_object
 from numpy import ndarray
 from scipy import stats
 from tensorflow.keras import Model
