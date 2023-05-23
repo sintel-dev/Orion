@@ -118,7 +118,7 @@ The output of the previous command will be a ``pandas.DataFrame`` containing a t
 
 ```
         start         end  severity
-0  1394323200  1399701600  0.673494
+0  1402012800  1403870400  0.122539
 ```
 
 # Leaderboard
@@ -128,12 +128,12 @@ We run the benchmark on **11** datasets with their known grounth truth. We recor
 
 | Pipeline                  |  Outperforms ARIMA |
 |---------------------------|--------------------|
-| AER                       |         11         |
+| AER                       |         10         |
 | TadGAN                    |          7         |
 | LSTM Dynamic Thresholding |          7         |
 | LSTM Autoencoder          |          6         |
 | Dense Autoencoder         |          6         |
-| VAE                       |          7         |
+| VAE                       |          6         |
 | [GANF](https://arxiv.org/pdf/2202.07857.pdf)                                                  |          6         |
 | [Azure](https://azure.microsoft.com/en-us/products/cognitive-services/anomaly-detector/)      |          0         |
 
