@@ -4,7 +4,7 @@ azure-cognitiveservices-anomalydetector==0.3.0
 azure-common==1.1.28
 azure-core==1.27.1
 beautifulsoup4==4.12.2
-botocore==1.29.155
+botocore==1.29.160
 cachetools==5.3.1
 certifi==2023.5.7
 charset-normalizer==3.1.0
@@ -17,7 +17,7 @@ google-auth==2.20.0
 google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
 graphviz==0.20.1
-grpcio==1.54.2
+grpcio==1.56.0
 h5py==2.10.0
 idna==3.4
 importlib-metadata==6.7.0
@@ -44,14 +44,14 @@ orion-ml @ file:///home/runner/work/Orion/Orion
 packaging==23.1
 pandas==1.3.5
 patsy==0.5.3
-pluggy==1.0.0
+pluggy==1.2.0
 prompt-toolkit==3.0.38
 protobuf==3.20.3
 psutil==5.9.5
 pyasn1==0.5.0
 pyasn1-modules==0.3.0
 Pygments==2.15.1
-pytest==7.3.2
+pytest==7.4.0
 pytest-cov==4.1.0
 python-dateutil==2.8.2
 pyts==0.10.0
