@@ -1,0 +1,7 @@
+{
+    "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "time_column": "timestamp",
+        "interval": 300,
+        "method": "mean"
+    }
+}
