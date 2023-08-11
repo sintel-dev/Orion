@@ -14,7 +14,8 @@ DATASET_FAMILY = {
     "realAWSCloudwatch": "NAB",
     "realAdExchange": "NAB",
     "realTraffic": "NAB",
-    "realTweets": "NAB"
+    "realTweets": "NAB",
+    "UCR": "UCR"
 }
 
 DATASET_ABBREVIATION = {
@@ -28,7 +29,8 @@ DATASET_ABBREVIATION = {
     "realAWSCloudwatch": "AWS",
     "realAdExchange": "AdEx",
     "realTraffic": "Traf",
-    "realTweets": "Tweets"
+    "realTweets": "Tweets",
+    "UCR": "UCR"
 }
 
 
