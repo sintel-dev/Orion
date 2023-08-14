@@ -6,6 +6,7 @@ import pandas as pd
 DATASET_FAMILY = {
     "MSL": "NASA",
     "SMAP": "NASA",
+    "UCR": "UCR",
     "YAHOOA1": "YAHOO",
     "YAHOOA2": "YAHOO",
     "YAHOOA3": "YAHOO",
@@ -14,13 +15,13 @@ DATASET_FAMILY = {
     "realAWSCloudwatch": "NAB",
     "realAdExchange": "NAB",
     "realTraffic": "NAB",
-    "realTweets": "NAB",
-    "UCR": "UCR"
+    "realTweets": "NAB"
 }
 
 DATASET_ABBREVIATION = {
     "MSL": "MSL",
     "SMAP": "SMAP",
+    "UCR": "UCR",
     "YAHOOA1": "A1",
     "YAHOOA2": "A2",
     "YAHOOA3": "A3",
@@ -29,8 +30,7 @@ DATASET_ABBREVIATION = {
     "realAWSCloudwatch": "AWS",
     "realAdExchange": "AdEx",
     "realTraffic": "Traf",
-    "realTweets": "Tweets",
-    "UCR": "UCR"
+    "realTweets": "Tweets"
 }
 
 
@@ -138,13 +138,13 @@ def add_sheet(df, name, writer, cell_fmt, header_fmt):
 
         # horizontal
         worksheet.merge_range(0, 1, 0, 2, columns[1][0], header_fmt)
-        worksheet.merge_range(0, 3, 0, 6, columns[3][0], header_fmt)
-        worksheet.merge_range(0, 7, 0, 11, columns[7][0], header_fmt)
+        worksheet.merge_range(0, 4, 0, 7, columns[4][0], header_fmt)
+        worksheet.merge_range(0, 8, 0, 12, columns[8][0], header_fmt)
 
         # vertical
         worksheet.merge_range(0, 0, 1, 0, columns[0][0], header_fmt)
-        worksheet.merge_range(0, 12, 1, 12, columns[12][0], header_fmt)
         worksheet.merge_range(0, 13, 1, 13, columns[13][0], header_fmt)
+        worksheet.merge_range(0, 14, 1, 14, columns[14][0], header_fmt)
 
     for idx, width in enumerate(widths):
         worksheet.set_column(idx, idx, width + 1, cell_fmt)
