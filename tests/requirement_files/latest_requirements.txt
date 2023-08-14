@@ -2,9 +2,9 @@ absl-py==1.4.0
 astunparse==1.6.3
 azure-cognitiveservices-anomalydetector==0.3.0
 azure-common==1.1.28
-azure-core==1.28.0
+azure-core==1.29.1
 beautifulsoup4==4.12.2
-botocore==1.31.20
+botocore==1.31.25
 cachetools==5.3.1
 certifi==2023.7.22
 charset-normalizer==3.2.0
@@ -17,7 +17,7 @@ google-auth==2.22.0
 google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
 graphviz==0.20.1
-grpcio==1.56.2
+grpcio==1.57.0
 h5py==2.10.0
 idna==3.4
 importlib-metadata==6.7.0
@@ -25,7 +25,7 @@ iniconfig==2.0.0
 invoke==2.2.0
 isodate==0.6.1
 jmespath==1.0.1
-joblib==1.3.1
+joblib==1.3.2
 Keras==2.4.3
 Keras-Preprocessing==1.1.2
 llvmlite==0.34.0
@@ -76,7 +76,7 @@ tensorflow-estimator==2.3.0
 termcolor==2.3.0
 threadpoolctl==3.1.0
 tomli==2.0.1
-tqdm==4.65.0
+tqdm==4.66.1
 typing_extensions==4.7.1
 urllib3==1.26.16
 wcwidth==0.2.6
