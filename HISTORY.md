@@ -1,6 +1,17 @@
 History
 =======
 
+## 0.5.1 - 2023-08-16
+
+This version introduces a new dataset to the benchmark.
+
+### Issues resolved
+
+* Add UCR dataset to the benchmark – [Issue #443](https://github.com/signals-dev/Orion/issues/443) by @sarahmish
+* docker image build failed – [Issue #439](https://github.com/signals-dev/Orion/issues/439) by @sarahmish
+* Edit interval settings in ``azure`` pipeline – [Issue #436](https://github.com/signals-dev/Orion/issues/436) by @sarahmish
+
+
 ## 0.5.0 - 2023-05-23
 
 This version uses ``ml-stars`` package instead of ``mlprimitives``.

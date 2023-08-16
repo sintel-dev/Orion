@@ -124,17 +124,17 @@ The output of the previous command will be a ``pandas.DataFrame`` containing a t
 # Leaderboard
 In every release, we run Orion benchmark. We maintain an up-to-date leaderboard with the current scoring of the verified pipelines according to the benchmarking procedure.
 
-We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline.
+We run the benchmark on **12** datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline.
 
 | Pipeline                  |  Outperforms ARIMA |
 |---------------------------|--------------------|
-| AER                       |         10         |
+| AER                       |         11         |
 | TadGAN                    |          7         |
 | LSTM Dynamic Thresholding |          7         |
-| LSTM Autoencoder          |          6         |
-| Dense Autoencoder         |          6         |
-| VAE                       |          6         |
-| [GANF](https://arxiv.org/pdf/2202.07857.pdf)                                                  |          6         |
+| LSTM Autoencoder          |          8         |
+| Dense Autoencoder         |          7         |
+| VAE                       |          7         |
+| [GANF](https://arxiv.org/pdf/2202.07857.pdf)                                                  |          7         |
 | [Azure](https://azure.microsoft.com/en-us/products/cognitive-services/anomaly-detector/)      |          0         |
 
 
