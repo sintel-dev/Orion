@@ -31,6 +31,7 @@ install_requires = [
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
+    'stumpy>=1.9,<1.11',
 
     # fix conflict
     'h5py<2.11.0,>=2.10.0',

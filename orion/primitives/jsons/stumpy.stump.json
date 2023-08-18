@@ -1,0 +1,38 @@
+{
+    "name": "stumpy.stump",
+    "contributors": ["Sarah Alnegheimish <smish@mit.edu>"],
+    "documentation": "https://stumpy.readthedocs.io/en/latest/api.html#stump.",
+    "description": "Matrix profile.",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "anomaly_detector"
+    },
+    "modalities": [],
+    "primitive": "stumpy.stump",
+    "produce": {
+        "args": [
+            {
+                "name": "T_A",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "m": {
+                "type": "int",
+                "default": "100"
+            },
+            "normalize": {
+                "type": "bool",
+                "default": true
+            }
+        }
+    }
+}
