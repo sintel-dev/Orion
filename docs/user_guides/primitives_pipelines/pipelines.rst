@@ -170,6 +170,124 @@ Since pipelines are composed of :ref:`primitives`, you can discover the interpre
     orion.fit(custom_data)
 
 
+Creating Pipelines
+------------------
+
+A **Pipeline** is a sequence of primitives that perform a number of operations to the given input to produce a desired output. In Orion, the pipeline takes a signal as input and produces a list of detected anomalies as output.
+
+To create an Orion pipeline, we need to assemble a JSON representation of the pipeline. The representation contains four blocks mentioned above:
+
+1. *primitives*
+2. *init_params*
+3. *input_names*
+4. *output_names*
+
+Let’s visit one of the existing Orion pipelines to help understand how it is working, as an example we will work with the ``lstm_dynamic_threshold`` `pipeline <https://github.com/sintel-dev/Orion/blob/master/orion/pipelines/verified/lstm_dynamic_threshold/lstm_dynamic_threshold.json>`__.
+
+
+Block 1: Primitives
+~~~~~~~~~~~~~~~~~~~
+
+The first block in the pipeline JSON is a list containing the sequence of primitives applied to the signal in order to produce a list of detected anomalies.
+
+.. code-block:: json
+
+    "primitives": [
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate",
+        "sklearn.impute.SimpleImputer",
+        "sklearn.preprocessing.MinMaxScaler",
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences",
+        "keras.Sequential.LSTMTimeSeriesRegressor",
+        "orion.primitives.timeseries_errors.regression_errors",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
+    ]
+
+The primitive ``time_segments_aggregate`` takes a raw signal to produce another signal where
+the time intervals between each sample and another is equal. Then the pipeline uses ``SimpleImputer`` to impute missing values in the signal with the mean value. Next, the pipeline scale the data into the range ``[-1, 1]`` using ``MinMaxScaler``. After that, ``rolling_window_sequences`` create the training window sequences for the model. The
+processed signal is now ready to train the double-stacked LSTM network through ``LSTMTimeSeriesRegressor`` primitive. Once the network is trained, we generate the predicted signal and compute the discrepancies (error) using ``regression_errors``, which
+is an absolute point-wise difference. Lastly, we use ``find_anomalies`` on error values to find anomalous regions. 
+
+Customizing pipelines and swapping one primitive with another can be done by changing and adding primitives in this block.
+
+
+Block 2: Initialization Parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The second block in the pipeline JSON is a dictionary of primitive names and their associated initialized parameters.
+
+.. code-block:: json
+
+    "init_params": {
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "time_column": "timestamp",
+            "interval": 21600,
+            "method": "mean"
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [
+                -1,
+                1
+            ]
+        },
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 250
+        },
+        "keras.Sequential.LSTMTimeSeriesRegressor": {
+            "epochs": 35
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size_portion": 0.33,
+            "window_step_size_portion": 0.1,
+            "fixed_threshold": true
+        }
+    }
+
+For example, in ``time_segments_aggregate`` we are marking that the interval between one sample and another in the signal is 6 hours which is 21600. Another example is that the ``LSTMTimeSeriesRegressor`` model is trained for 35 epochs.
+
+If the parameters are not present in this block, the default value in the original primitive JSON file will be used. For example if the interval was not specified, then it will use the default value (which is 3600) that is defined in the original `primitive <https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.time_segments_aggregate.json>`__.
+
+
+Block 3: Input Names
+~~~~~~~~~~~~~~~~~~~~
+
+Block three is used for mapping name of argument to existing variables. Recall that primitives define input arguments and outputs. These variables names are how the pipeline knows which primitive uses which variables.
+
+Sometimes we need to change the names of these input arguments to find the correct variable.
+
+.. code-block:: json
+
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "target_index"
+        }
+    }
+
+
+Here the pipeline changes the input argument ``index`` to ``target_index`` which is basically denoting that the input ``index`` will now be the output ``target_index`` of a previous primitive which is the `rolling_window_sequences <https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.rolling_window_sequences.json>`__ primitive.
+
+
+Block 4: Output Names
+~~~~~~~~~~~~~~~~~~~~~
+
+Similarly to input names, sometimes we need to change output names, which is what the pipeline specifies in block four.
+
+.. code-block:: json
+
+    "output_names": {
+        "keras.Sequential.LSTMTimeSeriesRegressor#1": {
+            "y": "y_hat"
+        }
+    }
+
+Here we change the output of the primitive ``LSTMTimeSeriesRegressor`` from ``y`` to ``y_hat`` in order not to override the existing value of ``y`` and also to prepare it as input for the next primitive `regression_errors <https://github.com/sintel-dev/Orion/blob/master/orion/primitives/jsons/orion.primitives.timeseries_errors.regression_errors.json>`__.
+
+
+Contributing a Pipeline
+-----------------------
+
+To add a new pipeline to Orion, follow the same steps mentioned in :ref:`benchmarking` page.
+
 
 .. _NASA: https://arxiv.org/abs/1802.04431
 .. _Anomaly Detector: https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/
