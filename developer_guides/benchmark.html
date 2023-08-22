@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Contributing to Orion Benchmark &#8212; Orion 0.5.2.dev0 documentation</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <p class="title">Orion</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../getting_started/index.html">Getting Started</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../user_guides/index.html">User Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../api_reference/index.html">API Reference</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="index.html">Developer Guides</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../history.html">Release Notes</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/sintel-dev/Orion" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#adding-a-pipeline-to-orion-benchmark" class="nav-link">Adding a Pipeline to Orion Benchmark</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#adding-a-dataset-to-orion-benchmark" class="nav-link">Adding a Dataset to Orion Benchmark</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#adding-an-evaluation-metric-to-orion-benchmark" class="nav-link">Adding an Evaluation Metric to Orion Benchmark</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#resources" class="nav-link">Resources</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="contributing-to-orion-benchmark">
+<span id="int-benchmark"></span><h1>Contributing to Orion Benchmark<a class="headerlink" href="#contributing-to-orion-benchmark" title="Permalink to this headline">¶</a></h1>
+<p>Below we provide a guide on how to integrate new pipelines, datasets, and metrics.</p>
+<section id="adding-a-pipeline-to-orion-benchmark">
+<h2>Adding a Pipeline to Orion Benchmark<a class="headerlink" href="#adding-a-pipeline-to-orion-benchmark" title="Permalink to this headline">¶</a></h2>
+<p>To add a new pipeline to the benchmark, we need to make it part of the Orion pipelines available for all users. Before starting, please review some of the following concepts to help you understand pipelines.</p>
+<ul class="simple">
+<li><p><strong>Standardized Orion I/O Format:</strong> please visit <a class="reference internal" href="../user_guides/data.html#data"><span class="std std-ref">Data</span></a> page.</p></li>
+<li><dl class="simple">
+<dt><strong>Primitives and Pipelines:</strong></dt><dd><ul>
+<li><p><strong>Creating Primitives:</strong> please visit <a class="reference internal" href="../user_guides/primitives_pipelines/primitives.html#primitives"><span class="std std-ref">Primitives</span></a> page.</p></li>
+<li><p><strong>Creating Pipelines:</strong> please visit <a class="reference internal" href="../user_guides/primitives_pipelines/pipelines.html#pipelines"><span class="std std-ref">Pipelines</span></a> page.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Once you have a pipeline that you have been using that you would like to add to Orion, please follow these steps in order to make an official Orion pipeline!</p>
+<ol class="arabic simple">
+<li><p><strong>Open an issue:</strong> first task is to <a class="reference external" href="https://github.com/sintel-dev/Orion/issues/new">open an issue</a> on Orion github detailing your pipeline and its primitives. This will help maintainers understand what the pipeline is doing and suggest potential primitives that can be used rather than creating one from scratch.</p></li>
+<li><dl class="simple">
+<dt><strong>Open a pull request:</strong> after describing your pipeline clearly in an issue, you can open a pull request on Orion github to make your contributions. This pull request should have the following files added or modified:</dt><dd><ol class="arabic simple">
+<li><p><strong>primitive files:</strong> this includes any python code and primitive JSON files needed by the pipeline. These files should be stored in <code class="docutils literal notranslate"><span class="pre">orion/primitives</span></code> and <code class="docutils literal notranslate"><span class="pre">orion/primitives/jsons</span></code> respectively. Moreover, for any newly added classes and functions, please include unit tests to make sure they are performing as intended in <code class="docutils literal notranslate"><span class="pre">tests/primitives</span></code>.</p></li>
+<li><p><strong>pipeline files:</strong> this includes the main pipeline JSON file. Create a new directory under <code class="docutils literal notranslate"><span class="pre">orion/pipelines/sandbox</span></code> with the given pipeline name and store the pipeline JSON file inside it. Imagine the model name is <code class="docutils literal notranslate"><span class="pre">new_model</span></code> then the pipeline should have the following path <code class="docutils literal notranslate"><span class="pre">orion/pipelines/sandbox/new_model/new_model.json</span></code>.</p></li>
+<li><p><strong>hyperparameter files:</strong> in addition to the pipeline JSON file, create hyperparameter JSON files for each dataset used in the benchmark and store it in the same location as the pipeline. As an example, for dataset SMAP, create <code class="docutils literal notranslate"><span class="pre">orion/pipelines/sandbox/new_model/new_model_smap.json</span></code>. The hyperparameter file should only modify the data specific hyperparameters such as the interval level of the signals in the dataset.</p></li>
+<li><p><strong>documentation:</strong> lastly there is documentation files. Create a new <code class="docutils literal notranslate"><span class="pre">docs/user_guides/primitives_pipelines/primitives/new_primitive.rst</span></code> that describes the primitive for any newly added primitive. Moreover, include modify <code class="docutils literal notranslate"><span class="pre">docs/user_guides/primitives_pipelines/pipelines.rst</span></code> and <code class="docutils literal notranslate"><span class="pre">docs/user_guides/primitives_pipelines/primitives.rst</span></code> as needed.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p><strong>Reviewing:</strong> once the pull request is made, the Orion team will take a look at your contributions and make any necessary suggestions. When the pull request passes unit and integration tests and the code is approved by the reviewers, it will be merged. The pipeline will remain in sandbox until it passes the verification testing phase.</p></li>
+<li><p><strong>Verification Testing:</strong> to ensure that pipelines are robust, reproducible, and can be maintained in the long run, several tests and validations are made. This includes testing the pipeline in our benchmarks.</p></li>
+<li><p><strong>Transferring from Sandbox to Verified:</strong> once the pipeline passes verification testing, it becomes an Orion verified pipeline and will be included in all future releases of the benchmark.</p></li>
+</ol>
+</section>
+<section id="adding-a-dataset-to-orion-benchmark">
+<h2>Adding a Dataset to Orion Benchmark<a class="headerlink" href="#adding-a-dataset-to-orion-benchmark" title="Permalink to this headline">¶</a></h2>
+<p>To add a new dataset to the benchmark, it needs to follow the Orion format. Visit the <a class="reference internal" href="../user_guides/data.html#data"><span class="std std-ref">Data</span></a> to familiarize yourself with it.</p>
+<p>Once the data follows the expected input format, please follow these steps to introduce the dataset to the benchmark:</p>
+<ol class="arabic simple">
+<li><p><strong>Open an issue:</strong> first task is to <a class="reference external" href="https://github.com/sintel-dev/Orion/issues/new">open an issue</a> on Orion github pointing to the source of the data. If the data needs formatting, please attach a link to a notebook (either in your fork or a colab notebook) to make the integration faster.</p></li>
+<li><p><strong>Adding the dataset to S3:</strong> if the data is publicly available, we would like to make it available to all Orion users by adding it to our <code class="docutils literal notranslate"><span class="pre">sintel-orion</span></code> public s3 bucket. This way, users can load any signal directly from Orion using <code class="docutils literal notranslate"><span class="pre">load_signal</span></code> functionality. This task will be performed by the Orion team.</p></li>
+<li><p><strong>Adding dataset/pipeline hyperparameters:</strong> open a new pull request that will feature adding the respective hyperparameters of the dataset for each pipeline. For example, for a new dataset named <code class="docutils literal notranslate"><span class="pre">new_data</span></code> we will have <code class="docutils literal notranslate"><span class="pre">aer_new_data.json</span></code>, <code class="docutils literal notranslate"><span class="pre">tadgan_new_data.json</span></code>, etc. While this might feel redundant, it is crucial to maintain transparency of hyperparameter settings in our benchmarks.</p></li>
+<li><p><strong>Adding the dataset to leaderboard:</strong> in the same pull request, kindly add the name of the dataset to the dictionaries included in this <a class="reference external" href="https://github.com/sintel-dev/Orion/blob/master/orion/results.py">file</a>.</p></li>
+</ol>
+<p>Once the pull request is merged, the dataset will then be featured in subsequent releases of the benchmark!</p>
+</section>
+<section id="adding-an-evaluation-metric-to-orion-benchmark">
+<h2>Adding an Evaluation Metric to Orion Benchmark<a class="headerlink" href="#adding-an-evaluation-metric-to-orion-benchmark" title="Permalink to this headline">¶</a></h2>
+<p>Orion has an evaluation sub-package for evaluating anomaly detection performance. Before adding a new evaluation metric, please visit <a class="reference internal" href="../user_guides/evaluation_doc.html#evaluation-doc"><span class="std std-ref">Evaluation</span></a>.</p>
+<p>To make an evaluation function it needs to accept at least two arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expected</span></code>: which is a list of known ground truth anomalies.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">observed</span></code>: which is a list of detected anomalies.</p></li>
+</ul>
+<p>If you are working with <em>point</em> anomalies, you can add your metric to <code class="docutils literal notranslate"><span class="pre">point.py</span></code> in the evaluation sub-package, and if you are working with <em>contextual</em> anomalies, please include it in <code class="docutils literal notranslate"><span class="pre">contextual.py</span></code>.</p>
+<p>Once you have created your metric, you can start the process of integrating it to the benchmark:</p>
+<ol class="arabic simple">
+<li><p><strong>Open an issue:</strong> first task is to <a class="reference external" href="https://github.com/sintel-dev/Orion/issues/new">open an issue</a> on Orion github detailing the specifications of the new evaluation metric and how it will be useful to users.</p></li>
+<li><dl class="simple">
+<dt><strong>Open a pull request:</strong> after describing your new metric clearly in an issue, you can open a pull request on Orion github to make your contributions. Below we describe what the PR should include:</dt><dd><ol class="arabic simple">
+<li><p><strong>metric files:</strong> this includes the python functions that implement the evaluation metric. Note that these files should be stored in the evaluation sub-package.</p></li>
+<li><p><strong>benchmark file:</strong> to add the new metric to the benchmark, simply add it to the dictionary <code class="docutils literal notranslate"><span class="pre">METRICS</span></code>.  Once included, it will be added to the benchmark detailed sheet results.</p></li>
+<li><p><strong>documentation:</strong> lastly there is documentation. Add a description of the new metric in <code class="docutils literal notranslate"><span class="pre">docs/user_guides/evaluation_doc.rst</span></code>. It is also valuable to add an example usage of the metric with an expected result.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p><strong>Reviewing:</strong> once the pull request is made, the Orion team will make any necessary suggestions. Please include docstrings in your code to help the team in the reviewing process.</p></li>
+</ol>
+<p>Once the PR is merged, the new evaluation metric will be available to all users. Moreover, subsequent benchmark released will contain the new metric in their benchmark results.</p>
+</section>
+<section id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Data Format:</strong> <a class="reference internal" href="../user_guides/data.html#data"><span class="std std-ref">Data</span></a> page.</p></li>
+<li><p><strong>Primitives:</strong> <a class="reference internal" href="../user_guides/primitives_pipelines/primitives.html#primitives"><span class="std std-ref">Primitives</span></a> page.</p></li>
+<li><p><strong>Pipelines:</strong> <a class="reference internal" href="../user_guides/primitives_pipelines/pipelines.html#pipelines"><span class="std std-ref">Pipelines</span></a> page.</p></li>
+</ul>
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, MIT Data To AI Lab.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

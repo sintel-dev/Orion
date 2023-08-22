@@ -212,53 +212,73 @@
 <p>Orion takes a time series signal and produces an interval of expected anomalies. The input to the framework is a univariate time series and the output is a table denoting the start and end timestamp of the anomalies.</p>
 <section id="data-format">
 <h2>Data Format<a class="headerlink" href="#data-format" title="Permalink to this headline">¶</a></h2>
+<p>All Orion pipelines follow the same format in terms of what it is expecting as input (a signal represented in a <code class="docutils literal notranslate"><span class="pre">pandas</span></code> dataframe) and output (a <code class="docutils literal notranslate"><span class="pre">list</span></code> of detected anomalous intervals that later is rendered by Orion into a dataframe).</p>
 <section id="input">
 <h3>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
-<p>Orion Pipelines work on time Series that are provided as a single table of telemetry
-observations with two columns:</p>
+<p>Orion Pipelines work on univariate or multivariate time series that are provided as a single table of telemetry observations with at least two columns:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code>: an INTEGER or FLOAT column with the time of the observation in Unix Time Format</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: an INTEGER or FLOAT column with the observed value at the indicated timestamp</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code>: an <code class="docutils literal notranslate"><span class="pre">int</span></code> column with the time of the observation in Unix Time format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: an <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code> column with the observed value at the indicated timestamp. Each value is represented as a different column.</p></li>
 </ul>
-<p>This is an example of such table:</p>
+<p>Here is an example of signal:</p>
 <table class="table">
 <colgroup>
-<col style="width: 52%" />
-<col style="width: 48%" />
+<col style="width: 26%" />
+<col style="width: 24%" />
+<col style="width: 26%" />
+<col style="width: 24%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>timestamp</p></td>
-<td><p>value</p></td>
+<td><p>value 0</p></td>
+<td><p>value 1</p></td>
+<td><p>value 2</p></td>
 </tr>
 <tr class="row-even"><td><p>1222819200</p></td>
 <td><p>-0.366358</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
 </tr>
 <tr class="row-odd"><td><p>1222840800</p></td>
 <td><p>-0.394107</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
 </tr>
 <tr class="row-even"><td><p>1222862400</p></td>
 <td><p>0.403624</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
 </tr>
 <tr class="row-odd"><td><p>1222884000</p></td>
 <td><p>-0.362759</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
 </tr>
 <tr class="row-even"><td><p>1222905600</p></td>
 <td><p>-0.370746</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
 </tr>
 </tbody>
 </table>
+<p>The table above contains an observation column value 0, and two status values 1 and 2.</p>
 </section>
 <section id="output">
 <h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
-<p>The output of the Orion Pipelines is another table that contains the detected anomalous
-intervals and that has at least two columns:</p>
+<p>There can be many steps (primitives) in a pipeline, however the end result must be a list of intervals. Each interval contains at least two entries:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: timestamp where the anomalous interval starts</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">end</span></code>: timestamp where the anomalous interval ends</p></li>
 </ul>
-<p>Optionally, a third column called <code class="docutils literal notranslate"><span class="pre">severity</span></code> can be included with a value that represents the
-severity of the detected anomaly.</p>
-<p>An example of such a table is:</p>
+<p>Optionally, there can be a third entry that contains a proxy to the likelihood that the interval is anomalous.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">(</span><span class="mi">1222840800</span><span class="p">,</span> <span class="mi">1222884000</span><span class="p">,</span> <span class="mf">0.12572</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1402012800</span><span class="p">,</span> <span class="mi">1403870400</span><span class="p">,</span> <span class="mf">0.64339</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>For example, the list above shows that the pipeline detected two intervals as anomalous, the second one being more likely than the first.</p>
+<p>Then Orion will present this result as a <code class="docutils literal notranslate"><span class="pre">pandas</span></code> dataframe:</p>
 <table class="table">
 <colgroup>
 <col style="width: 35%" />
@@ -270,13 +290,13 @@ severity of the detected anomaly.</p>
 <td><p>end</p></td>
 <td><p>severity</p></td>
 </tr>
-<tr class="row-even"><td><p>1222970400</p></td>
-<td><p>1222992000</p></td>
-<td><p>0.572643</p></td>
+<tr class="row-even"><td><p>1222840800</p></td>
+<td><p>1222884000</p></td>
+<td><p>0.12572</p></td>
 </tr>
-<tr class="row-odd"><td><p>1223013600</p></td>
-<td><p>1223035200</p></td>
-<td><p>0.572643</p></td>
+<tr class="row-odd"><td><p>1402012800</p></td>
+<td><p>1403870400</p></td>
+<td><p>0.64339</p></td>
 </tr>
 </tbody>
 </table>
@@ -285,7 +305,7 @@ severity of the detected anomaly.</p>
 <section id="dataset-we-use-in-this-library">
 <h2>Dataset we use in this library<a class="headerlink" href="#dataset-we-use-in-this-library" title="Permalink to this headline">¶</a></h2>
 <p>For development, evaluation of pipelines, we include a dataset which includes several signals already formatted as expected by the Orion Pipelines.</p>
-<p>This formatted dataset can be browsed and downloaded directly from the <a class="reference external" href="https://d3-ai-orion.s3.amazonaws.com/index.html">d3-ai-orion AWS S3 Bucket</a>.</p>
+<p>This formatted dataset can be browsed and downloaded directly from the <a class="reference external" href="https://sintel-orion.s3.amazonaws.com/index.html">sintel-orion AWS S3 Bucket</a>.</p>
 <p>This dataset is adapted from the one used for the experiments in the <a class="reference external" href="https://arxiv.org/abs/1802.04431">Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding paper</a>. Original source data is available for download <a class="reference external" href="https://s3-us-west-2.amazonaws.com/telemanom/data.zip">here</a>.</p>
 <p>We thank NASA for making this data available for public use.</p>
 </section>

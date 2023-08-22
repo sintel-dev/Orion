@@ -208,6 +208,32 @@
             <a href="#pipelines-for-custom-data" class="nav-link">Pipelines for Custom Data</a>
         </li>
     
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#creating-pipelines" class="nav-link">Creating Pipelines</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#block-1-primitives" class="nav-link">Block 1: Primitives</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#block-2-initialization-parameters" class="nav-link">Block 2: Initialization Parameters</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#block-3-input-names" class="nav-link">Block 3: Input Names</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#block-4-output-names" class="nav-link">Block 4: Output Names</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#contributing-a-pipeline" class="nav-link">Contributing a Pipeline</a>
+        </li>
+    
     </ul>
 </nav>
 
@@ -390,41 +416,135 @@ Next, we test the new pipeline/hyperparameters in the benchmark and verify that 
 <span class="gp">In [8]: </span><span class="n">orion</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">custom_data</span><span class="p">)</span>
 <span class="go">Epoch 1/5</span>
 
-<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.3786 - mse: 0.3786</span>
-<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.4133 - mse: 0.4133</span>
-<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3988 - mse: 0.3988</span>
-<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3968 - mse: 0.3968</span>
-<span class="go">4/4 [==============================] - 3s 715ms/step - loss: 0.3968 - mse: 0.3968 - val_loss: 0.4221 - val_mse: 0.4221</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.3858 - mse: 0.3858</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.3586 - mse: 0.3586</span>
+<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3963 - mse: 0.3963</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3936 - mse: 0.3936</span>
+<span class="go">4/4 [==============================] - 2s 526ms/step - loss: 0.3936 - mse: 0.3936 - val_loss: 0.4191 - val_mse: 0.4191</span>
 <span class="go">Epoch 2/5</span>
 
-<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.4191 - mse: 0.4191</span>
-<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.3699 - mse: 0.3699</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.3879 - mse: 0.3879</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.4166 - mse: 0.4166</span>
 <span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3905 - mse: 0.3905</span>
-<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3922 - mse: 0.3922</span>
-<span class="go">4/4 [==============================] - 2s 540ms/step - loss: 0.3922 - mse: 0.3922 - val_loss: 0.4214 - val_mse: 0.4214</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3911 - mse: 0.3911</span>
+<span class="go">4/4 [==============================] - 2s 395ms/step - loss: 0.3911 - mse: 0.3911 - val_loss: 0.4238 - val_mse: 0.4238</span>
 <span class="go">Epoch 3/5</span>
 
-<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.4266 - mse: 0.4266</span>
-<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.3751 - mse: 0.3751</span>
-<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3994 - mse: 0.3994</span>
-<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3929 - mse: 0.3929</span>
-<span class="go">4/4 [==============================] - 2s 527ms/step - loss: 0.3929 - mse: 0.3929 - val_loss: 0.4215 - val_mse: 0.4215</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.3593 - mse: 0.3593</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.4265 - mse: 0.4265</span>
+<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3939 - mse: 0.3939</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3942 - mse: 0.3942</span>
+<span class="go">4/4 [==============================] - 2s 398ms/step - loss: 0.3942 - mse: 0.3942 - val_loss: 0.4246 - val_mse: 0.4246</span>
 <span class="go">Epoch 4/5</span>
 
-<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.4025 - mse: 0.4025</span>
-<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.3990 - mse: 0.3990</span>
-<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3966 - mse: 0.3966</span>
-<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3913 - mse: 0.3913</span>
-<span class="go">4/4 [==============================] - 2s 542ms/step - loss: 0.3913 - mse: 0.3913 - val_loss: 0.4212 - val_mse: 0.4212</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.3602 - mse: 0.3602</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.3843 - mse: 0.3843</span>
+<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3888 - mse: 0.3888</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3906 - mse: 0.3906</span>
+<span class="go">4/4 [==============================] - 2s 397ms/step - loss: 0.3906 - mse: 0.3906 - val_loss: 0.4228 - val_mse: 0.4228</span>
 <span class="go">Epoch 5/5</span>
 
-<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.3366 - mse: 0.3366</span>
-<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.3785 - mse: 0.3785</span>
-<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.3877 - mse: 0.3877</span>
-<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3936 - mse: 0.3936</span>
-<span class="go">4/4 [==============================] - 2s 533ms/step - loss: 0.3936 - mse: 0.3936 - val_loss: 0.4222 - val_mse: 0.4222</span>
+<span class="go">1/4 [======&gt;.......................] - ETA: 0s - loss: 0.3978 - mse: 0.3978</span>
+<span class="go">2/4 [==============&gt;...............] - ETA: 0s - loss: 0.3863 - mse: 0.3863</span>
+<span class="go">3/4 [=====================&gt;........] - ETA: 0s - loss: 0.4012 - mse: 0.4012</span>
+<span class="go">4/4 [==============================] - ETA: 0s - loss: 0.3931 - mse: 0.3931</span>
+<span class="go">4/4 [==============================] - 2s 404ms/step - loss: 0.3931 - mse: 0.3931 - val_loss: 0.4219 - val_mse: 0.4219</span>
 </pre></div>
 </div>
+</section>
+<section id="creating-pipelines">
+<h2>Creating Pipelines<a class="headerlink" href="#creating-pipelines" title="Permalink to this headline">¶</a></h2>
+<p>A <strong>Pipeline</strong> is a sequence of primitives that perform a number of operations to the given input to produce a desired output. In Orion, the pipeline takes a signal as input and produces a list of detected anomalies as output.</p>
+<p>To create an Orion pipeline, we need to assemble a JSON representation of the pipeline. The representation contains four blocks mentioned above:</p>
+<ol class="arabic simple">
+<li><p><em>primitives</em></p></li>
+<li><p><em>init_params</em></p></li>
+<li><p><em>input_names</em></p></li>
+<li><p><em>output_names</em></p></li>
+</ol>
+<p>Let’s visit one of the existing Orion pipelines to help understand how it is working, as an example we will work with the <code class="docutils literal notranslate"><span class="pre">lstm_dynamic_threshold</span></code> <a class="reference external" href="https://github.com/sintel-dev/Orion/blob/master/orion/pipelines/verified/lstm_dynamic_threshold/lstm_dynamic_threshold.json">pipeline</a>.</p>
+<section id="block-1-primitives">
+<h3>Block 1: Primitives<a class="headerlink" href="#block-1-primitives" title="Permalink to this headline">¶</a></h3>
+<p>The first block in the pipeline JSON is a list containing the sequence of primitives applied to the signal in order to produce a list of detected anomalies.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;primitives&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;mlstars.custom.timeseries_preprocessing.time_segments_aggregate&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;sklearn.impute.SimpleImputer&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;sklearn.preprocessing.MinMaxScaler&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;mlstars.custom.timeseries_preprocessing.rolling_window_sequences&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;keras.Sequential.LSTMTimeSeriesRegressor&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;orion.primitives.timeseries_errors.regression_errors&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;orion.primitives.timeseries_anomalies.find_anomalies&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The primitive <code class="docutils literal notranslate"><span class="pre">time_segments_aggregate</span></code> takes a raw signal to produce another signal where
+the time intervals between each sample and another is equal. Then the pipeline uses <code class="docutils literal notranslate"><span class="pre">SimpleImputer</span></code> to impute missing values in the signal with the mean value. Next, the pipeline scale the data into the range <code class="docutils literal notranslate"><span class="pre">[-1,</span> <span class="pre">1]</span></code> using <code class="docutils literal notranslate"><span class="pre">MinMaxScaler</span></code>. After that, <code class="docutils literal notranslate"><span class="pre">rolling_window_sequences</span></code> create the training window sequences for the model. The
+processed signal is now ready to train the double-stacked LSTM network through <code class="docutils literal notranslate"><span class="pre">LSTMTimeSeriesRegressor</span></code> primitive. Once the network is trained, we generate the predicted signal and compute the discrepancies (error) using <code class="docutils literal notranslate"><span class="pre">regression_errors</span></code>, which
+is an absolute point-wise difference. Lastly, we use <code class="docutils literal notranslate"><span class="pre">find_anomalies</span></code> on error values to find anomalous regions.</p>
+<p>Customizing pipelines and swapping one primitive with another can be done by changing and adding primitives in this block.</p>
+</section>
+<section id="block-2-initialization-parameters">
+<h3>Block 2: Initialization Parameters<a class="headerlink" href="#block-2-initialization-parameters" title="Permalink to this headline">¶</a></h3>
+<p>The second block in the pipeline JSON is a dictionary of primitive names and their associated initialized parameters.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;init_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;time_column&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">21600</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mean&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;sklearn.preprocessing.MinMaxScaler#1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;feature_range&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;target_column&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;window_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">250</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;keras.Sequential.LSTMTimeSeriesRegressor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;epochs&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;orion.primitives.timeseries_anomalies.find_anomalies#1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;window_size_portion&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.33</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;window_step_size_portion&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;fixed_threshold&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For example, in <code class="docutils literal notranslate"><span class="pre">time_segments_aggregate</span></code> we are marking that the interval between one sample and another in the signal is 6 hours which is 21600. Another example is that the <code class="docutils literal notranslate"><span class="pre">LSTMTimeSeriesRegressor</span></code> model is trained for 35 epochs.</p>
+<p>If the parameters are not present in this block, the default value in the original primitive JSON file will be used. For example if the interval was not specified, then it will use the default value (which is 3600) that is defined in the original <a class="reference external" href="https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.time_segments_aggregate.json">primitive</a>.</p>
+</section>
+<section id="block-3-input-names">
+<h3>Block 3: Input Names<a class="headerlink" href="#block-3-input-names" title="Permalink to this headline">¶</a></h3>
+<p>Block three is used for mapping name of argument to existing variables. Recall that primitives define input arguments and outputs. These variables names are how the pipeline knows which primitive uses which variables.</p>
+<p>Sometimes we need to change the names of these input arguments to find the correct variable.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;input_names&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;orion.primitives.timeseries_anomalies.find_anomalies#1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;target_index&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here the pipeline changes the input argument <code class="docutils literal notranslate"><span class="pre">index</span></code> to <code class="docutils literal notranslate"><span class="pre">target_index</span></code> which is basically denoting that the input <code class="docutils literal notranslate"><span class="pre">index</span></code> will now be the output <code class="docutils literal notranslate"><span class="pre">target_index</span></code> of a previous primitive which is the <a class="reference external" href="https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.rolling_window_sequences.json">rolling_window_sequences</a> primitive.</p>
+</section>
+<section id="block-4-output-names">
+<h3>Block 4: Output Names<a class="headerlink" href="#block-4-output-names" title="Permalink to this headline">¶</a></h3>
+<p>Similarly to input names, sometimes we need to change output names, which is what the pipeline specifies in block four.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;output_names&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;keras.Sequential.LSTMTimeSeriesRegressor#1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y_hat&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here we change the output of the primitive <code class="docutils literal notranslate"><span class="pre">LSTMTimeSeriesRegressor</span></code> from <code class="docutils literal notranslate"><span class="pre">y</span></code> to <code class="docutils literal notranslate"><span class="pre">y_hat</span></code> in order not to override the existing value of <code class="docutils literal notranslate"><span class="pre">y</span></code> and also to prepare it as input for the next primitive <a class="reference external" href="https://github.com/sintel-dev/Orion/blob/master/orion/primitives/jsons/orion.primitives.timeseries_errors.regression_errors.json">regression_errors</a>.</p>
+</section>
+</section>
+<section id="contributing-a-pipeline">
+<h2>Contributing a Pipeline<a class="headerlink" href="#contributing-a-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>To add a new pipeline to Orion, follow the same steps mentioned in <a class="reference internal" href="../benchmarking.html#benchmarking"><span class="std std-ref">Benchmarking</span></a> page.</p>
 </section>
 </section>
 

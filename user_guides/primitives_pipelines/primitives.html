@@ -200,6 +200,28 @@
             <a href="#postprocessing" class="nav-link">Postprocessing</a>
         </li>
     
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#creating-primitives" class="nav-link">Creating Primitives</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#scaling-primitive-example" class="nav-link">Scaling Primitive Example</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#components-of-a-primitive" class="nav-link">Components of a Primitive</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#adding-a-primitive-to-orion" class="nav-link">Adding a Primitive to Orion</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#resources" class="nav-link">Resources</a>
+        </li>
+    
     </ul>
 </nav>
 
@@ -253,6 +275,157 @@
 <li class="toctree-l1"><a class="reference internal" href="primitives/find_anomalies.html">find anomalies</a></li>
 </ul>
 </div>
+</section>
+<section id="creating-primitives">
+<h2>Creating Primitives<a class="headerlink" href="#creating-primitives" title="Permalink to this headline">¶</a></h2>
+<p><strong>Primitives</strong> are basic operations and are essentially functions. There are currently a number of already available pipelines in <a class="reference external" href="https://github.com/sintel-dev/Orion/tree/master/orion/primitives/jsons">orion primtives</a> and <a class="reference external" href="https://github.com/sintel-dev/ml-stars/tree/master/mlstars/">mlstars primitives</a>.</p>
+<p>A primitive consists of two items:</p>
+<ul class="simple">
+<li><p>python code that performs the operation/process on the data.</p></li>
+<li><p>an annotated JSON file that represents that primitives.</p></li>
+</ul>
+<p>For easier interpretation, we will walk through an example to demonstrate how you can create a primitive.</p>
+<section id="scaling-primitive-example">
+<h3>Scaling Primitive Example<a class="headerlink" href="#scaling-primitive-example" title="Permalink to this headline">¶</a></h3>
+<p>Let’s take a simple example of wanting to scale a one dimensional <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array into be in the range <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>. Then a python function that will perform this operation would look something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># file orion/primitives/preprocessing.py</span>
+
+<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<span class="sd">&quot;&quot;&quot;Scale data into the range [0, 1].</span>
+
+<span class="sd">Args:</span>
+<span class="sd">        X (array):</span>
+<span class="sd">            A one dimensional numpy array of integers or floats.</span>
+
+<span class="sd">Returns:</span>
+<span class="sd">        array:</span>
+<span class="sd">            A transformed array with values between [0, 1].</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">minimum</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">maximum</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="k">return</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">minimum</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">maximum</span> <span class="o">-</span> <span class="n">minimum</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">scale</span></code> now will return a transformed version of <cite>X</cite>. So what would the JSON file for this primitive look like?</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orion.primitives.preprocessing.scale&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Scale data to a [0, 1] range.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;classifiers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;preprocessor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;subtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;scaler&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;primitive&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orion.primitives.preprocessing.scale&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;produce&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;X&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ndarray&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ndarray&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The above JSON file represents the primitive <code class="docutils literal notranslate"><span class="pre">orion.primitives.preprocessing.scale</span></code>. It mentions the needed information to perform the operation as well as some valuable metadata such as the type of this primitive.</p>
+<p>The most important section of the JSON is that it defines the input of the primitives, which is the variable <code class="docutils literal notranslate"><span class="pre">X</span></code>, and the output, which is the variable <code class="docutils literal notranslate"><span class="pre">y</span></code>. Essentially this means that the primitive is expecting a one dimensional array named <code class="docutils literal notranslate"><span class="pre">X</span></code> to produce a new transformed array <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<p>Now that we have defined our function and JSON, we can use the primitive in pipelines.</p>
+</section>
+<section id="components-of-a-primitive">
+<h3>Components of a Primitive<a class="headerlink" href="#components-of-a-primitive" title="Permalink to this headline">¶</a></h3>
+<p>The previous example showed a simple case of a primitive with a single input and output and no hyperparameters. Below we show a comprehensive JSON representation with additional components.</p>
+<p>The first section of the JSON describes metadata about the primitive, the second part contains functional information including the names of the methods and their arguments, the third part defines the hyperparameters.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orion.primitives.primitive.PrimitiveName&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;contributors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Author &lt;email&gt;&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;documentation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;reference to documentation or paper if available.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;short description.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;classifiers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;postprocessor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;subtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anomaly_detector&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;modalities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">&quot;primitive&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orion.primitives.primitive.PrimitiveName&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fit&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;X&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ndarray&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ndarray&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;produce&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;detect&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;X&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ndarray&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ndarray&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ndarray&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;hyperparameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;fixed&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;hyper_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The components of the JSON include:</p>
+<ul class="simple">
+<li><p>The name of the file and the name of the primitive should be following the name of the corresponding function and module it belongs to. For example, the function implemented in the previous example belongs in <code class="docutils literal notranslate"><span class="pre">preprocessing.py</span></code> in the <code class="docutils literal notranslate"><span class="pre">orion.primitives</span></code> module and thus the name of the JSON file is <code class="docutils literal notranslate"><span class="pre">orion.primitives.preprocessing.scale.json</span></code> and the name of the primitive would be <code class="docutils literal notranslate"><span class="pre">orion.primitives.preprocessing.scale</span></code>.</p></li>
+<li><p>The description and metadata section of the primitive which includes: contributions, description, documentation, classifiers and modalities.</p></li>
+<li><p>The arguments section which includes the name of the function that will be called during the <code class="docutils literal notranslate"><span class="pre">fit</span></code> process and <code class="docutils literal notranslate"><span class="pre">produce</span></code> process. In addition, what are the expected arguments that it will receive and produce in both processes.</p></li>
+<li><p>Lastly, the hyperparameters section which includes a list of <em>fixed</em> hyperparameters.</p></li>
+</ul>
+</section>
+<section id="adding-a-primitive-to-orion">
+<h3>Adding a Primitive to Orion<a class="headerlink" href="#adding-a-primitive-to-orion" title="Permalink to this headline">¶</a></h3>
+<p>Once you have created your primitive and would like to make it part of the Orion library, follow these steps:</p>
+<ol class="arabic simple">
+<li><p>Create a new issue on github detailing the functionality of the primitive.</p></li>
+<li><dl class="simple">
+<dt>Open a new pull request associated with the issue that includes:</dt><dd><ol class="arabic simple">
+<li><p>The code that implements the functionality of the primitive. Make sure it follows our code style and has documentation. This code should be located in python file in <code class="docutils literal notranslate"><span class="pre">orion/primitives/</span></code></p></li>
+<li><p>The JSON file of the primitive. This file should stored in <code class="docutils literal notranslate"><span class="pre">orion/primitives/jsons/</span></code></p></li>
+<li><p>Unit tests that ensures your code is covered.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>The maintainers will review your code help improve your implementation and test it.</p></li>
+<li><p>Once it has passed all test and is approved it will be merged!</p></li>
+</ol>
+</section>
+</section>
+<section id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<p>To read more about primitives, please refer to the original <a class="reference external" href="https://arxiv.org/pdf/1905.08942.pdf">MLBazaar paper</a> and <a class="reference external" href="https://sintel.dev/ml-stars/getting_started/concepts.html">ml-stars documentation</a>.</p>
+<p>If you have any questions please open an <a class="reference external" href="https://github.com/sintel-dev/Orion/issues/new">issue</a>!</p>
 </section>
 </section>
 
