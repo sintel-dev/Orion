@@ -6,13 +6,6 @@ https://arxiv.org/pdf/2110.02642.pdf
 
 This is a modified version of the original code, which can be found
 at https://github.com/thuml/Anomaly-Transformer/tree/main
-
-win_size -> window_size
-n_heads -> num_heads
-d_model -> d_model
-e_layers -> num_layers
-enc_in -> input_size
-
 """
 import os
 import math
@@ -58,12 +51,11 @@ class PositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len=5000):
         super(PositionalEncoding, self).__init__()
 
-        pe = torch.zeros(max_len, d_model)
-        pe.require_grad = False
 
         position = torch.arange(0, max_len).unsqueeze(1)
         div_term = torch.exp(torch.arange(0, d_model, 2) * -(math.log(10000.0) / d_model))
-
+        
+        pe = torch.zeros(max_len, d_model)
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
 
@@ -325,6 +317,8 @@ class AnomalyTransformer(object):
             Number of iterations to train the model.
         learning_rate (float):
             Learning rate for the optimizer.
+        temperature (int):
+            Scaling value. Default 50.
         verbose (bool):
             Whether to be on verbose mode or not.
         cuda (bool):
@@ -332,8 +326,6 @@ class AnomalyTransformer(object):
         valid_split (float):
             A float to split data dataframe to validation set. Data needs to contain a label
             column. Use ``target_column`` to change the target column name.
-        model_path (str):
-            Path to load model if any.
         output_dir (str):
             Path to folder where to save the model.
     """
@@ -355,7 +347,8 @@ class AnomalyTransformer(object):
     def __init__(self, input_size=55, output_size=55, window_size=100, step=1, d_model=512, 
                  n_hidden=512, num_layers=3, num_heads=8, attention_dropout=0.0, dropout=0.0, 
                  activation='gelu', output_attention=True, batch_size=32, learning_rate=1e-4, 
-                 epochs=10, shuffle=True, cuda=True, verbose=False):
+                 temperature=50, epochs=10, valid_split=0.0, shuffle=True, cuda=True, 
+                 verbose=False):
 
         self.input_size = input_size
         self.output_size = output_size
@@ -373,7 +366,9 @@ class AnomalyTransformer(object):
         
         self.batch_size = batch_size
         self.learning_rate = learning_rate
+        self.temperature = temperature
         self.epochs = epochs
+        self.valid_split = valid_split
         self.shuffle = shuffle
         self.cuda = cuda
         self.verbose = verbose
@@ -401,8 +396,117 @@ class AnomalyTransformer(object):
         self.criterion = nn.MSELoss()
         self.model.to(self.device)
 
+    def _get_loss(self, prior, series, detach=False):
+        # calculate Association discrepancy
+        series_loss = 0.0
+        prior_loss = 0.0
+        for u in range(len(prior)):
+            series_value = series[u]
+            prior_value = prior[u] / torch.unsqueeze(torch.sum(prior[u], dim=-1), 
+                dim=-1).repeat(1, 1, 1, self.window_size)
 
-    def fit(X):
+            series_second = series_value
+            prior_second = prior_value
+
+            if detach:
+                series_second = series_second.detach()
+                prior_second = prior_second.detach()
+
+
+            series_loss += (torch.mean(self._kl_loss(series_second, prior_value.detach()) + 
+                            torch.mean(self._kl_loss(prior_value.detach(), series_second)))
+
+            prior_loss += (torch.mean(self._kl_loss(prior_second, series_value.detach())) + 
+                           torch.mean(self._kl_loss(series_value.detach(), prior_second)))
+
+        return series_loss, prior_loss
+
+
+    def _validate(self, valid_loader):
+        self.model.eval()
+
+        losses = list()
+        for input_data in valid_loader:
+            x = input_data.to(self.device)
+            output, series, prior, _ = self.model(x)
+
+            series_loss, _ = self._get_loss(prior, series)
+            series_loss = series_loss / len(prior)
+            rec_loss = self.criterion(output, x)
+
+            losses.append((rec_loss - self.k * series_loss).item())
+
+        return losses
+
+
+    def _fit(self, train_loader, valid_loader):
+
+        for epoch in range(self.epochs):
+            loss1_list = []
+
+            for input_data in train_loader:
+                self.optimizer.zero_grad()
+                x = input_data.to(self.device)
+                output, series, prior, _ = self.model(x)
+
+                series_loss, prior_loss = self._get_loss(prior, series)
+                series_loss = series_loss / len(prior)
+                prior_loss = prior_loss / len(prior)
+
+                rec_loss = self.criterion(output, x)
+
+                losses.append((rec_loss - self.k * series_loss).item())
+                rec_series_loss = rec_loss - self.k * series_loss
+                rec_prior_loss = rec_loss + self.k * prior_loss
+
+                # minimax strategy
+                rec_series_loss.backward(retain_graph=True)
+                rec_prior_loss.backward()
+                self.optimizer.step()
+
+            if valid_loader is not None:
+                valid_loss = self._validate(valid_loader)
+            else:
+                valid_loss = None
+
+            if self.verbose:
+                print('Epoch: {}/{}, Loss: {}, Valid Loss {}'.format(
+                    epoch+1, self.epochs, np.mean(losses), valid_loss))
+
+            self._adjust_learning_rate(self.optimizer, epoch + 1, self.learning_rate)
+
+
+    def fit(self, X):
+        if self.output_dir:
+            model_dir = Path(self.output_dir)
+            os.makedirs(model_dir, exist_ok=True)
+
+        train = X
+        valid_loader = None
+
+        # split data
+        if self.valid_split > 0:
+            valid_size = int(len(X) * self.valid_split)
+            train = X[: -valid_size]
+            valid = X[-valid_size:]
+
+            valid_loader = DataLoader(dataset=Signal(valid, self.window_size, self.step),
+                                      batch_size=self.batch_size,
+                                      shuffle=False)
+
+        train_loader = DataLoader(dataset=Signal(train, self.window_size, self.step),
+                                  batch_size=self.batch_size,
+                                  shuffle=self.shuffle)
+
+        self._fit(train_loader, valid_loader)
+
+        if self.output_dir:
+            torch.save(self.model.state_dict(), model_dir + f'checkpoint_{self.epochs}.pth')
+
+
+    def predict(self, X):
         data_loader = DataLoader(dataset=Signal(X, self.window_size, self.step),
-                                 batch_size=self.batch_size,
-                                 shuffle=self.shuffle)
+                                 batch_size=self.batch_size, shuffle=self.shuffle)
+
+
+
