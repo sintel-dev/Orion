@@ -347,7 +347,7 @@ class AnomalyTransformer():
 
     def __init__(self, input_size=55, output_size=55, window_size=100, step=1, k=3, d_model=512,
                  n_hidden=512, num_layers=3, num_heads=8, attention_dropout=0.0, dropout=0.0,
-                 activation='gelu', output_attention=True, batch_size=32, learning_rate=1e-4,
+                 activation='gelu', output_attention=True, batch_size=256, learning_rate=1e-4,
                  temperature=50, epochs=10, valid_split=0.0, shuffle=True, cuda=True,
                  optimizer="torch.optim.Adam", anormly_ratio=1, verbose=False, output_dir=False):
 
@@ -448,7 +448,7 @@ class AnomalyTransformer():
                 metric = torch.softmax((-series_loss - prior_loss), dim=-1)
                 energy.append((metric * loss).detach().cpu().numpy())
 
-        return np.array(np.concatenate(energy, axis=0).reshape(-1)), predictions
+        return np.concatenate(energy, axis=0), np.concatenate(predictions, axis=0)
 
     def _validate(self, valid_loader):
         self.model.eval()
@@ -464,7 +464,7 @@ class AnomalyTransformer():
 
             losses.append((rec_loss - self.k * series_loss).item())
 
-        return losses
+        return np.mean(losses)
 
     def _fit(self, train_loader, valid_loader):
         for epoch in range(self.epochs):
@@ -502,6 +502,7 @@ class AnomalyTransformer():
 
             self._adjust_learning_rate(self.optimizer, epoch + 1, self.learning_rate)
 
+
     def fit(self, X):
         train = X
         valid_loader = None
@@ -534,10 +535,19 @@ class AnomalyTransformer():
                                  batch_size=self.batch_size, shuffle=self.shuffle)
 
         energy, predictions = self._get_energy(data_loader)
-        return np.concatenate(predictions, axis=0).squeeze(0), energy
+        return predictions, energy
+
 
     def threshold_anomalies(self, energy, index):
-        combined_energy = np.concatenate([self.train_energy, energy], axis=0)
+        flat_energy = np.array(energy.reshape(-1))
+        flat_train_energy = np.array(self.train_energy.reshape(-1))
+        combined_energy = np.concatenate([flat_train_energy, flat_energy], axis=0)
         thresh = np.percentile(combined_energy, 100 - self.anormly_ratio)
 
-        (energy > thresh).astype(int)
+        length, window_size = energy
+        errors = np.array([
+            np.max(energy[::-1, :].diagonal(i)) for i in range(-length + 1, window_size)
+        ])
+
+        anomalies = (errors > thresh).astype(int)
+        return anomalies
