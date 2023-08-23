@@ -16,7 +16,6 @@ from itertools import groupby
 from pathlib import Path
 
 import numpy as np
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -542,13 +541,13 @@ class AnomalyTransformer():
 
 def threshold_anomalies(energy, index, train_energy, anomaly_ratio=1.0):
     flat_energy = np.array(energy.reshape(-1))
-    flat_train_energy = np.array(self.train_energy.reshape(-1))
+    flat_train_energy = np.array(train_energy.reshape(-1))
     combined_energy = np.concatenate([flat_train_energy, flat_energy], axis=0)
     thresh = np.percentile(combined_energy, 100 - anomaly_ratio)
 
     length, window_size = energy.shape
     errors = np.array([
-        np.mean(energy[::-1, :].diagonal(i)) for i in range(-length + 1, window_size)
+        np.max(energy[::-1, :].diagonal(i)) for i in range(-length + 1, window_size)
     ])
 
     anomalies = (errors > thresh).astype(int)
