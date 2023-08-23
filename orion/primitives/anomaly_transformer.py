@@ -537,32 +537,33 @@ class AnomalyTransformer():
                                  batch_size=self.batch_size, shuffle=self.shuffle)
 
         energy, predictions = self._get_energy(data_loader)
-        return predictions, energy
+        return predictions, energy, self.train_energy
 
-    def threshold_anomalies(self, energy, index, anomaly_ratio=1.0):
-        flat_energy = np.array(energy.reshape(-1))
-        flat_train_energy = np.array(self.train_energy.reshape(-1))
-        combined_energy = np.concatenate([flat_train_energy, flat_energy], axis=0)
-        thresh = np.percentile(combined_energy, 100 - anomaly_ratio)
 
-        length, window_size = energy.shape
-        errors = np.array([
-            np.mean(energy[::-1, :].diagonal(i)) for i in range(-length + 1, window_size)
-        ])
+def threshold_anomalies(energy, index, train_energy, anomaly_ratio=1.0):
+    flat_energy = np.array(energy.reshape(-1))
+    flat_train_energy = np.array(self.train_energy.reshape(-1))
+    combined_energy = np.concatenate([flat_train_energy, flat_energy], axis=0)
+    thresh = np.percentile(combined_energy, 100 - anomaly_ratio)
 
-        anomalies = (errors > thresh).astype(int)
+    length, window_size = energy.shape
+    errors = np.array([
+        np.mean(energy[::-1, :].diagonal(i)) for i in range(-length + 1, window_size)
+    ])
 
-        intervals = list()
-        i = 0
-        for k, g in groupby(anomalies):
-            length = len(list(g))
-            if k == 1:
-                if length == 1:
-                    intervals.append((index[i], index[i], errors[i]))
-                else:
-                    intervals.append((index[i], index[i + length - 1],
-                                     np.mean(errors[i: i + length - 1])))
+    anomalies = (errors > thresh).astype(int)
 
-            i += length
+    intervals = list()
+    i = 0
+    for k, g in groupby(anomalies):
+        length = len(list(g))
+        if k == 1:
+            if length == 1:
+                intervals.append((index[i], index[i], errors[i]))
+            else:
+                intervals.append((index[i], index[i + length - 1],
+                                 np.mean(errors[i: i + length - 1])))
 
-        return intervals
+        i += length
+
+    return intervals

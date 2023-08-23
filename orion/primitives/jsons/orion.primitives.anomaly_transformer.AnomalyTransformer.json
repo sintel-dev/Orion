@@ -1,9 +1,9 @@
 {
     "name": "orion.primitives.anomaly_transformer.AnomalyTransformer",
     "contributors": [
-        "Sarah Alnegheimish <smish@mit.edu>",
+        "Sarah Alnegheimish <smish@mit.edu>"
     ],
-    "documentation": "",
+    "documentation": "https://arxiv.org/pdf/2110.02642.pdf",
     "description": "time series transformer for anomaly detection",
     "classifiers": {
         "type": "estimator",
@@ -35,6 +35,10 @@
             },
             {
                 "name": "energy",
+                "type": "ndarray"
+            },
+            {
+                "name": "train_energy",
                 "type": "ndarray"
             }
         ]
@@ -85,7 +89,7 @@
                 "type": "float",
                 "default": 0.0
             },
-            "droptout": {
+            "dropout": {
                 "type": "int",
                 "default": 0.0
             },
@@ -109,7 +113,7 @@
                 "type": "int",
                 "default": 64
             },
-            "temprature": {
+            "temperature": {
                 "type": "int",
                 "default": 50
             },
@@ -128,14 +132,6 @@
             "verbose": {
                 "type": "bool",
                 "default": true
-            },
-            "anomaly_ration": {
-                "type": "float",
-                "default": 1.0
-            }
-            "output_dir": {
-                "type": "str",
-                "default": null
             }
         }
     }

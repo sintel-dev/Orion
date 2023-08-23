@@ -22,6 +22,10 @@
             {
                 "name": "index",
                 "type": "ndarray"
+            },
+            {
+                "name": "train_energy",
+                "type": "ndarray"
             }
         ],
         "output": [
@@ -33,7 +37,7 @@
     },
     "hyperparameters": {
         "fixed": {
-            "anomaly_ration": {
+            "anomaly_ratio": {
                 "type": "float",
                 "default": 1.0
             }
