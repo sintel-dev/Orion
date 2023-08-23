@@ -16,10 +16,11 @@ from itertools import groupby
 from pathlib import Path
 
 import numpy as np
+from mlstars.utils import import_object
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mlstars.utils import import_object
 from torch.utils.data import DataLoader
 
 LOGGER = logging.getLogger(__name__)
