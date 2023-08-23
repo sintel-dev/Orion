@@ -7,9 +7,12 @@ https://arxiv.org/pdf/2110.02642.pdf
 This is a modified version of the original code, which can be found
 at https://github.com/thuml/Anomaly-Transformer/tree/main
 """
+# -*- coding: utf-8 -*-
+
 import logging
 import math
 import os
+from itertools import groupby
 from pathlib import Path
 
 import numpy as np
@@ -502,7 +505,6 @@ class AnomalyTransformer():
 
             self._adjust_learning_rate(self.optimizer, epoch + 1, self.learning_rate)
 
-
     def fit(self, X):
         train = X
         valid_loader = None
@@ -526,6 +528,7 @@ class AnomalyTransformer():
         if self.output_dir:
             model_dir = Path(self.output_dir)
             os.makedirs(model_dir, exist_ok=True)
+            LOGGER.info(f"Saving model to {model_dir}.")
             torch.save(self.model.state_dict(), model_dir + f'checkpoint_{self.epochs}.pth')
 
         self.train_energy, train_predictions = self._get_energy(train_loader)
@@ -537,17 +540,30 @@ class AnomalyTransformer():
         energy, predictions = self._get_energy(data_loader)
         return predictions, energy
 
-
     def threshold_anomalies(self, energy, index):
         flat_energy = np.array(energy.reshape(-1))
         flat_train_energy = np.array(self.train_energy.reshape(-1))
         combined_energy = np.concatenate([flat_train_energy, flat_energy], axis=0)
         thresh = np.percentile(combined_energy, 100 - self.anormly_ratio)
 
-        length, window_size = energy
+        length, window_size = energy.shape
         errors = np.array([
-            np.max(energy[::-1, :].diagonal(i)) for i in range(-length + 1, window_size)
+            np.mean(energy[::-1, :].diagonal(i)) for i in range(-length + 1, window_size)
         ])
 
         anomalies = (errors > thresh).astype(int)
-        return anomalies
+
+        intervals = list()
+        i = 0
+        for k, g in groupby(anomalies):
+            length = len(list(g))
+            if k == 1:
+                if length == 1:
+                    intervals.append((index[i], index[i], errors[i]))
+                else:
+                    intervals.append((index[i], index[i + length - 1],
+                                     np.mean(errors[i: i + length - 1])))
+
+            i += length
+
+        return intervals
