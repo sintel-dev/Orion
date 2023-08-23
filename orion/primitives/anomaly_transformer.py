@@ -16,6 +16,7 @@ from itertools import groupby
 from pathlib import Path
 
 import numpy as np
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -348,11 +349,11 @@ class AnomalyTransformer():
 
             LOGGER.info(f'Updating learning rate to {lr}')
 
-    def __init__(self, input_size=55, output_size=55, window_size=100, step=1, k=3, d_model=512,
+    def __init__(self, input_size=1, output_size=1, window_size=100, step=1, k=3, d_model=512,
                  n_hidden=512, num_layers=3, num_heads=8, attention_dropout=0.0, dropout=0.0,
                  activation='gelu', output_attention=True, batch_size=256, learning_rate=1e-4,
                  temperature=50, epochs=10, valid_split=0.0, shuffle=True, cuda=True,
-                 optimizer="torch.optim.Adam", anormly_ratio=1, verbose=False, output_dir=False):
+                 optimizer="torch.optim.Adam", verbose=False, output_dir=False):
 
         self.input_size = input_size
         self.output_size = output_size
@@ -369,9 +370,7 @@ class AnomalyTransformer():
         self.output_attention = output_attention
         self.attention_dropout = attention_dropout
 
-        self.anormly_ratio = anormly_ratio
         self.temperature = temperature
-
         self.batch_size = batch_size
         self.learning_rate = learning_rate
         self.epochs = epochs
@@ -540,11 +539,11 @@ class AnomalyTransformer():
         energy, predictions = self._get_energy(data_loader)
         return predictions, energy
 
-    def threshold_anomalies(self, energy, index):
+    def threshold_anomalies(self, energy, index, anomaly_ratio=1.0):
         flat_energy = np.array(energy.reshape(-1))
         flat_train_energy = np.array(self.train_energy.reshape(-1))
         combined_energy = np.concatenate([flat_train_energy, flat_energy], axis=0)
-        thresh = np.percentile(combined_energy, 100 - self.anormly_ratio)
+        thresh = np.percentile(combined_energy, 100 - anomaly_ratio)
 
         length, window_size = energy.shape
         errors = np.array([
