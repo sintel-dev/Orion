@@ -11,18 +11,17 @@ at https://github.com/thuml/Anomaly-Transformer/tree/main
 
 import logging
 import math
-import os
 import operator
+import os
 from itertools import groupby
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from mlstars.utils import import_object
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from mlstars.utils import import_object
 from torch.utils.data import DataLoader
 
 from orion.primitives.timeseries_anomalies import _merge_sequences, _prune_anomalies
@@ -452,17 +451,16 @@ class AnomalyTransformer():
 
         energy = []
         predictions = []
-        with torch.no_grad():
-            for i, input_data in enumerate(data_loader):
-                x = input_data.to(self.device)
-                output, series, prior, _ = self.model(x)
-                predictions.append(output.cpu().numpy())
-                loss = torch.mean(self.mse(x, output), dim=-1)
-                series_loss, prior_loss = self._get_loss(
-                    prior, series, temperature=self.temperature, detach=True)
+        for i, input_data in enumerate(data_loader):
+            x = input_data.to(self.device)
+            output, series, prior, _ = self.model(x)
+            predictions.append(output.detach().cpu().numpy())
+            loss = torch.mean(self.mse(x, output), dim=-1)
+            series_loss, prior_loss = self._get_loss(
+                prior, series, temperature=self.temperature, detach=True)
 
-                metric = torch.softmax((-series_loss - prior_loss), dim=-1)
-                energy.append((metric * loss).detach().cpu().numpy())
+            metric = torch.softmax((-series_loss - prior_loss), dim=-1)
+            energy.append((metric * loss).detach().cpu().numpy())
 
         return np.concatenate(energy, axis=0), np.concatenate(predictions, axis=0)
 
