@@ -28,6 +28,7 @@ install_requires = [
     'tabulate>=0.8.3,<0.9',
     'numba>=0.48,<0.52',
     'pyts>=0.9,<0.12',
+    'torch>=1.4',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
@@ -35,7 +36,7 @@ install_requires = [
     # fix conflict
     'h5py<2.11.0,>=2.10.0',
     'protobuf<4',
-    
+
     # fails on python 3.6
     'opencv-python<4.7',
 ]

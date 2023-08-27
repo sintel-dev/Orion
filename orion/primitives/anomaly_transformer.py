@@ -12,16 +12,20 @@ at https://github.com/thuml/Anomaly-Transformer/tree/main
 import logging
 import math
 import os
+import operator
 from itertools import groupby
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 from mlstars.utils import import_object
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+
+from orion.primitives.timeseries_anomalies import _merge_sequences, _prune_anomalies
 
 LOGGER = logging.getLogger(__name__)
 
@@ -38,19 +42,29 @@ class Signal(object):
             Stride size.
     """
 
-    def __init__(self, X, window_size, step=1):
+    def __init__(self, X, window_size, step=1, mode='train'):
         self.data = X
         self.step = step
+        self.mode = mode
         self.window_size = window_size
 
     def __len__(self):
+        if self.mode == 'test':
+            return (self.data.shape[0] - self.window_size) // self.window_size + 1
+
         return (self.data.shape[0] - self.window_size) // self.step + 1
 
     def __getitem__(self, index):
         start = index * self.step
         end = start + self.window_size
 
-        return np.float32(self.data[start:end])
+        if self.mode == 'train':
+            return np.float32(self.data[start: end])
+        elif self.mode == 'test':
+            start = start // self.step * self.window_size
+            return np.float32(self.data[start: start + self.window_size])
+        else:
+            raise ValueError(f'Unknown {self.mode} mode.')
 
 
 class PositionalEncoding(nn.Module):
@@ -533,37 +547,35 @@ class AnomalyTransformer():
         self.train_energy, train_predictions = self._get_energy(train_loader)
 
     def predict(self, X):
-        data_loader = DataLoader(dataset=Signal(X, self.window_size, self.step),
-                                 batch_size=self.batch_size, shuffle=self.shuffle)
+        data_loader = DataLoader(dataset=Signal(X, self.window_size, self.step, mode='test'),
+                                 batch_size=self.batch_size)
 
         energy, predictions = self._get_energy(data_loader)
         return predictions, energy, self.train_energy
 
 
-def threshold_anomalies(energy, index, train_energy, anomaly_ratio=1.0):
-    flat_energy = np.array(energy.reshape(-1))
-    flat_train_energy = np.array(train_energy.reshape(-1))
-    combined_energy = np.concatenate([flat_train_energy, flat_energy], axis=0)
+def threshold_anomalies(energy, index, train_energy, anomaly_ratio=1.0, min_percent=0.1,
+                        anomaly_padding=50):
+    energy = np.array(energy.reshape(-1))
+    train_energy = np.array(train_energy.reshape(-1))
+    combined_energy = np.concatenate([train_energy, energy], axis=0)
     thresh = np.percentile(combined_energy, 100 - anomaly_ratio)
 
-    length, window_size = energy.shape
-    errors = np.array([
-        np.max(energy[::-1, :].diagonal(i)) for i in range(-length + 1, window_size)
-    ])
-
-    anomalies = (errors > thresh).astype(int)
+    anomalies = (energy > thresh).astype(int)
 
     intervals = list()
-    i = 0
-    for k, g in groupby(anomalies):
+    idx = 0
+    for is_anomaly, g in groupby(anomalies):
         length = len(list(g))
-        if k == 1:
-            if length == 1:
-                intervals.append((index[i], index[i], errors[i]))
-            else:
-                intervals.append((index[i], index[i + length - 1],
-                                 np.mean(errors[i: i + length - 1])))
+        if is_anomaly == 1:
+            start = max(0, idx - anomaly_padding)
+            end = min(idx + length + anomaly_padding, len(anomalies))
+            intervals.append((index[start], index[end], np.mean(energy[start: end])))
 
-        i += length
+        idx += length
 
-    return intervals
+    intervals.sort(key=operator.itemgetter(2), reverse=True)
+    intervals = pd.DataFrame.from_records(intervals, columns=['start', 'stop', 'max_error'])
+
+    pruned = _prune_anomalies(intervals, min_percent)
+    return _merge_sequences(pruned)

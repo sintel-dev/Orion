@@ -40,6 +40,14 @@
             "anomaly_ratio": {
                 "type": "float",
                 "default": 1.0
+            },
+            "min_percent": {
+                "type": "float",
+                "default": 0.1
+            },
+            "anomaly_padding": {
+                "type": "int",
+                "default": 50
             }
         }
     }

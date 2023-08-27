@@ -15,6 +15,10 @@
         "orion.primitives.anomaly_transformer.AnomalyTransformer#1": {
             "epochs": 5,
             "verbose": true
+        },
+        "orion.primitives.anomaly_transformer.threshold_anomalies#1": {
+            "anomaly_ratio": 1.0,
+            "min_percent": 0.1
         }
     }
 }
