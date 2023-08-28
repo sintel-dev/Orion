@@ -1,0 +1,12 @@
+{
+    "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "time_column": "timestamp",
+        "interval": 300,
+        "method": "mean"
+    },
+    "orion.primitives.tadgan.score_anomalies#1": {
+        "rec_error_type": "dtw",
+        "comb": "sum",
+        "lambda_rec": 0.5
+    }
+}

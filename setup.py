@@ -27,7 +27,7 @@ install_requires = [
     'scikit-learn>=0.22,<1.2',
     'tabulate>=0.8.3,<0.9',
     'numba>=0.48,<0.52',
-    'pyts>=0.9,<0.11',
+    'pyts>=0.9,<0.12',
     'torch>=1.10,<1.13',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
@@ -127,6 +127,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.5.1.dev0',
+    version='0.5.2.dev0',
     zip_safe=False,
 )

@@ -8,20 +8,20 @@ mv orion-jupyter.tar Orion
 
 # Download the demo data inside the new repository
 cd Orion
-wget https://d3-ai-orion.s3.amazonaws.com/B-1.csv
+wget https://sintel-orion.s3.amazonaws.com/B-1.csv
 
-mkdir -p notebooks/data
-cd notebooks/data
-wget https://d3-ai-orion.s3.amazonaws.com/S-1.csv
-wget https://d3-ai-orion.s3.amazonaws.com/S-2.csv
-wget https://d3-ai-orion.s3.amazonaws.com/E-1.csv
-wget https://d3-ai-orion.s3.amazonaws.com/P-1.csv
+mkdir -p tutorials/data
+cd tutorials/data
+wget https://sintel-orion.s3.amazonaws.com/S-1.csv
+wget https://sintel-orion.s3.amazonaws.com/S-2.csv
+wget https://sintel-orion.s3.amazonaws.com/E-1.csv
+wget https://sintel-orion.s3.amazonaws.com/P-1.csv
 cd ../..
 
 mkdir -p orion/data
-cp notebooks/data/* orion/data
+cp tutorials/data/* orion/data
 cd orion/data
-wget https://d3-ai-orion.s3.amazonaws.com/anomalies.csv
+wget https://sintel-orion.s3.amazonaws.com/anomalies.csv
 
 cd ../../../
 
