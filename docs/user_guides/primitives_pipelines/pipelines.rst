@@ -286,7 +286,7 @@ Here we change the output of the primitive ``LSTMTimeSeriesRegressor`` from ``y`
 Contributing a Pipeline
 -----------------------
 
-To add a new pipeline to Orion, follow the same steps mentioned in :ref:`benchmarking` page.
+To add a new pipeline to Orion, follow the same steps mentioned in :ref:`int_benchmark` page.
 
 
 .. _NASA: https://arxiv.org/abs/1802.04431
