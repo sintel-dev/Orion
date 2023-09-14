@@ -233,5 +233,5 @@ class FindAnomaliesTest(TestCase):
     def test_find_anomalies_fixed_threshold(self):
         self._run([0.5, 0.5, 0, 0], np.array([]), fixed_threshold=True)
 
-    def test_find_anomalies_fixed_threshold(self):
+    def test_find_anomalies_inverse(self):
         self._run([0.5, 0.5, 0, 0], np.array([[2., 4., 0.5]]), inverse=True)
