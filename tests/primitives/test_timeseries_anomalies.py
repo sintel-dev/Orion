@@ -190,12 +190,15 @@ class FindAnomaliesTest(TestCase):
     ANOMALY_PADDING = 1
 
     def _run(self, errors, expected, index=INDEX_SHORT, window_size=None,
-             window_step_size=None, lower_threshold=False, fixed_threshold=False):
+             window_step_size=None, lower_threshold=False, fixed_threshold=False,
+             inverse=False):
         found = find_anomalies(np.asarray(errors), index=index,
                                anomaly_padding=self.ANOMALY_PADDING,
-                               window_size=window_size, window_step_size=window_step_size,
+                               window_size=window_size, 
+                               window_step_size=window_step_size,
                                lower_threshold=lower_threshold,
-                               fixed_threshold=fixed_threshold)
+                               fixed_threshold=fixed_threshold,
+                               inverse=inverse)
 
         assert_allclose(found, expected)
 
@@ -229,3 +232,6 @@ class FindAnomaliesTest(TestCase):
 
     def test_find_anomalies_fixed_threshold(self):
         self._run([0.5, 0.5, 0, 0], np.array([]), fixed_threshold=True)
+
+    def test_find_anomalies_fixed_threshold(self):
+        self._run([0.5, 0.5, 0, 0], np.array([[2., 4., 0.5]]), inverse=True)
