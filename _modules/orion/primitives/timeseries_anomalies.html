@@ -561,7 +561,7 @@
 
 <div class="viewcode-block" id="find_anomalies"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.timeseries_anomalies.find_anomalies.html#orion.primitives.timeseries_anomalies.find_anomalies">[docs]</a><span class="k">def</span> <span class="nf">find_anomalies</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">z_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">window_size_portion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">window_step_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">window_step_size_portion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_percent</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                   <span class="n">anomaly_padding</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">lower_threshold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fixed_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">anomaly_padding</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">lower_threshold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fixed_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find sequences of error values that are anomalous.</span>
 
 <span class="sd">    We first define the window of errors, that we want to analyze. We then find the anomalous</span>
@@ -603,6 +603,8 @@
 <span class="sd">        fixed_threshold (bool):</span>
 <span class="sd">            Optional. Indicates whether to use fixed threshold or dynamic threshold. If not</span>
 <span class="sd">            given, `False` is used.</span>
+<span class="sd">        inverse (bool):</span>
+<span class="sd">            Optional. Indicate whether to take the inverse of errors.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray:</span>
@@ -616,6 +618,9 @@
     <span class="n">window_step_size</span> <span class="o">=</span> <span class="n">window_step_size</span> <span class="ow">or</span> <span class="n">window_size</span>
     <span class="k">if</span> <span class="n">window_step_size_portion</span><span class="p">:</span>
         <span class="n">window_step_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">window_size</span> <span class="o">*</span> <span class="n">window_step_size_portion</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">inverse</span><span class="p">:</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">errors</span><span class="p">)</span>
 
     <span class="n">window_start</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">window_end</span> <span class="o">=</span> <span class="mi">0</span>
