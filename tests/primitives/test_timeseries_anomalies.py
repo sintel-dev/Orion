@@ -194,7 +194,7 @@ class FindAnomaliesTest(TestCase):
              inverse=False):
         found = find_anomalies(np.asarray(errors), index=index,
                                anomaly_padding=self.ANOMALY_PADDING,
-                               window_size=window_size, 
+                               window_size=window_size,
                                window_step_size=window_step_size,
                                lower_threshold=lower_threshold,
                                fixed_threshold=fixed_threshold,
