@@ -77,7 +77,7 @@
                 "type": "list",
                 "default": [
                     {
-                        "class": "keras.callbacks.EarlyStopping",
+                        "class": "tensorflow.keras.callbacks.EarlyStopping",
                         "args": {
                             "monitor": "val_loss",
                             "patience": 10,

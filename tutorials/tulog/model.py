@@ -14,17 +14,17 @@ encoder = [
         }
     },
     {
-        "class": "keras.layers.Flatten",
+        "class": "tensorflow.keras.layers.Flatten",
         "parameters": {}
     },
     {
-        "class": "keras.layers.Dense",
+        "class": "tensorflow.keras.layers.Dense",
         "parameters": {
             "units": 20
         }
     },
     {
-        "class": "keras.layers.Reshape",
+        "class": "tensorflow.keras.layers.Reshape",
         "parameters": {
             "target_shape": "encoder_reshape_shape"
         }
@@ -33,17 +33,17 @@ encoder = [
 
 generator = [
     {
-        "class": "keras.layers.Flatten",
+        "class": "tensorflow.keras.layers.Flatten",
         "parameters": {}
     },
     {
-        "class": "keras.layers.Dense",
+        "class": "tensorflow.keras.layers.Dense",
         "parameters": {
             "units": 50
         }
     },
     {
-        "class": "keras.layers.Reshape",
+        "class": "tensorflow.keras.layers.Reshape",
         "parameters": {
             "target_shape": "generator_reshape_shape"
         }
@@ -68,7 +68,7 @@ generator = [
         }
     },
     {
-        "class": "keras.layers.convolutional.UpSampling1D",
+        "class": "tensorflow.keras.layers.convolutional.UpSampling1D",
         "parameters": {
             "size": 2
         }
@@ -93,10 +93,10 @@ generator = [
         }
     },
     {
-        "class": "keras.layers.TimeDistributed",
+        "class": "tensorflow.keras.layers.TimeDistributed",
         "parameters": {
             "layer": {
-                "class": "keras.layers.Dense",
+                "class": "tensorflow.keras.layers.Dense",
                 "parameters": {
                     "units": 1
                 }
@@ -104,7 +104,7 @@ generator = [
         }
     },
     {
-        "class": "keras.layers.Activation",
+        "class": "tensorflow.keras.layers.Activation",
         "parameters": {
             "activation": "tanh"
         }
@@ -113,87 +113,87 @@ generator = [
 
 criticX = [
     {
-        "class": "keras.layers.Conv1D",
+        "class": "tensorflow.keras.layers.Conv1D",
         "parameters": {
             "filters": 64,
             "kernel_size": 5
         }
     },
     {
-        "class": "keras.layers.LeakyReLU",
+        "class": "tensorflow.keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
     },
     {
-        "class": "keras.layers.Dropout",
+        "class": "tensorflow.keras.layers.Dropout",
         "parameters": {
             "rate": 0.25
         }
     },
     {
-        "class": "keras.layers.Conv1D",
+        "class": "tensorflow.keras.layers.Conv1D",
         "parameters": {
             "filters": 64,
             "kernel_size": 5
         }
     },
     {
-        "class": "keras.layers.LeakyReLU",
+        "class": "tensorflow.keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
     },
     {
-        "class": "keras.layers.Dropout",
+        "class": "tensorflow.keras.layers.Dropout",
         "parameters": {
             "rate": 0.25
         }
     },
     {
-    "class": "keras.layers.Conv1D",
+    "class": "tensorflow.keras.layers.Conv1D",
         "parameters": {
             "filters": 64,
             "kernel_size": 5
         }
     },
     {
-        "class": "keras.layers.LeakyReLU",
+        "class": "tensorflow.keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
     },
     {
-        "class": "keras.layers.Dropout",
+        "class": "tensorflow.keras.layers.Dropout",
         "parameters": {
             "rate": 0.25
         }
     },
     {
-        "class": "keras.layers.Conv1D",
+        "class": "tensorflow.keras.layers.Conv1D",
         "parameters": {
             "filters": 64,
             "kernel_size": 5
         }
     },
     {
-        "class": "keras.layers.LeakyReLU",
+        "class": "tensorflow.keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
     },
     {
-        "class": "keras.layers.Dropout",
+        "class": "tensorflow.keras.layers.Dropout",
         "parameters": {
             "rate": 0.25
     }
     },
     {
-        "class": "keras.layers.Flatten",
+        "class": "tensorflow.keras.layers.Flatten",
         "parameters": {}
     },
     {
-        "class": "keras.layers.Dense",
+        "class": "tensorflow.keras.layers.Dense",
         "parameters": {
             "units": 1
         }
@@ -202,47 +202,47 @@ criticX = [
 
 criticZ = [
     {
-        "class": "keras.layers.Flatten",
+        "class": "tensorflow.keras.layers.Flatten",
         "parameters": {}
     },
     {
-        "class": "keras.layers.Dense",
+        "class": "tensorflow.keras.layers.Dense",
         "parameters": {
             "units": 100
         }
     },
     {
-        "class": "keras.layers.LeakyReLU",
+        "class": "tensorflow.keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
     },
     {
-        "class": "keras.layers.Dropout",
+        "class": "tensorflow.keras.layers.Dropout",
         "parameters": {
             "rate": 0.2
         }
     },
     {
-        "class": "keras.layers.Dense",
+        "class": "tensorflow.keras.layers.Dense",
         "parameters": {
             "units": 100
         }
     },
     {
-        "class": "keras.layers.LeakyReLU",
+        "class": "tensorflow.keras.layers.LeakyReLU",
         "parameters": {
             "alpha": 0.2
         }
     },
     {
-        "class": "keras.layers.Dropout",
+        "class": "tensorflow.keras.layers.Dropout",
         "parameters": {
             "rate": 0.2
         }
     },
     {
-        "class": "keras.layers.Dense",
+        "class": "tensorflow.keras.layers.Dense",
         "parameters": {
             "units": 1
         }
@@ -253,7 +253,7 @@ hyperparameters = {
     "epochs": 35,
     "input_shape": (100, 1),
     "target_shape": (100, 1),
-    "optimizer": "keras.optimizers.Adam",
+    "optimizer": "tensorflow.keras.optimizers.Adam",
     "learning_rate": 0.0005,
     "latent_dim": 20,
     "batch_size": 64,
