@@ -68,7 +68,7 @@ generator = [
         }
     },
     {
-        "class": "tensorflow.keras.layers.convolutional.UpSampling1D",
+        "class": "tensorflow.keras.layers.UpSampling1D",
         "parameters": {
             "size": 2
         }
