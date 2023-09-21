@@ -135,7 +135,7 @@
                         "class": "tensorflow.keras.layers.TimeDistributed",
                         "parameters": {
                             "layer": {
-                                "class": "keras.layers.Dense",
+                                "class": "tensorflow.keras.layers.Dense",
                                 "parameters": {
                                     "units": 1
                                 }
