@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import ast
 import argparse
+import ast
 import concurrent
 import json
 import logging
@@ -295,7 +295,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             is still running and also recovering results in case the process does not finish
             properly. Defaults to ``None``.
         resume (bool):
-            Whether to continue running the experiments in the benchmark from the current 
+            Whether to continue running the experiments in the benchmark from the current
             progress in ``cache_dir``.
         output_path (str): Location to save the intermediatry results. If not given,
             intermediatry results will not be saved.
@@ -406,7 +406,7 @@ def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_
     metrics = {k: partial(fun, weighted=False) for k, fun in METRICS.items()}
 
     results = benchmark(
-        pipelines=pipelines, datasets=datasets, metrics=metrics, output_path=output_path, 
+        pipelines=pipelines, datasets=datasets, metrics=metrics, output_path=output_path,
         workers=workers, resume=resume, pipeline_dir=pipeline_dir, cache_dir=cache_dir
     )
 
