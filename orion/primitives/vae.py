@@ -232,4 +232,5 @@ class VAE(object):
             ndarray:
                 N-dimensional array containing the reconstructions for each input sequence.
         """
-        return self.vae_model.predict(X)
+        dummy = np.empty(shape=(X.shape[0], *self.output_shape))
+        return self.vae_model.predict((X, dummy))
