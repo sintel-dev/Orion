@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import ast
+import argparse
 import concurrent
 import json
 import logging
@@ -11,6 +12,7 @@ import warnings
 from copy import deepcopy
 from datetime import datetime
 from functools import partial
+from glob import glob
 from pathlib import Path
 
 import numpy as np
@@ -246,7 +248,7 @@ def _run_on_dask(jobs, verbose):
 
 def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
               test_split=False, detrend=False, iterations=1, workers=1, show_progress=False,
-              cache_dir=None, output_path=None, pipeline_dir=None):
+              cache_dir=None, resume=False, output_path=None, pipeline_dir=None):
     """Run pipelines on the given datasets and evaluate the performance.
 
     The pipelines are used to analyze the given signals and later on the
@@ -292,6 +294,9 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
             as CSV files as they get computted. This allows inspecting results while the benchmark
             is still running and also recovering results in case the process does not finish
             properly. Defaults to ``None``.
+        resume (bool):
+            Whether to continue running the experiments in the benchmark from the current 
+            progress in ``cache_dir``.
         output_path (str): Location to save the intermediatry results. If not given,
             intermediatry results will not be saved.
         pipeline_dir (str):
@@ -346,6 +351,14 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
                 detrend, test_split = parameters.values()
             for signal in signals:
                 for iteration in range(iterations):
+                    if resume:
+                        experiment = str(
+                            cache_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}'
+                        )
+                        if len(glob(experiment + '*.csv')) > 1:
+                            LOGGER.warning(f'skipping {experiment}')
+                            continue
+
                     args = (
                         pipeline,
                         pipeline_name,
@@ -383,28 +396,34 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
     return _sort_leaderboard(scores, rank, metrics)
 
 
-def main(workers=1):
-    pipeline_dir = 'save_pipelines'
-    cache_dir = 'cache'
-
+def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_dir):
     # output path
-    version = "results.csv"
-    output_path = os.path.join(BENCHMARK_PATH, 'results', version)
+    output_path = os.path.join(BENCHMARK_PATH, 'results', output_path)
 
     # metrics
     del METRICS['accuracy']
     METRICS['confusion_matrix'] = contextual_confusion_matrix
     metrics = {k: partial(fun, weighted=False) for k, fun in METRICS.items()}
 
-    # pipelines
-    pipelines = VERIFIED_PIPELINES
-
     results = benchmark(
-        pipelines=pipelines, metrics=metrics, output_path=output_path, workers=workers,
-        show_progress=False, pipeline_dir=pipeline_dir, cache_dir=cache_dir)
+        pipelines=pipelines, datasets=datasets, metrics=metrics, output_path=output_path, 
+        workers=workers, resume=resume, pipeline_dir=pipeline_dir, cache_dir=cache_dir
+    )
 
     return results
 
 
 if __name__ == "__main__":
-    results = main()
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-p', '--pipelines', nargs='+', type=str, default=VERIFIED_PIPELINES_GPU)
+    parser.add_argument('-d', '--datasets', nargs='+', type=str, default=BENCHMARK_DATA)
+    parser.add_argument('-r', '--resume', type=bool, default=False)
+    parser.add_argument('-w', '--workers', default=1)
+
+    parser.add_argument('-o', '--output_path', type=str, default='results.csv')
+    parser.add_argument('-c', '--cache_dir', type=str, default='cache')
+    parser.add_argument('-pd', '--pipeline_dir', type=str, default='pipeline_dir')
+
+    config = parser.parse_args()
+    results = main(**vars(config))
