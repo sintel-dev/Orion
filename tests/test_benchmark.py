@@ -614,8 +614,6 @@ class TestBenchmark(TestCase):
 
     @patch('orion.benchmark._run_job')
     def test_benchmark_metrics_list(self, run_job_mock):
-        pass
-
         signals = [self.signal]
         datasets = {self.dataset: signals}
         pipelines = {self.name: self.pipeline}
@@ -665,8 +663,6 @@ class TestBenchmark(TestCase):
         run_job_mock.assert_called_once_with(tuple(args))
 
     def test_benchmark_metrics_exception(self):
-        pass
-
         signals = [self.signal]
         datasets = {self.dataset: signals}
         pipelines = {self.name: self.pipeline}
@@ -678,3 +674,26 @@ class TestBenchmark(TestCase):
             benchmark.benchmark(pipelines, datasets, self.hyper, metrics, self.rank)
 
             self.assertTrue(metric in ex.exception)
+
+    def test_benchmark_defaults(self):
+        pipelines = ['dummy']
+        datasets = ['S-1']
+
+        scores = benchmark.benchmark(pipelines=pipelines, datasets=datasets)
+
+        expected = pd.DataFrame.from_records([{
+            'pipeline': 'dummy',
+            'rank': 1,
+            'dataset': 'dataset',
+            'signal': 'S-1',
+            'iteration': 0,
+            'accuracy': ANY,
+            'f1': ANY,
+            'recall': ANY,
+            'precision': ANY,
+            'status': 'OK',
+            'elapsed': ANY,
+            'split': False,
+            'run_id': ANY
+        }])
+        pd.testing.assert_frame_equal(expected, scores, check_dtype=False)
