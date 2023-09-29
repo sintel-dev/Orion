@@ -17,6 +17,7 @@ except IOError:
 
 
 install_requires = [
+    "tensorflow>=2.5,<2.11;python_version>='3.9'",
     "tensorflow>=2.0,<2.5;python_version<'3.8'",
     "tensorflow>=2.2,<2.11;python_version>='3.8'",
     's3fs>=0.2.2,<0.5',
