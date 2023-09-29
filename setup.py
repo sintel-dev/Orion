@@ -17,15 +17,14 @@ except IOError:
 
 
 install_requires = [
-    "tensorflow>=2.5,<2.11;python_version>='3.9'",
+    "tensorflow>=2.5,<2.11;python_version>='3.8'",
     "tensorflow>=2.0,<2.5;python_version<'3.8'",
-    "tensorflow>=2.2,<2.11;python_version>='3.8' and python_version<'3.9'",
-    "numpy>=1.19.3,<1.21;python_version>='3.9'",
-    "numpy>=1.17.4,<1.21;python_version<'3.9'",
-    "pandas>=1.1.3,<2;python_version>='3.9'",
-    "pandas>=1,<2;python_version<'3.9'",
-    "numba>=0.53,<0.58;python_version>='3.9'",
-    "numba>=0.48,<0.58;python_version<'3.9'",
+    "numpy>=1.19.3,<1.21;python_version>='3.8'",
+    "numpy>=1.17.4,<1.21;python_version<'3.8'",
+    "pandas>=1.1.3,<2;python_version>='3.8'",
+    "pandas>=1,<2;python_version<'3.8'",
+    "numba>=0.53,<0.58;python_version>='3.8'",
+    "numba>=0.48,<0.58;python_version<'3.8'",
     's3fs>=0.2.2,<0.5',
     'mlblocks>=0.6,<0.7',
     'ml-stars>=0.1.3.dev0,<0.1.4',
