@@ -19,15 +19,18 @@ except IOError:
 install_requires = [
     "tensorflow>=2.5,<2.11;python_version>='3.9'",
     "tensorflow>=2.0,<2.5;python_version<'3.8'",
-    "tensorflow>=2.2,<2.11;python_version>='3.8'",
+    "tensorflow>=2.2,<2.11;python_version>='3.8' and python_version<'3.9'",
+    "numpy>=1.19.3,<1.21;python_version>='3.9'",
+    "numpy>=1.17.4,<1.21;python_version<'3.9'",
+    "pandas>=1.1.3,<2;python_version>='3.9'",
+    "pandas>=1,<2;python_version<'3.9'",
+    "numba>=0.53,<0.58;python_version>='3.9'",
+    "numba>=0.48,<0.58;python_version<'3.9'",
     's3fs>=0.2.2,<0.5',
     'mlblocks>=0.6,<0.7',
     'ml-stars>=0.1.3.dev0,<0.1.4',
-    'numpy>=1.17.4,<1.21',
-    'pandas>=1,<2',
-    'scikit-learn>=0.22,<1.2',
+    'scikit-learn>=0.24,<1.2',
     'tabulate>=0.8.3,<0.9',
-    'numba>=0.48,<0.58',
     'pyts>=0.9,<0.12',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
@@ -35,7 +38,6 @@ install_requires = [
     'stumpy>=1.7,<1.11',
 
     # fix conflict
-    # 'h5py<2.11.0,>=2.10.0',
     'protobuf<4',
     
     # fails on python 3.6
