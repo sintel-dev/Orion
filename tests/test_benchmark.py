@@ -1,3 +1,6 @@
+import os
+import shutil
+from pathlib import Path
 from unittest import TestCase
 from unittest.mock import ANY, Mock, call, patch
 
@@ -697,3 +700,28 @@ class TestBenchmark(TestCase):
             'run_id': ANY
         }])
         pd.testing.assert_frame_equal(expected, scores, check_dtype=False)
+
+    def test_benchmark_resume(self):
+        cache_dir = Path('cache_test')
+        pipelines = ['dummy']
+        datasets = ['S-1']
+
+        # create a run in cache_test
+        os.makedirs(cache_dir, exist_ok=True)
+        file_name = str(
+            cache_dir / f'{pipelines[0]}_{datasets[0]}_dataset_0'
+        )
+        with open(file_name + "_run_id.csv", "w") as f:
+            f.write("this is a test file.")
+
+        scores = benchmark.benchmark(
+            pipelines=pipelines,
+            datasets=datasets,
+            cache_dir=cache_dir,
+            resume=True
+        )
+
+        expected = pd.DataFrame()
+        pd.testing.assert_frame_equal(expected, scores)
+
+        shutil.rmtree(cache_dir)

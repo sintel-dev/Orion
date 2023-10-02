@@ -355,7 +355,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
                         experiment = str(
                             cache_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}'
                         )
-                        if len(glob(experiment + '*.csv')) > 1:
+                        if len(glob(experiment + '*.csv')) > 0:
                             LOGGER.warning(f'skipping {experiment}')
                             continue
 
@@ -388,12 +388,16 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
         if show_progress:
             scores = tqdm.tqdm(scores, total=len(jobs))
 
-    scores = pd.concat(scores)
-    if output_path:
-        LOGGER.info('Saving benchmark report to %s', output_path)
-        scores.to_csv(output_path, index=False)
+    if scores:
+        scores = pd.concat(scores)
+        if output_path:
+            LOGGER.info('Saving benchmark report to %s', output_path)
+            scores.to_csv(output_path, index=False)
 
-    return _sort_leaderboard(scores, rank, metrics)
+        return _sort_leaderboard(scores, rank, metrics)
+
+    LOGGER.info('No scores to be recorded.')
+    return pd.DataFrame()
 
 
 def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_dir):
