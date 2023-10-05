@@ -154,6 +154,7 @@
   <h1>Source code for orion.benchmark</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">concurrent</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -165,6 +166,7 @@
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -400,7 +402,7 @@
 
 <div class="viewcode-block" id="benchmark"><a class="viewcode-back" href="../../api_reference/api/orion.benchmark.benchmark.html#orion.benchmark.benchmark">[docs]</a><span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">pipelines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">METRICS</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span>
               <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-              <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+              <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run pipelines on the given datasets and evaluate the performance.</span>
 
 <span class="sd">    The pipelines are used to analyze the given signals and later on the</span>
@@ -446,6 +448,9 @@
 <span class="sd">            as CSV files as they get computted. This allows inspecting results while the benchmark</span>
 <span class="sd">            is still running and also recovering results in case the process does not finish</span>
 <span class="sd">            properly. Defaults to ``None``.</span>
+<span class="sd">        resume (bool):</span>
+<span class="sd">            Whether to continue running the experiments in the benchmark from the current</span>
+<span class="sd">            progress in ``cache_dir``.</span>
 <span class="sd">        output_path (str): Location to save the intermediatry results. If not given,</span>
 <span class="sd">            intermediatry results will not be saved.</span>
 <span class="sd">        pipeline_dir (str):</span>
@@ -500,6 +505,14 @@
                 <span class="n">detrend</span><span class="p">,</span> <span class="n">test_split</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">resume</span><span class="p">:</span>
+                        <span class="n">experiment</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+                            <span class="n">cache_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pipeline_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="n">experiment</span> <span class="o">+</span> <span class="s1">&#39;*.csv&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;skipping </span><span class="si">{</span><span class="n">experiment</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                            <span class="k">continue</span>
+
                     <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="n">pipeline</span><span class="p">,</span>
                         <span class="n">pipeline_name</span><span class="p">,</span>
@@ -529,39 +542,49 @@
         <span class="k">if</span> <span class="n">show_progress</span><span class="p">:</span>
             <span class="n">scores</span> <span class="o">=</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">))</span>
 
-    <span class="n">scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">output_path</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Saving benchmark report to </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
-        <span class="n">scores</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scores</span><span class="p">:</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">output_path</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Saving benchmark report to </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+            <span class="n">scores</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">_sort_leaderboard</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">_sort_leaderboard</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
+
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;No scores to be recorded.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span></div>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">workers</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">pipeline_dir</span> <span class="o">=</span> <span class="s1">&#39;save_pipelines&#39;</span>
-    <span class="n">cache_dir</span> <span class="o">=</span> <span class="s1">&#39;cache&#39;</span>
-
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">workers</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="p">):</span>
     <span class="c1"># output path</span>
-    <span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;results.csv&quot;</span>
-    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BENCHMARK_PATH</span><span class="p">,</span> <span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BENCHMARK_PATH</span><span class="p">,</span> <span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
 
     <span class="c1"># metrics</span>
     <span class="k">del</span> <span class="n">METRICS</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
     <span class="n">METRICS</span><span class="p">[</span><span class="s1">&#39;confusion_matrix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">contextual_confusion_matrix</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">weighted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">fun</span> <span class="ow">in</span> <span class="n">METRICS</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
-    <span class="c1"># pipelines</span>
-    <span class="n">pipelines</span> <span class="o">=</span> <span class="n">VERIFIED_PIPELINES</span>
-
     <span class="n">results</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span>
-        <span class="n">pipelines</span><span class="o">=</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="n">workers</span><span class="p">,</span>
-        <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="n">cache_dir</span><span class="p">)</span>
+        <span class="n">pipelines</span><span class="o">=</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="n">datasets</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
+        <span class="n">workers</span><span class="o">=</span><span class="n">workers</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="n">resume</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="n">cache_dir</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">results</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="n">main</span><span class="p">()</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--pipelines&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">VERIFIED_PIPELINES_GPU</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="s1">&#39;--datasets&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">BENCHMARK_DATA</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="s1">&#39;--resume&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-w&#39;</span><span class="p">,</span> <span class="s1">&#39;--workers&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--output_path&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;results.csv&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--cache_dir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;cache&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-pd&#39;</span><span class="p">,</span> <span class="s1">&#39;--pipeline_dir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;pipeline_dir&#39;</span><span class="p">)</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">main</span><span class="p">(</span><span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="n">config</span><span class="p">))</span>
 </pre></div>
 
               </div>
