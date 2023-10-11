@@ -3,7 +3,7 @@ astunparse==1.6.3
 azure-cognitiveservices-anomalydetector==0.3.0
 azure-common==1.1.28
 beautifulsoup4==4.12.2
-botocore==1.31.57
+botocore==1.31.62
 cachetools==5.3.1
 certifi==2023.7.22
 charset-normalizer==3.3.0
@@ -78,7 +78,7 @@ threadpoolctl==3.1.0
 tomli==2.0.1
 tqdm==4.66.1
 typing-extensions==3.7.4.3
-urllib3==1.26.16
+urllib3==1.26.17
 wcwidth==0.2.8
 Werkzeug==2.2.3
 wrapt==1.12.1
