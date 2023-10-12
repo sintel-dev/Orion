@@ -420,7 +420,7 @@ def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-p', '--pipelines', nargs='+', type=str, default=VERIFIED_PIPELINES_GPU)
+    parser.add_argument('-p', '--pipelines', type=json.loads, default=VERIFIED_PIPELINES_GPU)
     parser.add_argument('-d', '--datasets', nargs='+', type=str, default=BENCHMARK_DATA)
     parser.add_argument('-r', '--resume', type=bool, default=False)
     parser.add_argument('-w', '--workers', default=1)
