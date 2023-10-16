@@ -441,4 +441,3 @@ if __name__ == "__main__":
         config.datasets = dict((dataset, BENCHMARK_DATA[dataset]) for dataset in config.datasets)
 
     results = main(**vars(config))
-    print(results)
