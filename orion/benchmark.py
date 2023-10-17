@@ -400,7 +400,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
     return pd.DataFrame()
 
 
-def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_dir):
+def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_dir, **kwargs):
     # output path
     output_path = os.path.join(BENCHMARK_PATH, 'results', output_path)
 
@@ -420,8 +420,9 @@ def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-p', '--pipelines', type=json.loads, default=VERIFIED_PIPELINES_GPU)
+    parser.add_argument('-p', '--pipelines', nargs='+', type=str, default=VERIFIED_PIPELINES_GPU)
     parser.add_argument('-d', '--datasets', nargs='+', type=str, default=BENCHMARK_DATA)
+    parser.add_argument('-g', '--gpu', type=bool, default=False)
     parser.add_argument('-r', '--resume', type=bool, default=False)
     parser.add_argument('-w', '--workers', default=1)
 
@@ -430,4 +431,13 @@ if __name__ == "__main__":
     parser.add_argument('-pd', '--pipeline_dir', type=str, default='pipeline_dir')
 
     config = parser.parse_args()
+
+    if config.gpu:
+        config.pipelines = dict(zip(config.pipelines, config.pipelines))
+        if 'tadgan' in config.pipelines.keys():
+            config.pipelines['tadgan'] = 'tadgan_without_dropout_gpu'
+
+    if any([dataset in BENCHMARK_DATA.keys() for dataset in config.datasets]):
+        config.datasets = dict((dataset, BENCHMARK_DATA[dataset]) for dataset in config.datasets)
+
     results = main(**vars(config))
