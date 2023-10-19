@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>TadGAN &#8212; Orion 0.5.2.dev1 documentation</title>
+    <title>TadGAN &#8212; Orion 0.5.3.dev0 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -300,18 +300,18 @@
 <span class="gp">   ...: </span>
 
 <span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, Losses: {&#39;cx_loss&#39;: 9.1029, &#39;cz_loss&#39;: 1.8951, &#39;eg_loss&#39;: 10.0443}</span>
-<span class="go">Epoch: 2/5, Losses: {&#39;cx_loss&#39;: 8.5065, &#39;cz_loss&#39;: 4.8203, &#39;eg_loss&#39;: 8.3493}</span>
-<span class="go">Epoch: 3/5, Losses: {&#39;cx_loss&#39;: 7.9863, &#39;cz_loss&#39;: 1.5913, &#39;eg_loss&#39;: 8.4848}</span>
-<span class="go">Epoch: 4/5, Losses: {&#39;cx_loss&#39;: 7.4915, &#39;cz_loss&#39;: -3.0034, &#39;eg_loss&#39;: 5.2034}</span>
-<span class="go">Epoch: 5/5, Losses: {&#39;cx_loss&#39;: 6.9652, &#39;cz_loss&#39;: 5.5052, &#39;eg_loss&#39;: 4.136}</span>
+<span class="go">Epoch: 1/5, Losses: {&#39;cx_loss&#39;: 8.5419, &#39;cz_loss&#39;: 4.2047, &#39;eg_loss&#39;: 9.9815}</span>
+<span class="go">Epoch: 2/5, Losses: {&#39;cx_loss&#39;: 8.1258, &#39;cz_loss&#39;: 3.1657, &#39;eg_loss&#39;: 9.0841}</span>
+<span class="go">Epoch: 3/5, Losses: {&#39;cx_loss&#39;: 7.3941, &#39;cz_loss&#39;: 4.1451, &#39;eg_loss&#39;: 5.9742}</span>
+<span class="go">Epoch: 4/5, Losses: {&#39;cx_loss&#39;: 6.8254, &#39;cz_loss&#39;: 3.0708, &#39;eg_loss&#39;: 4.5936}</span>
+<span class="go">Epoch: 5/5, Losses: {&#39;cx_loss&#39;: 6.102, &#39;cz_loss&#39;: 5.5162, &#39;eg_loss&#39;: -1.6796}</span>
 
 <span class="gp">In [7]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
 <span class="gp">In [8]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.30, critic score 0.31</span>
+<span class="go">average reconstructed value: 0.60, critic score 0.87</span>
 </pre></div>
 </div>
 </section>
