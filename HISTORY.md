@@ -1,6 +1,20 @@
 History
 =======
 
+## 0.5.2 - 2023-10-19
+
+Support for python 3.9 and new Matrix Profile pipeline
+
+### Issues resolved
+
+* Send pipeline names in benchmark arguments – [Issue #466](https://github.com/signals-dev/Orion/issues/466) by @sarahmish
+* Add continuation parameter for benchmark – [Issue #464](https://github.com/signals-dev/Orion/issues/464) by @sarahmish
+* Fix references in documentation – [Issue #453](https://github.com/signals-dev/Orion/issues/453) by @sarahmish
+* Update documentation – [Issue #448](https://github.com/signals-dev/Orion/issues/448) by @sarahmish
+* Add matrix profiling method – [Issue #446](https://github.com/signals-dev/Orion/issues/446) by @sarahmish
+* Support python 3.9 – [Issue #408](https://github.com/signals-dev/Orion/issues/408) by @sarahmish
+
+
 ## 0.5.1 - 2023-08-16
 
 This version introduces a new dataset to the benchmark.
