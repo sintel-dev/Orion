@@ -7,6 +7,6 @@
     "orion.primitives.azure_anomaly_detector.detect_anomalies#1": {
         "interval": 600,
         "granularity": "minutely",
-        "custom_interval": 5
+        "custom_interval": 10
     }
 }

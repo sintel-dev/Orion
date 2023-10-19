@@ -17,7 +17,7 @@ Results obtained during benchmarking as well as previous releases can be found w
 Leaderboard
 ~~~~~~~~~~~
 
-We run the benchmark on **11** datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline. 
+We run the benchmark on **12** datasets with their known grounth truth. We record the score of the pipelines on each datasets. To compute the leaderboard table, we showcase the number of wins each pipeline has over the ARIMA pipeline. 
 
 .. mdinclude:: ../../benchmark/leaderboard.md
 
@@ -57,6 +57,7 @@ The complete evaluation process is directly available using the
 
 For further details about all the arguments and possibilities that the ``benchmark`` function offers please refer to the `Orion benchmark
 documentation <https://github.com/sintel-dev/Orion/blob/master/BENCHMARK.md>`__
+
 
 .. _benchmark/results: https://github.com/sintel-dev/Orion/tree/master/benchmark/results
 .. _summary Google Sheets document: https://docs.google.com/spreadsheets/d/1ZPUwYH8LhDovVeuJhKYGXYny7472HXVCzhX6D6PObmg/edit?usp=sharing

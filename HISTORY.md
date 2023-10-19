@@ -1,6 +1,31 @@
 History
 =======
 
+## 0.5.2 - 2023-10-19
+
+Support for python 3.9 and new Matrix Profile pipeline
+
+### Issues resolved
+
+* Send pipeline names in benchmark arguments – [Issue #466](https://github.com/signals-dev/Orion/issues/466) by @sarahmish
+* Add continuation parameter for benchmark – [Issue #464](https://github.com/signals-dev/Orion/issues/464) by @sarahmish
+* Fix references in documentation – [Issue #453](https://github.com/signals-dev/Orion/issues/453) by @sarahmish
+* Update documentation – [Issue #448](https://github.com/signals-dev/Orion/issues/448) by @sarahmish
+* Add matrix profiling method – [Issue #446](https://github.com/signals-dev/Orion/issues/446) by @sarahmish
+* Support python 3.9 – [Issue #408](https://github.com/signals-dev/Orion/issues/408) by @sarahmish
+
+
+## 0.5.1 - 2023-08-16
+
+This version introduces a new dataset to the benchmark.
+
+### Issues resolved
+
+* Add UCR dataset to the benchmark – [Issue #443](https://github.com/signals-dev/Orion/issues/443) by @sarahmish
+* docker image build failed – [Issue #439](https://github.com/signals-dev/Orion/issues/439) by @sarahmish
+* Edit interval settings in ``azure`` pipeline – [Issue #436](https://github.com/signals-dev/Orion/issues/436) by @sarahmish
+
+
 ## 0.5.0 - 2023-05-23
 
 This version uses ``ml-stars`` package instead of ``mlprimitives``.

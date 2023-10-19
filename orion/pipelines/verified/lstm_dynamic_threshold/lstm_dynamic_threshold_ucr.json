@@ -1,0 +1,17 @@
+{
+    "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "time_column": "timestamp",
+        "interval": 300
+    },
+    "sklearn.preprocessing.MinMaxScaler#1": {
+        "feature_range": [-1, 1]
+    },
+    "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+        "target_column": 0,
+        "window_size": 250
+    },
+    "keras.Sequential.LSTMTimeSeriesRegressor#1": {
+        "epochs": 35,
+        "verbose": false
+    }
+}

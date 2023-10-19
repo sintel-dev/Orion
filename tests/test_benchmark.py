@@ -1,3 +1,6 @@
+import os
+import shutil
+from pathlib import Path
 from unittest import TestCase
 from unittest.mock import ANY, Mock, call, patch
 
@@ -614,8 +617,6 @@ class TestBenchmark(TestCase):
 
     @patch('orion.benchmark._run_job')
     def test_benchmark_metrics_list(self, run_job_mock):
-        pass
-
         signals = [self.signal]
         datasets = {self.dataset: signals}
         pipelines = {self.name: self.pipeline}
@@ -665,8 +666,6 @@ class TestBenchmark(TestCase):
         run_job_mock.assert_called_once_with(tuple(args))
 
     def test_benchmark_metrics_exception(self):
-        pass
-
         signals = [self.signal]
         datasets = {self.dataset: signals}
         pipelines = {self.name: self.pipeline}
@@ -678,3 +677,51 @@ class TestBenchmark(TestCase):
             benchmark.benchmark(pipelines, datasets, self.hyper, metrics, self.rank)
 
             self.assertTrue(metric in ex.exception)
+
+    def test_benchmark_defaults(self):
+        pipelines = ['dummy']
+        datasets = ['S-1']
+
+        scores = benchmark.benchmark(pipelines=pipelines, datasets=datasets)
+
+        expected = pd.DataFrame.from_records([{
+            'pipeline': 'dummy',
+            'rank': 1,
+            'dataset': 'dataset',
+            'signal': 'S-1',
+            'iteration': 0,
+            'accuracy': ANY,
+            'f1': ANY,
+            'recall': ANY,
+            'precision': ANY,
+            'status': 'OK',
+            'elapsed': ANY,
+            'split': False,
+            'run_id': ANY
+        }])
+        pd.testing.assert_frame_equal(expected, scores, check_dtype=False)
+
+    def test_benchmark_resume(self):
+        cache_dir = Path('cache_test')
+        pipelines = ['dummy']
+        datasets = ['S-1']
+
+        # create a run in cache_test
+        os.makedirs(cache_dir, exist_ok=True)
+        file_name = str(
+            cache_dir / f'{pipelines[0]}_{datasets[0]}_dataset_0'
+        )
+        with open(file_name + "_run_id.csv", "w") as f:
+            f.write("this is a test file.")
+
+        scores = benchmark.benchmark(
+            pipelines=pipelines,
+            datasets=datasets,
+            cache_dir=cache_dir,
+            resume=True
+        )
+
+        expected = pd.DataFrame()
+        pd.testing.assert_frame_equal(expected, scores)
+
+        shutil.rmtree(cache_dir)

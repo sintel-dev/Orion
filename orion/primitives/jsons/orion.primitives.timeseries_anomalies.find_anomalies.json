@@ -55,6 +55,10 @@
             "fixed_threshold": {
                 "type": "bool",
                 "default": false
+            },
+            "inverse": {
+                "type": "bool",
+                "default": false
             }
         },
         "tunable": {
