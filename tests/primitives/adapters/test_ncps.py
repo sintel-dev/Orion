@@ -4,8 +4,8 @@ import ncps
 import numpy as np
 import tensorflow as tf
 
-from orion.primitives.adapters.ncps import build_layer
-from orion.primitives.adapters.ncps import NCPS
+from orion.primitives.adapters.ncps import NCPS, build_layer
+
 
 def test_build_layer_linear():
     # Setup
@@ -21,6 +21,7 @@ def test_build_layer_linear():
 
     # Assert
     assert isinstance(built, tf.keras.layers.Activation)
+
 
 def test_build_layer_bidirectional():
     # Setup
@@ -41,6 +42,7 @@ def test_build_layer_bidirectional():
 
     # Assert
     assert isinstance(built, tf.keras.layers.Bidirectional)
+
 
 def test_build_layer_ltc():
     # Setup
@@ -63,6 +65,7 @@ def test_build_layer_ltc():
     # Assert
     assert isinstance(built, ncps.tf.LTC)
 
+
 def test__build_model():
     # Setup
     layers = [
@@ -83,10 +86,11 @@ def test__build_model():
     # Assert
     assert isinstance(model, tf.keras.models.Sequential)
 
+
 @patch('orion.primitives.adapters.ncps.build_layer')
 def test_ncps_empty(build_mock):
     # Run
-    ncps = NCPS(None, None, None, None)    
+    ncps = NCPS(None, None, None, None)
 
     # Assert
     assert ncps.layers is None
@@ -109,7 +113,7 @@ def test_ncps_linear(build_mock):
     ]
     loss = 'tensorflow.keras.losses.mean_squared_error'
     optimizer = 'tensorflow.keras.optimizers.Adam'
-    ncps = NCPS(layers, loss, optimizer, False, batch_size=1)    
+    ncps = NCPS(layers, loss, optimizer, False, batch_size=1)
 
     # Run
     kwargs = dict()
