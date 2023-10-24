@@ -17,14 +17,14 @@ except IOError:
 
 
 install_requires = [
-    'tensorflow>=2.5,<2.15',
-    'numpy>=1.19.3,<2',
-    'pandas>=1.1.3,<2',
-    'numba>=0.53,<0.60',
+    'tensorflow>=2.2,<2.15',
+    'numpy>=1.17.5,<2',
+    'pandas>=1,<2',
+    'numba>=0.48,<0.60',
     's3fs>=0.2.2,<0.5',
     'mlblocks>=0.6.1,<0.7',
-    'ml-stars>=0.1.4.dev2,<0.2',
-    'scikit-learn>=0.24,<1.2',
+    'ml-stars>=0.2,<0.3',
+    'scikit-learn>=0.22.1,<1.2',
     'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
