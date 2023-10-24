@@ -22,8 +22,8 @@ install_requires = [
     'pandas>=1.1.3,<2',
     'numba>=0.53,<0.60',
     's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.6,<0.7',
-    'ml-stars>=0.1.4.dev1,<0.2',
+    'mlblocks>=0.6.1,<0.7',
+    'ml-stars>=0.1.4.dev2,<0.2',
     'scikit-learn>=0.24,<1.2',
     'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
@@ -63,7 +63,7 @@ development_requires = [
     'pydata-sphinx-theme<0.5',
     'autodocsumm>=0.1.10,<1',
     'markupsafe<2.1.0',
-    'ipython>=6.5,<7.5',
+    'ipython>=6.5,<9',
     'Jinja2>=2,<3',
 
     # style check
