@@ -92,11 +92,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.8]
         os: [ubuntu-20.04, macos-latest]
-        exclude:
-          - os: macos-latest
-            python-version: '3.7'
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}

@@ -32,6 +32,7 @@ install_requires = [
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
     'stumpy>=1.7,<1.11',
+    'ncps',
 
     # fix conflict
     # 'h5py<2.11.0,>=2.10.0',
