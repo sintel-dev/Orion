@@ -300,18 +300,18 @@
 <span class="gp">   ...: </span>
 
 <span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, Losses: {&#39;cx_loss&#39;: 8.7043, &#39;cz_loss&#39;: 0.4153, &#39;eg_loss&#39;: 10.0217}</span>
-<span class="go">Epoch: 2/5, Losses: {&#39;cx_loss&#39;: 8.4784, &#39;cz_loss&#39;: 1.9092, &#39;eg_loss&#39;: 9.1312}</span>
-<span class="go">Epoch: 3/5, Losses: {&#39;cx_loss&#39;: 8.2537, &#39;cz_loss&#39;: 2.8689, &#39;eg_loss&#39;: 7.5278}</span>
-<span class="go">Epoch: 4/5, Losses: {&#39;cx_loss&#39;: 7.4577, &#39;cz_loss&#39;: 3.9368, &#39;eg_loss&#39;: 5.3242}</span>
-<span class="go">Epoch: 5/5, Losses: {&#39;cx_loss&#39;: 7.1307, &#39;cz_loss&#39;: 7.5797, &#39;eg_loss&#39;: 6.36}</span>
+<span class="go">Epoch: 1/5, Losses: {&#39;cx_loss&#39;: 8.9781, &#39;cz_loss&#39;: 1.7471, &#39;eg_loss&#39;: 10.1151}</span>
+<span class="go">Epoch: 2/5, Losses: {&#39;cx_loss&#39;: 8.7367, &#39;cz_loss&#39;: 5.6602, &#39;eg_loss&#39;: 10.2181}</span>
+<span class="go">Epoch: 3/5, Losses: {&#39;cx_loss&#39;: 7.9651, &#39;cz_loss&#39;: 3.402, &#39;eg_loss&#39;: 9.3115}</span>
+<span class="go">Epoch: 4/5, Losses: {&#39;cx_loss&#39;: 7.4451, &#39;cz_loss&#39;: 4.3688, &#39;eg_loss&#39;: 8.5697}</span>
+<span class="go">Epoch: 5/5, Losses: {&#39;cx_loss&#39;: 6.7934, &#39;cz_loss&#39;: 4.2194, &#39;eg_loss&#39;: 7.4976}</span>
 
 <span class="gp">In [7]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
 <span class="gp">In [8]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.20, critic score 0.09</span>
+<span class="go">average reconstructed value: 0.14, critic score 0.87</span>
 </pre></div>
 </div>
 </section>
