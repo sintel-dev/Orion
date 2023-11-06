@@ -31,6 +31,7 @@ install_requires = [
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
     'stumpy>=1.7,<1.11',
+    'ncps',
 
     # fix conflict
     'protobuf<4',

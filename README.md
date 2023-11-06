@@ -134,7 +134,7 @@ We run the benchmark on **12** datasets with their known grounth truth. We recor
 | LSTM Autoencoder          |          8         |
 | Dense Autoencoder         |          7         |
 | VAE                       |          8         |
-| Matrix Profile            |          9         |
+| Matrix Profile            |          6         |
 | [GANF](https://arxiv.org/pdf/2202.07857.pdf)                                                  |          7         |
 | [Azure](https://azure.microsoft.com/en-us/products/cognitive-services/anomaly-detector/)      |          0         |
 

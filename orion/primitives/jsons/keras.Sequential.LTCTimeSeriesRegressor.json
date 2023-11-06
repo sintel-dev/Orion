@@ -1,0 +1,202 @@
+{
+    "name": "keras.Sequential.LTCTimeSeriesRegressor",
+    "contributors": "Sarah Alnegheimish <smish@mit.edu>",
+    "description": "LTC regressor.",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.adapters.ncps.NCPS",
+    "fit": {
+        "method": "fit",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "y",
+                "type": "array"
+            }
+        ]
+    },
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "array"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "classification": {
+                "type": "bool",
+                "default": false
+            },
+            "verbose": {
+                "type": "bool",
+                "default": true
+            },
+            "callbacks": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "tensorflow.keras.callbacks.EarlyStopping",
+                        "args": {
+                            "monitor": "val_loss",
+                            "patience": 10,
+                            "min_delta": 0.0003
+                        }
+                    }
+                ]
+            },
+            "validation_split": {
+                "type": "float",
+                "default": 0.2
+            },
+            "batch_size": {
+                "type": "int",
+                "default": 64
+            },
+            "window_size": {
+                "type": "int",
+                "default": 250
+            },
+            "input_shape": {
+                "type": "tuple",
+                "default": [
+                    250,
+                    1
+                ]
+            },
+            "target_shape": {
+                "type": "tuple",
+                "description": "Shape of target",
+                "default": [
+                    250, 
+                    1
+                ]
+            },
+            "optimizer": {
+                "type": "str",
+                "default": "tensorflow.keras.optimizers.Adam"
+            },
+            "loss": {
+                "type": "str",
+                "default": "tensorflow.keras.losses.mean_squared_error"
+            },
+            "metrics": {
+                "type": "list",
+                "default": [
+                    "mse"
+                ]
+            },
+            "output_size": {
+                "type": "int",
+                "description": "Number of values ahead to predict",
+                "default": 1
+            },
+            "epochs": {
+                "type": "int",
+                "default": 35
+            },
+            "return_sequences": {
+                "type": "bool",
+                "default": false
+            },
+            "layers": {
+                "type": "list",
+                "default": [
+                    {
+                        "class": "tensorflow.keras.layers.Conv1D",
+                        "parameters": {
+                            "filters": "conv_1_units",
+                            "kernel_size": 5,
+                            "strides": 1,
+                            "activation": "relu"
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.MaxPool1D",
+                        "parameters": {}
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Conv1D",
+                        "parameters": {
+                            "filters": "conv_2_units",
+                            "kernel_size": 3,
+                            "strides": 1,
+                            "activation": "relu"
+                        }
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.MaxPool1D",
+                        "parameters": {}
+                    },
+                    {
+                        "class": "tensorflow.keras.layers.Dense",
+                        "parameters": {
+                            "units": "dense_units"
+                        }
+                    },
+                    {
+                        "class": "ncps.tf.LTC",
+                        "parameters": {
+                            "units": {
+                                "class": "ncps.wirings.AutoNCP",
+                                "parameters": {
+                                    "units": "ltc_1_units",
+                                    "output_size": "output_size"
+                                }
+                            },
+                            "return_sequences": "return_sequences"
+                        }
+                    }
+                ]
+            }
+        },
+        "tunable": {
+            "conv_1_units": {
+                "type": "int",
+                "default": 64,
+                "range": [
+                    1,
+                    500
+                ]
+            },
+            "conv_2_units": {
+                "type": "int",
+                "default": 32,
+                "range": [
+                    1,
+                    500
+                ]
+            },
+            "dense_units": {
+                "type": "int",
+                "default": 32,
+                "range": [
+                    1,
+                    500
+                ]
+            },
+            "ltc_1_units": {
+                "type": "int",
+                "default": 32,
+                "range": [
+                    1,
+                    500
+                ]
+            }
+        }
+    }
+}

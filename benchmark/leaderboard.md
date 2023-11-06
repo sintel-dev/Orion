@@ -7,5 +7,5 @@
 | Dense Autoencoder         |          7         |
 | VAE                       |          8         |
 | GANF                      |          7         |
-| Matrix Profile            |          9         |
+| Matrix Profile            |          6         |
 | Azure                     |          0         |
