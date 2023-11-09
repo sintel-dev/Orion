@@ -300,27 +300,27 @@
 <span class="gp">   ...: </span>
 
 <span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="go">Epoch: 1/5, Losses: {&#39;cx_loss&#39;: 9.0808, &#39;cz_loss&#39;: 4.0792, &#39;eg_loss&#39;: 10.0204}</span>
-<span class="go">Epoch: 2/5, Losses: {&#39;cx_loss&#39;: 8.4536, &#39;cz_loss&#39;: -0.8219, &#39;eg_loss&#39;: 9.4565}</span>
-<span class="go">Epoch: 3/5, Losses: {&#39;cx_loss&#39;: 8.0244, &#39;cz_loss&#39;: 4.2465, &#39;eg_loss&#39;: 8.1689}</span>
-<span class="go">Epoch: 4/5, Losses: {&#39;cx_loss&#39;: 7.4453, &#39;cz_loss&#39;: 7.2164, &#39;eg_loss&#39;: 5.6347}</span>
-<span class="go">Epoch: 5/5, Losses: {&#39;cx_loss&#39;: 7.0051, &#39;cz_loss&#39;: 4.7739, &#39;eg_loss&#39;: 4.7249}</span>
+<span class="go">Epoch: 1/5, Losses: {&#39;cx_loss&#39;: 8.5577, &#39;cz_loss&#39;: 1.206, &#39;eg_loss&#39;: 9.9913}</span>
+<span class="go">Epoch: 2/5, Losses: {&#39;cx_loss&#39;: 7.9459, &#39;cz_loss&#39;: 2.3491, &#39;eg_loss&#39;: 9.6079}</span>
+<span class="go">Epoch: 3/5, Losses: {&#39;cx_loss&#39;: 7.4739, &#39;cz_loss&#39;: 4.0687, &#39;eg_loss&#39;: 8.5976}</span>
+<span class="go">Epoch: 4/5, Losses: {&#39;cx_loss&#39;: 6.8254, &#39;cz_loss&#39;: 6.1734, &#39;eg_loss&#39;: 6.5052}</span>
+<span class="go">Epoch: 5/5, Losses: {&#39;cx_loss&#39;: 6.1693, &#39;cz_loss&#39;: 7.0768, &#39;eg_loss&#39;: 7.545}</span>
 
 <span class="gp">In [7]: </span><span class="n">y</span><span class="p">,</span> <span class="n">critic</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
 <span class="go">1/1 [==============================] - ETA: 0s</span>
-<span class="go">1/1 [==============================] - 0s 493ms/step</span>
+<span class="go">1/1 [==============================] - 1s 572ms/step</span>
 
 <span class="go">1/1 [==============================] - ETA: 0s</span>
-<span class="go">1/1 [==============================] - 1s 586ms/step</span>
+<span class="go">1/1 [==============================] - 1s 700ms/step</span>
 
 <span class="go">1/1 [==============================] - ETA: 0s</span>
-<span class="go">1/1 [==============================] - 0s 65ms/step</span>
+<span class="go">1/1 [==============================] - 0s 82ms/step</span>
 
 <span class="gp">In [8]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;average reconstructed value: </span><span class="si">{:.2f}</span><span class="s2">, critic score </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">critic</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">   ...: </span>
-<span class="go">average reconstructed value: 0.47, critic score 0.14</span>
+<span class="go">average reconstructed value: 0.14, critic score 0.48</span>
 </pre></div>
 </div>
 </section>
