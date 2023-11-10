@@ -29,6 +29,29 @@ def unroll_ts(y_hat):
 
     return np.asarray(predictions[pred_length-1:])
 
+def unroll_multi_ts(y_hat, step_size=1):
+    """ 
+    Unroll batches of multivariate time series to reconstruct the signal 
+    
+    Parameters:
+        y_hat: array like data, (batch, sequence, feature)
+        step_size: int, step size of sliding window for rolling this sequence
+
+    """
+    raw_data_length = (y_hat.shape[0] - 1) * step_size + y_hat.shape[1]
+
+    predictions = np.empty((y_hat.shape[0], raw_data_length, y_hat.shape[2]))
+    predictions[:] = np.nan
+
+    for i in range(y_hat.shape[0]):
+        start_ptr = i * step_size
+        win_size = min(y_hat.shape[1], predictions.shape[1]-start_ptr)
+        predictions[i,start_ptr:start_ptr+win_size] = y_hat[i]
+
+    res = np.nanmedian(predictions, axis=0)
+
+    return res
+
 def convert_date(timelist):
     converted = list()
     for x in timelist:
