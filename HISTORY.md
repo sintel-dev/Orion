@@ -7,6 +7,7 @@ Support for python 3.10 and 3.11
 
 ### Issues resolved
 
+* Update Python for Dependency Test – [Issue #484](https://github.com/signals-dev/Orion/issues/484) by @sarahmish
 * Add python 3.10 and 3.11 & drop 3.6 and 3.7 – [Issue #477](https://github.com/signals-dev/Orion/issues/477) by @sarahmish
 * LNN Pipeline – [Issue #475](https://github.com/signals-dev/Orion/issues/475) by @sarahmish
 
