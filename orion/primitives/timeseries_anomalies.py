@@ -407,7 +407,7 @@ def _find_window_sequences(window, z_range, anomaly_padding, min_percent, window
 
 def find_anomalies(errors, index, z_range=(0, 10), window_size=None, window_size_portion=None,
                    window_step_size=None, window_step_size_portion=None, min_percent=0.1,
-                   anomaly_padding=50, lower_threshold=False, fixed_threshold=None):
+                   anomaly_padding=50, lower_threshold=False, fixed_threshold=None, inverse=False):
     """Find sequences of error values that are anomalous.
 
     We first define the window of errors, that we want to analyze. We then find the anomalous
@@ -449,6 +449,8 @@ def find_anomalies(errors, index, z_range=(0, 10), window_size=None, window_size
         fixed_threshold (bool):
             Optional. Indicates whether to use fixed threshold or dynamic threshold. If not
             given, `False` is used.
+        inverse (bool):
+            Optional. Indicate whether to take the inverse of errors.
 
     Returns:
         ndarray:
@@ -462,6 +464,9 @@ def find_anomalies(errors, index, z_range=(0, 10), window_size=None, window_size
     window_step_size = window_step_size or window_size
     if window_step_size_portion:
         window_step_size = np.ceil(window_size * window_step_size_portion).astype('int')
+
+    if inverse:
+        errors = max(errors) + (-1 * errors)
 
     window_start = 0
     window_end = 0
