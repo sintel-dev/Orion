@@ -1,0 +1,57 @@
+{
+    "primitives": [
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate",
+        "sklearn.impute.SimpleImputer",
+        "sklearn.preprocessing.MinMaxScaler",
+        "numpy.reshape",
+        "stumpy.stump",
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
+        "numpy.reshape",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
+    ],
+    "init_params": {
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "time_column": "timestamp",
+            "interval": 21600,
+            "method": "mean"
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [0, 1]
+        },
+        "numpy.reshape#1": {
+            "newshape": [-1]
+        },
+        "stumpy.stump#1": {
+            "m": 100
+        },
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims#1": {
+            "target_index": 0,
+            "axis": 1
+        },
+        "numpy.reshape#2": {
+            "newshape": [-1]
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size_portion": 0.33,
+            "window_step_size_portion": 0.1,
+            "fixed_threshold": false,
+            "inverse": true
+        }
+    },
+    "input_names": {
+        "stumpy.stump#1": {
+            "T_A": "X"
+        },
+        "orion.primitives.timeseries_preprocessing.slice_array_by_dims#1": {
+            "X": "y"
+        },
+        "numpy.reshape#2": {
+            "X": "y"
+        }
+    },
+    "output_names": {
+        "numpy.reshape#2": {
+            "X": "errors"
+        }
+    }
+}

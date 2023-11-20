@@ -10,7 +10,7 @@ Requirements
 
 Python
 ~~~~~~
-**Orion** has been tested on **GNU/Linux**, and **macOS** systems running `Python 3.6, 3.7, or 3.8`_ installed.
+**Orion** has been tested on **GNU/Linux**, **macOS**, and **windows** systems running `Python 3.8, 3.9, 3.10, or 3.11`_ installed.
 
 Also, although it is not strictly required, the usage of a `virtualenv`_ is highly recommended in
 order to avoid having conflicts with other software installed in the system where you are trying to run **Orion**.
@@ -51,7 +51,7 @@ from its sources, in the editable mode, and also including some additional depen
 order to be able to run the tests and build the documentation. Instructions about this process
 can be found in the :ref:`contributing` guide.
 
-.. _Python 3.6, 3.7, or 3.8: https://docs.python-guide.org/starting/installation/
+.. _Python 3.8, 3.9, 3.10, or 3.11: https://docs.python-guide.org/starting/installation/
 .. _virtualenv: https://virtualenv.pypa.io/en/latest/
 .. _pip: https://pip.pypa.io
 .. _PyPI: https://pypi.org/

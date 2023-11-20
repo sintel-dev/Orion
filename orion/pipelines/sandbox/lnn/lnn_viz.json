@@ -1,0 +1,61 @@
+{
+    "primitives": [
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate",
+        "sklearn.impute.SimpleImputer",
+        "sklearn.preprocessing.MinMaxScaler",
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences",
+        "keras.Sequential.LTCTimeSeriesRegressor",
+        "orion.primitives.timeseries_errors.regression_errors",
+        "orion.primitives.timeseries_anomalies.find_anomalies"
+    ],
+    "init_params": {
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+            "time_column": "timestamp",
+            "interval": 21600,
+            "method": "mean"
+        },
+        "sklearn.preprocessing.MinMaxScaler#1": {
+            "feature_range": [
+                0,
+                1
+            ]
+        },
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 250
+        },
+        "keras.Sequential.LTCTimeSeriesRegressor": {
+            "epochs": 35
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size_portion": 0.33,
+            "window_step_size_portion": 0.1,
+            "fixed_threshold": true
+        }
+    },
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "target_index"
+        }
+    },
+    "output_names": {
+        "keras.Sequential.LTCTimeSeriesRegressor#1": {
+            "y": "y_hat"
+        }
+    },
+    "outputs": {
+        "default": [
+            {
+                "name": "events",
+                "variable": "orion.primitives.timeseries_anomalies.find_anomalies#1.y"
+            }
+        ],
+        "visualization": [
+            {
+                "name": "generated_timeseries",
+                "variable": "keras.Sequential.LTCTimeSeriesRegressor#1.y_hat"
+            }
+        ]
+    }
+    
+}
