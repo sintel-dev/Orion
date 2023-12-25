@@ -568,7 +568,7 @@ def threshold_anomalies(energy, index, train_energy, anomaly_ratio=1.0, min_perc
         if is_anomaly == 1:
             start = max(0, idx - anomaly_padding)
             end = min(idx + length + anomaly_padding, len(anomalies)) - 1
-            intervals.append((index[start], index[end], np.mean(energy[start: end+1])))
+            intervals.append((index[start], index[end], np.mean(energy[start: end + 1])))
 
         idx += length
 
