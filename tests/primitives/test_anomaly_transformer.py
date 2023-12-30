@@ -44,7 +44,9 @@ class TestSignal(TestCase):
 
     def test_unknown_mode(self):
         with self.assertRaises(ValueError):
-            Signal(self.data, self.window_size, mode='unknown')
+            signal = Signal(self.data, self.window_size, mode='unknown')
+            index = 1
+            signal[index]
 
 
 class TestPositionalEncoding(TestCase):
