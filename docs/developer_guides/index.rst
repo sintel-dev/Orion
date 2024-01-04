@@ -7,3 +7,4 @@ In the Developer Guides we discuss in depth the architecture of the Orion projec
     :maxdepth: 2
 
     contributing
+    int_benchmark

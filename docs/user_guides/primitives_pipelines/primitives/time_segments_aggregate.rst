@@ -3,11 +3,11 @@
 time segments aggregate
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**path**: ``mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate``
+**path**: ``mlstars.custom.timeseries_preprocessing.time_segments_aggregate``
 
 **description**: this primitive creates an equi-spaced time series by aggregating values over fixed specified interval.
 
-see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate.json>`__.
+see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.time_segments_aggregate.json>`__.
 
 ==================== =========================================== =============================================================================================================================
 argument              type                                        description  
@@ -28,9 +28,9 @@ argument              type                                        description
 .. ipython:: python
     :okwarning:
 
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
-    primitive = load_primitive('mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate', 
+    primitive = load_primitive('mlstars.custom.timeseries_preprocessing.time_segments_aggregate', 
         arguments={"time_column": "timestamp", "interval":10, "method":'mean'})
 
     df = pd.DataFrame({

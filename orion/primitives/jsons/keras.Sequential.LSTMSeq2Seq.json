@@ -10,7 +10,7 @@
         "subtype": "regressor"
     },
     "modalities": [],
-    "primitive": "mlprimitives.adapters.keras.Sequential",
+    "primitive": "mlstars.adapters.keras.Sequential",
     "fit": {
         "method": "fit",
         "args": [
@@ -53,7 +53,7 @@
                 "type": "list",
                 "default": [
                     {
-                        "class": "keras.callbacks.EarlyStopping",
+                        "class": "tensorflow.keras.callbacks.EarlyStopping",
                         "args": {
                             "monitor": "val_loss",
                             "patience": 10,
@@ -88,11 +88,11 @@
             },
             "optimizer": {
                 "type": "str",
-                "default": "keras.optimizers.Adam"
+                "default": "tensorflow.keras.optimizers.Adam"
             },
             "loss": {
                 "type": "str",
-                "default": "keras.losses.mean_squared_error"
+                "default": "tensorflow.keras.losses.mean_squared_error"
             },
             "metrics": {
                 "type": "list",
@@ -112,30 +112,30 @@
                 "type": "list",
                 "default": [
                     {
-                        "class": "keras.layers.LSTM",
+                        "class": "tensorflow.keras.layers.LSTM",
                         "parameters": {
                             "input_shape": "input_shape",
                             "units": 60
                         }
                     },
                     {
-                        "class": "keras.layers.RepeatVector",
+                        "class": "tensorflow.keras.layers.RepeatVector",
                         "parameters": {
                             "n": "window_size"
                         }
                     },
                     {
-                        "class": "keras.layers.LSTM",
+                        "class": "tensorflow.keras.layers.LSTM",
                         "parameters": {
                             "units": 60,
                             "return_sequences": true
                         }
                     },
                     {
-                        "class": "keras.layers.TimeDistributed",
+                        "class": "tensorflow.keras.layers.TimeDistributed",
                         "parameters": {
                             "layer": {
-                                "class": "keras.layers.Dense",
+                                "class": "tensorflow.keras.layers.Dense",
                                 "parameters": {
                                     "units": 1
                                 }
@@ -143,7 +143,7 @@
                         }
                     },
                     {
-                        "class": "keras.layers.Reshape",
+                        "class": "tensorflow.keras.layers.Reshape",
                         "parameters": {
                             "target_shape": "target_shape"
                         }

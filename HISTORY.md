@@ -1,6 +1,55 @@
 History
 =======
 
+## 0.5.2 - 2023-10-19
+
+Support for python 3.9 and new Matrix Profile pipeline
+
+### Issues resolved
+
+* Send pipeline names in benchmark arguments – [Issue #466](https://github.com/signals-dev/Orion/issues/466) by @sarahmish
+* Add continuation parameter for benchmark – [Issue #464](https://github.com/signals-dev/Orion/issues/464) by @sarahmish
+* Fix references in documentation – [Issue #453](https://github.com/signals-dev/Orion/issues/453) by @sarahmish
+* Update documentation – [Issue #448](https://github.com/signals-dev/Orion/issues/448) by @sarahmish
+* Add matrix profiling method – [Issue #446](https://github.com/signals-dev/Orion/issues/446) by @sarahmish
+* Support python 3.9 – [Issue #408](https://github.com/signals-dev/Orion/issues/408) by @sarahmish
+
+
+## 0.5.1 - 2023-08-16
+
+This version introduces a new dataset to the benchmark.
+
+### Issues resolved
+
+* Add UCR dataset to the benchmark – [Issue #443](https://github.com/signals-dev/Orion/issues/443) by @sarahmish
+* docker image build failed – [Issue #439](https://github.com/signals-dev/Orion/issues/439) by @sarahmish
+* Edit interval settings in ``azure`` pipeline – [Issue #436](https://github.com/signals-dev/Orion/issues/436) by @sarahmish
+
+
+## 0.5.0 - 2023-05-23
+
+This version uses ``ml-stars`` package instead of ``mlprimitives``.
+
+### Issues resolved
+
+* Migrate to ml-stars – [Issue #418](https://github.com/signals-dev/Orion/issues/418) by @sarahmish
+* Updating ``best_cost`` in ``find_anomalies`` primitive – [Issue #403](https://github.com/signals-dev/Orion/issues/403) by @sarahmish
+* Retire ``lstm_dynamic_threshold_gpu`` and ``lstm_autoencoder_gpu`` pipeline maintenance – [Issue #373](https://github.com/signals-dev/Orion/issues/373) by @sarahmish
+* Typo in xlsxwriter dependency specification – [Issue #394](https://github.com/signals-dev/Orion/issues/394) by @sarahmish
+* ``orion.evaluate`` uses fails when fitting – [Issue #384](https://github.com/signals-dev/Orion/issues/384) by @sarahmish
+* AER pipeline with visualization option – [Issue #379](https://github.com/signals-dev/Orion/issues/379) by @sarahmish
+
+
+## 0.4.1 - 2023-01-31
+
+### Issues resolved
+
+* Move VAE from sandbox to verified – [Issue #377](https://github.com/signals-dev/Orion/issues/377) by @sarahmish
+* Pin ``opencv`` – [Issue #372](https://github.com/signals-dev/Orion/issues/372) by @sarahmish
+* Pin ``scikit-learn`` – [Issue #367](https://github.com/signals-dev/Orion/issues/367) by @sarahmish
+* Fix VAE documentation – [Issue #360](https://github.com/signals-dev/Orion/issues/360) by @sarahmish
+
+
 ## 0.4.0 - 2022-11-08
 
 This version introduces several new enhancements:

@@ -3,11 +3,11 @@
 rolling window sequence
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**path**: ``mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences``
+**path**: ``mlstars.custom.timeseries_preprocessing.rolling_window_sequences``
 
 **description**: this primitive generates many sub-sequences of the original sequence. it uses a rolling window approach to create the sub-sequences out of time series data.
 
-see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences.json>`__.
+see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.rolling_window_sequences.json>`__.
 
 ==================== ============================================================== ==================================================================
  argument             type                                                           description  
@@ -41,9 +41,9 @@ see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/pri
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
-    primitive = load_primitive('mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences', 
+    primitive = load_primitive('mlstars.custom.timeseries_preprocessing.rolling_window_sequences', 
         arguments={"window_size": 10, "target_size": 1, "step_size": 1, "target_column": 0})
 
     X = np.array([1] * 50).reshape(-1, 1)

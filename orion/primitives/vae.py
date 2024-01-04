@@ -11,7 +11,7 @@ import tempfile
 
 import numpy as np
 import tensorflow as tf
-from mlprimitives.utils import import_object
+from mlstars.utils import import_object
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
@@ -232,4 +232,5 @@ class VAE(object):
             ndarray:
                 N-dimensional array containing the reconstructions for each input sequence.
         """
-        return self.vae_model.predict(X)
+        dummy = np.empty(shape=(X.shape[0], *self.output_shape))
+        return self.vae_model.predict((X, dummy))

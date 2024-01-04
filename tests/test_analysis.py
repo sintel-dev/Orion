@@ -9,11 +9,11 @@ from orion import analysis
 @pytest.fixture
 def tadgan_hyperparameters():
     return {
-        "mlprimitives.custom.timeseries_preprocessing.time_segments_aggregate#1": {
+        "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
             "interval": 1,
             "time_column": "timestamp",
         },
-        "mlprimitives.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "target_column": 0,
             "window_size": 100,
             "target_size": 1

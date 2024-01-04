@@ -3,11 +3,11 @@
 intervals to mask
 ~~~~~~~~~~~~~~~~~
 
-**path**: ``mlprimitives.custom.timeseries_preprocessing.intervals_to_mask``
+**path**: ``mlstars.custom.timeseries_preprocessing.intervals_to_mask``
 
 **description**: this primitive creates boolean mask from given intervals.
 
-see `json <https://github.com/MLBazaar/MLPrimitives/blob/master/mlprimitives/primitives/mlprimitives.custom.timeseries_preprocessing.intervals_to_mask.json>`__.
+see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.intervals_to_mask.json>`__.
 
 ==================== =============================== =================================================================================================================================
 argument              type                            description  
@@ -28,9 +28,9 @@ argument              type                            description
     :okwarning:
 
     import numpy as np
-    from mlprimitives import load_primitive
+    from mlstars import load_primitive
 
-    primitive = load_primitive('mlprimitives.custom.timeseries_preprocessing.intervals_to_mask')
+    primitive = load_primitive('mlstars.custom.timeseries_preprocessing.intervals_to_mask')
 
     index = np.array(range(10))
     intervals = [(1, 3), (7, 7)]
