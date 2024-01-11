@@ -67,6 +67,9 @@ development_requires = [
     'ipython>=6.5,<9',
     'Jinja2>=2,<3',
 
+    # fails on Sphinx < v3.4
+    'alabaster<=0.7.12',
+
     # style check
     'flake8>=3.7.7,<4',
     'isort>=4.3.4,<5',
@@ -127,6 +130,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.5.3.dev0',
+    version='0.5.3.dev1',
     zip_safe=False,
 )
