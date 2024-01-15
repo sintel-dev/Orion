@@ -69,6 +69,8 @@ development_requires = [
 
     # fails on Sphinx < v3.4
     'alabaster<=0.7.12',
+    # fails on Sphins < v5.0
+    'sphinxcontrib.applehelp<=1.0.7',
 
     # style check
     'flake8>=3.7.7,<4',
