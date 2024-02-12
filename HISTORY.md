@@ -7,6 +7,9 @@ Support for python 3.10 and 3.11
 
 ### Issues resolved
 
+* Update ``test_core`` file – [Issue #507](https://github.com/signals-dev/Orion/issues/507) by @sarahmish
+* update ARIMA primitive and pipeline – [Issue #503](https://github.com/signals-dev/Orion/issues/503) by @sarahmish
+* Update Dependency – [Issue #497](https://github.com/signals-dev/Orion/issues/497) & [Issue #499](https://github.com/signals-dev/Orion/issues/499) by @sarahmish
 * Update Python for Dependency Test – [Issue #484](https://github.com/signals-dev/Orion/issues/484) by @sarahmish
 * Add python 3.10 and 3.11 & drop 3.6 and 3.7 – [Issue #477](https://github.com/signals-dev/Orion/issues/477) by @sarahmish
 * LNN Pipeline – [Issue #475](https://github.com/signals-dev/Orion/issues/475) by @sarahmish
