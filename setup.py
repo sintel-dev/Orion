@@ -17,24 +17,23 @@ except IOError:
 
 
 install_requires = [
-    "tensorflow>=2.0,<2.5;python_version<'3.8'",
-    "tensorflow>=2.2,<2.11;python_version>='3.8'",
-    's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.6,<0.7',
-    'ml-stars>=0.1.3.dev0,<0.1.4',
-    'numpy>=1.17.4,<1.21',
+    'tensorflow>=2.2,<2.15',
+    'numpy>=1.17.5,<2',
     'pandas>=1,<2',
-    'scikit-learn>=0.22,<1.2',
+    'numba>=0.48,<0.60',
+    's3fs>=0.2.2,<0.5',
+    'mlblocks>=0.6.1,<0.7',
+    'ml-stars>=0.2,<0.3',
+    'scikit-learn>=0.22.1,<1.2',
     'tabulate>=0.8.3,<0.9',
-    'numba>=0.48,<0.58',
-    'pyts>=0.9,<0.12',
+    'pyts>=0.11,<0.14',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
     'stumpy>=1.7,<1.11',
+    'ncps',
 
     # fix conflict
-    # 'h5py<2.11.0,>=2.10.0',
     'protobuf<4',
     
     # fails on python 3.6
@@ -63,10 +62,18 @@ development_requires = [
     'nbsphinx>=0.5.0,<0.7',
     'Sphinx>=3,<3.3',
     'pydata-sphinx-theme<0.5',
-    'autodocsumm>=0.1.10,<1',
     'markupsafe<2.1.0',
-    'ipython>=6.5,<7.5',
+    'ipython>=6.5,<9',
     'Jinja2>=2,<3',
+
+    # fails on Sphinx < v3.4
+    'alabaster<=0.7.12',
+    # fails on Sphins < v5.0
+    'sphinxcontrib-applehelp<1.0.8',
+    'sphinxcontrib-devhelp<1.0.6',
+    'sphinxcontrib-htmlhelp<2.0.5',
+    'sphinxcontrib-serializinghtml<1.1.10',
+    'sphinxcontrib-qthelp<1.0.7',
 
     # style check
     'flake8>=3.7.7,<4',
@@ -96,10 +103,10 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     description="Orion is a machine learning library built for unsupervised time series anomaly detection.",
     entry_points={
@@ -123,11 +130,11 @@ setup(
     long_description_content_type='text/markdown',
     name='orion-ml',
     packages=find_packages(include=['orion', 'orion.*']),
-    python_requires='>=3.6,<3.10',
+    python_requires='>=3.8,<3.12',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.5.2',
+    version='0.6.0.dev0',
     zip_safe=False,
 )
