@@ -63,8 +63,7 @@ class TestOrion:
             {'start': 145, 'end': 155, 'severity': 4.275}
         ], columns=['start', 'end', 'severity'])
 
-    def setup(self):
-        self.orion = Orion('dummy')
+        cls.orion = Orion('dummy')
 
     def test_fit(self):
         self.orion.fit(self.clean)
