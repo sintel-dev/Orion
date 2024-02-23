@@ -27,6 +27,7 @@ install_requires = [
     'scikit-learn>=0.22.1,<1.2',
     'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
+    'torch>=1.4',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
