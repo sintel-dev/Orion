@@ -1,9 +1,5 @@
 # Project Metadata
 
-[build-system]
-requires = ['setuptools', 'wheel']
-build-backend = 'setuptools.build_meta'
-
 [project]
 name = 'orion'
 description='Orion is a machine learning library built for unsupervised time series anomaly detection.'
@@ -115,10 +111,37 @@ mlblocks = { primitives = 'orion:MLBLOCKS_PRIMITIVES', pipelines = 'orion:MLBLOC
 
 [tool.setuptools]
 include-package-data = true
+license-files = ['LICENSE']
 
 [tool.setuptools.packages.find]
 include = ['orion', 'orion.*']
 namespaces = false
+
+[tool.setuptools.package-data]
+'*' = [
+    'AUTHORS.rst',
+    'CONTRIBUTING.rst',
+    'HISTORY.md',
+    'README.md',
+    '*.md',
+    '*.rst',
+    'conf.py',
+    'Makefile',
+    'make.bat',
+    '*.jpg',
+    '*.png',
+    '*.gif'
+]
+'tests' = ['*']
+
+[tool.setuptools.exclude-package-data]
+'*' = [
+    '* __pycache__',
+    '*.py[co]',
+]
+
+[tool.setuptools.dynamic]
+version = {attr = 'orion.__version__'}
 
 [tool.isort]
 line_length = 99
@@ -129,4 +152,42 @@ use_parentheses = true
 include_trailing_comment = true
 
 [tool.pytest.ini_options]
-addopts = "--ignore=pyproject.toml"
+collect_ignore = ['pyproject.toml']
+
+[tool.bumpversion]
+current_version = 0.6.1.dev0
+parse = (?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(\.(?P<release>[a-z]+)(?P<candidate>\d+))?
+serialize = [
+    '{major}.{minor}.{patch}.{release}{candidate}',
+    '{major}.{minor}.{patch}'
+]
+search = '{current_version}'
+replace = '{new_version}'
+regex = false
+ignore_missing_version = false
+tag = true
+sign_tags = false
+tag_name = 'v{new_version}'
+tag_message = 'Bump version: {current_version} → {new_version}'
+allow_dirty = false
+commit = true
+message = 'Bump version: {current_version} → {new_version}'
+commit_args = ''
+
+[tool.bumpversion.parts.release]
+first_value = 'dev'
+optional_value = 'release'
+values = [
+    'dev',
+    'release'
+]
+
+[tool.bumpversion.files]
+filename = "orion/__init__.py"
+search = "__version__ = '{current_version}'"
+replace = "__version__ = '{new_version}'"
+
+[build-system]
+requires = ['setuptools', 'wheel']
+build-backend = 'setuptools.build_meta'
+
