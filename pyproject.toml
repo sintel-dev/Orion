@@ -128,9 +128,5 @@ not_skip = ['__init__.py']
 use_parentheses = true
 include_trailing_comment = true
 
-[tool.pydocstyle]
-convention = 'google'
-# add-ignore = ['D105', 'D107', 'D407', 'D417']
-
 [tool.pytest.ini_options]
 addopts = "--ignore=pyproject.toml"

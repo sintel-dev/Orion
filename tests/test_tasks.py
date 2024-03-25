@@ -1,5 +1,7 @@
 from pytest import fixture
-from tasks import _get_package_names, _get_minimum_versions
+
+from tasks import _get_minimum_versions, _get_package_names
+
 
 @fixture
 def dependencies():
@@ -10,7 +12,7 @@ def dependencies():
         "pandas>=1.3.0,<2;python_version>='3.10'",
         'tensorflow>=2.2,<2.15',
         'pandas @ git+https://github.com/pandas-dev/pandas.git@master#egg=pandas'
-    ]    
+    ]
 
 
 def test_get_package_names(dependencies):
