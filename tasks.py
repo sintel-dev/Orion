@@ -1,21 +1,13 @@
 import glob
-import operator
 import os
-import platform
-import re
 import shutil
 import stat
 from pathlib import Path
 
+import tomli
 from invoke import task
-
-
-COMPARISONS = {
-    '>=': operator.ge,
-    '>': operator.gt,
-    '<': operator.lt,
-    '<=': operator.le
-}
+from packaging.requirements import Requirement
+from packaging.version import Version
 
 
 @task
@@ -23,47 +15,45 @@ def pytest(c):
     c.run('python -m pytest --cov=orion')
 
 
+def _get_minimum_versions(dependencies, python_version):
+    min_versions = {}
+    for dependency in dependencies:
+        if '@' in dependency:
+            name, url = dependency.split(' @ ')
+            min_versions[name] = f'{name} @ {url}'
+            continue
+
+        req = Requirement(dependency)
+        if ';' in dependency:
+            marker = req.marker
+            if marker and not marker.evaluate({'python_version': python_version}):
+                continue # python version does not match
+
+        if req.name not in min_versions:
+            min_version = next((spec.version for spec in req.specifier if spec.operator in ('>=', '==')), None)
+            if min_version:
+                min_versions[req.name] = f'{req.name}=={min_version}'
+
+        elif '@' not in min_versions[req.name]:
+            existing_version = Version(min_versions[req.name].split('==')[1])
+            new_version = next((spec.version for spec in req.specifier if spec.operator in ('>=', '==')), existing_version)
+            if new_version > existing_version:
+                min_versions[req.name] = f'{req.name}=={new_version}'
+
+    return list(min_versions.values())
+
+
 @task
 def install_minimum(c):
-    with open('setup.py', 'r') as setup_py:
-        lines = setup_py.read().splitlines()
+    with open('pyproject.toml', 'rb') as pyproject_file:
+        pyproject_data = tomli.load(pyproject_file)
 
-    versions = []
-    started = False
-    for line in lines:
-        if started:
-            if line == ']':
-                started = False
-                continue
+    dependencies = pyproject_data.get('project', {}).get('dependencies', [])
+    python_version = '.'.join(map(str, sys.version_info[:2]))
+    minimum_versions = _get_minimum_versions(dependencies, python_version)
 
-            line = line.strip()
-            if line.startswith('#'): # ignore comment
-                continue
-
-            # get specific package version based on declared python version
-            if 'python_version' in line:
-                python_version = re.search(r"python_version(<=?|>=?)\'(\d\.?)+\'", line)
-                operation = python_version.group(1)
-                version_number = python_version.group(0).split(operation)[-1].replace("'", "")
-                if COMPARISONS[operation](platform.python_version(), version_number):
-                    line = line.split(";")[0]
-                else:
-                    continue
-                
-            line = re.sub(r"""['",]""", '', line)
-            line = re.sub(r'>=?', '==', line)
-            if '==' in line:
-                line = re.sub(r',?<=?[\d.]*,?', '', line)
-            
-            elif re.search(r',?<=?[\d.]*,?', line):
-                line = f"'{line}'"
-
-            versions.append(line)
-
-        elif line.startswith('install_requires = ['):
-            started = True
-
-    c.run(f'python -m pip install {" ".join(versions)}')
+    if minimum_versions:
+        c.run(f'python -m pip install {" ".join(minimum_versions)}')
 
 
 @task
@@ -71,6 +61,7 @@ def minimum(c):
     install_minimum(c)
     c.run('python -m pip check')
     c.run('python -m pytest')
+
 
 
 @task
@@ -110,31 +101,15 @@ def lint(c):
 
 @task
 def checkdeps(c, path):
-    with open('setup.py', 'r') as setup_py:
-        lines = setup_py.read().splitlines()
+    with open('pyproject.toml', 'rb') as pyproject_file:
+        pyproject_data = tomli.load(pyproject_file)
 
-    packages = []
-    started = False
-    for line in lines:
-        if started:
-            if line == ']':
-                started = False
-                continue
-
-            line = line.strip()
-            if line.startswith('#') or not line: # ignore comment
-                continue
-                
-            line = re.split(r'>?=?<?', line)[0]
-            line = re.sub(r"""['",]""", '', line)
-            packages.append(line)
-
-        elif line.startswith('install_requires = ['):
-            started = True
+    dependencies = pyproject_data.get('project', {}).get('dependencies', [])
+    print(dependencies)
 
     c.run(
         f'pip freeze | grep -v \"sintel-dev/Orion.git\" | '
-        f'grep -E \'{"|".join(packages)}\' > {path}'
+        f'grep -E \'{"|".join(dependencies)}\' > {path}'
     )
 
 

@@ -164,8 +164,7 @@ serve-docs: view-docs ## compile the docs watching for changes
 
 .PHONY: dist
 dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist_wheel
+	python -m build --wheel --sdist
 	ls -l dist
 
 .PHONY: publish-confirm
