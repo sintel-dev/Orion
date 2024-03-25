@@ -10,9 +10,9 @@ from packaging.requirements import Requirement
 from packaging.version import Version
 
 
-@task
-def pytest(c):
-    c.run('python -m pytest --cov=orion')
+def _get_package_names(dependencies):
+    packages = list(map(lambda dep: Requirement(dep).name, dependencies))
+    return packages
 
 
 def _get_minimum_versions(dependencies, python_version):
@@ -63,6 +63,10 @@ def minimum(c):
     c.run('python -m pytest')
 
 
+@task
+def pytest(c):
+    c.run('python -m pytest --cov=orion')
+
 
 @task
 def readme(c):
@@ -105,11 +109,11 @@ def checkdeps(c, path):
         pyproject_data = tomli.load(pyproject_file)
 
     dependencies = pyproject_data.get('project', {}).get('dependencies', [])
-    print(dependencies)
+    packages = _get_package_names(dependencies)
 
     c.run(
         f'pip freeze | grep -v \"sintel-dev/Orion.git\" | '
-        f'grep -E \'{"|".join(dependencies)}\' > {path}'
+        f'grep -E \'{"|".join(packages)}\' > {path}'
     )
 
 
