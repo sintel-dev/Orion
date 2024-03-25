@@ -155,8 +155,8 @@ include_trailing_comment = true
 collect_ignore = ['pyproject.toml']
 
 [tool.bumpversion]
-current_version = 0.6.1.dev0
-parse = (?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(\.(?P<release>[a-z]+)(?P<candidate>\d+))?
+current_version = '0.6.1.dev0'
+parse = '(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(\.(?P<release>[a-z]+)(?P<candidate>\d+))?'
 serialize = [
     '{major}.{minor}.{patch}.{release}{candidate}',
     '{major}.{minor}.{patch}'
