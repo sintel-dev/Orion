@@ -133,8 +133,8 @@ def _sort_leaderboard(df, rank, metrics):
     return df
 
 
-def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
-                     test_split=False, detrend=False, pipeline_path=None):
+def _evaluate_signal(pipeline, signal, hyperparameter, metrics, test_split=False,
+                     detrend=False, pipeline_path=None, anomaly_path=None):
 
     train, test = _load_signal(signal, test_split)
     truth = load_anomalies(signal)
@@ -181,6 +181,9 @@ def _evaluate_signal(pipeline, signal, hyperparameter, metrics,
         with open(pipeline_path, 'wb') as f:
             pickle.dump(pipeline, f)
 
+    if anomaly_path:
+        anomalies.to_csv(anomaly_path, index=False)
+
     return scores
 
 
@@ -189,12 +192,17 @@ def _run_job(args):
     np.random.seed()
 
     (pipeline, pipeline_name, dataset, signal, hyperparameter, metrics, test_split, detrend,
-        iteration, cache_dir, pipeline_dir, run_id) = args
+        iteration, cache_dir, pipeline_dir, anomaly_dir, run_id) = args
 
     pipeline_path = pipeline_dir
     if pipeline_dir:
         base_path = str(pipeline_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}')
         pipeline_path = base_path + '_pipeline.pkl'
+
+    anomaly_path = anomaly_dir
+    if anomaly_dir:
+        base_path = str(anomaly_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}')
+        anomaly_path = base_path + '_anomalies.csv'
 
     LOGGER.info('Evaluating pipeline %s on signal %s dataset %s (test split: %s); iteration %s',
                 pipeline_name, signal, dataset, test_split, iteration)
@@ -206,7 +214,8 @@ def _run_job(args):
         metrics,
         test_split,
         detrend,
-        pipeline_path
+        pipeline_path,
+        anomaly_path
     )
     scores = pd.DataFrame.from_records([output], columns=output.keys())
 
@@ -248,7 +257,7 @@ def _run_on_dask(jobs, verbose):
 
 def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRICS, rank='f1',
               test_split=False, detrend=False, iterations=1, workers=1, show_progress=False,
-              cache_dir=None, resume=False, output_path=None, pipeline_dir=None):
+              cache_dir=None, resume=False, output_path=None, pipeline_dir=None, anomaly_dir=None):
     """Run pipelines on the given datasets and evaluate the performance.
 
     The pipelines are used to analyze the given signals and later on the
@@ -302,6 +311,9 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
         pipeline_dir (str):
             If a ``pipeline_dir`` is given, pipelines will get dumped in the specificed directory
             as pickle files. Defaults to ``None``.
+        anomaly_dir (str):
+            If a ``anomaly_dir`` is given, detected anomalies will get dumped in the specificed
+            directory as csv files. Defaults to ``None``.
 
     Returns:
         pandas.DataFrame:
@@ -342,6 +354,10 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
         pipeline_dir = Path(pipeline_dir)
         os.makedirs(pipeline_dir, exist_ok=True)
 
+    if anomaly_dir:
+        anomaly_dir = Path(anomaly_dir)
+        os.makedirs(anomaly_dir, exist_ok=True)
+
     jobs = list()
     for dataset, signals in datasets.items():
         for pipeline_name, pipeline in pipelines.items():
@@ -371,6 +387,7 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
                         iteration,
                         cache_dir,
                         pipeline_dir,
+                        anomaly_dir,
                         run_id,
                     )
                     jobs.append(args)
@@ -429,6 +446,7 @@ if __name__ == "__main__":
     parser.add_argument('-o', '--output_path', type=str, default='results.csv')
     parser.add_argument('-c', '--cache_dir', type=str, default='cache')
     parser.add_argument('-pd', '--pipeline_dir', type=str, default='pipeline_dir')
+    parser.add_argument('-ad', '--anomaly_dir', type=str, default='anomaly_dir')
 
     config = parser.parse_args()
 
