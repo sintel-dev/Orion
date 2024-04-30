@@ -164,6 +164,7 @@ def _evaluate_signal(pipeline, signal, hyperparameter, metrics, test_split=False
                          pipeline, signal, test_split, ex)
 
         elapsed = datetime.utcnow() - start
+        anomalies = pd.DataFrame([], columns=['start', 'end', 'score'])
         scores = {
             name: 0 for name in metrics.keys()
         }
@@ -417,7 +418,8 @@ def benchmark(pipelines=None, datasets=None, hyperparameters=None, metrics=METRI
     return pd.DataFrame()
 
 
-def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_dir, **kwargs):
+def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_dir, anomaly_dir,
+         **kwargs):
     # output path
     output_path = os.path.join(BENCHMARK_PATH, 'results', output_path)
 
@@ -428,7 +430,8 @@ def main(pipelines, datasets, resume, workers, output_path, cache_dir, pipeline_
 
     results = benchmark(
         pipelines=pipelines, datasets=datasets, metrics=metrics, output_path=output_path,
-        workers=workers, resume=resume, pipeline_dir=pipeline_dir, cache_dir=cache_dir
+        workers=workers, resume=resume, pipeline_dir=pipeline_dir, cache_dir=cache_dir,
+        anomaly_dir=anomaly_dir
     )
 
     return results
