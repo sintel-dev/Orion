@@ -287,8 +287,8 @@
     <span class="k">return</span> <span class="n">df</span>
 
 
-<span class="k">def</span> <span class="nf">_evaluate_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span>
-                     <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pipeline_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_evaluate_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pipeline_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">anomaly_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
     <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">test_split</span><span class="p">)</span>
     <span class="n">truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
@@ -318,6 +318,7 @@
                          <span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">test_split</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
 
         <span class="n">elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+        <span class="n">anomalies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">])</span>
         <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">name</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="p">}</span>
@@ -335,6 +336,9 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pipeline_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">anomaly_path</span><span class="p">:</span>
+        <span class="n">anomalies</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">anomaly_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">scores</span>
 
 
@@ -343,12 +347,17 @@
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
 
     <span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">pipeline_name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">test_split</span><span class="p">,</span> <span class="n">detrend</span><span class="p">,</span>
-        <span class="n">iteration</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">run_id</span><span class="p">)</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="n">iteration</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">anomaly_dir</span><span class="p">,</span> <span class="n">run_id</span><span class="p">)</span> <span class="o">=</span> <span class="n">args</span>
 
     <span class="n">pipeline_path</span> <span class="o">=</span> <span class="n">pipeline_dir</span>
     <span class="k">if</span> <span class="n">pipeline_dir</span><span class="p">:</span>
         <span class="n">base_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pipeline_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pipeline_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">pipeline_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">+</span> <span class="s1">&#39;_pipeline.pkl&#39;</span>
+
+    <span class="n">anomaly_path</span> <span class="o">=</span> <span class="n">anomaly_dir</span>
+    <span class="k">if</span> <span class="n">anomaly_dir</span><span class="p">:</span>
+        <span class="n">base_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">anomaly_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pipeline_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">anomaly_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">+</span> <span class="s1">&#39;_anomalies.csv&#39;</span>
 
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Evaluating pipeline </span><span class="si">%s</span><span class="s1"> on signal </span><span class="si">%s</span><span class="s1"> dataset </span><span class="si">%s</span><span class="s1"> (test split: </span><span class="si">%s</span><span class="s1">); iteration </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
                 <span class="n">pipeline_name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">test_split</span><span class="p">,</span> <span class="n">iteration</span><span class="p">)</span>
@@ -360,7 +369,8 @@
         <span class="n">metrics</span><span class="p">,</span>
         <span class="n">test_split</span><span class="p">,</span>
         <span class="n">detrend</span><span class="p">,</span>
-        <span class="n">pipeline_path</span>
+        <span class="n">pipeline_path</span><span class="p">,</span>
+        <span class="n">anomaly_path</span>
     <span class="p">)</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">([</span><span class="n">output</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">output</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
@@ -402,7 +412,7 @@
 
 <div class="viewcode-block" id="benchmark"><a class="viewcode-back" href="../../api_reference/api/orion.benchmark.benchmark.html#orion.benchmark.benchmark">[docs]</a><span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">pipelines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">METRICS</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span>
               <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-              <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+              <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">anomaly_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run pipelines on the given datasets and evaluate the performance.</span>
 
 <span class="sd">    The pipelines are used to analyze the given signals and later on the</span>
@@ -456,6 +466,9 @@
 <span class="sd">        pipeline_dir (str):</span>
 <span class="sd">            If a ``pipeline_dir`` is given, pipelines will get dumped in the specificed directory</span>
 <span class="sd">            as pickle files. Defaults to ``None``.</span>
+<span class="sd">        anomaly_dir (str):</span>
+<span class="sd">            If a ``anomaly_dir`` is given, detected anomalies will get dumped in the specificed</span>
+<span class="sd">            directory as csv files. Defaults to ``None``.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        pandas.DataFrame:</span>
@@ -496,6 +509,10 @@
         <span class="n">pipeline_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">pipeline_dir</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">anomaly_dir</span><span class="p">:</span>
+        <span class="n">anomaly_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">anomaly_dir</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">anomaly_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
     <span class="n">jobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">signals</span> <span class="ow">in</span> <span class="n">datasets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">pipeline_name</span><span class="p">,</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">pipelines</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -525,6 +542,7 @@
                         <span class="n">iteration</span><span class="p">,</span>
                         <span class="n">cache_dir</span><span class="p">,</span>
                         <span class="n">pipeline_dir</span><span class="p">,</span>
+                        <span class="n">anomaly_dir</span><span class="p">,</span>
                         <span class="n">run_id</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">jobs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
@@ -554,7 +572,8 @@
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span></div>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">workers</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">workers</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">anomaly_dir</span><span class="p">,</span>
+         <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="c1"># output path</span>
     <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BENCHMARK_PATH</span><span class="p">,</span> <span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
 
@@ -565,7 +584,8 @@
 
     <span class="n">results</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span>
         <span class="n">pipelines</span><span class="o">=</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="n">datasets</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
-        <span class="n">workers</span><span class="o">=</span><span class="n">workers</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="n">resume</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="n">cache_dir</span>
+        <span class="n">workers</span><span class="o">=</span><span class="n">workers</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="n">resume</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="n">cache_dir</span><span class="p">,</span>
+        <span class="n">anomaly_dir</span><span class="o">=</span><span class="n">anomaly_dir</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">results</span>
@@ -583,6 +603,7 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--output_path&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;results.csv&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--cache_dir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;cache&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-pd&#39;</span><span class="p">,</span> <span class="s1">&#39;--pipeline_dir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;pipeline_dir&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-ad&#39;</span><span class="p">,</span> <span class="s1">&#39;--anomaly_dir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;anomaly_dir&#39;</span><span class="p">)</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
