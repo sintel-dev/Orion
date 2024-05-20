@@ -5,7 +5,7 @@ azure-common==1.1.28
 azure-core==1.29.1
 azure-mgmt-core==1.4.0
 beautifulsoup4==4.12.3
-botocore==1.34.103
+botocore==1.34.108
 cachetools==5.3.3
 certifi==2024.2.2
 charset-normalizer==3.3.2
@@ -14,7 +14,7 @@ coverage==7.5.1
 exceptiongroup==1.2.1
 filelock==3.14.0
 flatbuffers==24.3.25
-fsspec==2024.3.1
+fsspec==2024.5.0
 future==1.0.0
 gast==0.4.0
 google-auth==2.29.0
@@ -71,7 +71,7 @@ psutil==5.9.8
 pyasn1==0.6.0
 pyasn1_modules==0.4.0
 Pygments==2.18.0
-pytest==8.2.0
+pytest==8.2.1
 pytest-cov==5.0.0
 python-dateutil==2.9.0.post0
 pyts==0.12.0
@@ -107,4 +107,4 @@ Werkzeug==3.0.3
 wrapt==1.16.0
 xgboost==1.7.6
 XlsxWriter==1.3.9
-zipp==3.18.1
+zipp==3.18.2
