@@ -59,7 +59,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install package and dependencies
-      run: pip install invoke rundoc .
+      run: pip install invoke rundoc tomli .
     - name: invoke readme
       run: invoke readme
 
@@ -121,6 +121,6 @@ jobs:
       name: Install dependencies - Windows with Python 3.6
       run: python -m pip install pywinpty==2.0.1
     - name: Install package and dependencies
-      run: pip install invoke jupyter matplotlib .
+      run: pip install invoke jupyter matplotlib tomli .
     - name: invoke tutorials
       run: invoke tutorials
