@@ -5,14 +5,14 @@ azure-common==1.1.28
 azure-core==1.29.1
 azure-mgmt-core==1.4.0
 beautifulsoup4==4.12.3
-botocore==1.34.127
+botocore==1.34.131
 cachetools==5.3.3
 certifi==2024.6.2
 charset-normalizer==3.3.2
 click==7.1.2
-coverage==7.5.3
+coverage==7.5.4
 exceptiongroup==1.2.1
-filelock==3.15.1
+filelock==3.15.4
 flatbuffers==24.3.25
 fsspec==2024.6.0
 future==1.0.0
@@ -24,7 +24,7 @@ graphviz==0.20.3
 grpcio==1.64.1
 h5py==3.11.0
 idna==3.7
-importlib_metadata==7.1.0
+importlib_metadata==7.2.1
 iniconfig==2.0.0
 invoke==2.2.0
 isodate==0.6.1
@@ -41,7 +41,7 @@ ml-stars==0.2.0
 mlblocks==0.6.1
 mpmath==1.3.0
 msrest==0.7.1
-ncps==0.0.7
+ncps==1.0.0
 networkx==3.1
 numba==0.58.1
 numpy==1.24.3
@@ -101,7 +101,7 @@ torch==2.1.2
 tqdm==4.66.4
 triton==2.1.0
 typing_extensions==4.5.0
-urllib3==1.26.18
+urllib3==1.26.19
 wcwidth==0.2.13
 Werkzeug==3.0.3
 wrapt==1.16.0
