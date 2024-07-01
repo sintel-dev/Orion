@@ -25,6 +25,7 @@ install_requires = [
     'mlblocks>=0.6.1,<0.7',
     'ml-stars>=0.2,<0.3',
     'scikit-learn>=0.22.1,<1.2',
+    'scipy<1.14',
     'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
     'torch>=1.4',
