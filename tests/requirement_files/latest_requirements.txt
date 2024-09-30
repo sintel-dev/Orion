@@ -5,7 +5,7 @@ azure-common==1.1.28
 azure-core==1.29.1
 azure-mgmt-core==1.4.0
 beautifulsoup4==4.12.3
-botocore==1.35.24
+botocore==1.35.29
 cachetools==5.5.0
 certifi==2024.8.30
 charset-normalizer==3.3.2
@@ -21,7 +21,7 @@ google-auth==2.35.0
 google-auth-oauthlib==1.0.0
 google-pasta==0.2.0
 graphviz==0.20.3
-grpcio==1.66.1
+grpcio==1.66.2
 h5py==3.11.0
 idna==3.10
 importlib_metadata==8.5.0
@@ -59,13 +59,13 @@ nvidia-nvjitlink-cu12==12.6.68
 nvidia-nvtx-cu12==12.1.105
 oauthlib==3.2.2
 opencv-python==4.6.0.66
-opt-einsum==3.3.0
+opt_einsum==3.4.0
 orion-ml @ file:///home/runner/work/Orion/Orion
 packaging==24.1
 pandas==1.5.3
 patsy==0.5.6
 pluggy==1.5.0
-prompt_toolkit==3.0.47
+prompt_toolkit==3.0.48
 protobuf==3.20.3
 psutil==5.9.8
 pyasn1==0.6.1
