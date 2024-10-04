@@ -1,6 +1,15 @@
 History
 =======
 
+## 0.6.1 - 2024-10-04
+
+### Issues resolved
+* Update minimum test images – [Issue #563](https://github.com/signals-dev/Orion/issues/563) by @sarahmish
+* Update benchmark – [Issue #538](https://github.com/signals-dev/Orion/issues/538) by @sarahmish
+* Pin MacOS Version in GH Actions – [Issue #535](https://github.com/signals-dev/Orion/issues/535) by @sarahmish
+* Add anomaly transformer method – [Issue #452](https://github.com/signals-dev/Orion/issues/452) by @sarahmish
+
+
 ## 0.6.0 - 2024-2-13
 
 Support for python 3.10 and 3.11
