@@ -1,0 +1,54 @@
+{
+    "name": "orion.primitives.anomaly_transformer.threshold_anomalies",
+    "contributors": [
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "documentation": "https://arxiv.org/pdf/2110.02642.pdf",
+    "description": "Find threshold from energy values.",
+    "classifiers": {
+        "type": "postprocessor",
+        "subtype": "anomaly_detector"
+    },
+    "modalities": [
+        "timeseries"
+    ],
+    "primitive": "orion.primitives.anomaly_transformer.threshold_anomalies",
+    "produce": {
+        "args": [
+            {
+                "name": "energy",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            },
+            {
+                "name": "train_energy",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "anomaly_ratio": {
+                "type": "float",
+                "default": 1.0
+            },
+            "min_percent": {
+                "type": "float",
+                "default": 0.1
+            },
+            "anomaly_padding": {
+                "type": "int",
+                "default": 50
+            }
+        }
+    }
+}

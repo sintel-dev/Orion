@@ -1,0 +1,138 @@
+{
+    "name": "orion.primitives.anomaly_transformer.AnomalyTransformer",
+    "contributors": [
+        "Sarah Alnegheimish <smish@mit.edu>"
+    ],
+    "documentation": "https://arxiv.org/pdf/2110.02642.pdf",
+    "description": "time series transformer for anomaly detection",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.anomaly_transformer.AnomalyTransformer",
+    "fit": {
+        "method": "fit",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "energy",
+                "type": "ndarray"
+            },
+            {
+                "name": "train_energy",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "optimizer": {
+                "type": "str",
+                "default": "torch.optim.Adam"
+            },
+            "input_size": {
+                "type": "int",
+                "default": 1
+            },
+            "output_size": {
+                "type": "int",
+                "default": 1
+            },
+            "window_size": {
+                "type": "int",
+                "default": 100
+            },
+            "step": {
+                "type": "int",
+                "default": 1
+            },
+            "k": {
+                "type": "int",
+                "default": 3
+            },
+            "d_model": {
+                "type": "int",
+                "default": 512
+            },
+            "n_hidden": {
+                "type": "int",
+                "default": 512
+            },
+            "num_layers": {
+                "type": "int",
+                "default": 3
+            },
+            "num_heads": {
+                "type": "int",
+                "default": 8
+            },
+            "attention_dropout": {
+                "type": "float",
+                "default": 0.0
+            },
+            "dropout": {
+                "type": "int",
+                "default": 0.0
+            },
+            "activation": {
+                "type": "str",
+                "default": "gelu"
+            },
+            "output_attention": {
+                "type": "bool",
+                "default": true
+            },
+            "learning_rate": {
+                "type": "float",
+                "default": 0.0001
+            },
+            "epochs": {
+                "type": "int",
+                "default": 10
+            },
+            "batch_size": {
+                "type": "int",
+                "default": 64
+            },
+            "temperature": {
+                "type": "int",
+                "default": 50
+            },
+            "shuffle": {
+                "type": "bool",
+                "default": true
+            },
+            "valid_split": {
+                "type": "float",
+                "default": 0.0
+            },
+            "cuda": {
+                "type": "bool",
+                "default": true
+            },
+            "verbose": {
+                "type": "bool",
+                "default": true
+            }
+        }
+    }
+}

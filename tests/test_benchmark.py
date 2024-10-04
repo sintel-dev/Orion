@@ -207,6 +207,7 @@ class TestBenchmark(TestCase):
         cls.test_split = False
         cls.detrend = False
         cls.pipeline_path = None
+        cls.anomaly_path = None
         cls.cache_dir = None
         cls.iteration = 0
         cls.run_id = ANY
@@ -227,6 +228,7 @@ class TestBenchmark(TestCase):
             self.iteration,
             self.cache_dir,
             self.pipeline_path,
+            self.anomaly_path,
             self.run_id
         )
 
@@ -478,7 +480,7 @@ class TestBenchmark(TestCase):
 
         expected_calls = [
             self.pipeline, self.signal, self.hyper, self.metrics,
-            self.test_split, self.detrend, self.pipeline_path
+            self.test_split, self.detrend, self.pipeline_path, self.anomaly_path
         ]
 
         evaluate_signal_mock.assert_called_once_with(*expected_calls)

@@ -25,8 +25,10 @@ install_requires = [
     'mlblocks>=0.6.1,<0.7',
     'ml-stars>=0.2,<0.3',
     'scikit-learn>=0.22.1,<1.2',
+    'scipy<1.14',
     'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
+    'torch>=1.4',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
@@ -135,6 +137,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.6.0',
+    version='0.6.1.dev1',
     zip_safe=False,
 )
