@@ -1,6 +1,9 @@
 # Tutorials
 
-Orion is a machine learning library for unsupervised time series anomaly detection. The following tutorials help you navigate: training an ml model on existing public data, applying Orion on custom data, and so much more.
+Orion is a machine learning library for unsupervised time series anomaly detection. The following tutorials help you navigate: training a machine learning model on existing public data, applying Orion on custom data, and so much more.
+
+
+We provide a list of Google colab notebooks to use Orion!
 
 | Links                                                                               | Tutorials                                                            |
 | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
