@@ -5,7 +5,7 @@ azure-common==1.1.28
 azure-core==1.29.1
 azure-mgmt-core==1.4.0
 beautifulsoup4==4.12.3
-botocore==1.35.54
+botocore==1.35.57
 cachetools==5.5.0
 certifi==2024.8.30
 charset-normalizer==3.4.0
@@ -17,7 +17,7 @@ flatbuffers==24.3.25
 fsspec==2024.10.0
 future==1.0.0
 gast==0.4.0
-google-auth==2.35.0
+google-auth==2.36.0
 google-auth-oauthlib==1.0.0
 google-pasta==0.2.0
 graphviz==0.20.3
@@ -61,7 +61,7 @@ oauthlib==3.2.2
 opencv-python==4.6.0.66
 opt_einsum==3.4.0
 orion-ml @ file:///home/runner/work/Orion/Orion
-packaging==24.1
+packaging==24.2
 pandas==1.5.3
 patsy==0.5.6
 pluggy==1.5.0
@@ -98,7 +98,7 @@ termcolor==2.4.0
 threadpoolctl==3.5.0
 tomli==2.0.2
 torch==2.1.2
-tqdm==4.66.6
+tqdm==4.67.0
 triton==2.1.0
 typing_extensions==4.5.0
 urllib3==1.26.20
