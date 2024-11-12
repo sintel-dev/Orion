@@ -40,6 +40,17 @@ install_requires = [
     
     # fails on python 3.6
     'opencv-python<4.7',
+
+    #UniTS
+    'einops==0.4.0',
+    'matplotlib==3.7.0',
+    'patool==1.12',
+    'reformer-pytorch==1.4.4',
+    'sktime==0.16.1',
+    'sympy==1.11.1',
+    'timm', 
+    'smart_open'
+
 ]
 
 setup_requires = [
