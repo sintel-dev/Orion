@@ -43,7 +43,6 @@ install_requires = [
 
     #UniTS
     'einops==0.4.0',
-    'matplotlib==3.7.0',
     'patool==1.12',
     'reformer-pytorch==1.4.4',
     'sktime==0.16.1',
