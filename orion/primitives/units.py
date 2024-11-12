@@ -822,7 +822,7 @@ class UniTS(object):
         load_path = "https://sintel-orion.s3.us-east-2.amazonaws.com/pretrained/units.pth"
         with smart_open(load_path, 'rb') as f:
             buffer = io.BytesIO(f.read())
-            self.model.load_state_dict(torch.load(buffer), strict=False)
+            self.model.load_state_dict(torch.load(buffer, map_location='cpu'), strict=False)
 
         pred_len = self.args['pred_len']
 
