@@ -54,7 +54,7 @@
             },
             "d_model": {
                 "type": "int",
-                "default": 128
+                "default": 64
             },
             "patch_len": {
                 "type": "int",

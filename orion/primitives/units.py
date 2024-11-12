@@ -768,7 +768,7 @@ class UniTS(object):
                  window_size=250,
                  pred_length=1,
                  prompt_num=10,
-                 d_model=128,
+                 d_model=64,
                  patch_len=1,
                  stride=1,
                  dropout=0.1,
