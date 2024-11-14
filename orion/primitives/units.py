@@ -12,7 +12,6 @@ import math
 import warnings
 
 import numpy as np
-# -*- coding: utf-8 -*-
 import torch
 import torch.nn.functional as F
 from smart_open import open as smart_open
@@ -31,34 +30,34 @@ class Signal(object):
     Args:
         X (ndarray):
             An n-dimensional array of signal values
-        seq_length(int):
+        window_size (int):
             Size of input window
-        pred_length(int):
+        pred_length (int):
             Size of prediction
     """
 
-    def __init__(self, X, index, seq_length, pred_length):
+    def __init__(self, X, index, window_size, pred_length):
         self.data = X
         self.index = index
-        self.seq_length = seq_length
+        self.window_size = window_size
         self.pred_length = pred_length
 
     def __len__(self):
-        return len(self.data) - self.seq_length - self.pred_length + 1
+        return len(self.data) - self.window_size - self.pred_length + 1
 
     def __getitem__(self, idx):
-        x = self.data[idx:idx + self.seq_length]
-        y = self.data[idx + self.seq_length:idx + self.seq_length + self.pred_length]
+        x = self.data[idx:idx + self.window_size]
+        y = self.data[idx + self.window_size:idx + self.window_size + self.pred_length]
 
         return x, y
 
     def first_index(self):
         """Return first index of each input sequence.
         """
-        return self.index[self.seq_length: len(self.index) - self.pred_length + 1]
+        return self.index[self.window_size: len(self.index) - self.pred_length + 1]
 
 
-def calculate_unfold_output_length(input_length, size, step):
+def _calculate_unfold_output_length(input_length, size, step):
     # Calculate the number of windows
     num_windows = (input_length - size) // step + 1
     return num_windows
@@ -77,7 +76,9 @@ class CrossAttention(nn.Module):
             var_num=None,
     ):
         super().__init__()
-        assert dim % num_heads == 0, 'dim should be divisible by num_heads'
+        if dim % num_heads != 0:
+            raise ValueError(
+                f'Dimension {dim} should be divisible by number of heads {num_heads}.')
         self.num_heads = num_heads
         self.head_dim = dim // num_heads
         self.scale = self.head_dim ** -0.5
@@ -108,15 +109,12 @@ class CrossAttention(nn.Module):
             q = self.q_norm(q)
             q = q.repeat(B, 1, 1, 1)
             var_num = self.var_num
-        kv = self.kv(x).reshape(B, N, 2, self.num_heads,
-                                self.head_dim).permute(2, 0, 3, 1, 4)
+        kv = self.kv(x).reshape(B, N, 2, self.num_heads, self.head_dim).permute(2, 0, 3, 1, 4)
         k, v = kv.unbind(0)
         k = self.k_norm(k)
 
-        x = F.scaled_dot_product_attention(
-            q, k, v,
-            dropout_p=self.attn_drop.p if self.training else 0.,
-        )
+        x = F.scaled_dot_product_attention(q, k, v,
+                                           dropout_p=self.attn_drop.p if self.training else 0.,)
 
         x = x.transpose(1, 2).reshape(B, var_num, C)
         x = self.proj(x)
@@ -132,7 +130,9 @@ class DynamicLinear(nn.Module):
 
     def __init__(self, in_features=None, out_features=None, fixed_in=0, bias=True):
         super(DynamicLinear, self).__init__()
-        assert fixed_in < in_features, "fixed_in < in_features is required !!!"
+        if fixed_in >= in_features:
+            raise ValueError(
+                f'Fixed inputs {fixed_in} should be less than input features {in_features}')
         self.in_features = in_features
         self.out_features = out_features
         self.weights = nn.Parameter(torch.Tensor(out_features, in_features))
@@ -171,7 +171,7 @@ class DynamicLinear(nn.Module):
         return F.linear(x, torch.cat((fixed_weights, dynamic_weights), dim=1), this_bias)
 
 
-class DynamicLinearMlp(nn.Module):
+class DynamicLinearMLP(nn.Module):
     def __init__(
             self,
             in_features,
@@ -272,7 +272,9 @@ class SeqAttention(nn.Module):
             norm_layer=nn.LayerNorm,
     ):
         super().__init__()
-        assert dim % num_heads == 0, 'dim should be divisible by num_heads'
+        if dim % num_heads != 0:
+            raise ValueError(
+                f'Dimension {dim} should be divisible by number of heads {num_heads}.')
         self.num_heads = num_heads
         self.head_dim = dim // num_heads
         self.scale = self.head_dim ** -0.5
@@ -314,7 +316,9 @@ class VarAttention(nn.Module):
             norm_layer=nn.LayerNorm,
     ):
         super().__init__()
-        assert dim % num_heads == 0, 'dim should be divisible by num_heads'
+        if dim % num_heads != 0:
+            raise ValueError(
+                f'Dimension {dim} should be divisible by number of heads {num_heads}.')
         self.num_heads = num_heads
         self.head_dim = dim // num_heads
         self.scale = self.head_dim ** -0.5
@@ -342,8 +346,7 @@ class VarAttention(nn.Module):
             dropout_p=self.attn_drop.p if self.training else 0.,
         )
 
-        x = x.view(B, self.num_heads, N, -1, P).permute(0,
-                                                        2, 4, 1, 3).reshape(B, N, P, -1)
+        x = x.view(B, self.num_heads, N, -1, P).permute(0, 2, 4, 1, 3).reshape(B, N, P, -1)
         x = self.proj(x)
         x = self.proj_drop(x)
         return x
@@ -455,7 +458,7 @@ class MLPBlock(nn.Module):
     ):
         super().__init__()
         self.norm2 = norm_layer(dim)
-        if mlp_layer is DynamicLinearMlp:
+        if mlp_layer is DynamicLinearMLP:
             self.mlp = mlp_layer(
                 in_features=dim,
                 hidden_features=int(dim * mlp_ratio),
@@ -513,7 +516,7 @@ class BasicBlock(nn.Module):
                                          proj_drop=proj_drop, drop_path=drop_path,
                                          norm_layer=norm_layer)
 
-        self.dynamic_mlp = MLPBlock(dim=dim, mlp_ratio=mlp_ratio, mlp_layer=DynamicLinearMlp,
+        self.dynamic_mlp = MLPBlock(dim=dim, mlp_ratio=mlp_ratio, mlp_layer=DynamicLinearMLP,
                                     proj_drop=proj_drop, init_values=init_values,
                                     drop_path=drop_path,
                                     act_layer=act_layer, norm_layer=norm_layer,
@@ -527,18 +530,19 @@ class BasicBlock(nn.Module):
 
 
 class PatchEmbedding(nn.Module):
-    def __init__(self, d_model, patch_len, stride, padding, dropout):
+    def __init__(self, d_model, patch_len, step, dropout):
         super(PatchEmbedding, self).__init__()
         # Patching
         self.patch_len = patch_len
-        self.stride = stride
-        assert self.patch_len == self.stride, "non-overlap"
+        self.step = step
+        if self.patch_len != self.step:
+            raise ValueError(f'Patch length {patch_len} should be equal to step size {step}')
         self.value_embedding = nn.Linear(patch_len, d_model, bias=False)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
         n_vars = x.shape[1]
-        x = x.unfold(dimension=-1, size=self.patch_len, step=self.stride)
+        x = x.unfold(dimension=-1, size=self.patch_len, step=self.step)
         x = torch.reshape(x, (x.shape[0] * x.shape[1], x.shape[2], x.shape[3]))
         x = self.value_embedding(x)
         return self.dropout(x), n_vars
@@ -576,7 +580,7 @@ class CLSHead(nn.Module):
 
 
 class ForecastHead(nn.Module):
-    def __init__(self, d_model, patch_len, stride, pad, head_dropout=0, prefix_token_length=None):
+    def __init__(self, d_model, patch_len, step, pad, head_dropout=0, prefix_token_length=None):
         super().__init__()
         d_mid = d_model
         self.proj_in = nn.Linear(d_model, d_mid)
@@ -589,7 +593,7 @@ class ForecastHead(nn.Module):
         self.proj_out = nn.Linear(d_model, patch_len)
         self.pad = pad
         self.patch_len = patch_len
-        self.stride = stride
+        self.step = step
         self.pos_proj = DynamicLinear(
             in_features=128, out_features=128, fixed_in=prefix_token_length)
 
@@ -607,7 +611,7 @@ class ForecastHead(nn.Module):
         x = x.reshape(-1, x.shape[-2], x.shape[-1])
         x = x.permute(0, 2, 1)
         x = torch.nn.functional.fold(x, output_size=(
-            pred_len, 1), kernel_size=(self.patch_len, 1), stride=(self.stride, 1))
+            pred_len, 1), kernel_size=(self.patch_len, 1), stride=(self.step, 1))
         x = x.squeeze(dim=-1)
         x = x.reshape(bs, n_vars, -1)
         x = x.permute(0, 2, 1)
@@ -619,59 +623,68 @@ class Model(nn.Module):
     UniTS: Building a Unified Time Series Model
     """
 
-    def __init__(self, args):
+    def __init__(self,
+                 window_size,
+                 pred_len,
+                 prompt_num,
+                 d_model,
+                 patch_len,
+                 step,
+                 dropout,
+                 e_layers,
+                 n_heads):
         super().__init__()
 
         # Tokens settings
-        self.prompt_token = nn.Parameter(torch.zeros(1, 1, args['prompt_num'], args['d_model']))
+        self.prompt_token = nn.Parameter(torch.zeros(1, 1, prompt_num, d_model))
         torch.nn.init.normal_(self.prompt_token, std=.02)
-        self.mask_token = nn.Parameter(torch.zeros(1, 1, 1, args['d_model']))
-        self.cls_token = nn.Parameter(torch.zeros(1, 1, 1, args['d_model']))
+        self.mask_token = nn.Parameter(torch.zeros(1, 1, 1, d_model))
+        self.cls_token = nn.Parameter(torch.zeros(1, 1, 1, d_model))
         torch.nn.init.normal_(self.cls_token, std=.02)
 
-        remainder = args['seq_len'] % args['patch_len']
+        remainder = window_size % patch_len
         if remainder == 0:
             padding = 0
         else:
-            padding = args['patch_len'] - remainder
-        input_token_len = calculate_unfold_output_length(
-            args['seq_len'] + padding, args['stride'], args['patch_len'])
-        input_pad = args['stride'] * \
-            (input_token_len - 1) + args['patch_len'] - \
-            args['seq_len']
-        pred_token_len = calculate_unfold_output_length(
-            args['pred_len'] - input_pad, args['stride'], args['patch_len'])
-        real_len = args['seq_len'] + \
-            args['pred_len']
-        self.cls_nums = [pred_token_len, args['pred_len'], real_len]
+            padding = patch_len - remainder
+        input_token_len = _calculate_unfold_output_length(
+            window_size + padding, step, patch_len)
+        input_pad = step * \
+            (input_token_len - 1) + patch_len - \
+            window_size
+        pred_token_len = _calculate_unfold_output_length(
+            pred_len - input_pad, step, patch_len)
+        real_len = window_size + \
+            pred_len
+        self.cls_nums = [pred_token_len, pred_len, real_len]
 
         # model settings #
-        self.prompt_num = args['prompt_num']
-        self.stride = args['stride']
-        self.pad = args['stride']
-        self.patch_len = args['patch_len']
+        self.prompt_num = prompt_num
+        self.step = step
+        self.pad = step
+        self.patch_len = patch_len
 
         # input processing
         self.patch_embeddings = PatchEmbedding(
-            args['d_model'], args['patch_len'], args['stride'], args['stride'], args['dropout'])
-        self.position_embedding = LearnablePositionalEmbedding(args['d_model'])
-        self.prompt2forecat = DynamicLinear(128, 128, fixed_in=args['prompt_num'])
+            d_model, patch_len, step, dropout)
+        self.position_embedding = LearnablePositionalEmbedding(d_model)
+        self.prompt2forecat = DynamicLinear(128, 128, fixed_in=prompt_num)
 
         # basic blocks
-        self.block_num = args['e_layers']
+        self.block_num = e_layers
         self.blocks = nn.ModuleList(
-            [BasicBlock(dim=args['d_model'], num_heads=args['n_heads'], qkv_bias=False,
+            [BasicBlock(dim=d_model, num_heads=n_heads, qkv_bias=False,
                         qk_norm=False,
-                        mlp_ratio=8., proj_drop=args['dropout'], attn_drop=0., drop_path=0.,
-                        init_values=None, prefix_token_length=args['prompt_num'])
-             for _ in range(args['e_layers'])]
+                        mlp_ratio=8., proj_drop=dropout, attn_drop=0., drop_path=0.,
+                        init_values=None, prefix_token_length=prompt_num)
+             for _ in range(e_layers)]
         )
 
         # output processing
-        self.cls_head = CLSHead(args['d_model'], head_dropout=args['dropout'])
+        self.cls_head = CLSHead(d_model, head_dropout=dropout)
         self.forecast_head = ForecastHead(
-            args['d_model'], args['patch_len'], args['stride'], args['stride'],
-            prefix_token_length=args['prompt_num'], head_dropout=args['dropout'])
+            d_model, patch_len, step, step,
+            prefix_token_length=prompt_num, head_dropout=dropout)
 
     def tokenize(self, x, mask=None):
         # Normalization from Non-stationary Transformer
@@ -717,7 +730,7 @@ class Model(nn.Module):
 
     def mark2token(self, x_mark):
         x_mark = x_mark.unfold(
-            dimension=-1, size=self.patch_len, step=self.stride)
+            dimension=-1, size=self.patch_len, step=self.step)
         x_mark = x_mark.mean(dim=-1)
         x_mark = (x_mark > 0).float()
         return x_mark
@@ -759,46 +772,81 @@ class Model(nn.Module):
 
 
 class UniTS(object):
-    """UniTS
-    X: ndarray of input
-    window_length: length of input window
+    """UniTS model for timeseries forecasting.
+
+    Args:
+        window_size (int):
+            Window size of each sample. Default to 250.
+        pred_len (int):
+            Prediction horizon length. Default to 1.
+        prompt_num (int):
+            Number of prompt tokens. Default to 10.
+        d_model (int):
+            Model dimension. Default to 64.
+        patch_len (int):
+            Length of each patch. Default to 1.
+        step (int):
+            Stride length between samples. Default to 1.
+        dropout (int):
+            Dropout value of the network. Default to 0.1.
+        e_layers (int):
+            Number of embedding layers. Default to 3.
+        n_heads (int):
+            Number of heads. Default to 8.
     """
 
     def __init__(self,
                  window_size=250,
-                 pred_length=1,
+                 pred_len=1,
                  prompt_num=10,
                  d_model=64,
                  patch_len=1,
-                 stride=1,
+                 step=1,
                  dropout=0.1,
                  e_layers=3,
-                 n_heads=8,
-                 pretrained_weight='units_x128_pretrain_checkpoint.pth'):
+                 n_heads=8):
         super(UniTS, self).__init__()
 
-        args = {'prompt_num': prompt_num, 'd_model': d_model, 'patch_len': patch_len,
-                'stride': stride, 'dropout': dropout, 'e_layers': e_layers, 'n_heads': n_heads,
-                'seq_len': window_size, 'pred_len': pred_length}
-        self.args = args
-        self.pretrained_weight = pretrained_weight
+        self.window_size = window_size
+        self.pred_len = pred_len
+        self.prompt_num = prompt_num
+        self.d_model = d_model
+        self.patch_len = patch_len
+        self.step = step
+        self.dropout = dropout
+        self.e_layers = e_layers
+        self.n_heads = n_heads
 
         self.model = self._build_model()
 
     def _build_model(self):
-        model = Model(self.args)
+        model = Model(window_size=self.window_size,
+                      pred_len=self.pred_len,
+                      prompt_num=self.prompt_num,
+                      d_model=self.d_model,
+                      patch_len=self.patch_len,
+                      step=self.step,
+                      dropout=self.dropout,
+                      e_layers=self.e_layers,
+                      n_heads=self.n_heads)
         return model
 
     def predict(self, X, index):
         """Forecasting timeseries
         Args:
-            X: ndarray of input
-            index: index array of input
+            X (ndarray):
+                input timeseries.
+            index (ndarray
+                timestamps array.
         Return:
-            prediction, ground truth, index."""
+            ndarray, ndarray, ndarray:
+                * forecasted timeseries.
+                * array of truncated ground truth with same size as forecasted timeseries.
+                * array of timestamps with same size as forecasted timeseries.
+        """
 
-        self.test_dataset = Signal(X, index, seq_length=self.args['seq_len'],
-                                   pred_length=self.args['pred_len'])
+        self.test_dataset = Signal(X, index, window_size=self.window_size,
+                                   pred_length=self.pred_len)
         first_index = self.test_dataset.first_index()
         self.test_loader = DataLoader(self.test_dataset,
                                       batch_size=1,
@@ -806,25 +854,12 @@ class UniTS(object):
                                       num_workers=0,
                                       drop_last=False)
 
-        # if os.path.exists(self.pretrained_weight):
-        #     pretrain_weight_path = self.pretrained_weight
-        #     print('loading pretrained model:', pretrain_weight_path)
-        #     ckpt = torch.load(pretrain_weight_path, map_location='cpu')
-        #     msg = self.model.load_state_dict(ckpt, strict=False)
-        #     print(msg)
-        #     total_params = sum(p.numel() for p in self.model.parameters())
-        #     print(f'Total number of parameters: {total_params}')
-        # else:
-        #     print("no ckpt found!")
-        #     print('loading pretrained model:', self.pretrained_weight)
-        #     exit()
-
         load_path = "https://sintel-orion.s3.us-east-2.amazonaws.com/pretrained/units.pth"
         with smart_open(load_path, 'rb') as f:
             buffer = io.BytesIO(f.read())
             self.model.load_state_dict(torch.load(buffer, map_location='cpu'), strict=False)
 
-        pred_len = self.args['pred_len']
+        pred_len = self.pred_len
 
         preds = []
         trues = []
