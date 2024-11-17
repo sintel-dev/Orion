@@ -21,7 +21,11 @@ from torch import nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+from orion.data import BUCKET, S3_URL
+
 warnings.filterwarnings('ignore')
+
+UNITS_PATH = S3_URL.format(BUCKET, "pretrained/units.pth")
 
 
 class Signal(object):
@@ -48,7 +52,6 @@ class Signal(object):
     def __getitem__(self, idx):
         x = self.data[idx:idx + self.window_size]
         y = self.data[idx + self.window_size:idx + self.window_size + self.pred_length]
-
         return x, y
 
     def first_index(self):
@@ -79,6 +82,7 @@ class CrossAttention(nn.Module):
         if dim % num_heads != 0:
             raise ValueError(
                 f'Dimension {dim} should be divisible by number of heads {num_heads}.')
+
         self.num_heads = num_heads
         self.head_dim = dim // num_heads
         self.scale = self.head_dim ** -0.5
@@ -91,30 +95,36 @@ class CrossAttention(nn.Module):
         self.proj = nn.Linear(dim, dim)
         self.proj_drop = nn.Dropout(proj_drop)
         if var_num is not None:
-            self.template = nn.Parameter(
-                torch.zeros(var_num, dim), requires_grad=True)
+            self.template = nn.Parameter(torch.zeros(var_num, dim), requires_grad=True)
             torch.nn.init.normal_(self.template, std=.02)
+
         self.var_num = var_num
 
     def forward(self, x, query=None):
         B, N, C = x.shape
         if query is not None:
-            q = self.q(query).reshape(
-                B, query.shape[1], self.num_heads, self.head_dim).permute(0, 2, 1, 3)
+            q = self.q(query).reshape(B, query.shape[1],
+                                      self.num_heads, self.head_dim
+                                      ).permute(0, 2, 1, 3)
+
             q = self.q_norm(q)
             var_num = query.shape[1]
         else:
             q = self.q(self.template).reshape(1, self.var_num,
-                                              self.num_heads, self.head_dim).permute(0, 2, 1, 3)
+                                              self.num_heads, self.head_dim
+                                              ).permute(0, 2, 1, 3)
+
             q = self.q_norm(q)
             q = q.repeat(B, 1, 1, 1)
             var_num = self.var_num
+
         kv = self.kv(x).reshape(B, N, 2, self.num_heads, self.head_dim).permute(2, 0, 3, 1, 4)
         k, v = kv.unbind(0)
         k = self.k_norm(k)
 
         x = F.scaled_dot_product_attention(q, k, v,
-                                           dropout_p=self.attn_drop.p if self.training else 0.,)
+                                           dropout_p=self.attn_drop.p if self.training else 0.,
+                                           )
 
         x = x.transpose(1, 2).reshape(B, var_num, C)
         x = self.proj(x)
@@ -157,17 +167,26 @@ class DynamicLinear(nn.Module):
         in_features = x.shape[-1]
 
         if in_features != self.weights.size(1) or out_features != self.weights.size(0):
-            dynamic_weights = F.interpolate(dynamic_weights.unsqueeze(0).unsqueeze(0), size=(
-                out_features, in_features - self.fixed_in), mode='bilinear',
-                align_corners=False).squeeze(0).squeeze(0)
+            dynamic_weights = F.interpolate(dynamic_weights.unsqueeze(0).unsqueeze(0),
+                                            size=(out_features, in_features - self.fixed_in),
+                                            mode='bilinear',
+                                            align_corners=False
+                                            ).squeeze(0).squeeze(0)
+
             if self.fixed_in != 0:
-                fixed_weights = F.interpolate(fixed_weights.unsqueeze(0).unsqueeze(0), size=(
-                    out_features, self.fixed_in), mode='bilinear',
-                    align_corners=False).squeeze(0).squeeze(0)
+                fixed_weights = F.interpolate(fixed_weights.unsqueeze(0).unsqueeze(0),
+                                              size=(out_features, self.fixed_in),
+                                              mode='bilinear',
+                                              align_corners=False
+                                              ).squeeze(0).squeeze(0)
+
         if out_features != self.weights.size(0):
-            this_bias = F.interpolate(this_bias.unsqueeze(0).unsqueeze(0).unsqueeze(0), size=(
-                1, out_features), mode='bilinear',
-                align_corners=False).squeeze(0).squeeze(0).squeeze(0)
+            this_bias = F.interpolate(this_bias.unsqueeze(0).unsqueeze(0).unsqueeze(0),
+                                      size=(1, out_features),
+                                      mode='bilinear',
+                                      align_corners=False
+                                      ).squeeze(0).squeeze(0).squeeze(0)
+
         return F.linear(x, torch.cat((fixed_weights, dynamic_weights), dim=1), this_bias)
 
 
@@ -197,10 +216,14 @@ class DynamicLinearMLP(nn.Module):
 
         self.norm = norm_layer(
             hidden_features) if norm_layer is not None else nn.Identity()
-        self.seq_fc = DynamicLinear(
-            hidden_features // 4, hidden_features // 4, bias=bias[1], fixed_in=prefix_token_length)
-        self.prompt_fc = DynamicLinear(
-            hidden_features // 4, prefix_token_length, bias=bias[1], fixed_in=prefix_token_length)
+
+        self.seq_fc = DynamicLinear(hidden_features // 4, hidden_features // 4,
+                                    bias=bias[1],
+                                    fixed_in=prefix_token_length)
+
+        self.prompt_fc = DynamicLinear(hidden_features // 4, prefix_token_length,
+                                       bias=bias[1],
+                                       fixed_in=prefix_token_length)
 
         self.fc2 = nn.Linear(hidden_features, out_features, bias=bias[1])
         self.drop2 = nn.Dropout(drop_probs[1])
@@ -210,8 +233,7 @@ class DynamicLinearMLP(nn.Module):
     def dynamic_linear(self, x, prefix_seq_len):
         x_func = x[:, :, prefix_seq_len:]
         x_seq = x[:, :, :prefix_seq_len]
-        x_seq_out = self.seq_fc(
-            x_seq, x_seq.shape[-1] - self.prefix_token_length)
+        x_seq_out = self.seq_fc(x_seq, x_seq.shape[-1] - self.prefix_token_length)
         x_prompt = self.prompt_fc(x_seq, self.prefix_token_length)
         x = torch.cat((x_prompt, x_seq_out, x_func), dim=-1)
         return x
@@ -240,13 +262,11 @@ class LearnablePositionalEmbedding(nn.Module):
     def __init__(self, d_model, max_len=5000):
         super(LearnablePositionalEmbedding, self).__init__()
         # Compute the positional encodings once in log space.
-        self.pe = nn.Parameter(torch.zeros(
-            1, 1, max_len, d_model), requires_grad=True)
+        self.pe = nn.Parameter(torch.zeros(1, 1, max_len, d_model), requires_grad=True)
 
         pe = torch.zeros(max_len, d_model).float()
         position = torch.arange(0, max_len).float().unsqueeze(1)
-        div_term = (torch.arange(0, d_model, 2).float()
-                    * -(math.log(10000.0) / d_model)).exp()
+        div_term = (torch.arange(0, d_model, 2).float() * -(math.log(10000.0) / d_model)).exp()
 
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
@@ -275,6 +295,7 @@ class SeqAttention(nn.Module):
         if dim % num_heads != 0:
             raise ValueError(
                 f'Dimension {dim} should be divisible by number of heads {num_heads}.')
+
         self.num_heads = num_heads
         self.head_dim = dim // num_heads
         self.scale = self.head_dim ** -0.5
@@ -288,14 +309,12 @@ class SeqAttention(nn.Module):
 
     def forward(self, x, attn_mask=None):
         B, N, C = x.shape
-        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads,
-                                  self.head_dim).permute(2, 0, 3, 1, 4)
+        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, self.head_dim).permute(2, 0, 3, 1, 4)
         q, k, v = qkv.unbind(0)
         q, k = self.q_norm(q), self.k_norm(k)
-        x = F.scaled_dot_product_attention(
-            q, k, v,  # attn_mask=attn_mask,
-            dropout_p=self.attn_drop.p if self.training else 0.,
-        )
+        x = F.scaled_dot_product_attention(q, k, v,
+                                           dropout_p=self.attn_drop.p if self.training else 0.,
+                                           )
 
         x = x.transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
@@ -332,8 +351,9 @@ class VarAttention(nn.Module):
     def forward(self, x):
         B, N, P, C = x.shape
 
-        qkv = self.qkv(x).reshape(B, N, P, 3, self.num_heads,
-                                  self.head_dim).permute(3, 0, 2, 4, 1, 5)
+        qkv = self.qkv(x).reshape(B, N, P, 3, self.num_heads, self.head_dim
+                                  ).permute(3, 0, 2, 4, 1, 5)
+
         q, k, v = qkv.unbind(0)
         q, k = self.q_norm(q), self.k_norm(k)
 
@@ -341,10 +361,9 @@ class VarAttention(nn.Module):
         k = k.mean(dim=1, keepdim=False)
         v = v.permute(0, 2, 3, 4, 1).reshape(B, self.num_heads, N, -1)
 
-        x = F.scaled_dot_product_attention(
-            q, k, v,
-            dropout_p=self.attn_drop.p if self.training else 0.,
-        )
+        x = F.scaled_dot_product_attention(q, k, v,
+                                           dropout_p=self.attn_drop.p if self.training else 0.,
+                                           )
 
         x = x.view(B, self.num_heads, N, -1, P).permute(0, 2, 4, 1, 3).reshape(B, N, P, -1)
         x = self.proj(x)
@@ -390,19 +409,16 @@ class SeqAttBlock(nn.Module):
         )
 
         self.ls1 = GateLayer(dim, init_values=init_values)
-        self.drop_path1 = DropPath(
-            drop_path) if drop_path > 0. else nn.Identity()
+        self.drop_path1 = DropPath(drop_path) if drop_path > 0. else nn.Identity()
         self.proj = nn.Linear(dim, dim)
 
     def forward(self, x, attn_mask):
         x_input = x
         x = self.norm1(x)
         n_vars, n_seqs = x.shape[1], x.shape[2]
-        x = torch.reshape(
-            x, (-1, x.shape[-2], x.shape[-1]))
+        x = torch.reshape(x, (-1, x.shape[-2], x.shape[-1]))
         x = self.attn_seq(x, attn_mask)
-        x = torch.reshape(
-            x, (-1, n_vars, n_seqs, x.shape[-1]))
+        x = torch.reshape(x, (-1, n_vars, n_seqs, x.shape[-1]))
         x = x_input + self.drop_path1(self.ls1(x))
         return x
 
@@ -433,8 +449,7 @@ class VarAttBlock(nn.Module):
             norm_layer=norm_layer,
         )
         self.ls1 = GateLayer(dim, init_values=init_values)
-        self.drop_path1 = DropPath(
-            drop_path) if drop_path > 0. else nn.Identity()
+        self.drop_path1 = DropPath(drop_path) if drop_path > 0. else nn.Identity()
         self.proj = nn.Linear(dim, dim)
 
     def forward(self, x):
@@ -466,6 +481,7 @@ class MLPBlock(nn.Module):
                 drop=proj_drop,
                 prefix_token_length=prefix_token_length,
             )
+
         else:
             self.mlp = mlp_layer(
                 in_features=dim,
@@ -473,17 +489,16 @@ class MLPBlock(nn.Module):
                 act_layer=act_layer,
                 drop=proj_drop,
             )
+
         self.ls2 = GateLayer(dim, init_values=init_values)
-        self.drop_path2 = DropPath(
-            drop_path) if drop_path > 0. else nn.Identity()
+        self.drop_path2 = DropPath(drop_path) if drop_path > 0. else nn.Identity()
 
     def forward(self, x, prefix_seq_len=None):
         if prefix_seq_len is not None:
-            x = x + \
-                self.drop_path2(
-                    self.ls2(self.mlp(self.norm2(x), prefix_seq_len=prefix_seq_len)))
+            x += self.drop_path2(self.ls2(self.mlp(self.norm2(x), prefix_seq_len=prefix_seq_len)))
+
         else:
-            x = x + self.drop_path2(self.ls2(self.mlp(self.norm2(x))))
+            x += x + self.drop_path2(self.ls2(self.mlp(self.norm2(x))))
         return x
 
 
@@ -537,6 +552,7 @@ class PatchEmbedding(nn.Module):
         self.step = step
         if self.patch_len != self.step:
             raise ValueError(f'Patch length {patch_len} should be equal to step size {step}')
+
         self.value_embedding = nn.Linear(patch_len, d_model, bias=False)
         self.dropout = nn.Dropout(dropout)
 
@@ -594,8 +610,9 @@ class ForecastHead(nn.Module):
         self.pad = pad
         self.patch_len = patch_len
         self.step = step
-        self.pos_proj = DynamicLinear(
-            in_features=128, out_features=128, fixed_in=prefix_token_length)
+        self.pos_proj = DynamicLinear(in_features=128,
+                                      out_features=128,
+                                      fixed_in=prefix_token_length)
 
     def forward(self, x_full, pred_len, token_len):
         x_full = self.proj_in(x_full)
@@ -610,8 +627,10 @@ class ForecastHead(nn.Module):
         bs, n_vars = x.shape[0], x.shape[1]
         x = x.reshape(-1, x.shape[-2], x.shape[-1])
         x = x.permute(0, 2, 1)
-        x = torch.nn.functional.fold(x, output_size=(
-            pred_len, 1), kernel_size=(self.patch_len, 1), stride=(self.step, 1))
+        x = torch.nn.functional.fold(x,
+                                     output_size=(pred_len, 1),
+                                     kernel_size=(self.patch_len, 1),
+                                     stride=(self.step, 1))
         x = x.squeeze(dim=-1)
         x = x.reshape(bs, n_vars, -1)
         x = x.permute(0, 2, 1)
@@ -647,15 +666,10 @@ class Model(nn.Module):
             padding = 0
         else:
             padding = patch_len - remainder
-        input_token_len = _calculate_unfold_output_length(
-            window_size + padding, step, patch_len)
-        input_pad = step * \
-            (input_token_len - 1) + patch_len - \
-            window_size
-        pred_token_len = _calculate_unfold_output_length(
-            pred_len - input_pad, step, patch_len)
-        real_len = window_size + \
-            pred_len
+        input_token_len = _calculate_unfold_output_length(window_size + padding, step, patch_len)
+        input_pad = step * (input_token_len - 1) + patch_len - window_size
+        pred_token_len = _calculate_unfold_output_length(pred_len - input_pad, step, patch_len)
+        real_len = window_size + pred_len
         self.cls_nums = [pred_token_len, pred_len, real_len]
 
         # model settings #
@@ -665,26 +679,24 @@ class Model(nn.Module):
         self.patch_len = patch_len
 
         # input processing
-        self.patch_embeddings = PatchEmbedding(
-            d_model, patch_len, step, dropout)
+        self.patch_embeddings = PatchEmbedding(d_model, patch_len, step, dropout)
         self.position_embedding = LearnablePositionalEmbedding(d_model)
         self.prompt2forecat = DynamicLinear(128, 128, fixed_in=prompt_num)
 
         # basic blocks
         self.block_num = e_layers
-        self.blocks = nn.ModuleList(
-            [BasicBlock(dim=d_model, num_heads=n_heads, qkv_bias=False,
-                        qk_norm=False,
-                        mlp_ratio=8., proj_drop=dropout, attn_drop=0., drop_path=0.,
-                        init_values=None, prefix_token_length=prompt_num)
-             for _ in range(e_layers)]
-        )
+        self.blocks = nn.ModuleList([BasicBlock(dim=d_model, num_heads=n_heads, qkv_bias=False,
+                                                qk_norm=False, mlp_ratio=8., proj_drop=dropout,
+                                                attn_drop=0., drop_path=0., init_values=None,
+                                                prefix_token_length=prompt_num)
+                                    for _ in range(e_layers)]
+                                    )
 
         # output processing
         self.cls_head = CLSHead(d_model, head_dropout=dropout)
-        self.forecast_head = ForecastHead(
-            d_model, patch_len, step, step,
-            prefix_token_length=prompt_num, head_dropout=dropout)
+        self.forecast_head = ForecastHead(d_model, patch_len, step, step,
+                                          prefix_token_length=prompt_num,
+                                          head_dropout=dropout)
 
     def tokenize(self, x, mask=None):
         # Normalization from Non-stationary Transformer
@@ -692,12 +704,11 @@ class Model(nn.Module):
         x = x - means
         if mask is not None:
             x = x.masked_fill(mask == 0, 0)
-            stdev = torch.sqrt(torch.sum(x * x, dim=1) /
-                               torch.sum(mask == 1, dim=1) + 1e-5)
+            stdev = torch.sqrt(torch.sum(x * x, dim=1) / torch.sum(mask == 1, dim=1) + 1e-5)
             stdev = stdev.unsqueeze(dim=1)
         else:
-            stdev = torch.sqrt(
-                torch.var(x, dim=1, keepdim=True, unbiased=False) + 1e-5)
+            stdev = torch.sqrt(torch.var(x, dim=1, keepdim=True, unbiased=False) + 1e-5)
+
         x /= stdev
         x = x.permute(0, 2, 1)
         remainder = x.shape[2] % self.patch_len
@@ -710,19 +721,21 @@ class Model(nn.Module):
         return x, means, stdev, n_vars, padding
 
     def prepare_prompt(self, x, n_vars, prefix_prompt, task_prompt, task_prompt_num):
-        x = torch.reshape(
-            x, (-1, n_vars, x.shape[-2], x.shape[-1]))
+        x = torch.reshape(x, (-1, n_vars, x.shape[-2], x.shape[-1]))
         # append prompt tokens
         this_prompt = prefix_prompt.repeat(x.shape[0], 1, 1, 1)
 
-        this_mask_prompt = task_prompt.repeat(
-            x.shape[0], 1, task_prompt_num, 1)
-        init_full_input = torch.cat(
-            (this_prompt, x, this_mask_prompt), dim=-2)
-        init_mask_prompt = self.prompt2forecat(init_full_input.transpose(
-            -1, -2), init_full_input.shape[2] - prefix_prompt.shape[2]).transpose(-1, -2)
+        this_mask_prompt = task_prompt.repeat(x.shape[0], 1, task_prompt_num, 1)
+
+        init_full_input = torch.cat((this_prompt, x, this_mask_prompt), dim=-2)
+
+        init_mask_prompt = self.prompt2forecat(init_full_input.transpose(-1, -2),
+                                               init_full_input.shape[2] - prefix_prompt.shape[2]
+                                               ).transpose(-1, -2)
+
         this_function_prompt = init_mask_prompt[:, :, -task_prompt_num:]
         x = torch.cat((this_prompt, x, this_function_prompt), dim=2)
+
         x[:, :, self.prompt_num:] = x[:, :, self.prompt_num:] + \
             self.position_embedding(x[:, :, self.prompt_num:])
 
@@ -738,8 +751,7 @@ class Model(nn.Module):
     def backbone(self, x, prefix_len, seq_len):
         attn_mask = None
         for block in self.blocks:
-            x = block(x, prefix_seq_len=prefix_len +
-                      seq_len, attn_mask=attn_mask)
+            x = block(x, prefix_seq_len=prefix_len + seq_len, attn_mask=attn_mask)
         return x
 
     def forecast(self, x):
@@ -750,14 +762,12 @@ class Model(nn.Module):
         prefix_prompt = self.prompt_token.repeat(1, n_vars, 1, 1)
         task_prompt = self.mask_token.repeat(1, n_vars, 1, 1)
 
-        x = self.prepare_prompt(
-            x, n_vars, prefix_prompt, task_prompt, task_prompt_num)
+        x = self.prepare_prompt(x, n_vars, prefix_prompt, task_prompt, task_prompt_num)
 
         seq_token_len = x.shape[-2] - prefix_prompt.shape[2]
         x = self.backbone(x, prefix_prompt.shape[2], seq_token_len)
 
-        x = self.forecast_head(
-            x, real_seq_len, seq_token_len)
+        x = self.forecast_head(x, real_seq_len, seq_token_len)
         x = x[:, -task_seq_num:]
 
         # De-Normalization from Non-stationary Transformer
@@ -845,16 +855,19 @@ class UniTS(object):
                 * array of timestamps with same size as forecasted timeseries.
         """
 
-        self.test_dataset = Signal(X, index, window_size=self.window_size,
+        self.test_dataset = Signal(X, index,
+                                   window_size=self.window_size,
                                    pred_length=self.pred_len)
+
         first_index = self.test_dataset.first_index()
+
         self.test_loader = DataLoader(self.test_dataset,
                                       batch_size=1,
                                       shuffle=False,
                                       num_workers=0,
                                       drop_last=False)
 
-        load_path = "https://sintel-orion.s3.us-east-2.amazonaws.com/pretrained/units.pth"
+        load_path = UNITS_PATH
         with smart_open(load_path, 'rb') as f:
             buffer = io.BytesIO(f.read())
             self.model.load_state_dict(torch.load(buffer, map_location='cpu'), strict=False)
