@@ -34,6 +34,8 @@ class Signal(object):
     Args:
         X (ndarray):
             An n-dimensional array of signal values
+        index (ndarray):
+            timestamps array.
         window_size (int):
             Size of input window
         pred_length (int):
@@ -122,9 +124,8 @@ class CrossAttention(nn.Module):
         k, v = kv.unbind(0)
         k = self.k_norm(k)
 
-        x = F.scaled_dot_product_attention(q, k, v,
-                                           dropout_p=self.attn_drop.p if self.training else 0.,
-                                           )
+        dropout_p = self.attn_drop.p if self.training else 0.
+        x = F.scaled_dot_product_attention(q, k, v, dropout_p=dropout_p)
 
         x = x.transpose(1, 2).reshape(B, var_num, C)
         x = self.proj(x)
@@ -312,9 +313,9 @@ class SeqAttention(nn.Module):
         qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, self.head_dim).permute(2, 0, 3, 1, 4)
         q, k, v = qkv.unbind(0)
         q, k = self.q_norm(q), self.k_norm(k)
-        x = F.scaled_dot_product_attention(q, k, v,
-                                           dropout_p=self.attn_drop.p if self.training else 0.,
-                                           )
+
+        dropout_p = self.attn_drop.p if self.training else 0.
+        x = F.scaled_dot_product_attention(q, k, v, dropout_p=dropout_p)
 
         x = x.transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
@@ -351,8 +352,8 @@ class VarAttention(nn.Module):
     def forward(self, x):
         B, N, P, C = x.shape
 
-        qkv = self.qkv(x).reshape(B, N, P, 3, self.num_heads, self.head_dim
-                                  ).permute(3, 0, 2, 4, 1, 5)
+        qkv = self.qkv(x).reshape(
+            B, N, P, 3, self.num_heads, self.head_dim).permute(3, 0, 2, 4, 1, 5)
 
         q, k, v = qkv.unbind(0)
         q, k = self.q_norm(q), self.k_norm(k)
@@ -361,9 +362,8 @@ class VarAttention(nn.Module):
         k = k.mean(dim=1, keepdim=False)
         v = v.permute(0, 2, 3, 4, 1).reshape(B, self.num_heads, N, -1)
 
-        x = F.scaled_dot_product_attention(q, k, v,
-                                           dropout_p=self.attn_drop.p if self.training else 0.,
-                                           )
+        dropout_p = self.attn_drop.p if self.training else 0.
+        x = F.scaled_dot_product_attention(q, k, v, dropout_p=dropout_p)
 
         x = x.view(B, self.num_heads, N, -1, P).permute(0, 2, 4, 1, 3).reshape(B, N, P, -1)
         x = self.proj(x)
@@ -685,12 +685,14 @@ class Model(nn.Module):
 
         # basic blocks
         self.block_num = e_layers
-        self.blocks = nn.ModuleList([BasicBlock(dim=d_model, num_heads=n_heads, qkv_bias=False,
-                                                qk_norm=False, mlp_ratio=8., proj_drop=dropout,
-                                                attn_drop=0., drop_path=0., init_values=None,
-                                                prefix_token_length=prompt_num)
-                                    for _ in range(e_layers)]
-                                    )
+        self.blocks = nn.ModuleList([
+            BasicBlock(dim=d_model, num_heads=n_heads, qkv_bias=False,
+                       qk_norm=False, mlp_ratio=8., proj_drop=dropout,
+                       attn_drop=0., drop_path=0., init_values=None,
+                       prefix_token_length=prompt_num)
+
+            for _ in range(e_layers)
+        ])
 
         # output processing
         self.cls_head = CLSHead(d_model, head_dropout=dropout)
@@ -742,8 +744,7 @@ class Model(nn.Module):
         return x
 
     def mark2token(self, x_mark):
-        x_mark = x_mark.unfold(
-            dimension=-1, size=self.patch_len, step=self.step)
+        x_mark = x_mark.unfold(dimension=-1, size=self.patch_len, step=self.step)
         x_mark = x_mark.mean(dim=-1)
         x_mark = (x_mark > 0).float()
         return x_mark
@@ -817,6 +818,7 @@ class UniTS(object):
                  n_heads=8):
         super(UniTS, self).__init__()
 
+        self.load_path = UNITS_PATH
         self.window_size = window_size
         self.pred_len = pred_len
         self.prompt_num = prompt_num
@@ -846,7 +848,7 @@ class UniTS(object):
         Args:
             X (ndarray):
                 input timeseries.
-            index (ndarray
+            index (ndarray):
                 timestamps array.
         Return:
             ndarray, ndarray, ndarray:
@@ -867,8 +869,7 @@ class UniTS(object):
                                       num_workers=0,
                                       drop_last=False)
 
-        load_path = UNITS_PATH
-        with smart_open(load_path, 'rb') as f:
+        with smart_open(self.load_path, 'rb') as f:
             buffer = io.BytesIO(f.read())
             self.model.load_state_dict(torch.load(buffer, map_location='cpu'), strict=False)
 
