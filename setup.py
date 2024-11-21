@@ -40,6 +40,11 @@ install_requires = [
     
     # fails on python 3.6
     'opencv-python<4.7',
+
+    #UniTS
+    'timm', 
+    'smart_open',
+
 ]
 
 setup_requires = [
