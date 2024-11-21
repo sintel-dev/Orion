@@ -22,7 +22,7 @@ install_requires = [
     'pandas>=1,<3',
     'numba>=0.48,<0.60',
     's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.6.1,<0.7',
+    'mlblocks>=0.6.2,<0.7',
     'ml-stars>=0.2.1.dev0,<0.4',
     'scikit-learn>=0.22.1,<1.2',
     'scipy<1.14',
