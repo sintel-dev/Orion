@@ -19,11 +19,11 @@ except IOError:
 install_requires = [
     'tensorflow>=2.2,<2.15',
     'numpy>=1.17.5,<2',
-    'pandas>=1,<2',
+    'pandas>=1,<3',
     'numba>=0.48,<0.60',
     's3fs>=0.2.2,<0.5',
     'mlblocks>=0.6.1,<0.7',
-    'ml-stars>=0.2,<0.3',
+    'ml-stars>=0.2.1.dev0,<0.4',
     'scikit-learn>=0.22.1,<1.2',
     'scipy<1.14',
     'tabulate>=0.8.3,<0.9',
