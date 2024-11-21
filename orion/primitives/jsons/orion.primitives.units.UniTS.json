@@ -75,6 +75,10 @@
             "n_heads": {
                 "type": "int",
                 "default": 8
+            },
+            "load_path": {
+                "type": "str", 
+                "default": null
             }
         }
     }

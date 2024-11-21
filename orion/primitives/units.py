@@ -804,6 +804,8 @@ class UniTS(object):
             Number of embedding layers. Default to 3.
         n_heads (int):
             Number of heads. Default to 8.
+        load_path(str):
+            Directory of the model checkpoint. Default to UNITS_PATH
     """
 
     def __init__(self,
@@ -815,10 +817,10 @@ class UniTS(object):
                  step=1,
                  dropout=0.1,
                  e_layers=3,
-                 n_heads=8):
+                 n_heads=8,
+                 load_path=None):
         super(UniTS, self).__init__()
 
-        self.load_path = UNITS_PATH
         self.window_size = window_size
         self.pred_len = pred_len
         self.prompt_num = prompt_num
@@ -828,6 +830,7 @@ class UniTS(object):
         self.dropout = dropout
         self.e_layers = e_layers
         self.n_heads = n_heads
+        self.load_path = load_path or UNITS_PATH
 
         self.model = self._build_model()
 
