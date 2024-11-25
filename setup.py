@@ -45,6 +45,9 @@ install_requires = [
     'timm', 
     'smart_open',
 
+    #TimesFM
+    'timesfm',
+
 ]
 
 setup_requires = [
