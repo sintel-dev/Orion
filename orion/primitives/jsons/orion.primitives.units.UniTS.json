@@ -1,0 +1,85 @@
+{
+    "name": "orion.primitives.units.UniTS",
+    "contributors": [
+        "Linh Nguyen <linhnk@mit.edu>"
+    ],
+    "documentation": "https://arxiv.org/abs/2403.00131",
+    "description": "UniTS for timeseries forecasting",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.units.UniTS",
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }, 
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y_hat",
+                "type": "ndarray"
+            }, 
+            {
+                "name": "y",
+                "type": "ndarray"
+            },
+            {
+                "name": "index",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "window_size": {
+                "type": "int",
+                "default": 250
+            },
+            "pred_len": {
+                "type": "int",
+                "default": 1
+            },
+            "prompt_num": {
+                "type": "int",
+                "default": 10
+            },
+            "d_model": {
+                "type": "int",
+                "default": 64
+            },
+            "patch_len": {
+                "type": "int",
+                "default": 1
+            },
+            "step": {
+                "type": "int",
+                "default": 1
+            },
+            "dropout": {
+                "type": "float",
+                "default": 0.1
+            },
+            "e_layers": {
+                "type": "int",
+                "default": 3
+            },
+            "n_heads": {
+                "type": "int",
+                "default": 8
+            },
+            "load_path": {
+                "type": "str", 
+                "default": null
+            }
+        }
+    }
+}

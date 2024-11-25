@@ -19,16 +19,18 @@ except IOError:
 install_requires = [
     'tensorflow>=2.2,<2.15',
     'numpy>=1.17.5,<2',
-    'pandas>=1,<2',
+    'pandas>=1,<3',
     'numba>=0.48,<0.60',
     's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.6.1,<0.7',
-    'ml-stars>=0.2,<0.3',
+    'mlblocks>=0.6.2,<0.7',
+    'ml-stars>=0.2.1.dev0,<0.4',
     'scikit-learn>=0.22.1,<1.2',
+    'scipy<1.14',
     'tabulate>=0.8.3,<0.9',
     'numba>=0.48,<0.52',
     'torch>=1.10,<1.13',
     'pyts>=0.11,<0.14',
+    'torch>=1.4',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
@@ -40,6 +42,11 @@ install_requires = [
 
     # fails on python 3.6
     'opencv-python<4.7',
+
+    #UniTS
+    'timm', 
+    'smart_open',
+
 ]
 
 setup_requires = [
@@ -64,10 +71,18 @@ development_requires = [
     'nbsphinx>=0.5.0,<0.7',
     'Sphinx>=3,<3.3',
     'pydata-sphinx-theme<0.5',
-    'autodocsumm>=0.1.10,<1',
     'markupsafe<2.1.0',
     'ipython>=6.5,<9',
     'Jinja2>=2,<3',
+
+    # fails on Sphinx < v3.4
+    'alabaster<=0.7.12',
+    # fails on Sphins < v5.0
+    'sphinxcontrib-applehelp<1.0.8',
+    'sphinxcontrib-devhelp<1.0.6',
+    'sphinxcontrib-htmlhelp<2.0.5',
+    'sphinxcontrib-serializinghtml<1.1.10',
+    'sphinxcontrib-qthelp<1.0.7',
 
     # style check
     'flake8>=3.7.7,<4',
@@ -129,6 +144,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.5.3.dev0',
+    version='0.6.2.dev0',
     zip_safe=False,
 )
