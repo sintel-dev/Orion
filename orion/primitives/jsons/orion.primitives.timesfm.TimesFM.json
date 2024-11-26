@@ -17,23 +17,11 @@
             {
                 "name": "X",
                 "type": "ndarray"
-            }, 
-            {
-                "name": "index",
-                "type": "ndarray"
             }
         ],
         "output": [
             {
                 "name": "y_hat",
-                "type": "ndarray"
-            }, 
-            {
-                "name": "y",
-                "type": "ndarray"
-            },
-            {
-                "name": "index",
                 "type": "ndarray"
             }
         ]
@@ -43,10 +31,6 @@
             "window_size": {
                 "type": "int",
                 "default": 256
-            },
-            "step": {
-                "type": "int",
-                "default": 1
             },
             "pred_len": {
                 "type": "int",

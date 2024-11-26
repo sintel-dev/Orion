@@ -3,6 +3,7 @@
         "mlstars.custom.timeseries_preprocessing.time_segments_aggregate",
         "sklearn.impute.SimpleImputer",
         "sklearn.preprocessing.StandardScaler",
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences",
         "orion.primitives.timesfm.TimesFM",
         "orion.primitives.timeseries_errors.regression_errors",
         "orion.primitives.timeseries_anomalies.find_anomalies"
@@ -12,8 +13,17 @@
             "time_column": "timestamp",
             "interval": 21600,
             "method": "mean"
+        },
+        "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
+            "target_column": 0,
+            "window_size": 256
         }
-    }, 
+    },
+    "input_names": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "index": "target_index"
+        }
+    },
     "output_names": {
         "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "y": "anomalies"
