@@ -101,6 +101,18 @@ def tutorials(c):
                 f'--to=html --stdout {ipynb_file}'
             ), hide='out')
 
+@task
+def pretrained(c):
+    pipelines = os.listdir(os.path.join('orion', 'pipelines', 'pretrained'))
+    for ipynb_file in glob.glob('tutorials/pipelines/*.ipynb'):
+        for pipeline in pipelines: 
+            if pipeline not in ipynb_file: # skip non-pretrained pipelines
+                continue
+            if '.ipynb_checkpoints' not in ipynb_file:
+                c.run((
+                    'jupyter nbconvert --execute --ExecutePreprocessor.timeout=4400 '
+                    f'--to=html --stdout {ipynb_file}'
+                ), hide='out')
 
 @task
 def lint(c):

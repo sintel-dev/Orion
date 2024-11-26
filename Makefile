@@ -127,6 +127,10 @@ test-readme: ## run the readme snippets
 test-tutorials: ## run the tutorial notebooks
 	invoke tutorials
 
+.PHONY: test-pretrained-tutorials
+test-pretrained-tutorials: ## run the tutorial notebooks
+	invoke pretrained
+
 .PHONY: test
 test: test-unit test-readme test-tutorials ## test everything that needs test dependencies
 
