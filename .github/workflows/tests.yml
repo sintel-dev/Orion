@@ -126,7 +126,7 @@ jobs:
       run: invoke tutorials
 
 
-   pretrained:
+  pretrained:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
