@@ -81,6 +81,14 @@ install-test: clean-build clean-pyc ## install the package and test dependencies
 install-develop: clean-build clean-pyc ## install the package in editable mode and dependencies for development
 	pip install -e .[dev]
 
+.PHONY: install-pretrained
+install-pretrained: clean-build clean-pyc ## install the package and pretrained pipelines
+	pip install -e .[pretrained]
+
+.PHONY: install-pretrained-develop
+install-pretrained-develop: clean-build clean-pyc ## install the package with pretrained in editable mode and dependencies for development
+	pip install -e .[pretrained-dev]
+
 MINIMUM := $(shell sed -n '/install_requires = \[/,/]/p' setup.py | grep -v -e '[][]' | sed 's/ *\(.*\),$?$$/\1/g' | tr '>' '=')
 
 .PHONY: install-minimum
