@@ -14,12 +14,13 @@ import warnings
 import numpy as np
 import torch
 import torch.nn.functional as F
-from smart_open import open as smart_open
-from timm.layers import DropPath, Mlp
-from timm.layers.helpers import to_2tuple
 from torch import nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+
+from smart_open import open as smart_open
+from timm.layers import DropPath, Mlp
+from timm.layers.helpers import to_2tuple
 
 from orion.data import BUCKET, S3_URL
 
