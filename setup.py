@@ -44,6 +44,9 @@ pretrained_requires = [
     'timm',
     'smart_open',
 
+    #timesfm
+    'timesfm'
+
 ]
 
 setup_requires = [
