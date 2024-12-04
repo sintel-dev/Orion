@@ -42,7 +42,7 @@ class TimesFM:
                                                           per_core_batch_size=32,
                                                           horizon_len=pred_len),
                                 checkpoint=tf.TimesFmCheckpoint(huggingface_repo_id=repo_id))
-        
+   
     def predict(self, X):
         """Forecasting timeseries
 
