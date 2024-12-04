@@ -38,9 +38,9 @@ class TimesFM:
         self.pred_len = pred_len
         self.freq = freq
 
-        self.model = tf.TimesFm(hparams=tf.TimesFmHparams(context_len = window_size,
-                                                          per_core_batch_size=32,
-                                                          horizon_len=pred_len),
+        self.model = tf.TimesFm(hparams=tf.TimesFmHparams(context_len = window_size, 
+                                                          per_core_batch_size=32, 
+                                                          horizon_len=pred_len), 
                                 checkpoint=tf.TimesFmCheckpoint(huggingface_repo_id=repo_id))
 
     def predict(self, X):
