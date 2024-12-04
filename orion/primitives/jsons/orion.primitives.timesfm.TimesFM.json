@@ -38,7 +38,7 @@
             },
             "repo_id": {
                 "type": "str", 
-                "default": "google/timesfm-1.0-200m"
+                "default": "google/timesfm-1.0-200m-pytorch"
             },
             "freq":{
                 "type": "int",

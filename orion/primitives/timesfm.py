@@ -31,18 +31,17 @@ class TimesFM:
     def __init__(self,
                  window_size=256,
                  pred_len=1,
-                 repo_id="google/timesfm-1.0-200m",
+                 repo_id="google/timesfm-1.0-200m-pytorch",
                  freq=0):
 
         self.window_size = window_size
         self.pred_len = pred_len
         self.freq = freq
 
-        self.model = tf.TimesFm(context_len=self.window_size, horizon_len=self.pred_len,
-                                input_patch_len=32, output_patch_len=128,
-                                num_layers=20, model_dims=1280)
-
-        self.model.load_from_checkpoint(repo_id=repo_id)
+        self.model = tf.TimesFm(hparams=tf.TimesFmHparams(context_len = window_size,
+                                                          per_core_batch_size=32,
+                                                          horizon_len=pred_len),
+                                checkpoint=tf.TimesFmCheckpoint(huggingface_repo_id=repo_id))
 
     def predict(self, X):
         """Forecasting timeseries
