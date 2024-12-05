@@ -301,13 +301,15 @@ def score_anomalies(y: ndarray, ry_hat: ndarray, y_hat: ndarray, fy_hat: ndarray
 
     scores = None
     if comb == "mult":
-        reg_scores = MinMaxScaler([1, 2]).fit_transform(reg_scores.reshape(-1, 1)).flatten()
-        rec_scores = MinMaxScaler([1, 2]).fit_transform(rec_scores.reshape(-1, 1)).flatten()
+        feature_range = (1, 2)
+        reg_scores = MinMaxScaler(feature_range).fit_transform(reg_scores.reshape(-1, 1)).flatten()
+        rec_scores = MinMaxScaler(feature_range).fit_transform(rec_scores.reshape(-1, 1)).flatten()
         scores = np.multiply(reg_scores, rec_scores)
 
     elif comb == "sum":
-        reg_scores = MinMaxScaler([0, 1]).fit_transform(reg_scores.reshape(-1, 1)).flatten()
-        rec_scores = MinMaxScaler([0, 1]).fit_transform(rec_scores.reshape(-1, 1)).flatten()
+        feature_range = (0, 1)
+        reg_scores = MinMaxScaler(feature_range).fit_transform(reg_scores.reshape(-1, 1)).flatten()
+        rec_scores = MinMaxScaler(feature_range).fit_transform(rec_scores.reshape(-1, 1)).flatten()
         scores = (1 - lambda_rec) * reg_scores + lambda_rec * rec_scores
 
     elif comb == "rec":
