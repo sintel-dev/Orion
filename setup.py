@@ -45,7 +45,7 @@ pretrained_requires = [
     'smart_open',
 
     #timesfm
-    'timesfm[torch]'
+    'timesfm[torch]>=1.2.0,<1.5'
 
 ]
 
