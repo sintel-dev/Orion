@@ -43,6 +43,10 @@ pretrained_requires = [
     #units
     'timm',
     'smart_open',
+
+    #timesfm
+    "timesfm[torch]>=1.2.0,<1.5;python_version>='3.11'"
+
 ]
 
 setup_requires = [
