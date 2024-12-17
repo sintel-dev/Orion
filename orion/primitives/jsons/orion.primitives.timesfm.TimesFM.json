@@ -40,6 +40,10 @@
                 "type": "str", 
                 "default": "google/timesfm-1.0-200m-pytorch"
             },
+            "batch_size": {
+                "type": "int", 
+                "default": 32
+            },
             "freq":{
                 "type": "int",
                 "default": 0

@@ -23,6 +23,8 @@ class TimesFM:
             Prediction horizon length. Default to 1.
         repo_id (str):
             Directory of the model checkpoint. Default to "google/timesfm-1.0-200m."
+        batch_size(int):
+            Size of one batch. Default to 32.
         freq (int):
             Frequency. TimesFM expects a categorical indicator valued in {0, 1, 2}.
             Default to 0
@@ -32,14 +34,16 @@ class TimesFM:
                  window_size=256,
                  pred_len=1,
                  repo_id="google/timesfm-1.0-200m-pytorch",
+                 batch_size=32,
                  freq=0):
 
         self.window_size = window_size
         self.pred_len = pred_len
         self.freq = freq
+        self.batch_size = batch_size
 
         self.model = tf.TimesFm(hparams=tf.TimesFmHparams(context_len=window_size,
-                                                          per_core_batch_size=32,
+                                                          per_core_batch_size=batch_size,
                                                           horizon_len=pred_len),
                                 checkpoint=tf.TimesFmCheckpoint(huggingface_repo_id=repo_id))
 
