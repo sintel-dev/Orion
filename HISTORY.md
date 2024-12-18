@@ -1,6 +1,21 @@
 History
 =======
 
+## 0.7.0 – 2024-12-18
+
+New ``units`` pipeline 
+
+### Issues resolved
+
+* Keep python 3.11 support for pretrained models – [Issue #598](https://github.com/signals-dev/Orion/issues/598) by @sarahmish
+* Unpin ``scikit-learn`` and fix ``MinMaxScaler`` – [Issue #596](https://github.com/signals-dev/Orion/issues/596) by @sarahmish
+* Add hyperparameters to ``units`` pipelines – [Issue #595](https://github.com/signals-dev/Orion/issues/595) by @sarahmish
+* Make pretrained models optional to install – [Issue #590](https://github.com/signals-dev/Orion/issues/590) by @sarahmish
+* Update pandas dependency – [Issue #587](https://github.com/signals-dev/Orion/issues/587) by @sarahmish
+* UniTS pipeline – [Issue #581](https://github.com/signals-dev/Orion/issues/581) by @Linh-nk
+* Update Tutorials page – [Issue #576](https://github.com/signals-dev/Orion/issues/576) by @sarahmish
+
+
 ## 0.6.1 - 2024-10-04
 
 ### Issues resolved

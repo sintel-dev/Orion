@@ -19,12 +19,12 @@ except IOError:
 install_requires = [
     'tensorflow>=2.2,<2.15',
     'numpy>=1.17.5,<2',
-    'pandas>=1,<2',
+    'pandas>=1,<3',
     'numba>=0.48,<0.60',
     's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.6.1,<0.7',
-    'ml-stars>=0.2,<0.3',
-    'scikit-learn>=0.22.1,<1.2',
+    'mlblocks>=0.6.2,<0.7',
+    'ml-stars>=0.2.1.dev0,<0.4',
+    'scikit-learn>=0.22.1,<2',
     'scipy<1.14',
     'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
@@ -37,9 +37,12 @@ install_requires = [
 
     # fix conflict
     'protobuf<4',
-    
-    # fails on python 3.6
-    'opencv-python<4.7',
+]
+
+pretrained_requires = [
+    #units
+    'timm',
+    'smart_open',
 ]
 
 setup_requires = [
@@ -123,6 +126,8 @@ setup(
     extras_require={
         'test': tests_require,
         'dev': development_requires + tests_require,
+        'pretrained': pretrained_requires,
+        'pretrained-dev': pretrained_requires + development_requires + tests_require,
     },
     include_package_data=True,
     install_requires=install_requires,
@@ -137,6 +142,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.6.1',
+    version='0.7.0.dev0',
     zip_safe=False,
 )

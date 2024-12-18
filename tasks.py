@@ -92,15 +92,32 @@ def readme(c):
 
 @task
 def tutorials(c):
+    pipelines = os.listdir(os.path.join('orion', 'pipelines', 'pretrained'))
     for ipynb_file in glob.glob('tutorials/*.ipynb') + glob.glob('tutorials/**/*.ipynb'):
-        if 'OrionDBExplorer' in ipynb_file: # skip db testing
-            continue
-        if '.ipynb_checkpoints' not in ipynb_file:
+        run = True
+        for pipeline in pipelines:
+            if pipeline in ipynb_file: # skip pretrained pipelines
+                run = False
+                break
+
+        if '.ipynb_checkpoints' not in ipynb_file and run:
             c.run((
                 'jupyter nbconvert --execute --ExecutePreprocessor.timeout=4400 '
                 f'--to=html --stdout {ipynb_file}'
             ), hide='out')
 
+@task
+def pretrained(c):
+    pipelines = os.listdir(os.path.join('orion', 'pipelines', 'pretrained'))
+    for ipynb_file in glob.glob('tutorials/pipelines/*.ipynb'):
+        for pipeline in pipelines: 
+            if pipeline not in ipynb_file: # skip non-pretrained pipelines
+                continue
+            if '.ipynb_checkpoints' not in ipynb_file:
+                c.run((
+                    'jupyter nbconvert --execute --ExecutePreprocessor.timeout=4400 '
+                    f'--to=html --stdout {ipynb_file}'
+                ), hide='out')
 
 @task
 def lint(c):
