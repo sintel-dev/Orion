@@ -8,8 +8,8 @@ The model implementation can be found at
 https://github.com/google-research/timesfm?tab=readme-ov-file
 """
 
-import numpy as np
 import timesfm as tf
+import numpy as np
 
 
 class TimesFM:
