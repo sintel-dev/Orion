@@ -2,12 +2,13 @@
 |---------------------------|--------------------|
 | AER                       |          11        |
 | TadGAN                    |          7         |
-| LSTM Dynamic Thresholding |          8         |
-| LSTM Autoencoder          |          5         |
-| Dense Autoencoder         |          7         |
+| LSTM Dynamic Thresholding |          9         |
+| LSTM Autoencoder          |          6         |
+| Dense Autoencoder         |          8         |
 | VAE                       |          6         |
-| LNN                       |          7         |
-| GANF                      |          5         |
-| Matrix Profile            |          5         |
 | AnomalyTransformer        |          2         |
+| LNN                       |          7         |
+| Matrix Profile            |          5         |
+| UniTS                     |          6         |
+| GANF                      |          5         |
 | Azure                     |          0         |
