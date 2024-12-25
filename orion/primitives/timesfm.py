@@ -63,16 +63,12 @@ class TimesFM:
         frequency_input = [self.freq for _ in range(len(X))]
         d = X.shape[-1]
 
-
-        #univariate
         if d == 1:
             y_hat, _ = self.model.forecast(X[:, :, 0], freq=frequency_input)
             return y_hat[:, 0]
 
-
-        #multivariate
         else:
-            X_reg = X[:, :, 1:d] 
+            X_reg = X[:, :, 1:d]
             m, n, k = X_reg.shape
             X_reg_new = np.zeros((m, n+1, k))
             X_reg_new[:, :-1, :] = X_reg
