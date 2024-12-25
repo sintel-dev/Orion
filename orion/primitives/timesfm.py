@@ -9,6 +9,7 @@ https://github.com/google-research/timesfm?tab=readme-ov-file
 """
 
 import timesfm as tf
+import numpy as np
 
 
 class TimesFM:
@@ -53,10 +54,32 @@ class TimesFM:
         Args:
             X (ndarray):
                 input timeseries.
+            target (int): 
+                index of target column in multivariate case. Default to 0.
         Return:
             ndarray:
                 forecasted timeseries.
         """
         frequency_input = [self.freq for _ in range(len(X))]
-        y_hat, _ = self.model.forecast(X[:, :, 0], freq=frequency_input)
-        return y_hat[:, 0]
+        d = X.shape[-1] #number of variables
+        if d == 1: #univariate
+            y_hat, _ = self.model.forecast(X[:, :, 0], freq=frequency_input)
+            return y_hat[:, 0]
+            
+        else: #multivariate
+            #Extend the x_reg to future values
+            X_reg = X[:, :, 1:d] 
+            m, n, k = X_reg.shape
+            X_reg_new = np.zeros((m, n+1, k))
+            X_reg_new[:, :-1, :] = X_reg
+            X_reg_new[:-1, -1, :] = X_reg[1:, 0, :]
+
+
+            x_reg = {str(i): X_reg_new[:, :, i] for i in range(k)}
+            y_hat, _ = self.model.forecast_with_covariates(
+                inputs=X[:, :, 0],
+                dynamic_numerical_covariates=x_reg,
+                freq=frequency_input,
+            )
+            return np.concatenate(y_hat)
+        
