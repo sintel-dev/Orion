@@ -81,4 +81,4 @@ class TimesFM:
                 freq=frequency_input,
             )
             return np.concatenate(y_hat)
-        
+
