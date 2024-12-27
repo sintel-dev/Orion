@@ -29,7 +29,9 @@ class TimesFM:
             Size of one batch. Default to 32.
         freq (int):
             Frequency. TimesFM expects a categorical indicator valued in {0, 1, 2}.
-            Default to 0
+            Default to 0.
+        target (int):
+            Index of target column in multivariate case. Default to 0.
     """
 
     def __init__(self,
@@ -37,12 +39,14 @@ class TimesFM:
                  pred_len=1,
                  repo_id="google/timesfm-1.0-200m-pytorch",
                  batch_size=32,
-                 freq=0):
+                 freq=0, 
+                 target=0):
 
         self.window_size = window_size
         self.pred_len = pred_len
         self.freq = freq
         self.batch_size = batch_size
+        self.target = target
 
         self.model = tf.TimesFm(hparams=tf.TimesFmHparams(context_len=window_size,
                                                           per_core_batch_size=batch_size,
@@ -55,30 +59,34 @@ class TimesFM:
         Args:
             X (ndarray):
                 input timeseries.
-            target (int):
-                index of target column in multivariate case. Default to 0.
         Return:
             ndarray:
                 forecasted timeseries.
         """
-        frequency_input = [self.freq for _ in range(len(X))]
+        frequency_input = [self.freq]*len(X)
         d = X.shape[-1]
-
+        
+        #Univariate
         if d == 1:
             y_hat, _ = self.model.forecast(X[:, :, 0], freq=frequency_input)
             return y_hat[:, 0]
+        
+        #Multivariate
+        covariates = list(range(d))
+        covariates = covariates.remove(self.target)
+        X_cont = X[:, :, self.target]
+        X_cov = np.delete(X, self.target, axis=2)
 
-        else:
-            X_reg = X[:, :, 1:d]
-            m, n, k = X_reg.shape
-            X_reg_new = np.zeros((m, n+1, k))
-            X_reg_new[:, :-1, :] = X_reg
-            X_reg_new[:-1, -1, :] = X_reg[1:, 0, :]
+        #Append covariates with future values
+        m, n, k = X_cov.shape
+        X_cov_new = np.zeros((m, n+self.pred_len, k))
+        X_cov_new[:, :-self.pred_len, :] = X_cov
+        X_cov_new[:-1, -self.pred_len:, :] = X_cov[1:, :self.pred_len, :]
 
-            x_reg = {str(i): X_reg_new[:, :, i] for i in range(k)}
-            y_hat, _ = self.model.forecast_with_covariates(
-                inputs=X[:, :, 0],
-                dynamic_numerical_covariates=x_reg,
-                freq=frequency_input,
-            )
-            return np.concatenate(y_hat)
+        x_cov = {str(i): X_cov_new[:, :, i] for i in range(k)}
+        y_hat, _ = self.model.forecast_with_covariates(
+            inputs=X_cont,
+            dynamic_numerical_covariates=x_cov,
+            freq=frequency_input,
+        )
+        return np.concatenate(y_hat)
