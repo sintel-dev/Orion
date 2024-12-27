@@ -17,6 +17,11 @@
         "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "target_column": 0,
             "window_size": 256
+        },
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
+            "window_size_portion": 0.33,
+            "window_step_size_portion": 0.1,
+            "fixed_threshold": true
         }
     },
     "input_names": {
