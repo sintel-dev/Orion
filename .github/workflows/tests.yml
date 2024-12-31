@@ -118,7 +118,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install package and dependencies
-      run: pip install invoke jupyter matplotlib .
+      run: |
+          pip install "mistune>=2.0.3,<3.1"
+          pip install invoke jupyter matplotlib .
     - name: invoke tutorials
       run: invoke tutorials
 
@@ -136,6 +138,8 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install package and dependencies
-      run: pip install invoke jupyter .[pretrained]
+      run:  |
+          pip install "mistune>=2.0.3,<3.1"
+          pip install invoke jupyter .[pretrained]
     - name: invoke pretrained
       run: invoke pretrained
