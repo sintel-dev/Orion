@@ -5,7 +5,7 @@ azure-common==1.1.28
 azure-core==1.29.1
 azure-mgmt-core==1.4.0
 beautifulsoup4==4.12.3
-botocore==1.35.90
+botocore==1.35.92
 cachetools==5.5.0
 certifi==2024.12.14
 charset-normalizer==3.4.1
@@ -21,7 +21,7 @@ google-auth==2.37.0
 google-auth-oauthlib==1.0.0
 google-pasta==0.2.0
 graphviz==0.20.3
-grpcio==1.68.1
+grpcio==1.69.0
 h5py==3.11.0
 idna==3.10
 importlib_metadata==8.5.0
@@ -69,7 +69,7 @@ protobuf==3.20.3
 psutil==6.1.1
 pyasn1==0.6.1
 pyasn1_modules==0.4.1
-Pygments==2.18.0
+Pygments==2.19.0
 pytest==8.3.4
 pytest-cov==5.0.0
 python-dateutil==2.9.0.post0
