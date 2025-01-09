@@ -278,7 +278,7 @@ We also provide a suite of transformation functions in <code class="docutils lit
 <section id="weighted-segment">
 <h3>Weighted segment<a class="headerlink" href="#weighted-segment" title="Permalink to this headline">¶</a></h3>
 <p>Weighted segment based evaluation is a strict approach which weighs each segment by its actual time duration. It is valuable to use when you want to detect the exact segment of the anomaly, without any slackness. It first segments the signal into partitions based on the ground truth and detected sequences. Then it makes a segment to segment comparison and records true positive, true negative, false positive, and false negative accordingly. The overall score is weighted by the duration of each segment.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">orion.evaluation.contextual</span> <span class="kn">import</span> <span class="n">contextual_f1_score</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">orion.evaluation.contextual</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextual_f1_score</span>
 
 <span class="gp">In [5]: </span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">data_span</span>
 
@@ -307,13 +307,13 @@ We also provide a suite of transformation functions in <code class="docutils lit
 <section id="evaluate-the-performance-of-your-pipeline">
 <h2>Evaluate the performance of your pipeline<a class="headerlink" href="#evaluate-the-performance-of-your-pipeline" title="Permalink to this headline">¶</a></h2>
 <p>We can use the same dataset we saw in the <a class="reference internal" href="../getting_started/quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a></p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [8]: </span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_signal</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [8]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">orion.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_signal</span>
 
 <span class="gp">In [9]: </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We set up the pipeline (<code class="docutils literal notranslate"><span class="pre">lstm_dynamic_threshold</span></code>) as well as some hyperparameters.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="kn">from</span> <span class="nn">orion</span> <span class="kn">import</span> <span class="n">Orion</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">orion</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orion</span>
 
 <span class="gp">In [11]: </span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
 <span class="gp">   ....: </span>    <span class="s1">&#39;keras.Sequential.LSTMTimeSeriesRegressor#1&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -331,7 +331,7 @@ We also provide a suite of transformation functions in <code class="docutils lit
 </div>
 <p>In this next step we will load some already known anomalous intervals and evaluate how good our anomaly detection was by comparing those with our detected intervals.</p>
 <p>For this, we will first load the known anomalies for the signal that we are using:</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [13]: </span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_anomalies</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [13]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">orion.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_anomalies</span>
 
 <span class="gp">In [14]: </span><span class="n">ground_truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="s1">&#39;S-1&#39;</span><span class="p">)</span>
 
@@ -353,10 +353,10 @@ We also provide a suite of transformation functions in <code class="docutils lit
 <p>The output will be a <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> containing a collection of scores indicating how the predictions were:</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [17]: </span><span class="n">scores</span>
 <span class="gh">Out[17]: </span>
-<span class="go">accuracy     0.950236</span>
-<span class="go">f1                NaN</span>
-<span class="go">recall       0.000000</span>
-<span class="go">precision    0.000000</span>
+<span class="go">accuracy     0.969255</span>
+<span class="go">f1           0.554286</span>
+<span class="go">recall       0.434005</span>
+<span class="go">precision    0.766798</span>
 <span class="go">dtype: float64</span>
 </pre></div>
 </div>

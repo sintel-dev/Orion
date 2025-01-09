@@ -157,12 +157,12 @@
 <span class="sd">Some of the implementation is inspired by the paper https://arxiv.org/pdf/1802.04431.pdf</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fmin</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">fmin</span>
 
 
-<span class="k">def</span> <span class="nf">deltas</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">deltas</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute mean and std deltas.</span>
 
 <span class="sd">    delta_mean = mean(errors) - mean(all errors below epsilon)</span>
@@ -190,7 +190,7 @@
     <span class="k">return</span> <span class="n">mean</span> <span class="o">-</span> <span class="n">below</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">std</span> <span class="o">-</span> <span class="n">below</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 
 
-<span class="k">def</span> <span class="nf">count_above</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">count_above</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Count number of errors and continuous sequences above epsilon.</span>
 
 <span class="sd">    Continuous sequences are counted by shifting and counting the number</span>
@@ -220,7 +220,7 @@
     <span class="k">return</span> <span class="n">total_above</span><span class="p">,</span> <span class="n">total_consecutive</span>
 
 
-<span class="k">def</span> <span class="nf">z_cost</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">z_cost</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute how bad a z value is.</span>
 
 <span class="sd">    The original formula is::</span>
@@ -263,7 +263,7 @@
     <span class="k">return</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
 
 
-<span class="k">def</span> <span class="nf">_find_threshold</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">z_range</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_find_threshold</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">z_range</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the ideal threshold.</span>
 
 <span class="sd">    The ideal threshold is the one that minimizes the z_cost function. Scipy.fmin is used</span>
@@ -296,7 +296,7 @@
     <span class="k">return</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">best_z</span> <span class="o">*</span> <span class="n">std</span>
 
 
-<span class="k">def</span> <span class="nf">_fixed_threshold</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_fixed_threshold</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the threshold.</span>
 
 <span class="sd">    The fixed threshold is defined as k standard deviations away from the mean.</span>
@@ -315,7 +315,7 @@
     <span class="k">return</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="n">std</span>
 
 
-<span class="k">def</span> <span class="nf">_find_sequences</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">anomaly_padding</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_find_sequences</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">anomaly_padding</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find sequences of values that are above epsilon.</span>
 
 <span class="sd">    This is done following this steps:</span>
@@ -365,7 +365,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">max_below</span>
 
 
-<span class="k">def</span> <span class="nf">_get_max_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">max_below</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_max_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">max_below</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the maximum error for each anomalous sequence.</span>
 
 <span class="sd">    Also add a row with the max error which was not considered anomalous.</span>
@@ -405,7 +405,7 @@
     <span class="k">return</span> <span class="n">max_errors</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_prune_anomalies</span><span class="p">(</span><span class="n">max_errors</span><span class="p">,</span> <span class="n">min_percent</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_prune_anomalies</span><span class="p">(</span><span class="n">max_errors</span><span class="p">,</span> <span class="n">min_percent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Prune anomalies to mitigate false positives.</span>
 
 <span class="sd">    This is done by following these steps:</span>
@@ -442,7 +442,7 @@
     <span class="k">return</span> <span class="n">max_errors</span><span class="p">[[</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">,</span> <span class="s1">&#39;max_error&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span> <span class="n">last_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
 
-<span class="k">def</span> <span class="nf">_compute_scores</span><span class="p">(</span><span class="n">pruned_anomalies</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">window_start</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_scores</span><span class="p">(</span><span class="n">pruned_anomalies</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">window_start</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the score of the anomalies.</span>
 
 <span class="sd">    Calculate the score of the anomalies proportional to the maximum error in the sequence</span>
@@ -474,7 +474,7 @@
     <span class="k">return</span> <span class="n">anomalies</span>
 
 
-<span class="k">def</span> <span class="nf">_merge_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_merge_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Merge consecutive and overlapping sequences.</span>
 
 <span class="sd">    We iterate over a list of start, end, score triples and merge together</span>
@@ -515,7 +515,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_sequences</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_find_window_sequences</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">z_range</span><span class="p">,</span> <span class="n">anomaly_padding</span><span class="p">,</span> <span class="n">min_percent</span><span class="p">,</span> <span class="n">window_start</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_find_window_sequences</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">z_range</span><span class="p">,</span> <span class="n">anomaly_padding</span><span class="p">,</span> <span class="n">min_percent</span><span class="p">,</span> <span class="n">window_start</span><span class="p">,</span>
                            <span class="n">fixed_threshold</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find sequences of values that are anomalous.</span>
 
@@ -559,7 +559,7 @@
     <span class="k">return</span> <span class="n">window_sequences</span>
 
 
-<div class="viewcode-block" id="find_anomalies"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.timeseries_anomalies.find_anomalies.html#orion.primitives.timeseries_anomalies.find_anomalies">[docs]</a><span class="k">def</span> <span class="nf">find_anomalies</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">z_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">window_size_portion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="find_anomalies"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.timeseries_anomalies.find_anomalies.html#orion.primitives.timeseries_anomalies.find_anomalies">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">find_anomalies</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">z_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">window_size_portion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">window_step_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">window_step_size_portion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_percent</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                    <span class="n">anomaly_padding</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">lower_threshold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fixed_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find sequences of error values that are anomalous.</span>

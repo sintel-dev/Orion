@@ -270,9 +270,9 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">mlstars</span> <span class="kn">import</span> <span class="n">load_primitive</span>
+<span class="gp">In [2]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">mlstars</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_primitive</span>
 
 <span class="gp">In [3]: </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
@@ -284,24 +284,24 @@
 
 <span class="gp">In [6]: </span><span class="n">primitive</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 
-<span class="go"> 1/51 [..............................] - ETA: 3:06 - loss: 1.0046 - tf.__operators__.getitem_loss: 0.9549 - tf.__operators__.getitem_1_loss: 1.0038 - tf.__operators__.getitem_2_loss: 1.0560</span>
-<span class="go"> 4/51 [=&gt;............................] - ETA: 1s - loss: 0.6962 - tf.__operators__.getitem_loss: 0.6795 - tf.__operators__.getitem_1_loss: 0.6329 - tf.__operators__.getitem_2_loss: 0.8393  </span>
-<span class="go"> 7/51 [===&gt;..........................] - ETA: 1s - loss: 0.4777 - tf.__operators__.getitem_loss: 0.4675 - tf.__operators__.getitem_1_loss: 0.3941 - tf.__operators__.getitem_2_loss: 0.6552</span>
-<span class="go">10/51 [====&gt;.........................] - ETA: 0s - loss: 0.3604 - tf.__operators__.getitem_loss: 0.3310 - tf.__operators__.getitem_1_loss: 0.3019 - tf.__operators__.getitem_2_loss: 0.5068</span>
-<span class="go">13/51 [======&gt;.......................] - ETA: 0s - loss: 0.3113 - tf.__operators__.getitem_loss: 0.2562 - tf.__operators__.getitem_1_loss: 0.2925 - tf.__operators__.getitem_2_loss: 0.4040</span>
-<span class="go">16/51 [========&gt;.....................] - ETA: 0s - loss: 0.2744 - tf.__operators__.getitem_loss: 0.2084 - tf.__operators__.getitem_1_loss: 0.2746 - tf.__operators__.getitem_2_loss: 0.3401</span>
-<span class="go">19/51 [==========&gt;...................] - ETA: 0s - loss: 0.2416 - tf.__operators__.getitem_loss: 0.1782 - tf.__operators__.getitem_1_loss: 0.2430 - tf.__operators__.getitem_2_loss: 0.3024</span>
-<span class="go">22/51 [===========&gt;..................] - ETA: 0s - loss: 0.2167 - tf.__operators__.getitem_loss: 0.1619 - tf.__operators__.getitem_1_loss: 0.2122 - tf.__operators__.getitem_2_loss: 0.2806</span>
-<span class="go">25/51 [=============&gt;................] - ETA: 0s - loss: 0.1988 - tf.__operators__.getitem_loss: 0.1539 - tf.__operators__.getitem_1_loss: 0.1874 - tf.__operators__.getitem_2_loss: 0.2664</span>
-<span class="go">28/51 [===============&gt;..............] - ETA: 0s - loss: 0.1848 - tf.__operators__.getitem_loss: 0.1490 - tf.__operators__.getitem_1_loss: 0.1678 - tf.__operators__.getitem_2_loss: 0.2544</span>
-<span class="go">31/51 [=================&gt;............] - ETA: 0s - loss: 0.1727 - tf.__operators__.getitem_loss: 0.1443 - tf.__operators__.getitem_1_loss: 0.1522 - tf.__operators__.getitem_2_loss: 0.2420</span>
-<span class="go">34/51 [===================&gt;..........] - ETA: 0s - loss: 0.1621 - tf.__operators__.getitem_loss: 0.1388 - tf.__operators__.getitem_1_loss: 0.1403 - tf.__operators__.getitem_2_loss: 0.2288</span>
-<span class="go">37/51 [====================&gt;.........] - ETA: 0s - loss: 0.1530 - tf.__operators__.getitem_loss: 0.1327 - tf.__operators__.getitem_1_loss: 0.1319 - tf.__operators__.getitem_2_loss: 0.2154</span>
-<span class="go">40/51 [======================&gt;.......] - ETA: 0s - loss: 0.1454 - tf.__operators__.getitem_loss: 0.1267 - tf.__operators__.getitem_1_loss: 0.1260 - tf.__operators__.getitem_2_loss: 0.2028</span>
-<span class="go">43/51 [========================&gt;.....] - ETA: 0s - loss: 0.1388 - tf.__operators__.getitem_loss: 0.1215 - tf.__operators__.getitem_1_loss: 0.1212 - tf.__operators__.getitem_2_loss: 0.1916</span>
-<span class="go">46/51 [==========================&gt;...] - ETA: 0s - loss: 0.1330 - tf.__operators__.getitem_loss: 0.1173 - tf.__operators__.getitem_1_loss: 0.1163 - tf.__operators__.getitem_2_loss: 0.1822</span>
-<span class="go">49/51 [===========================&gt;..] - ETA: 0s - loss: 0.1278 - tf.__operators__.getitem_loss: 0.1142 - tf.__operators__.getitem_1_loss: 0.1112 - tf.__operators__.getitem_2_loss: 0.1745</span>
-<span class="go">51/51 [==============================] - 6s 50ms/step - loss: 0.1246 - tf.__operators__.getitem_loss: 0.1126 - tf.__operators__.getitem_1_loss: 0.1078 - tf.__operators__.getitem_2_loss: 0.1702 - val_loss: 0.0467 - val_tf.__operators__.getitem_loss: 0.0768 - val_tf.__operators__.getitem_1_loss: 0.0208 - val_tf.__operators__.getitem_2_loss: 0.0684</span>
+<span class="go"> 1/51 [..............................] - ETA: 3:06 - loss: 1.0516 - tf.__operators__.getitem_loss: 0.9567 - tf.__operators__.getitem_1_loss: 1.0540 - tf.__operators__.getitem_2_loss: 1.1414</span>
+<span class="go"> 4/51 [=&gt;............................] - ETA: 1s - loss: 0.7316 - tf.__operators__.getitem_loss: 0.7057 - tf.__operators__.getitem_1_loss: 0.6698 - tf.__operators__.getitem_2_loss: 0.8810  </span>
+<span class="go"> 7/51 [===&gt;..........................] - ETA: 0s - loss: 0.4992 - tf.__operators__.getitem_loss: 0.4981 - tf.__operators__.getitem_1_loss: 0.4172 - tf.__operators__.getitem_2_loss: 0.6645</span>
+<span class="go">10/51 [====&gt;.........................] - ETA: 0s - loss: 0.3743 - tf.__operators__.getitem_loss: 0.3547 - tf.__operators__.getitem_1_loss: 0.3226 - tf.__operators__.getitem_2_loss: 0.4973</span>
+<span class="go">13/51 [======&gt;.......................] - ETA: 0s - loss: 0.3224 - tf.__operators__.getitem_loss: 0.2732 - tf.__operators__.getitem_1_loss: 0.3140 - tf.__operators__.getitem_2_loss: 0.3883</span>
+<span class="go">16/51 [========&gt;.....................] - ETA: 0s - loss: 0.2819 - tf.__operators__.getitem_loss: 0.2225 - tf.__operators__.getitem_1_loss: 0.2914 - tf.__operators__.getitem_2_loss: 0.3220</span>
+<span class="go">19/51 [==========&gt;...................] - ETA: 0s - loss: 0.2467 - tf.__operators__.getitem_loss: 0.1927 - tf.__operators__.getitem_1_loss: 0.2555 - tf.__operators__.getitem_2_loss: 0.2833</span>
+<span class="go">22/51 [===========&gt;..................] - ETA: 0s - loss: 0.2210 - tf.__operators__.getitem_loss: 0.1778 - tf.__operators__.getitem_1_loss: 0.2223 - tf.__operators__.getitem_2_loss: 0.2615</span>
+<span class="go">25/51 [=============&gt;................] - ETA: 0s - loss: 0.2026 - tf.__operators__.getitem_loss: 0.1705 - tf.__operators__.getitem_1_loss: 0.1961 - tf.__operators__.getitem_2_loss: 0.2475</span>
+<span class="go">28/51 [===============&gt;..............] - ETA: 0s - loss: 0.1880 - tf.__operators__.getitem_loss: 0.1650 - tf.__operators__.getitem_1_loss: 0.1755 - tf.__operators__.getitem_2_loss: 0.2358</span>
+<span class="go">31/51 [=================&gt;............] - ETA: 0s - loss: 0.1752 - tf.__operators__.getitem_loss: 0.1587 - tf.__operators__.getitem_1_loss: 0.1593 - tf.__operators__.getitem_2_loss: 0.2237</span>
+<span class="go">34/51 [===================&gt;..........] - ETA: 0s - loss: 0.1641 - tf.__operators__.getitem_loss: 0.1512 - tf.__operators__.getitem_1_loss: 0.1471 - tf.__operators__.getitem_2_loss: 0.2109</span>
+<span class="go">37/51 [====================&gt;.........] - ETA: 0s - loss: 0.1547 - tf.__operators__.getitem_loss: 0.1432 - tf.__operators__.getitem_1_loss: 0.1386 - tf.__operators__.getitem_2_loss: 0.1983</span>
+<span class="go">40/51 [======================&gt;.......] - ETA: 0s - loss: 0.1468 - tf.__operators__.getitem_loss: 0.1357 - tf.__operators__.getitem_1_loss: 0.1325 - tf.__operators__.getitem_2_loss: 0.1866</span>
+<span class="go">43/51 [========================&gt;.....] - ETA: 0s - loss: 0.1400 - tf.__operators__.getitem_loss: 0.1292 - tf.__operators__.getitem_1_loss: 0.1271 - tf.__operators__.getitem_2_loss: 0.1765</span>
+<span class="go">46/51 [==========================&gt;...] - ETA: 0s - loss: 0.1338 - tf.__operators__.getitem_loss: 0.1240 - tf.__operators__.getitem_1_loss: 0.1216 - tf.__operators__.getitem_2_loss: 0.1682</span>
+<span class="go">49/51 [===========================&gt;..] - ETA: 0s - loss: 0.1283 - tf.__operators__.getitem_loss: 0.1200 - tf.__operators__.getitem_1_loss: 0.1159 - tf.__operators__.getitem_2_loss: 0.1614</span>
+<span class="go">51/51 [==============================] - 6s 50ms/step - loss: 0.1250 - tf.__operators__.getitem_loss: 0.1179 - tf.__operators__.getitem_1_loss: 0.1122 - tf.__operators__.getitem_2_loss: 0.1577 - val_loss: 0.0433 - val_tf.__operators__.getitem_loss: 0.0691 - val_tf.__operators__.getitem_1_loss: 0.0183 - val_tf.__operators__.getitem_2_loss: 0.0678</span>
 
 <span class="gp">In [7]: </span><span class="n">ry</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
@@ -309,185 +309,185 @@
 <span class="go">2/2 [==============================] - 0s 10ms/step</span>
 
 <span class="go">1/2 [==============&gt;...............] - ETA: 0s</span>
-<span class="go">2/2 [==============================] - 0s 12ms/step</span>
+<span class="go">2/2 [==============================] - 0s 11ms/step</span>
 
 <span class="gp">In [8]: </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reverse Prediction: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">Reconstructed Values: </span><span class="si">{}</span><span class="s2">, Forward Prediction: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ry</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fy</span><span class="p">))</span>
-<span class="go">Reverse Prediction: [[0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]</span>
-<span class="go"> [0.72294767]]</span>
-<span class="go">Reconstructed Values: [[[0.83307673]</span>
-<span class="go">  [0.91517916]</span>
-<span class="go">  [0.97591558]</span>
+<span class="go">Reverse Prediction: [[0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]</span>
+<span class="go"> [0.7372086]]</span>
+<span class="go">Reconstructed Values: [[[0.85488261]</span>
+<span class="go">  [0.93689133]</span>
+<span class="go">  [0.99427712]</span>
 <span class="go">  ...</span>
-<span class="go">  [0.97661364]</span>
-<span class="go">  [0.92001538]</span>
-<span class="go">  [0.84314582]]</span>
+<span class="go">  [0.97949237]</span>
+<span class="go">  [0.92351557]</span>
+<span class="go">  [0.84630166]]</span>
 
-<span class="go"> [[0.83307673]</span>
-<span class="go">  [0.91517916]</span>
-<span class="go">  [0.97591558]</span>
+<span class="go"> [[0.85488261]</span>
+<span class="go">  [0.93689133]</span>
+<span class="go">  [0.99427712]</span>
 <span class="go">  ...</span>
-<span class="go">  [0.97661364]</span>
-<span class="go">  [0.92001538]</span>
-<span class="go">  [0.84314582]]</span>
+<span class="go">  [0.97949237]</span>
+<span class="go">  [0.92351557]</span>
+<span class="go">  [0.84630166]]</span>
 
-<span class="go"> [[0.83307673]</span>
-<span class="go">  [0.91517916]</span>
-<span class="go">  [0.97591558]</span>
+<span class="go"> [[0.85488261]</span>
+<span class="go">  [0.93689133]</span>
+<span class="go">  [0.99427712]</span>
 <span class="go">  ...</span>
-<span class="go">  [0.97661364]</span>
-<span class="go">  [0.92001538]</span>
-<span class="go">  [0.84314582]]</span>
+<span class="go">  [0.97949237]</span>
+<span class="go">  [0.92351557]</span>
+<span class="go">  [0.84630166]]</span>
 
 <span class="go"> ...</span>
 
-<span class="go"> [[0.83307673]</span>
-<span class="go">  [0.91517916]</span>
-<span class="go">  [0.97591558]</span>
+<span class="go"> [[0.85488261]</span>
+<span class="go">  [0.93689133]</span>
+<span class="go">  [0.99427712]</span>
 <span class="go">  ...</span>
-<span class="go">  [0.97661364]</span>
-<span class="go">  [0.92001538]</span>
-<span class="go">  [0.84314582]]</span>
+<span class="go">  [0.97949237]</span>
+<span class="go">  [0.92351557]</span>
+<span class="go">  [0.84630166]]</span>
 
-<span class="go"> [[0.83307673]</span>
-<span class="go">  [0.91517916]</span>
-<span class="go">  [0.97591558]</span>
+<span class="go"> [[0.85488261]</span>
+<span class="go">  [0.93689133]</span>
+<span class="go">  [0.99427712]</span>
 <span class="go">  ...</span>
-<span class="go">  [0.97661364]</span>
-<span class="go">  [0.92001538]</span>
-<span class="go">  [0.84314582]]</span>
+<span class="go">  [0.97949237]</span>
+<span class="go">  [0.92351557]</span>
+<span class="go">  [0.84630166]]</span>
 
-<span class="go"> [[0.83307673]</span>
-<span class="go">  [0.91517916]</span>
-<span class="go">  [0.97591558]</span>
+<span class="go"> [[0.85488261]</span>
+<span class="go">  [0.93689133]</span>
+<span class="go">  [0.99427712]</span>
 <span class="go">  ...</span>
-<span class="go">  [0.97661364]</span>
-<span class="go">  [0.92001538]</span>
-<span class="go">  [0.84314582]]], Forward Prediction: [[0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]</span>
-<span class="go"> [0.73840906]]</span>
+<span class="go">  [0.97949237]</span>
+<span class="go">  [0.92351557]</span>
+<span class="go">  [0.84630166]]], Forward Prediction: [[0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]</span>
+<span class="go"> [0.73960709]]</span>
 </pre></div>
 </div>
 </section>

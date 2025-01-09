@@ -154,31 +154,31 @@
   <h1>Source code for orion.benchmark</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">concurrent</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">uuid</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">concurrent</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">tqdm</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span> <span class="k">as</span> <span class="n">scipy_signal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tqdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">signal</span> <span class="k">as</span> <span class="n">scipy_signal</span>
 
-<span class="kn">from</span> <span class="nn">orion.analysis</span> <span class="kn">import</span> <span class="n">_load_pipeline</span><span class="p">,</span> <span class="n">analyze</span>
-<span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_anomalies</span><span class="p">,</span> <span class="n">load_signal</span>
-<span class="kn">from</span> <span class="nn">orion.evaluation</span> <span class="kn">import</span> <span class="n">CONTEXTUAL_METRICS</span> <span class="k">as</span> <span class="n">METRICS</span>
-<span class="kn">from</span> <span class="nn">orion.evaluation</span> <span class="kn">import</span> <span class="n">contextual_confusion_matrix</span>
-<span class="kn">from</span> <span class="nn">orion.progress</span> <span class="kn">import</span> <span class="n">TqdmLogger</span><span class="p">,</span> <span class="n">progress</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orion.analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">_load_pipeline</span><span class="p">,</span> <span class="n">analyze</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orion.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_anomalies</span><span class="p">,</span> <span class="n">load_signal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orion.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">CONTEXTUAL_METRICS</span> <span class="k">as</span> <span class="n">METRICS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orion.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextual_confusion_matrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orion.progress</span><span class="w"> </span><span class="kn">import</span> <span class="n">TqdmLogger</span><span class="p">,</span> <span class="n">progress</span>
 
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
@@ -216,7 +216,7 @@
 <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">test_split</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">test_split</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_split</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_split</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">test_split</span><span class="p">:</span>
@@ -228,12 +228,12 @@
     <span class="k">return</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span>
 
 
-<span class="k">def</span> <span class="nf">_detrend_signal</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">value_column</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_detrend_signal</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">value_column</span><span class="p">):</span>
     <span class="n">df</span><span class="p">[</span><span class="n">value_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">scipy_signal</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">value_column</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">df</span>
 
 
-<span class="k">def</span> <span class="nf">_get_pipeline_hyperparameter</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">,</span> <span class="n">pipeline_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_pipeline_hyperparameter</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">,</span> <span class="n">pipeline_name</span><span class="p">):</span>
     <span class="n">hyperparameters_</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">hyperparameters</span><span class="p">:</span>
@@ -253,7 +253,7 @@
     <span class="k">return</span> <span class="n">hyperparameters_</span>
 
 
-<span class="k">def</span> <span class="nf">_parse_confusion_matrix</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">truth</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_confusion_matrix</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">truth</span><span class="p">):</span>
     <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;tn&quot;</span><span class="p">,</span> <span class="s2">&quot;fp&quot;</span><span class="p">,</span> <span class="s2">&quot;fn&quot;</span><span class="p">,</span> <span class="s2">&quot;tp&quot;</span><span class="p">]</span>
     <span class="n">metric_</span> <span class="o">=</span> <span class="s1">&#39;confusion_matrix&#39;</span>
 
@@ -269,7 +269,7 @@
     <span class="k">del</span> <span class="n">scores</span><span class="p">[</span><span class="n">metric_</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_sort_leaderboard</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_sort_leaderboard</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">rank</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
         <span class="n">rank_</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Rank </span><span class="si">%s</span><span class="s2"> is not in </span><span class="si">%s</span><span class="s2">, using </span><span class="si">%s</span><span class="s2"> instead.&quot;</span><span class="p">,</span>
@@ -287,7 +287,7 @@
     <span class="k">return</span> <span class="n">df</span>
 
 
-<span class="k">def</span> <span class="nf">_evaluate_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_evaluate_signal</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">hyperparameter</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                      <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pipeline_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">anomaly_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
     <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">_load_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">test_split</span><span class="p">)</span>
@@ -342,7 +342,7 @@
     <span class="k">return</span> <span class="n">scores</span>
 
 
-<span class="k">def</span> <span class="nf">_run_job</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_run_job</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="c1"># Reset random seed</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
 
@@ -387,10 +387,10 @@
     <span class="k">return</span> <span class="n">scores</span>
 
 
-<span class="k">def</span> <span class="nf">_run_on_dask</span><span class="p">(</span><span class="n">jobs</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_run_on_dask</span><span class="p">(</span><span class="n">jobs</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run the tasks in parallel using dask.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">dask</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">dask</span>
     <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
         <span class="n">ie</span><span class="o">.</span><span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span>
             <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">It seems like `dask` is not installed.</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -410,7 +410,7 @@
     <span class="k">return</span> <span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">persisted</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="benchmark"><a class="viewcode-back" href="../../api_reference/api/orion.benchmark.benchmark.html#orion.benchmark.benchmark">[docs]</a><span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">pipelines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">METRICS</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="benchmark"><a class="viewcode-back" href="../../api_reference/api/orion.benchmark.benchmark.html#orion.benchmark.benchmark">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">benchmark</span><span class="p">(</span><span class="n">pipelines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">METRICS</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span>
               <span class="n">test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
               <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">anomaly_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run pipelines on the given datasets and evaluate the performance.</span>
@@ -572,7 +572,7 @@
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span></div>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">workers</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">anomaly_dir</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">pipelines</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">workers</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">,</span> <span class="n">pipeline_dir</span><span class="p">,</span> <span class="n">anomaly_dir</span><span class="p">,</span>
          <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="c1"># output path</span>
     <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BENCHMARK_PATH</span><span class="p">,</span> <span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>

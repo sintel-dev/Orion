@@ -152,11 +152,11 @@
               <div>
                 
   <h1>Source code for orion.primitives.timeseries_preprocessing</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 
-<span class="k">def</span> <span class="nf">slice_array_by_dims</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">slice_array_by_dims</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">target_index</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Slice an ndarray by given dimensions.</span>
 
 <span class="sd">    This function creates a copy of X then slices the array from the specificed</span>
@@ -188,7 +188,7 @@
     <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">indices</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="fillna"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.timeseries_preprocessing.fillna.html#orion.primitives.timeseries_preprocessing.fillna">[docs]</a><span class="k">def</span> <span class="nf">fillna</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downcast</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="fillna"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.timeseries_preprocessing.fillna.html#orion.primitives.timeseries_preprocessing.fillna">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">fillna</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downcast</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Impute missing values.</span>
 
 <span class="sd">    This function fills the missing values of the input sequence with the next/</span>

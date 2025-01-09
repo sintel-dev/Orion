@@ -199,7 +199,7 @@ on one of the signals from the <strong>Demo Dataset</strong>.</p>
 <p>We will do so in two parts, we will use the first part to fit the
 pipeline and the second one to detect anomalies.</p>
 <p>To do so, we need to import the <cite>orion.data.load_signal</cite> function and call it passing the <cite>‘S-1-train’</cite> as signal name.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_signal</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">orion.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_signal</span>
 
 <span class="gp">In [2]: </span><span class="n">train_data</span> <span class="o">=</span> <span class="n">load_signal</span><span class="p">(</span><span class="s1">&#39;S-1-train&#39;</span><span class="p">)</span>
 
@@ -219,7 +219,7 @@ pipeline and the second one to detect anomalies.</p>
 <h2>2. Detect anomalies using Orion<a class="headerlink" href="#detect-anomalies-using-orion" title="Permalink to this headline">¶</a></h2>
 <p>Once we have the data, let us try to use an Orion pipeline to analyze it and search for anomalies.</p>
 <p>In order to do so, we will have to create an instance of the <cite>orion.Orion</cite> class.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">orion</span> <span class="kn">import</span> <span class="n">Orion</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">orion</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orion</span>
 
 <span class="gp">In [5]: </span><span class="n">orion</span> <span class="o">=</span> <span class="n">Orion</span><span class="p">()</span>
 </pre></div>
@@ -261,7 +261,7 @@ Output format described above:</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="n">anomalies</span>
 <span class="gh">Out[11]: </span>
 <span class="go">        start         end  severity</span>
-<span class="go">0  1398405600  1400198400  0.536252</span>
+<span class="go">0  1398384000  1400198400  0.483057</span>
 </pre></div>
 </div>
 </section>
@@ -270,7 +270,7 @@ Output format described above:</p>
 <p>In this next step we will load some already known anomalous intervals and evaluate how
 good our anomaly detection was by comparing those with our detected intervals.</p>
 <p>For this, we will first load the known anomalies for the signal that we are using:</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [12]: </span><span class="kn">from</span> <span class="nn">orion.data</span> <span class="kn">import</span> <span class="n">load_anomalies</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [12]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">orion.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_anomalies</span>
 
 <span class="gp">In [13]: </span><span class="n">ground_truth</span> <span class="o">=</span> <span class="n">load_anomalies</span><span class="p">(</span><span class="s1">&#39;S-1&#39;</span><span class="p">)</span>
 
@@ -286,9 +286,9 @@ good our anomaly detection was by comparing those with our detected intervals.</
 
 <span class="gp">In [16]: </span><span class="n">scores</span>
 <span class="gh">Out[16]: </span>
-<span class="go">accuracy     0.950341</span>
-<span class="go">f1           0.313208</span>
-<span class="go">recall       0.185682</span>
+<span class="go">accuracy     0.950477</span>
+<span class="go">f1           0.316384</span>
+<span class="go">recall       0.187920</span>
 <span class="go">precision    1.000000</span>
 <span class="go">dtype: float64</span>
 </pre></div>

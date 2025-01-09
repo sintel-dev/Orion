@@ -152,22 +152,22 @@
               <div>
                 
   <h1>Source code for orion.primitives.azure_anomaly_detector</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="kn">import</span> <span class="nn">pytz</span>
-<span class="kn">from</span> <span class="nn">azure.cognitiveservices.anomalydetector</span> <span class="kn">import</span> <span class="n">AnomalyDetectorClient</span>
-<span class="kn">from</span> <span class="nn">azure.cognitiveservices.anomalydetector.models</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Request</span>
-<span class="kn">from</span> <span class="nn">msrest.authentication</span> <span class="kn">import</span> <span class="n">CognitiveServicesCredentials</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytz</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">azure.cognitiveservices.anomalydetector</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnomalyDetectorClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">azure.cognitiveservices.anomalydetector.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msrest.authentication</span><span class="w"> </span><span class="kn">import</span> <span class="n">CognitiveServicesCredentials</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_convert_date</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tz</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_convert_date</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tz</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tz</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_convert_anomalies_to_contextual</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_convert_anomalies_to_contextual</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Convert list of timestamps to list of tuples.</span>
 
 <span class="sd">    Convert a list of anomalies identified by timestamps,</span>
@@ -205,7 +205,7 @@
     <span class="k">return</span> <span class="n">anomalies</span>
 
 
-<div class="viewcode-block" id="split_sequence"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.azure_anomaly_detector.split_sequence.html#orion.primitives.azure_anomaly_detector.split_sequence">[docs]</a><span class="k">def</span> <span class="nf">split_sequence</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">target_column</span><span class="p">,</span> <span class="n">sequence_size</span><span class="p">,</span> <span class="n">overlap_size</span><span class="p">):</span>
+<div class="viewcode-block" id="split_sequence"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.azure_anomaly_detector.split_sequence.html#orion.primitives.azure_anomaly_detector.split_sequence">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">split_sequence</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">target_column</span><span class="p">,</span> <span class="n">sequence_size</span><span class="p">,</span> <span class="n">overlap_size</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Split sequences of time series data.</span>
 
 <span class="sd">    The function creates a list of input sequences by splitting the input sequence</span>
@@ -250,7 +250,7 @@
     <span class="k">return</span> <span class="n">X_</span><span class="p">,</span> <span class="n">index_</span></div>
 
 
-<div class="viewcode-block" id="detect_anomalies"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.azure_anomaly_detector.detect_anomalies.html#orion.primitives.azure_anomaly_detector.detect_anomalies">[docs]</a><span class="k">def</span> <span class="nf">detect_anomalies</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">overlap_size</span><span class="p">,</span> <span class="n">subscription_key</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">granularity</span><span class="p">,</span>
+<div class="viewcode-block" id="detect_anomalies"><a class="viewcode-back" href="../../../api_reference/api/orion.primitives.azure_anomaly_detector.detect_anomalies.html#orion.primitives.azure_anomaly_detector.detect_anomalies">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">detect_anomalies</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">overlap_size</span><span class="p">,</span> <span class="n">subscription_key</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">granularity</span><span class="p">,</span>
                      <span class="n">custom_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_anomaly_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sensitivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">timezone</span><span class="o">=</span><span class="s2">&quot;UTC&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Microsoft&#39;s Azure Anomaly Detection tool.</span>
