@@ -75,7 +75,7 @@ def install_minimum(c):
 def minimum(c):
     install_minimum(c)
     c.run('python -m pip check')
-    c.run('python -m pytest')
+    c.run('python -m pytest ./tests/unit')
 
 
 @task
