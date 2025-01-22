@@ -96,7 +96,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install package and dependencies
       run:  |
-          pip install invoke .[pretrained-test]
+          pip install invoke pytest .[pretrained]
     - name: invoke pretrained
       run: invoke pretrained
 
