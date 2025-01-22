@@ -78,8 +78,27 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install package and dependencies
       run: pip install invoke .[test]
-    - name: invoke pytest
-      run: invoke pytest
+    - name: invoke unit
+      run: invoke unit
+
+
+  unit-pretrained:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ['3.11']
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install package and dependencies
+      run:  |
+          pip install invoke pytest .[pretrained]
+    - name: invoke pretrained
+      run: invoke pretrained
 
 
   minimum:
@@ -125,7 +144,7 @@ jobs:
       run: invoke tutorials
 
 
-  pretrained:
+  pretrained-tutorials:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -141,5 +160,5 @@ jobs:
       run:  |
           pip install "mistune>=2.0.3,<3.1"
           pip install invoke jupyter .[pretrained]
-    - name: invoke pretrained
-      run: invoke pretrained
+    - name: invoke pretrained-tutorials
+      run: invoke pretrained-tutorials

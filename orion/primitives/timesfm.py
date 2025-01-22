@@ -8,9 +8,27 @@ The model implementation can be found at
 https://github.com/google-research/timesfm?tab=readme-ov-file
 """
 
-import numpy as np
+import sys
 
-import timesfm as tf
+if sys.version_info < (3, 11):
+    msg = (
+        '`timesfm` requires Python >= 3.11 and your '
+        f'python version is {sys.version}.\n'
+        'Make sure you are using Python 3.11 or later.\n'
+    )
+    raise RuntimeError(msg)
+
+try:
+    import timesfm as tf
+except ImportError as ie:
+    ie.msg += (
+        '\n\nIt seems like `timesfm` is not installed.\n'
+        'Please install `timesfm` using:\n'
+        '\n    pip install orion-ml[pretrained]'
+    )
+    raise
+
+MAX_LENGTH = 93000
 
 
 class TimesFM:
@@ -53,7 +71,7 @@ class TimesFM:
                                                           horizon_len=pred_len),
                                 checkpoint=tf.TimesFmCheckpoint(huggingface_repo_id=repo_id))
 
-    def predict(self, X):
+    def predict(self, X, force=False):
         """Forecasting timeseries
 
         Args:
@@ -63,30 +81,21 @@ class TimesFM:
             ndarray:
                 forecasted timeseries.
         """
-        frequency_input = [self.freq]*len(X)
-        d = X.shape[-1]
+        frequency_input = [self.freq] * len(X)
+        m, n, d = X.shape
 
-        # Univariate
-        if d == 1:
-            y_hat, _ = self.model.forecast(X[:, :, 0], freq=frequency_input)
-            return y_hat[:, 0]
+        # does not support multivariate
+        if d > 1:
+            raise ValueError(f'Encountered X with too many channels (channels={d}).')
 
-        # Multivariate
-        covariates = list(range(d))
-        covariates = covariates.remove(self.target)
-        X_cont = X[:, :, self.target]
-        X_cov = np.delete(X, self.target, axis=2)
+        # does not support long time series
+        if not force and m > (MAX_LENGTH - self.window_size):
+            msg = (
+                f'`X` has {m} samples, which might result in out of memory issues.\n'
+                'If you are sure you want to proceed, set `force=True`.'
+            )
 
-        # Append covariates with future values
-        m, n, k = X_cov.shape
-        X_cov_new = np.zeros((m, n+self.pred_len, k))
-        X_cov_new[:, :-self.pred_len, :] = X_cov
-        X_cov_new[:-1, -self.pred_len:, :] = X_cov[1:, :self.pred_len, :]
+            raise MemoryError(msg)
 
-        x_cov = {str(i): X_cov_new[:, :, i] for i in range(k)}
-        y_hat, _ = self.model.forecast_with_covariates(
-            inputs=X_cont,
-            dynamic_numerical_covariates=x_cov,
-            freq=frequency_input,
-        )
-        return np.concatenate(y_hat)
+        y_hat, _ = self.model.forecast(X[:, :, 0], freq=frequency_input)
+        return y_hat[:, 0]

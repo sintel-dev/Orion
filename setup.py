@@ -133,7 +133,6 @@ setup(
         'test': tests_require,
         'dev': development_requires + tests_require,
         'pretrained': pretrained_requires,
-        'pretrained-dev': pretrained_requires + development_requires + tests_require,
     },
     include_package_data=True,
     install_requires=install_requires,
