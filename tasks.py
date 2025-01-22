@@ -19,8 +19,13 @@ COMPARISONS = {
 
 
 @task
-def pytest(c):
-    c.run('python -m pytest --cov=orion')
+def unit(c):
+    c.run('python -m pytest ./tests/unit --cov=orion')
+
+
+@task
+def pretrained(c):
+    c.run('python -m pytest ./tests/pretrained')
 
 
 @task
@@ -107,7 +112,7 @@ def tutorials(c):
             ), hide='out')
 
 @task
-def pretrained(c):
+def pretrained_tutorials(c):
     pipelines = os.listdir(os.path.join('orion', 'pipelines', 'pretrained'))
     for ipynb_file in glob.glob('tutorials/pipelines/*.ipynb'):
         for pipeline in pipelines: 

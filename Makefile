@@ -125,7 +125,7 @@ fix-lint: ## fix lint issues using autoflake, autopep8, and isort
 
 .PHONY: test-unit
 test-unit: ## run tests quickly with the default Python
-	invoke pytest
+	invoke unit
 
 .PHONY: test-readme
 test-readme: ## run the readme snippets
@@ -135,9 +135,13 @@ test-readme: ## run the readme snippets
 test-tutorials: ## run the tutorial notebooks
 	invoke tutorials
 
+.PHONY: test-pretrained
+test-pretrained: ## run the tutorial notebooks
+	invoke pretrained
+
 .PHONY: test-pretrained-tutorials
 test-pretrained-tutorials: ## run the tutorial notebooks
-	invoke pretrained
+	invoke pretrained-tutorials
 
 .PHONY: test
 test: test-unit test-readme test-tutorials ## test everything that needs test dependencies
