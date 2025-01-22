@@ -3,8 +3,8 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
-import timesfm as tf
 
+import timesfm as tf
 from orion.primitives.timesfm import MAX_LENGTH, TimesFM
 
 
@@ -24,7 +24,7 @@ class TestTimesFMImport(unittest.TestCase):
     def test_import_error_timesfm_not_installed(self, mock_import):
         # simulate Python version 3.11 and timesfm not installed
         with self.assertRaises(ImportError):
-            import orion.primitives.timesfm # noqa
+            import orion.primitives.timesfm  # noqa
 
 
 class TestTimesFMPredict(unittest.TestCase):
