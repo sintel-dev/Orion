@@ -28,7 +28,7 @@ install_requires = [
     'scipy<1.14',
     'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
-    'torch>=1.4',
+    'torch>=1.4,<2.6',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
