@@ -5,7 +5,7 @@ azure-common==1.1.28
 azure-core==1.29.1
 azure-mgmt-core==1.4.0
 beautifulsoup4==4.13.3
-botocore==1.36.16
+botocore==1.36.21
 cachetools==5.5.1
 certifi==2025.1.31
 charset-normalizer==3.4.1
@@ -13,7 +13,7 @@ click==7.1.2
 coverage==7.6.1
 exceptiongroup==1.2.2
 filelock==3.16.1
-flatbuffers==25.1.24
+flatbuffers==25.2.10
 fsspec==2025.2.0
 future==1.0.0
 gast==0.4.0
