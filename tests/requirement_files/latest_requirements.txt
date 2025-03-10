@@ -5,7 +5,7 @@ azure-common==1.1.28
 azure-core==1.29.1
 azure-mgmt-core==1.4.0
 beautifulsoup4==4.13.3
-botocore==1.37.4
+botocore==1.37.9
 cachetools==5.5.2
 certifi==2025.1.31
 charset-normalizer==3.4.1
@@ -14,7 +14,7 @@ coverage==7.6.1
 exceptiongroup==1.2.2
 filelock==3.16.1
 flatbuffers==25.2.10
-fsspec==2025.2.0
+fsspec==2025.3.0
 future==1.0.0
 gast==0.4.0
 google-auth==2.38.0
@@ -28,7 +28,7 @@ importlib_metadata==8.5.0
 iniconfig==2.0.0
 invoke==2.2.0
 isodate==0.7.2
-Jinja2==3.1.5
+Jinja2==3.1.6
 jmespath==1.0.1
 joblib==1.4.2
 keras==2.13.1
@@ -55,7 +55,7 @@ nvidia-curand-cu12==10.3.2.106
 nvidia-cusolver-cu12==11.4.5.107
 nvidia-cusparse-cu12==12.1.0.106
 nvidia-nccl-cu12==2.18.1
-nvidia-nvjitlink-cu12==12.8.61
+nvidia-nvjitlink-cu12==12.8.93
 nvidia-nvtx-cu12==12.1.105
 oauthlib==3.2.2
 opt_einsum==3.4.0
