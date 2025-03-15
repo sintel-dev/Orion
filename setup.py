@@ -67,23 +67,24 @@ development_requires = [
     'watchdog>=0.8.3,<5',
 
     # docs
-    'docutils>=0.12,<0.18',
-    'm2r2>=0.2.5,<0.3',
-    'nbsphinx>=0.5.0,<0.7',
-    'Sphinx>=3,<3.3',
-    'pydata-sphinx-theme<0.5',
-    'markupsafe<2.1.0',
-    'ipython>=6.5,<9',
-    'Jinja2>=2,<3',
+    'docutils>=0.12,<1',
+    # 'm2r2>=0.2.5,<0.3',
+    'nbsphinx>=0.5.0,<1',
+    'sphinx_toolbox>=2.5,<4',
+    'Sphinx>=3,<8',
+    'pydata-sphinx-theme<1',
+    'markupsafe<3',
+    'ipython>=6.5,<12',
+    'Jinja2>=2,<4',
 
     # fails on Sphinx < v3.4
-    'alabaster<=0.7.12',
+    # 'alabaster<=0.7.12',
     # fails on Sphins < v5.0
-    'sphinxcontrib-applehelp<1.0.8',
-    'sphinxcontrib-devhelp<1.0.6',
-    'sphinxcontrib-htmlhelp<2.0.5',
-    'sphinxcontrib-serializinghtml<1.1.10',
-    'sphinxcontrib-qthelp<1.0.7',
+    # 'sphinxcontrib-applehelp<1.0.8',
+    # 'sphinxcontrib-devhelp<1.0.6',
+    # 'sphinxcontrib-htmlhelp<2.0.5',
+    # 'sphinxcontrib-serializinghtml<1.1.10',
+    # 'sphinxcontrib-qthelp<1.0.7',
 
     # style check
     'flake8>=3.7.7,<4',

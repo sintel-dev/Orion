@@ -53,7 +53,7 @@ argument                type                description
     X = np.array([1] * 100).reshape(1, -1, 1)
     y = np.array([[1]])
     primitive = load_primitive('keras.Sequential.LSTMTimeSeriesRegressor', 
-        arguments={"X": X, "y": y, "input_shape":(100, 1), "batch_size": 1, "validation_split": 0})
+        arguments={"X": X, "y": y, "input_shape":(100, 1), "batch_size": 1, "validation_split": 0, "loss": "tensorflow.losses.mse"})
 
     primitive.fit()
     primitive.produce(X=X)
