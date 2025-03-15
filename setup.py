@@ -17,15 +17,14 @@ except IOError:
 
 
 install_requires = [
-    'tensorflow>=2.2,<2.15',
+    'tensorflow>=2.15,<2.20',
     'numpy>=1.17.5,<2',
     'pandas>=1,<3',
     'numba>=0.48,<0.60',
-    's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.6.2,<0.7',
-    'ml-stars>=0.2.1.dev0,<0.4',
-    'scikit-learn>=0.22.1,<2',
-    'scipy<1.14',
+    'mlblocks>=0.6.2,<0.8',
+    'ml-stars>=0.2.2,<0.4',
+    'scikit-learn>=0.22.1,<1.6',
+    'scipy>=1.6.1,<2',
     'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
     'torch>=1.4,<2.6',
@@ -65,7 +64,7 @@ development_requires = [
     # general
     'pip>=9.0.1',
     'bumpversion>=0.5.3,<0.6',
-    'watchdog>=0.8.3,<0.11',
+    'watchdog>=0.8.3,<5',
 
     # docs
     'docutils>=0.12,<0.18',
@@ -114,10 +113,10 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
     description="Orion is a machine learning library built for unsupervised time series anomaly detection.",
     entry_points={
@@ -142,7 +141,7 @@ setup(
     long_description_content_type='text/markdown',
     name='orion-ml',
     packages=find_packages(include=['orion', 'orion.*']),
-    python_requires='>=3.8,<3.12',
+    python_requires='>=3.9,<3.13',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,
