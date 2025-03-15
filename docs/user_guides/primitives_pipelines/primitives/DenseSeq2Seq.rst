@@ -29,7 +29,7 @@ argument                type                description
  ``input_shape``        ``tuple``           tuple denoting the shape of an input sample
  ``target_shape``       ``tuple``           tuple denoting the shape of an output sample
  ``optimizer``          ``str``             string (name of optimizer) or optimizer instance. Default is ``keras.optimizers.Adam``
- ``loss``               ``str``             string (name of the objective function) or an objective function instance. Default is ``keras.losses.mean_squared_error``
+ ``loss``               ``str``             string (name of the objective function) or an objective function instance. Default is ``tensorflow.losses.mse``
  ``metrics``            ``list``            list of metrics to be evaluated by the model during training and testing. Default is ["mse"]
  ``return_seqeunces``   ``bool``            whether to return the last output in the output sequence, or the full sequence. Default is False
  ``layers``             ``list``            list of keras layers which are the basic building blocks of a neural network
