@@ -16,19 +16,9 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 
+from orion.primitives.utils import build_layer
+
 LOGGER = logging.getLogger(__name__)
-
-
-def build_layer(layer: dict, hyperparameters: dict):
-    layer_class = import_object(layer['class'])
-    layer_kwargs = layer['parameters'].copy()
-    # TODO: Upgrade to using tf.keras.layers.Wrapper in mlprimitives.
-    if issubclass(layer_class, tf.keras.layers.Wrapper):
-        layer_kwargs['layer'] = build_layer(layer_kwargs['layer'], hyperparameters)
-    for key, value in layer_kwargs.items():
-        if isinstance(value, str):
-            layer_kwargs[key] = hyperparameters.get(value, value)
-    return layer_class(**layer_kwargs)
 
 
 class VAE(object):
@@ -127,7 +117,7 @@ class VAE(object):
         self.epochs = epochs
         self.batch_size = batch_size
         self.optimizer = import_object(optimizer)(learning_rate)
-        self.mse_loss = tf.keras.losses.MeanSquaredError()
+        self.mse_loss = tf.losses.mse
         self.shuffle = shuffle
         self.verbose = verbose
         self.hyperparameters = hyperparameters

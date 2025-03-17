@@ -11,20 +11,9 @@ from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 
 from orion.primitives.timeseries_errors import reconstruction_errors, regression_errors
+from orion.primitives.utils import build_layer
 
 LOGGER = logging.getLogger(__name__)
-
-
-def build_layer(layer: dict, hyperparameters: dict):
-    layer_class = import_object(layer['class'])
-    layer_kwargs = layer['parameters'].copy()
-    # TODO: Upgrade to using tf.keras.layers.Wrapper in mlprimitives.
-    if issubclass(layer_class, tf.keras.layers.Layer) and 'layer' in layer_kwargs:
-        layer_kwargs['layer'] = build_layer(layer_kwargs['layer'], hyperparameters)
-    for key, value in layer_kwargs.items():
-        if isinstance(value, str):
-            layer_kwargs[key] = hyperparameters.get(value, value)
-    return layer_class(**layer_kwargs)
 
 
 class AER(object):

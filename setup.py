@@ -76,6 +76,7 @@ development_requires = [
     'markupsafe<3',
     'ipython>=6.5,<12',
     'Jinja2>=2,<4',
+    'pickleshare', # ipython sphinx
 
     # fails on Sphinx < v3.4
     # 'alabaster<=0.7.12',

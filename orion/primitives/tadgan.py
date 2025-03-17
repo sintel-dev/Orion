@@ -14,6 +14,7 @@ from scipy import stats
 from tensorflow.keras import Model
 
 from orion.primitives.timeseries_errors import reconstruction_errors
+from orion.primitives.utils import build_layer
 
 LOGGER = logging.getLogger(__name__)
 tf.keras.backend.set_floatx('float64')
@@ -23,20 +24,6 @@ LOSS_NAMES = [
     ['cz_loss', 'cz_real', 'cz_fake', 'cz_gp'],
     ['eg_loss', 'eg_cx_fake', 'eg_cz_fake', 'eg_mse']
 ]
-
-
-def build_layer(layer: dict, hyperparameters: dict):
-    layer_class = import_object(layer['class'])
-    layer_kwargs = layer['parameters'].copy()
-    # TODO: Upgrade to using tf.keras.layers.Wrapper in mlprimitives.
-    if issubclass(layer_class, tf.keras.layers.Wrapper):
-        layer_kwargs['layer'] = build_layer(layer_kwargs['layer'], hyperparameters)
-
-    for key, value in layer_kwargs.items():
-        if isinstance(value, str):
-            layer_kwargs[key] = hyperparameters.get(value, value)
-
-    return layer_class(**layer_kwargs)
 
 
 class TadGAN:
