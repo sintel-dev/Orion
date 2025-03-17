@@ -128,16 +128,17 @@ We run the benchmark on **12** datasets with their known grounth truth. We recor
 
 | Pipeline                  |  Outperforms ARIMA |
 |---------------------------|--------------------|
-| AER                       |         11         |
+| AER                       |          12        |
 | TadGAN                    |          7         |
 | LSTM Dynamic Thresholding |          9         |
-| LSTM Autoencoder          |          6         |
-| Dense Autoencoder         |          8         |
+| LSTM Autoencoder          |          7         |
+| Dense Autoencoder         |          7         |
 | VAE                       |          6         |
 | AnomalyTransformer        |          2         |
 | LNN                       |          7         |
 | Matrix Profile            |          5         |
 | UniTS                     |          6         |
+| TimesFM                   |          7         |
 | [GANF](https://arxiv.org/pdf/2202.07857.pdf)                                                  |          5         |
 | [Azure](https://azure.microsoft.com/en-us/products/cognitive-services/anomaly-detector/)      |          0         |
 

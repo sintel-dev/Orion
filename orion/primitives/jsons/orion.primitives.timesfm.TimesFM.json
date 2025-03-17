@@ -1,0 +1,62 @@
+{
+    "name": "orion.primitives.timesfm.TimesFM",
+    "contributors": [
+        "Linh Nguyen <linhnk@mit.edu>"
+    ],
+    "documentation": "https://arxiv.org/abs/2310.10688",
+    "description": "TimesFM for timeseries forecasting",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.timesfm.TimesFM",
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            },
+            {
+                "name": "force",
+                "type": "bool",
+                "default": false
+            }
+        ],
+        "output": [
+            {
+                "name": "y_hat",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "window_size": {
+                "type": "int",
+                "default": 256
+            },
+            "pred_len": {
+                "type": "int",
+                "default": 1
+            },
+            "repo_id": {
+                "type": "str", 
+                "default": "google/timesfm-1.0-200m-pytorch"
+            },
+            "batch_size": {
+                "type": "int", 
+                "default": 32
+            },
+            "freq":{
+                "type": "int",
+                "default": 0
+            },
+            "target":{
+                "type": "int",
+                "default": 0
+            }
+        }
+    }
+}

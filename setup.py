@@ -28,7 +28,7 @@ install_requires = [
     'scipy<1.14',
     'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
-    'torch>=1.4',
+    'torch>=1.4,<2.6',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
@@ -43,7 +43,13 @@ pretrained_requires = [
     #units
     'timm',
     'smart_open',
+
+    #timesfm
+    "timesfm[torch]>=1.2.0,<1.5;python_version>='3.11'",
+    "jax;python_version>='3.11'",
+
 ]
+
 
 setup_requires = [
     'pytest-runner>=2.11.1',
@@ -127,7 +133,6 @@ setup(
         'test': tests_require,
         'dev': development_requires + tests_require,
         'pretrained': pretrained_requires,
-        'pretrained-dev': pretrained_requires + development_requires + tests_require,
     },
     include_package_data=True,
     install_requires=install_requires,
@@ -142,6 +147,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     url='https://github.com/sintel-dev/Orion',
-    version='0.7.0',
+    version='0.7.1.dev1',
     zip_safe=False,
 )

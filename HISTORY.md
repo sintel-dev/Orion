@@ -1,6 +1,21 @@
 History
 =======
 
+## 0.7.1 – 2025-03-17
+
+New ``timesfm`` pipeline
+
+### Issues resolved
+
+* Add Colab link to tutorials – [Issue #620](https://github.com/signals-dev/Orion/issues/620) by @sarahmish
+* pin pytorch < 2.6 – [Issue #614](https://github.com/signals-dev/Orion/issues/614) by @sarahmish
+* Throw an error if TimesFM will not work – [Issue #610](https://github.com/signals-dev/Orion/issues/610) by @sarahmish
+* Cap ``mistune`` – [Issue #605](https://github.com/signals-dev/Orion/issues/605) by @sarahmish
+* Update github actions tutorial tests – [Issue #603](https://github.com/signals-dev/Orion/issues/603) by @sarahmish
+* Modify ``units`` pipeline ``find_anomalies`` params – [Issue #602](https://github.com/signals-dev/Orion/issues/602) by @Linh-nk
+* New pipeline using TimesFM – [Issue #589](https://github.com/signals-dev/Orion/issues/589) by @Linh-nk
+
+
 ## 0.7.0 – 2024-12-18
 
 New ``units`` pipeline 
