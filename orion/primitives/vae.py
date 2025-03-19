@@ -21,6 +21,14 @@ from orion.primitives.utils import build_layer
 LOGGER = logging.getLogger(__name__)
 
 
+class KLDivergenceLayer(tf.keras.layers.Layer):
+    def call(self, inputs):
+        z_log_sigma, z_mean = inputs
+        kl_loss = -0.5 * K.mean(1 + z_log_sigma - K.square(z_mean) - K.exp(z_log_sigma), axis=-1)
+        self.add_loss(kl_loss)
+        return inputs
+    
+
 class VAE(object):
     """VAE model for time series reconstruction.
 
@@ -117,7 +125,7 @@ class VAE(object):
         self.epochs = epochs
         self.batch_size = batch_size
         self.optimizer = import_object(optimizer)(learning_rate)
-        self.mse_loss = tf.losses.mse
+        self.mse_loss = tf.keras.losses.MeanSquaredError()
         self.shuffle = shuffle
         self.verbose = verbose
         self.hyperparameters = hyperparameters
@@ -170,13 +178,13 @@ class VAE(object):
         h = self.encoder(x)
         z_mean = tf.keras.layers.Dense(self.latent_dim)(h)
         z_log_sigma = tf.keras.layers.Dense(self.latent_dim)(h)
+        KLDivergenceLayer()([z_log_sigma, z_mean]) # kl loss
         z = tf.keras.layers.Lambda(self._sampling)([z_mean, z_log_sigma])
 
         y_ = self.generator(z)
 
         self.vae_model = Model([x, y], y_)
-        self.vae_model.add_loss(self._vae_loss(y, y_, z_log_sigma, z_mean))
-        self.vae_model.compile(optimizer=self.optimizer)
+        self.vae_model.compile(loss='mse', optimizer=self.optimizer)
 
     def fit(self, X: np.ndarray, y: np.ndarray, **kwargs):
         """Fit the model.
@@ -201,11 +209,11 @@ class VAE(object):
             for callback in self.callbacks
         ]
 
-        self.fit_history = self.vae_model.fit((X, y),
+        self.fit_history = self.vae_model.fit((X, y), y,
                                               batch_size=self.batch_size,
                                               epochs=self.epochs,
                                               shuffle=self.shuffle,
-                                              verbose=self.verbose,
+                                              verbose=True,
                                               callbacks=callbacks,
                                               validation_split=self.validation_split,
                                               )

@@ -17,6 +17,7 @@ except IOError:
 
 
 install_requires = [
+    'Keras>=3,<4',
     'tensorflow>=2.16.1,<2.20',
     'numpy>=1.23.5,<2',
     'pandas>=1.4.0,<3',
