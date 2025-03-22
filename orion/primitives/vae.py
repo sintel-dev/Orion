@@ -21,7 +21,7 @@ from orion.primitives.utils import build_layer
 LOGGER = logging.getLogger(__name__)
 
 
-class KLDivergenceLayer(tf.keras.layers.Layer):
+class KLDivergenceLoss(tf.keras.layers.Layer):
     def call(self, inputs):
         z_log_sigma, z_mean = inputs
         kl_loss = -0.5 * K.mean(1 + z_log_sigma - K.square(z_mean) - K.exp(z_log_sigma), axis=-1)
@@ -178,7 +178,7 @@ class VAE(object):
         h = self.encoder(x)
         z_mean = tf.keras.layers.Dense(self.latent_dim)(h)
         z_log_sigma = tf.keras.layers.Dense(self.latent_dim)(h)
-        KLDivergenceLayer()([z_log_sigma, z_mean])  # kl loss
+        KLDivergenceLoss()([z_log_sigma, z_mean])  # kl loss
         z = tf.keras.layers.Lambda(self._sampling)([z_mean, z_log_sigma])
 
         y_ = self.generator(z)
@@ -213,7 +213,7 @@ class VAE(object):
                                               batch_size=self.batch_size,
                                               epochs=self.epochs,
                                               shuffle=self.shuffle,
-                                              verbose=True,
+                                              verbose=self.verbose,
                                               callbacks=callbacks,
                                               validation_split=self.validation_split,
                                               )
