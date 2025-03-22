@@ -27,7 +27,7 @@ class KLDivergenceLayer(tf.keras.layers.Layer):
         kl_loss = -0.5 * K.mean(1 + z_log_sigma - K.square(z_mean) - K.exp(z_log_sigma), axis=-1)
         self.add_loss(kl_loss)
         return inputs
-    
+
 
 class VAE(object):
     """VAE model for time series reconstruction.
@@ -178,7 +178,7 @@ class VAE(object):
         h = self.encoder(x)
         z_mean = tf.keras.layers.Dense(self.latent_dim)(h)
         z_log_sigma = tf.keras.layers.Dense(self.latent_dim)(h)
-        KLDivergenceLayer()([z_log_sigma, z_mean]) # kl loss
+        KLDivergenceLayer()([z_log_sigma, z_mean])  # kl loss
         z = tf.keras.layers.Lambda(self._sampling)([z_mean, z_log_sigma])
 
         y_ = self.generator(z)
