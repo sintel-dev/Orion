@@ -45,8 +45,8 @@ pretrained_requires = [
     'smart_open',
 
     #timesfm
-    "timesfm[torch]>=1.2.0,<1.5;python_version>='3.11'",
-    "jax;python_version>='3.11'",
+    "timesfm[torch]>=1.2.0,<1.5;python_version>=3.11,<3.12",
+    "jax;python_version>=3.11,<3.12",
 
 ]
 
