@@ -17,7 +17,6 @@ except IOError:
 
 
 install_requires = [
-    'Keras>=3,<4',
     'tensorflow>=2.16.1,<2.20',
     'numpy>=1.23.5,<2',
     'pandas>=1.4.0,<3',
@@ -26,9 +25,8 @@ install_requires = [
     'ml-stars>=0.2.2,<0.4',
     'scikit-learn>=1.1.0,<1.6',
     'scipy>=1.8.0,<2',
-    'tabulate>=0.8.3,<0.9',
     'pyts>=0.11,<0.14',
-    'torch>=1.9.0,<2.6',
+    'torch>=1.12.0,<2.6',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
@@ -45,8 +43,8 @@ pretrained_requires = [
     'smart_open',
 
     #timesfm
-    "timesfm[torch]>=1.2.0,<1.5;python_version>=3.11,<3.12",
-    "jax;python_version>=3.11,<3.12",
+    "timesfm[torch]>=1.2.0,<1.5;python_version>='3.11' and python_version<'3.12'",
+    "jax;python_version>='3.11' and python_version<'3.12'",
 
 ]
 
