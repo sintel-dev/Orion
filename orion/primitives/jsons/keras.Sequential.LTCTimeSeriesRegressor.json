@@ -92,7 +92,7 @@
             },
             "loss": {
                 "type": "str",
-                "default": "tensorflow.keras.losses.mean_squared_error"
+                "default": "tensorflow.losses.mse"
             },
             "metrics": {
                 "type": "list",
@@ -149,7 +149,7 @@
                         }
                     },
                     {
-                        "class": "ncps.tf.LTC",
+                        "class": "ncps.keras.LTC",
                         "parameters": {
                             "units": {
                                 "class": "ncps.wirings.AutoNCP",

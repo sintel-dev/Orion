@@ -91,9 +91,9 @@ def _area_error(y, y_hat, score_window=10):
             An array of area error.
     """
     smooth_y = pd.Series(y).rolling(
-        score_window, center=True, min_periods=score_window // 2).apply(integrate.trapz)
+        score_window, center=True, min_periods=score_window // 2).apply(integrate.trapezoid)
     smooth_y_hat = pd.Series(y_hat).rolling(
-        score_window, center=True, min_periods=score_window // 2).apply(integrate.trapz)
+        score_window, center=True, min_periods=score_window // 2).apply(integrate.trapezoid)
 
     errors = abs(smooth_y - smooth_y_hat)
 

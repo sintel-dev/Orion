@@ -47,7 +47,7 @@ def test_build_layer_bidirectional():
 def test_build_layer_ltc():
     # Setup
     layer = {
-        'class': 'ncps.tf.LTC',
+        'class': 'ncps.keras.LTC',
         'parameters': {
             'units': {
                 'class': 'ncps.wirings.AutoNCP',
@@ -63,7 +63,7 @@ def test_build_layer_ltc():
     built = build_layer(layer, {})
 
     # Assert
-    assert isinstance(built, ncps.tf.LTC)
+    assert isinstance(built, ncps.keras.LTC)
 
 
 def test__build_model():
@@ -76,7 +76,7 @@ def test__build_model():
             }
         }
     ]
-    loss = 'tensorflow.keras.losses.mean_squared_error'
+    loss = 'tensorflow.losses.mse'
     optimizer = 'tensorflow.keras.optimizers.Adam'
 
     # Run
@@ -111,7 +111,7 @@ def test_ncps_linear(build_mock):
             }
         }
     ]
-    loss = 'tensorflow.keras.losses.mean_squared_error'
+    loss = 'tensorflow.losses.mse'
     optimizer = 'tensorflow.keras.optimizers.Adam'
     ncps = NCPS(layers, loss, optimizer, False, batch_size=1)
 
