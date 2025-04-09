@@ -1,11 +1,11 @@
-absl-py==2.2.1
+absl-py==2.2.2
 astunparse==1.6.3
 azure-cognitiveservices-anomalydetector==0.3.1
 azure-common==1.1.28
 azure-core==1.29.1
 azure-mgmt-core==1.4.0
 beautifulsoup4==4.13.3
-botocore==1.37.23
+botocore==1.37.28
 cachetools==5.5.2
 certifi==2025.1.31
 charset-normalizer==3.4.1
@@ -14,7 +14,7 @@ coverage==7.6.1
 exceptiongroup==1.2.2
 filelock==3.16.1
 flatbuffers==25.2.10
-fsspec==2025.3.1
+fsspec==2025.3.0
 future==1.0.0
 gast==0.4.0
 google-auth==2.38.0
