@@ -193,7 +193,7 @@ def _find_sequences(errors, epsilon, anomaly_padding):
     for idx in index_above.flatten():
         above[max(0, idx - anomaly_padding):min(idx + anomaly_padding + 1, len(above))] = True
 
-    shift = above.shift(1).fillna(False)
+    shift = above.shift(1).astype('boolean').fillna(False)
     change = above != shift
 
     if above.all():
