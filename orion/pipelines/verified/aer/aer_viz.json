@@ -67,6 +67,10 @@
             {
                 "name": "generated_timeseries",
                 "variable": "orion.primitives.aer.AER#1.y_hat"
+            },
+            {
+                "name": "anomaly_score",
+                "variable": "orion.primitives.aer.score_anomalies#1.errors"
             }
         ]
     }

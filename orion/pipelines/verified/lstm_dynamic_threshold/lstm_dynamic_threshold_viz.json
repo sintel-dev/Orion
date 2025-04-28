@@ -54,6 +54,10 @@
             {
                 "name": "generated_timeseries",
                 "variable": "keras.Sequential.LSTMTimeSeriesRegressor#1.y_hat"
+            },
+            {
+                "name": "anomaly_score",
+                "variable": "orion.primitives.timeseries_errors.regression_errors#1.errors"
             }
         ]
     }

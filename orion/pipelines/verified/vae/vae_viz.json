@@ -56,21 +56,13 @@
                 "variable": "orion.primitives.timeseries_anomalies.find_anomalies#1.y"
             }
         ],
-        "model_info": [
+        "visualization": [
             {
-                "name": "y",
-                "variable": "orion.primitives.timeseries_preprocessing.slice_array_by_dims#1.y"
-            },
-            {
-                "name": "y_hat",
+                "name": "generated_timeseries",
                 "variable": "orion.primitives.vae.VAE#1.y_hat"
             },
             {
-                "name": "index",
-                "variable": "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1.index"
-            },
-            {
-                "name": "errors",
+                "name": "anomaly_score",
                 "variable": "orion.primitives.timeseries_errors.reconstruction_errors#1.errors"
             }
         ]

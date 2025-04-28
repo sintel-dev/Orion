@@ -5,8 +5,8 @@
         "sklearn.preprocessing.MinMaxScaler",
         "mlstars.custom.timeseries_preprocessing.rolling_window_sequences",
         "orion.primitives.timeseries_preprocessing.slice_array_by_dims",
-        "orion.primitives.tadgan.TadGAN",
-        "orion.primitives.tadgan.score_anomalies",
+        "keras.Sequential.DenseSeq2Seq",
+        "orion.primitives.timeseries_errors.reconstruction_errors",
         "orion.primitives.timeseries_anomalies.find_anomalies"
     ],
     "init_params": {
@@ -16,41 +16,31 @@
             "method": "mean"
         },
         "sklearn.preprocessing.MinMaxScaler#1": {
-            "feature_range": [
-                -1,
-                1
-            ]
+            "feature_range": [-1, 1]
         },
         "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "target_column": 0,
-            "window_size": 100,
-            "target_size": 1
+            "window_size": 100            
         },
         "orion.primitives.timeseries_preprocessing.slice_array_by_dims": {
             "target_index": 0,
             "axis": 2
         },
-        "orion.primitives.tadgan.TadGAN#1": {
+        "keras.Sequential.DenseSeq2Seq#1": {
             "epochs": 35,
-            "input_shape":[100, 1],
+            "verbose": false,
+            "window_size": 100,
+            "input_shape": [100, 1],
             "target_shape": [100, 1]
         },
-        "orion.primitives.tadgan.score_anomalies#1": {
-            "rec_error_type": "dtw"
-        },
-	"orion.primitives.timeseries_anomalies.find_anomalies#1": {
+        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "window_size_portion": 0.33,
             "window_step_size_portion": 0.1,
             "fixed_threshold": true
         }
     },
-    "input_names": {
-        "orion.primitives.timeseries_anomalies.find_anomalies#1": {
-            "index": "index"
-        }
-    },
     "output_names": {
-        "orion.primitives.tadgan.TadGAN#1": {
+        "keras.Sequential.DenseSeq2Seq#1": {
             "y": "y_hat"
         },
         "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
@@ -67,12 +57,8 @@
         ],
         "visualization": [
             {
-                "name": "generated_timeseries",
-                "variable": "orion.primitives.tadgan.score_anomalies#1.predictions"
-            },
-            {
                 "name": "anomaly_score",
-                "variable": "orion.primitives.tadgan.score_anomalies#1.errors"
+                "variable": "orion.primitives.timeseries_errors.reconstruction_errors#1.errors"
             }
         ]
     }
