@@ -134,7 +134,7 @@ def _sort_leaderboard(df, rank, metrics):
 
 
 def _evaluate_signal(pipeline, signal, hyperparameter, metrics, test_split=False,
-                     detrend=False, pipeline_path=None, anomaly_path=None):
+                     detrend=False, pipeline_path=None, anomaly_path=None, score_path=None):
 
     train, test = _load_signal(signal, test_split)
     truth = load_anomalies(signal)
@@ -149,7 +149,7 @@ def _evaluate_signal(pipeline, signal, hyperparameter, metrics, test_split=False
 
         start = datetime.utcnow()
         pipeline = _load_pipeline(pipeline, hyperparameter)
-        anomalies = analyze(pipeline, train, test)
+        anomalies, viz = analyze(pipeline, train, test)
         elapsed = datetime.utcnow() - start
 
         scores = {
@@ -164,7 +164,7 @@ def _evaluate_signal(pipeline, signal, hyperparameter, metrics, test_split=False
                          pipeline, signal, test_split, ex)
 
         elapsed = datetime.utcnow() - start
-        anomalies = pd.DataFrame([], columns=['start', 'end', 'score'])
+        anomalies, viz = pd.DataFrame([], columns=['start', 'end', 'score']), {}
         scores = {
             name: 0 for name in metrics.keys()
         }
@@ -184,6 +184,10 @@ def _evaluate_signal(pipeline, signal, hyperparameter, metrics, test_split=False
 
     if anomaly_path:
         anomalies.to_csv(anomaly_path, index=False)
+        
+    if score_path:
+        with open(score_path, 'wb') as f:
+            pickle.dump(viz, f)
 
     return scores
 
@@ -205,6 +209,11 @@ def _run_job(args):
         base_path = str(anomaly_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}')
         anomaly_path = base_path + '_anomalies.csv'
 
+    score_path = anomaly_dir
+    if anomaly_dir:
+        base_path = str(anomaly_dir / f'{pipeline_name}_{signal}_{dataset}_{iteration}')
+        score_path = base_path + '_anomaly_scores.pkl'
+
     LOGGER.info('Evaluating pipeline %s on signal %s dataset %s (test split: %s); iteration %s',
                 pipeline_name, signal, dataset, test_split, iteration)
 
@@ -216,7 +225,8 @@ def _run_job(args):
         test_split,
         detrend,
         pipeline_path,
-        anomaly_path
+        anomaly_path,
+        score_path
     )
     scores = pd.DataFrame.from_records([output], columns=output.keys())
 

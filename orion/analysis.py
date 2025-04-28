@@ -22,6 +22,16 @@ def get_available_templates(category=None):
 
     return templates
 
+def _get_outputs_spec(pipeline):
+    outputs_spec = ["default"]
+    try:
+        visualization_outputs = pipeline.get_output_names('visualization')
+        outputs_spec.append('visualization')
+    except ValueError:
+        visualization_outputs = []
+
+    return outputs_spec, visualization_outputs
+
 
 def _load_pipeline(pipeline, hyperparams=None):
     if isinstance(pipeline, str) and os.path.isfile(pipeline):
@@ -36,14 +46,24 @@ def _load_pipeline(pipeline, hyperparams=None):
 
 
 def _run_pipeline(pipeline, train, test):
+    outputs_spec, visualization_names = _get_outputs_spec(pipeline)
+
     LOGGER.debug("Fitting the pipeline")
     pipeline.fit(train)
 
     LOGGER.debug("Finding events")
-    events = pipeline.predict(test)
+    outputs = pipeline.predict(test, output_=outputs_spec)
+    if visualization_names:
+        events = outputs[0]
+        visualization_outputs = outputs[-len(visualization_names):]
+        visualization_dict = dict(zip(visualization_names, visualization_outputs))
+    else:
+        events = outputs
+        visualization_dict = {}
+
 
     LOGGER.debug("%s events found", len(events))
-    return events
+    return events, visualization_dict
 
 
 def _build_events_df(events):
@@ -61,6 +81,6 @@ def analyze(pipeline, train, test=None, hyperparams=None):
     if not isinstance(pipeline, MLPipeline):
         pipeline = _load_pipeline(pipeline, hyperparams)
 
-    events = _run_pipeline(pipeline, train, test)
+    events, viz = _run_pipeline(pipeline, train, test)
 
-    return _build_events_df(events)
+    return _build_events_df(events), viz
