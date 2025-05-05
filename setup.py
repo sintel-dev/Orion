@@ -48,6 +48,7 @@ pretrained_requires = [
     "timesfm[torch]>=1.2.0,<1.5;python_version>='3.11'",
     "jax;python_version>='3.11'",
 
+    'wrapt>=1.14,<1.15',
 ]
 
 
