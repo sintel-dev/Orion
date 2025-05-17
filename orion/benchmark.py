@@ -448,8 +448,8 @@ if __name__ == "__main__":
 
     parser.add_argument('-o', '--output_path', type=str, default='results.csv')
     parser.add_argument('-c', '--cache_dir', type=str, default='cache')
-    parser.add_argument('-pd', '--pipeline_dir', type=str, default='pipeline_dir')
     parser.add_argument('-ad', '--anomaly_dir', type=str, default='anomaly_dir')
+    parser.add_argument('-pd', '--pipeline_dir', type=str, default=None)
 
     config = parser.parse_args()
 
