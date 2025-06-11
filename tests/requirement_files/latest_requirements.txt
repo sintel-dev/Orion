@@ -17,7 +17,7 @@ flatbuffers==25.2.10
 fsspec==2025.3.0
 future==1.0.0
 gast==0.4.0
-google-auth==2.40.2
+google-auth==2.40.3
 google-auth-oauthlib==1.0.0
 google-pasta==0.2.0
 graphviz==0.20.3
@@ -55,7 +55,7 @@ nvidia-curand-cu12==10.3.2.106
 nvidia-cusolver-cu12==11.4.5.107
 nvidia-cusparse-cu12==12.1.0.106
 nvidia-nccl-cu12==2.18.1
-nvidia-nvjitlink-cu12==12.9.41
+nvidia-nvjitlink-cu12==12.9.86
 nvidia-nvtx-cu12==12.1.105
 oauthlib==3.2.2
 opt_einsum==3.4.0
