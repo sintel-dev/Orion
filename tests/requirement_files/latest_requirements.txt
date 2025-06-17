@@ -7,7 +7,7 @@ azure-mgmt-core==1.4.0
 beautifulsoup4==4.13.4
 botocore==1.37.38
 cachetools==5.5.2
-certifi==2025.4.26
+certifi==2025.6.15
 charset-normalizer==3.4.2
 click==7.1.2
 coverage==7.6.1
@@ -75,7 +75,7 @@ pytest-cov==5.0.0
 python-dateutil==2.9.0.post0
 pyts==0.13.0
 pytz==2025.2
-requests==2.32.3
+requests==2.32.4
 requests-oauthlib==2.0.0
 rsa==4.9.1
 rundoc==0.4.5
