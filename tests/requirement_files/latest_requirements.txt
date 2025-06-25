@@ -57,7 +57,7 @@ nvidia-cusparse-cu12==12.1.0.106
 nvidia-nccl-cu12==2.18.1
 nvidia-nvjitlink-cu12==12.9.86
 nvidia-nvtx-cu12==12.1.105
-oauthlib==3.2.2
+oauthlib==3.3.1
 opt_einsum==3.4.0
 orion-ml @ file:///home/runner/work/Orion/Orion
 packaging==25.0
@@ -69,7 +69,7 @@ protobuf==3.20.3
 psutil==6.1.1
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
-Pygments==2.19.1
+Pygments==2.19.2
 pytest==8.3.5
 pytest-cov==5.0.0
 python-dateutil==2.9.0.post0
