@@ -92,7 +92,7 @@
             },
             "loss": {
                 "type": "str",
-                "default": "tensorflow.keras.losses.mean_squared_error"
+                "default": "tensorflow.losses.mse"
             },
             "metrics": {
                 "type": "list",
