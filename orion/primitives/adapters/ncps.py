@@ -8,7 +8,7 @@ from mlstars.utils import import_object
 def build_layer(layer, hyperparameters):
     layer_class = import_object(layer['class'])
     layer_kwargs = layer['parameters'].copy()
-    if issubclass(layer_class, tf.keras.layers.Wrapper):
+    if issubclass(layer_class, tf.keras.layers.Layer) and 'layer' in layer_kwargs:
         layer_kwargs['layer'] = build_layer(layer_kwargs['layer'], hyperparameters)
     elif issubclass(layer_class, tf.keras.layers.RNN) and isinstance(layer_kwargs['units'], dict):
         layer_kwargs['units'] = build_layer(layer_kwargs['units'], hyperparameters)

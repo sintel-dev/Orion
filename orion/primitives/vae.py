@@ -16,19 +16,17 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 
+from orion.primitives.utils import build_layer
+
 LOGGER = logging.getLogger(__name__)
 
 
-def build_layer(layer: dict, hyperparameters: dict):
-    layer_class = import_object(layer['class'])
-    layer_kwargs = layer['parameters'].copy()
-    # TODO: Upgrade to using tf.keras.layers.Wrapper in mlprimitives.
-    if issubclass(layer_class, tf.keras.layers.Wrapper):
-        layer_kwargs['layer'] = build_layer(layer_kwargs['layer'], hyperparameters)
-    for key, value in layer_kwargs.items():
-        if isinstance(value, str):
-            layer_kwargs[key] = hyperparameters.get(value, value)
-    return layer_class(**layer_kwargs)
+class KLDivergenceLoss(tf.keras.layers.Layer):
+    def call(self, inputs):
+        z_log_sigma, z_mean = inputs
+        kl_loss = -0.5 * K.mean(1 + z_log_sigma - K.square(z_mean) - K.exp(z_log_sigma), axis=-1)
+        self.add_loss(kl_loss)
+        return inputs
 
 
 class VAE(object):
@@ -180,13 +178,13 @@ class VAE(object):
         h = self.encoder(x)
         z_mean = tf.keras.layers.Dense(self.latent_dim)(h)
         z_log_sigma = tf.keras.layers.Dense(self.latent_dim)(h)
+        KLDivergenceLoss()([z_log_sigma, z_mean])  # kl loss
         z = tf.keras.layers.Lambda(self._sampling)([z_mean, z_log_sigma])
 
         y_ = self.generator(z)
 
         self.vae_model = Model([x, y], y_)
-        self.vae_model.add_loss(self._vae_loss(y, y_, z_log_sigma, z_mean))
-        self.vae_model.compile(optimizer=self.optimizer)
+        self.vae_model.compile(loss='mse', optimizer=self.optimizer)
 
     def fit(self, X: np.ndarray, y: np.ndarray, **kwargs):
         """Fit the model.
@@ -211,7 +209,7 @@ class VAE(object):
             for callback in self.callbacks
         ]
 
-        self.fit_history = self.vae_model.fit((X, y),
+        self.fit_history = self.vae_model.fit((X, y), y,
                                               batch_size=self.batch_size,
                                               epochs=self.epochs,
                                               shuffle=self.shuffle,

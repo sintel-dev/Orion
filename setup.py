@@ -17,18 +17,16 @@ except IOError:
 
 
 install_requires = [
-    'tensorflow>=2.2,<2.15',
-    'numpy>=1.17.5,<2',
-    'pandas>=1,<3',
-    'numba>=0.48,<0.60',
-    's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.6.2,<0.7',
-    'ml-stars>=0.2.1.dev0,<0.4',
-    'scikit-learn>=0.22.1,<2',
-    'scipy<1.14',
-    'tabulate>=0.8.3,<0.9',
+    'tensorflow>=2.16.1,<2.20',
+    'numpy>=1.23.5,<2',
+    'pandas>=1.4.0,<3',
+    'numba>=0.56.2,<0.70',
+    'mlblocks>=0.6.2,<0.8',
+    'ml-stars>=0.2.2,<0.4',
+    'scikit-learn>=1.1.0,<1.6',
+    'scipy>=1.8.0,<2',
     'pyts>=0.11,<0.14',
-    'torch>=1.4,<2.6',
+    'torch>=1.12.0,<2.6',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
     'tqdm>=4.36.1',
@@ -45,8 +43,8 @@ pretrained_requires = [
     'smart_open',
 
     #timesfm
-    "timesfm[torch]>=1.2.0,<1.5;python_version>='3.11'",
-    "jax;python_version>='3.11'",
+    "timesfm[torch]>=1.2.0,<1.5;python_version>='3.11' and python_version<'3.12'",
+    "jax;python_version>='3.11' and python_version<'3.12'",
 
     'wrapt>=1.14,<1.15',
 ]
@@ -66,27 +64,19 @@ development_requires = [
     # general
     'pip>=9.0.1',
     'bumpversion>=0.5.3,<0.6',
-    'watchdog>=0.8.3,<0.11',
+    'watchdog>=0.8.3,<5',
 
     # docs
-    'docutils>=0.12,<0.18',
-    'm2r2>=0.2.5,<0.3',
-    'nbsphinx>=0.5.0,<0.7',
-    'Sphinx>=3,<3.3',
-    'pydata-sphinx-theme<0.5',
-    'markupsafe<2.1.0',
-    'ipython>=6.5,<9',
-    'Jinja2>=2,<3',
-
-    # fails on Sphinx < v3.4
-    'alabaster<=0.7.12',
-    # fails on Sphins < v5.0
-    'sphinxcontrib-applehelp<1.0.8',
-    'sphinxcontrib-devhelp<1.0.6',
-    'sphinxcontrib-htmlhelp<2.0.5',
-    'sphinxcontrib-serializinghtml<1.1.10',
-    'sphinxcontrib-qthelp<1.0.7',
-
+    'docutils>=0.12,<1',
+    'nbsphinx>=0.5.0,<1',
+    'sphinx_toolbox>=2.5,<4',
+    'Sphinx>=3,<8',
+    'pydata-sphinx-theme<1',
+    'markupsafe<3',
+    'ipython>=6.5,<12',
+    'Jinja2>=2,<4',
+    'pickleshare', # ipython sphinx
+    
     # style check
     'flake8>=3.7.7,<4',
     'isort>=4.3.4,<5',
@@ -115,10 +105,10 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
     description="Orion is a machine learning library built for unsupervised time series anomaly detection.",
     entry_points={
@@ -143,7 +133,7 @@ setup(
     long_description_content_type='text/markdown',
     name='orion-ml',
     packages=find_packages(include=['orion', 'orion.*']),
-    python_requires='>=3.8,<3.12',
+    python_requires='>=3.9,<3.13',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,

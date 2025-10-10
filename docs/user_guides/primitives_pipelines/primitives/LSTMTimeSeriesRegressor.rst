@@ -28,7 +28,7 @@ argument                type                description
  ``input_shape``        ``tuple``           tuple denoting the shape of an input sample
  ``dense_units``        ``int``             number of values ahead to predict (target size). Default is 1.
  ``optimizer``          ``str``             string (name of optimizer) or optimizer instance. Default is ``keras.optimizers.Adam``
- ``loss``               ``str``             string (name of the objective function) or an objective function instance. Default is ``keras.losses.mean_squared_error``
+ ``loss``               ``str``             string (name of the objective function) or an objective function instance. Default is ``tensorflow.losses.mse``
  ``metrics``            ``list``            list of metrics to be evaluated by the model during training and testing. Default is ["mse"]
  ``return_seqeunces``   ``bool``            whether to return the last output in the output sequence, or the full sequence. Default is False
  ``layers``             ``list``            list of keras layers which are the basic building blocks of a neural network
@@ -53,7 +53,7 @@ argument                type                description
     X = np.array([1] * 100).reshape(1, -1, 1)
     y = np.array([[1]])
     primitive = load_primitive('keras.Sequential.LSTMTimeSeriesRegressor', 
-        arguments={"X": X, "y": y, "input_shape":(100, 1), "batch_size": 1, "validation_split": 0})
+        arguments={"X": X, "y": y, "input_shape":(100, 1), "batch_size": 1, "validation_split": 0, "loss": "tensorflow.losses.mse"})
 
     primitive.fit()
     primitive.produce(X=X)
