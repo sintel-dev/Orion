@@ -1,0 +1,27 @@
+{
+    "name": "extract_dimension",
+    "primitive": "orion.primitives.timeseries_postprocessing.extract_dimension",
+    "description": "Dataset checks and slicing dimension",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray" 
+            }
+        ],
+        "output": [
+            {
+                "name": "X",
+                "type": "ndarray" 
+            }
+        ]
+    }, 
+    "hyperparameters": {
+        "tunable": {
+            "dim": {
+                "type": "int",
+                "default": null
+            }
+        }
+    }
+}
