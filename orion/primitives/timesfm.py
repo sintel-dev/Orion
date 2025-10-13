@@ -66,10 +66,18 @@ class TimesFM:
         self.batch_size = batch_size
         self.target = target
 
-        self.model = tf.TimesFm(hparams=tf.TimesFmHparams(context_len=window_size,
-                                                          per_core_batch_size=batch_size,
-                                                          horizon_len=pred_len),
-                                checkpoint=tf.TimesFmCheckpoint(huggingface_repo_id=repo_id))
+        self.model = tf.TimesFm(
+            hparams=tf.TimesFmHparams(
+                backend="gpu",
+                per_core_batch_size=batch_size,
+                horizon_len=pred_len,
+                num_layers=50,
+                use_positional_embedding=False,
+                context_len=window_size,
+            ),
+            checkpoint=tf.TimesFmCheckpoint(
+                huggingface_repo_id=repo_id)
+        )
 
     def predict(self, X, force=False):
         """Forecasting timeseries
