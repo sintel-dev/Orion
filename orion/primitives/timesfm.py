@@ -55,7 +55,7 @@ class TimesFM:
     def __init__(self,
                  window_size=256,
                  pred_len=1,
-                 repo_id="google/timesfm-1.0-200m-pytorch",
+                 repo_id="google/timesfm-2.0-500m-pytorch",
                  batch_size=32,
                  freq=0,
                  target=0):

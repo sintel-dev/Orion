@@ -43,7 +43,7 @@
             },
             "repo_id": {
                 "type": "str", 
-                "default": "google/timesfm-1.0-200m-pytorch"
+                "default": "google/timesfm-2.0-500m-pytorch"
             },
             "batch_size": {
                 "type": "int", 
