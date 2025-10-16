@@ -23,10 +23,10 @@ google-pasta==0.2.0
 graphviz==0.20.3
 grpcio==1.70.0
 h5py==3.11.0
-idna==3.10
+idna==3.11
 importlib_metadata==8.5.0
 iniconfig==2.1.0
-invoke==2.2.0
+invoke==2.2.1
 isodate==0.7.2
 Jinja2==3.1.6
 jmespath==1.0.1
@@ -95,7 +95,7 @@ tensorflow-estimator==2.13.0
 tensorflow-io-gcs-filesystem==0.34.0
 termcolor==2.4.0
 threadpoolctl==3.5.0
-tomli==2.2.1
+tomli==2.3.0
 torch==2.1.2
 tqdm==4.67.1
 triton==2.1.0
