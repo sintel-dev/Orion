@@ -5,8 +5,6 @@ import argparse
 import logging
 import warnings
 
-import tabulate
-
 from orion.analysis import get_available_templates
 from orion.benchmark import benchmark
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
@@ -26,13 +24,6 @@ def _evaluate(args):
     if args.output:
         print('Writing results in {}'.format(args.output))
         scores.to_csv(args.output, index=False)
-
-    print(tabulate.tabulate(
-        scores,
-        showindex=False,
-        tablefmt='github',
-        headers=scores.columns
-    ))
 
 
 def get_parser():
