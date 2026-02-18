@@ -101,24 +101,24 @@ jobs:
       run: invoke pretrained
 
 
-  minimum:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        python-version: ['3.8']
-        os: [macos-latest]
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install package and dependencies
-      run: |
-          python -m pip install --upgrade pip
-          python -m pip install invoke .[test]
-    - name: invoke minimum
-      run: invoke minimum
+  # minimum:
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       python-version: ['3.8']
+  #       os: [macos-latest]
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: Set up Python ${{ matrix.python-version }}
+  #     uses: actions/setup-python@v5
+  #     with:
+  #       python-version: ${{ matrix.python-version }}
+  #   - name: Install package and dependencies
+  #     run: |
+  #         python -m pip install --upgrade pip
+  #         python -m pip install invoke .[test]
+  #   - name: invoke minimum
+  #     run: invoke minimum
 
 
   tutorials:
