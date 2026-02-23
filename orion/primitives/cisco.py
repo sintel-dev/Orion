@@ -74,7 +74,7 @@ def build_multi_resolution_context(series: np.ndarray,
                                    max_fine_ctx: int = 512) -> tuple[list[float], list[float]]:
     """
     Build both coarse and fine resolution contexts from a time series.
-    This is the main function for creating multi-resolution inputs for TimesFM.
+    This is the main function for creating multi-resolution inputs for Cisco.
 
     Args:
         series: Array of fine-resolution time series data.
