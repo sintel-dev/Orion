@@ -79,11 +79,15 @@ def build_multi_resolution_context(series: np.ndarray,
     This is the main function for creating multi-resolution inputs for Cisco.
 
     Args:
-        series: Array of fine-resolution time series data.
-        agg_factor: Aggregation factor to form coarse context from fine context
+        series (ndarray):
+            Array of fine-resolution time series data.
+        agg_factor (int):
+            Aggregation factor to form coarse context from fine context
             (default: 60, e.g., minutes to hours).
-        max_coarse_ctx: Maximum number of coarse points (default: 512).
-        max_fine_ctx: Maximum number of fine points (default: 512).
+        max_coarse_ctx (int):
+            Maximum number of coarse points (default: 512).
+        max_fine_ctx (int):
+            Maximum number of fine points (default: 512).
 
     Returns:
         Tuple of:
