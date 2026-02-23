@@ -57,8 +57,10 @@ def build_fine_context(series: np.ndarray, fine_len: int = 512):
     Extract fine (short-term) context from the rightmost samples.
 
     Args:
-        series: Array of fine-resolution time series data.
-        fine_len: Desired length of fine-level context to extract (default: 512).
+        series (ndarray):
+            Array of fine-resolution time series data.
+        fine_len (int):
+            Desired length of fine-level context to extract (default: 512).
 
     Returns:
         List of floats representing the fine-level context of length <= fine_len.
