@@ -25,11 +25,13 @@ def build_coarse_context(series: np.ndarray, max_coarse_ctx: int = 512, block: i
     into consecutive non-overlapping blocks, and computes the mean of each block.
 
     Args:
-        series: Array of fine-resolution time series data.
-        max_coarse_ctx: Maximum number of coarse points to return (default: 512).
-        block: Number of fine samples to aggregate into one coarse sample (default: 60).
+        series (ndarray):
+            Array of fine-resolution time series data.
+        max_coarse_ctx (int):
+            Maximum number of coarse points to return (default: 512).
+        block (int):
+            Number of fine samples to aggregate into one coarse sample (default: 60).
             For example, block=60 aggregates 60 minutes into 1 hour.
-
     Returns:
         List of floats representing coarse means with length <= max_coarse_ctx.
     """
