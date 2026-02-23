@@ -85,8 +85,8 @@ def build_multi_resolution_context(series: np.ndarray,
 
     Returns:
         Tuple of:
-            - coarse_ctx: List of floats representing the coarse (long-term) context.
-            - fine_ctx: List of floats representing the fine (short-term) context.
+            - List of floats representing the coarse (long-term) context.
+            - List of floats representing the fine (short-term) context.
     """
     coarse_ctx = build_coarse_context(
         series,
