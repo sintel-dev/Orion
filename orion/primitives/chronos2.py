@@ -3,16 +3,11 @@ This primitive an implementation of Amazon's Chronos2 model for timeseries forec
 
 The model implementation can be found at
 https://huggingface.co/amazon/chronos-2
-
-Note: This primitive assumes that Chronos2 doesn't care about specific timestamps
-of the data. We fill in the timestamps with a linear sequence of timestamps in order
-for the model to work.
 """
 
 import numpy as np
 import pandas as pd
 import torch
-
 from chronos import Chronos2Pipeline
 
 
@@ -39,19 +34,18 @@ class Chronos2:
                  repo_id="amazon/chronos-2",
                  batch_size=32,
                  target=0,
-                 start_time=pd.to_datetime("2000-01-01 00:00:00"),
-                 time_interval=600):
+                 time_interval=21600):
 
         self.pred_len = pred_len
         self.batch_size = batch_size
         self.target = f"{target}"
-        self.start_time = start_time
-        self.time_interval = pd.Timedelta(seconds=time_interval)
+        self.time_interval = time_interval
+        self.cur_item_id = 0
 
         device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = Chronos2Pipeline.from_pretrained(repo_id, device_map=device)
 
-    def predict(self, X, force=False):
+    def predict(self, X, start_indices, force=False):
         """Forecasting timeseries
 
         Args:
@@ -61,16 +55,15 @@ class Chronos2:
             ndarray:
                 forecasted timeseries.
         """
-        n_windows, window_size, n_features = X.shape
-
+        n_windows = X.shape[0]
         outs = []
 
         for i in range(0, n_windows, self.batch_size):
-            x_batch = self.convert_to_df(X[i:i + self.batch_size], start_batch_at=i)
+            x_batch = self.convert_to_df(X[i:i + self.batch_size],
+                                         start_timestamps=start_indices[i:i + self.batch_size])
             y_batch = self.model.predict_df(
                 df=x_batch,
                 prediction_length=self.pred_len,
-                quantile_levels=[0.5],
                 id_column="item_id",
                 timestamp_column="timestamp",
                 target=self.target,
@@ -86,17 +79,18 @@ class Chronos2:
 
         return np.concatenate(outs, axis=0)
 
-    def convert_to_df(self, x_batch, start_batch_at=0):
+    def convert_to_df(self, x_batch, start_timestamps):
         n_windows_in_batch, window_size, n_features = x_batch.shape
 
         rows = []
         for window in range(n_windows_in_batch):
             for data_entry in range(window_size):
                 rows.append({
-                    "timestamp": self.start_time + self.time_interval * data_entry,
-                    "item_id": f"window_{start_batch_at + window}",
+                    "timestamp": start_timestamps[window] + self.time_interval * data_entry,
+                    "item_id": f"window_{window + self.cur_item_id}",
                     **{f"{i}": x_batch[window, data_entry, i] for i in range(n_features)}
                 })
 
+        self.cur_item_id += n_windows_in_batch
         rows = pd.DataFrame(rows)
         return rows

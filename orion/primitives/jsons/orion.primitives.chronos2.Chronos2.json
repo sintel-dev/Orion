@@ -19,6 +19,10 @@
                 "type": "ndarray"
             },
             {
+                "name": "start_indices",
+                "type": "ndarray"
+            },
+            {
                 "name": "force",
                 "type": "bool",
                 "default": false

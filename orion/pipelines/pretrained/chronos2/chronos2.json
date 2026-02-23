@@ -17,6 +17,9 @@
             "target_column": 0,
             "window_size": 250
         },
+        "orion.primitives.chronos2.Chronos2#1": {
+            "time_interval": 21600
+        },
         "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "window_size_portion": 0.33,
             "window_step_size_portion": 0.1,
@@ -24,6 +27,9 @@
         }
     },
     "input_names": {
+        "orion.primitives.chronos2.Chronos2#1": {
+            "start_indices": "index"
+        },
         "orion.primitives.timeseries_anomalies.find_anomalies#1": {
             "index": "target_index"
         }
