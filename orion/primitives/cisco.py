@@ -17,24 +17,23 @@ from timesfm import pytorch_patched_decoder as ppd
 from timesfm.timesfm_base import linear_interpolation, strip_leading_nans
 
 
-def build_coarse_context(series: np.ndarray, max_coarse_ctx: int = 512, block: int = 60):
+def build_coarse_context(series: np.ndarray, max_coarse_ctx: int = 512):
     """
     Construct coarse (long-term) context by aggregating fine samples.
 
-    Takes the rightmost (max_coarse_ctx * block) raw samples, partitions them
-    into consecutive non-overlapping blocks, and computes the mean of each block.
+    Takes the rightmost (max_coarse_ctx * 60) raw samples, partitions them
+    into consecutive non-overlapping blocks of 60, and computes the mean of each block.
 
     Args:
         series (ndarray):
             Array of fine-resolution time series data.
         max_coarse_ctx (int):
             Maximum number of coarse points to return (default: 512).
-        block (int):
-            Number of fine samples to aggregate into one coarse sample (default: 60).
-            For example, block=60 aggregates 60 minutes into 1 hour.
+
     Returns:
         List of floats representing coarse means with length <= max_coarse_ctx.
     """
+    block = 60
     needed_raw = max_coarse_ctx * block
     raw_slice = series[-needed_raw:]
 
@@ -71,19 +70,16 @@ def build_fine_context(series: np.ndarray, fine_len: int = 512):
 
 
 def build_multi_resolution_context(series: np.ndarray,
-                                   agg_factor: int = 60,
                                    max_coarse_ctx: int = 512,
                                    max_fine_ctx: int = 512) -> tuple[list[float], list[float]]:
     """
     Build both coarse and fine resolution contexts from a time series.
     This is the main function for creating multi-resolution inputs for Cisco.
+    Coarse context uses a fixed aggregation of 60 fine samples per coarse point.
 
     Args:
         series (ndarray):
             Array of fine-resolution time series data.
-        agg_factor (int):
-            Aggregation factor to form coarse context from fine context
-            (default: 60, e.g., minutes to hours).
         max_coarse_ctx (int):
             Maximum number of coarse points (default: 512).
         max_fine_ctx (int):
@@ -94,11 +90,7 @@ def build_multi_resolution_context(series: np.ndarray,
             - List of floats representing the coarse (long-term) context.
             - List of floats representing the fine (short-term) context.
     """
-    coarse_ctx = build_coarse_context(
-        series,
-        max_coarse_ctx=max_coarse_ctx,
-        block=agg_factor
-    )
+    coarse_ctx = build_coarse_context(series, max_coarse_ctx=max_coarse_ctx)
     fine_ctx = build_fine_context(series, fine_len=max_fine_ctx)
 
     return coarse_ctx, fine_ctx
@@ -141,17 +133,18 @@ class MinimalCiscoModel(ppd.PatchedTimeSeriesDecoder):
         return outputs
 
 
-def preprocess_series(series, agg_factor=60):
+def preprocess_series(series):
     """
-    Return RAW (not normalized) padded contexts + pad masks.
-    Let timesfm `_preprocess_input` do its own normalization and return stats.
+    Return raw padded contexts + pad masks.
+    Coarse context uses a fixed aggregation of 60 fine samples per coarse point.
 
     Args:
-        series: 1D numpy array
-        agg_factor: Aggregation factor (default 60 = minute->hour)
+        series (ndarray):
+            1D numpy array containing the fine-resolution time series values.
 
     Returns:
-        coarse, coarse_mask, fine, fine_mask
+        Numpy arrays for coarse and fine contexts, and their corresponding pad masks.
+        Pad masks are set to 0 for values from the real series and 1 for padded values.
     """
     series = np.asarray(series, dtype=np.float32)
     if not np.isfinite(series).all():
@@ -161,7 +154,6 @@ def preprocess_series(series, agg_factor=60):
 
     coarse_list, fine_list = build_multi_resolution_context(
         series,
-        agg_factor=agg_factor,
         max_coarse_ctx=512,
         max_fine_ctx=512
     )
@@ -217,14 +209,16 @@ class CiscoInference:
         self.model.to(self.device)
         self.model.eval()
 
-    def forecast(self, series_list, horizon_len=128, agg_factor=60):
+    def forecast(self, series_list, horizon_len=128):
         """
         Forecast time series.
+        Coarse context uses a fixed aggregation of 60 fine samples per coarse point.
 
         Args:
-            series_list: List of 1D numpy arrays
-            horizon_len: Steps to forecast (default 128)
-            agg_factor: Aggregation factor (default 60)
+            series (ndarray):
+                1D numpy array containing the fine-resolution time series values.
+            horizon_len (int):
+                Steps to forecast (default 128).
 
         Returns:
             List of dicts with 'mean' and 'quantiles'
@@ -240,8 +234,7 @@ class CiscoInference:
                 if not isinstance(series, np.ndarray):
                     series = np.array(series, dtype=np.float32)
 
-                coarse_raw, c_padmask, fine_raw, f_padmask = preprocess_series(
-                    series, agg_factor=agg_factor)
+                coarse_raw, c_padmask, fine_raw, f_padmask = preprocess_series(series)
 
                 coarse = coarse_raw.unsqueeze(0).unsqueeze(-1).to(self.device)
                 c_pad = c_padmask.unsqueeze(0).unsqueeze(-1).to(self.device)
@@ -318,8 +311,6 @@ class Cisco:
             Prediction horizon length. Default to 128.
         repo_id (str):
             HuggingFace repository ID. Default to "cisco-ai/cisco-time-series-model-1.0-preview"
-        agg_factor (int):
-            Aggregation factor for coarse context. Default to 60 (minute->hour).
         target (int):
             Index of target column in multivariate case. Default to 0.
         return_quantile (str or None):
@@ -332,13 +323,11 @@ class Cisco:
         window_size=30720,
         pred_len=128,
         repo_id="cisco-ai/cisco-time-series-model-1.0-preview",
-        agg_factor=60,
         target=0,
         return_quantile=None,
     ):
         self.window_size = int(window_size)
         self.pred_len = int(pred_len)
-        self.agg_factor = int(agg_factor)
         self.target = int(target)
         self.return_quantile = return_quantile
 
@@ -366,7 +355,6 @@ class Cisco:
         forecast_results = self.model.forecast(
             series_list,
             horizon_len=self.pred_len,
-            agg_factor=self.agg_factor
         )
 
         if self.return_quantile is not None:

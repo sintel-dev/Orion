@@ -40,10 +40,6 @@
                 "type": "str",
                 "default": "cisco-ai/cisco-time-series-model-1.0-preview"
             },
-            "agg_factor": {
-                "type": "int",
-                "default": 60
-            },
             "target": {
                 "type": "int",
                 "default": 0

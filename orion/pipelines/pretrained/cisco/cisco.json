@@ -15,12 +15,10 @@
         },
         "mlstars.custom.timeseries_preprocessing.rolling_window_sequences#1": {
             "target_column": 0,
-            "window_size": 30720,
-            "step_size": 16
+            "window_size": 250,
+            "step_size": 1
         },
         "orion.primitives.timeseries_anomalies.find_anomalies#1": {
-            "window_size_portion": 0.33,
-            "window_step_size_portion": 0.1,
             "fixed_threshold": true,
             "window_size": 250,
             "window_step_size": 40
