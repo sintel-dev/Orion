@@ -5,10 +5,12 @@ The model implementation can be found at
 https://huggingface.co/amazon/chronos-2
 """
 
-from chronos import Chronos2Pipeline
 import numpy as np
 import pandas as pd
 import torch
+
+from chronos import Chronos2Pipeline
+
 
 class Chronos2:
     """Chronos2 model for timeseries forecasting.
