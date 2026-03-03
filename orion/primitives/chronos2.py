@@ -28,6 +28,10 @@ class Chronos2:
             Start time of the timeseries. Default to Jan 1, 2020 00:00:00.
         time_interval (int):
             Time interval between two samples in seconds. Default to 600.
+
+    Returns:
+        np.ndarray:
+            Forecasted timeseries.
     """
 
     def __init__(self,

@@ -2,5 +2,8 @@
     "mlstars.custom.timeseries_preprocessing.time_segments_aggregate#1": {
         "time_column": "timestamp",
         "interval": 21600
+    },
+    "orion.primitives.chronos2.Chronos2#1": {
+        "time_interval": 21600
     }
 }
