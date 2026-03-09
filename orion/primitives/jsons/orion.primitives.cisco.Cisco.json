@@ -1,0 +1,53 @@
+{
+    "name": "orion.primitives.cisco.Cisco",
+    "contributors": [
+        "Allen Baranov <baranov@mit.edu>"
+    ],
+    "documentation": "https://arxiv.org/pdf/2511.19841",
+    "description": "Cisco Time Series Foundation Model for timeseries forecasting (standalone implementation)",
+    "classifiers": {
+        "type": "estimator",
+        "subtype": "regressor"
+    },
+    "modalities": [],
+    "primitive": "orion.primitives.cisco.Cisco",
+    "produce": {
+        "method": "predict",
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray"
+            }
+        ],
+        "output": [
+            {
+                "name": "y_hat",
+                "type": "ndarray"
+            }
+        ]
+    },
+    "hyperparameters": {
+        "fixed": {
+            "window_size": {
+                "type": "int",
+                "default": 30720
+            },
+            "pred_len": {
+                "type": "int",
+                "default": 128
+            },
+            "repo_id": {
+                "type": "str",
+                "default": "cisco-ai/cisco-time-series-model-1.0-preview"
+            },
+            "target": {
+                "type": "int",
+                "default": 0
+            },
+            "return_quantile": {
+                "type": "str",
+                "default": null
+            }
+        }
+    }
+}
