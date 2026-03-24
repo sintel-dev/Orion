@@ -1,0 +1,33 @@
+{
+    "name": "thresholding",
+    "primitive": "orion.primitives.timeseries_postprocessing.thresholding",
+    "description": "Detects anomalies through simple thresholding",
+    "produce": {
+        "args": [
+            {
+                "name": "X",
+                "type": "ndarray" 
+            }
+
+        ],
+        "output": [
+            {
+                "name": "y",
+                "type": "ndarray" 
+            }
+        ]
+    }, 
+    "hyperparameters": {
+        "tunable": {
+            "thres": {
+                "type": "float",
+                "default": 10
+            },
+            "op": {
+                "type": "str",
+                "default": ">",
+                "options": ["<", ">", "<=", ">=", "=="]
+            }
+        }
+    }
+}

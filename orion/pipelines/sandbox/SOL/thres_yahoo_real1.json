@@ -1,0 +1,16 @@
+{
+    "primitives": [
+        "orion.primitives.timeseries_postprocessing.extract_dimension",
+        "orion.primitives.timeseries_postprocessing.thresholding",
+        "orion.primitives.timeseries_postprocessing.get_intervals"
+    ], 
+    "init_params": {
+        "orion.primitives.timeseries_postprocessing.thresholding#1": {
+            "thres": 0.45, 
+            "op": ">"
+        }, 
+        "orion.primitives.intervals.get_intervals#1": {
+            "severity": true
+        }
+    }
+}
