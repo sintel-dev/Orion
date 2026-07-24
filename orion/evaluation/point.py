@@ -5,13 +5,13 @@ def _point_partition(expected, observed, start=None, end=None):
     expected = set(expected)
     observed = set(observed)
 
-    edge_start = min(expected.union(observed))
-    if start is not None:
-        edge_start = start
+    edge_start = start
+    if edge_start is None:
+        edge_start = min(expected.union(observed))
 
-    edge_end = max(expected.union(observed))
-    if end is not None:
-        edge_end = end
+    edge_end = end
+    if edge_end is None:
+        edge_end = max(expected.union(observed))
 
     length = int(edge_end) - int(edge_start) + 1
 
@@ -61,6 +61,13 @@ def point_confusion_matrix(expected, observed, data=None, start=None, end=None):
         expected = list(expected['timestamp'])
     if not isinstance(observed, list):
         observed = list(observed['timestamp'])
+
+    if not expected and not observed and (start is None or end is None):
+        # Without any anomalies there is no range to partition, and none was
+        # supplied through ``data``/``start``/``end``. There are no true or
+        # false positives and no false negatives, but the number of true
+        # negatives is unknown.
+        return None, 0, 0, 0
 
     return _ws(expected, observed, start, end)
 

@@ -67,3 +67,36 @@ def test_point_f1_score_nan():
     observed = pd.DataFrame({"timestamp": [4, 5]})
     returned = point_f1_score(expected, observed)
     assert np.isnan(returned)
+
+
+def test_point_confusion_matrix_empty():
+    empty = pd.DataFrame({"timestamp": []})
+
+    returned = point_confusion_matrix(empty, empty)
+
+    # There is no range to partition, so the number of true negatives is
+    # unknown, but there are no positives and no false negatives.
+    assert returned == (None, 0, 0, 0)
+
+
+def test_point_confusion_matrix_empty_with_range():
+    empty = pd.DataFrame({"timestamp": []})
+
+    returned = point_confusion_matrix(empty, empty, start=0, end=9)
+
+    # Every point in the range is correctly considered normal.
+    np.testing.assert_array_equal(np.array(returned), np.array((10, 0, 0, 0)))
+
+
+def test_point_scores_empty():
+    empty = pd.DataFrame({"timestamp": []})
+
+    assert np.isnan(point_precision(empty, empty))
+    assert np.isnan(point_recall(empty, empty))
+    assert np.isnan(point_f1_score(empty, empty))
+
+    # Accuracy needs the true negatives, which are unknown without a range.
+    with pytest.raises(ValueError):
+        point_accuracy(empty, empty)
+
+    assert point_accuracy(empty, empty, start=0, end=9) == 1.0
