@@ -7,7 +7,7 @@ time segments aggregate
 
 **description**: this primitive creates an equi-spaced time series by aggregating values over fixed specified interval.
 
-see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.time_segments_aggregate.json>`__.
+see `json <https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.time_segments_aggregate.json>`__.
 
 ==================== =========================================== =============================================================================================================================
 argument              type                                        description  

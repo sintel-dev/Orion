@@ -7,7 +7,7 @@ SimpleImputer
 
 **description**: this primitive is an imputation transformer for filling missing values.
 
-see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/sklearn.impute.SimpleImputer.json>`__.
+see `json <https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/sklearn.impute.SimpleImputer.json>`__.
 
 ==================== ========================================================= ==========================================
 argument              type                                                      description  
