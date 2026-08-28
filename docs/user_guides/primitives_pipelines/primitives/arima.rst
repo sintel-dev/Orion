@@ -7,7 +7,7 @@ ARIMA
 
 **description**: this is an Autoregressive Integrated Moving Average (ARIMA) prediction model.
 
-see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/statsmodels.tsa.arima_model.Arima.json>`__.
+see `json <https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/statsmodels.tsa.arima_model.Arima.json>`__.
 
 ==================== =================== ==================================================================
 argument              type                description  

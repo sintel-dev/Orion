@@ -7,7 +7,7 @@ intervals to mask
 
 **description**: this primitive creates boolean mask from given intervals.
 
-see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.intervals_to_mask.json>`__.
+see `json <https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.intervals_to_mask.json>`__.
 
 ==================== =============================== =================================================================================================================================
 argument              type                            description  

@@ -7,7 +7,7 @@ LSTM
 
 **description**: this is a prediction model with double stacked LSTM layers used as a time series regressor. you can read more about it in the `related paper <https://arxiv.org/pdf/1802.04431.pdf>`__.
 
-see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/keras.Sequential.LSTMTimeSeriesRegressor.json>`__.
+see `json <https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/keras.Sequential.LSTMTimeSeriesRegressor.json>`__.
 
 ====================== =================== ===========================================================================================================================================
 argument                type                description  

@@ -7,7 +7,7 @@ rolling window sequence
 
 **description**: this primitive generates many sub-sequences of the original sequence. it uses a rolling window approach to create the sub-sequences out of time series data.
 
-see `json <https://github.com/MLBazaar/mlstars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.rolling_window_sequences.json>`__.
+see `json <https://github.com/sintel-dev/ml-stars/blob/master/mlstars/primitives/mlstars.custom.timeseries_preprocessing.rolling_window_sequences.json>`__.
 
 ==================== ============================================================== ==================================================================
  argument             type                                                           description  
